@@ -1,6 +1,7 @@
 <script lang="ts">
   import { themes } from '../../data/themes'
   import Select from './select.svelte'
+  import Icons from './icons.svelte'
   import Code from './code.svelte'
 
   let items = themes.map(theme => ({
@@ -14,6 +15,7 @@
 <div class="view">
   <div class="icons">
     <Select options={items} bind:value={theme} />
+    <Icons />
   </div>
   <Code {theme} />
 </div>
