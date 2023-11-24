@@ -5,6 +5,7 @@ import svelte from '@astrojs/svelte'
 export default defineConfig({
   vite: {
     plugins: [
+      // @ts-ignore
       staticCopy({
         targets: [
           {
