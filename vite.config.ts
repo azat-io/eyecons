@@ -11,5 +11,6 @@ export default defineConfig({
     rollupOptions: {
       external: (id: string) => !id.startsWith('.') && !path.isAbsolute(id),
     },
+    minify: false,
   },
 })

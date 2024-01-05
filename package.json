@@ -15,6 +15,7 @@
     "Other"
   ],
   "scripts": {
+    "build": "vite build",
     "docs:dev": "astro dev",
     "docs:build": "astro build",
     "figma": "pnpm figma:clean && node --env-file=.env --loader tsm \"./tools/figma.ts\"",
