@@ -1,0 +1,10 @@
+.logo {
+  inline-size: 140px;
+  block-size: 140px;
+  margin-block-end: var(--space-l);
+  color: var(--color-content-primary);
+
+  path {
+    transition: fill 300ms;
+  }
+}

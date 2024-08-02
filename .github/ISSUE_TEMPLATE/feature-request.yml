@@ -1,0 +1,29 @@
+name: "\U0001F4A1 Feature Request"
+description: Propose a new feature to be added to the Eyecons
+
+title: 'Feature: (fill in)'
+labels:
+  - feature
+
+body:
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: Describe the feature
+      description: What ideas do you have?
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Additional comments
+      description: Is there anything else that's important to know?
+
+  - type: checkboxes
+    id: checkboxes
+    attributes:
+      label: Validations
+      description: Before submitting the issue, please make sure you do the following
+      options:
+        - label: Check that there isn't [already an issue](https://github.com/azat-io/eyecons/issues) that reports the same feature to avoid creating a duplicate.
+          required: true

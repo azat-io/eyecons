@@ -1,0 +1,13 @@
+{
+  "commands.rebuild": "Force rebuild Eyecons",
+  "configuration.folderColor": "Folder color",
+  "configuration.folderColor.red": "Red",
+  "configuration.folderColor.orange": "Orange",
+  "configuration.folderColor.yellow": "Yellow",
+  "configuration.folderColor.green": "Green",
+  "configuration.folderColor.blue": "Blue",
+  "configuration.folderColor.purple": "Purple",
+  "configuration.hideExplorerArrows": "Hide explorer arrows",
+  "configuration.theme": "Select color theme",
+  "configuration.theme.inherit": "Use the color theme of the current VS Code theme"
+}

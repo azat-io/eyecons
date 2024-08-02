@@ -1,0 +1,208 @@
+{
+  "name": "eyecons",
+  "displayName": "Eyecons",
+  "description": "Advanced VS Code icon theme with adaptive icon colors that match the editor’s color theme",
+  "version": "0.0.1",
+  "main": "./dist/extension/index.js",
+  "repository": "azat-io/eyecons",
+  "author": "Azat S. <to@azat.io>",
+  "publisher": "azat-io",
+  "license": "MIT",
+  "icon": "assets/logo.png",
+  "galleryBanner": {
+    "theme": "light",
+    "color": "#fab922"
+  },
+  "keywords": [
+    "icons",
+    "theme",
+    "icon-theme",
+    "customization"
+  ],
+  "categories": [
+    "Themes",
+    "Other"
+  ],
+  "scripts": {
+    "build": "vite build --config vite.config.extension.ts",
+    "docs:dev": "vite --open --mode ssr --config vite.config.docs.ts",
+    "docs:build": "pnpm run docs:clean && qwik build",
+    "docs:clean:dist": "node -e \"fs.rmSync('./docs/dist', { recursive: true, force: true })\"",
+    "docs:clean:server": "node -e \"fs.rmSync('./docs/server', { recursive: true, force: true })\"",
+    "docs:clean:temp": "node -e \"fs.rmSync('./tmp', { recursive: true, force: true })\"",
+    "docs:clean": "pnpm run /^docs:clean:/",
+    "docs:debug": "node --inspect-brk ./node_modules/vite/bin/vite.js --mode ssr --force",
+    "docs:preview": "pnpm run docs:clean && qwik build preview && vite preview --open --config vite.config.docs.ts",
+    "build.client": "vite build --config vite.config.docs.ts",
+    "build.types": "tsc --incremental --noEmit",
+    "build.preview": "vite build --ssr docs/entry.preview.tsx --config vite.config.docs.ts",
+    "scripts:preview": "tsx ./scripts/generate-preview.ts",
+    "scripts:svgo": "svgo --folder \"./icons/base\" && svgo --folder \"./icons/files\"",
+    "release": "pnpm release:check && pnpm release:version && release:package && pnpm release:publish",
+    "release:check": "pnpm test && pnpm run build",
+    "release:package": "vsce package",
+    "release:publish": "vsce publish",
+    "release:version": "changelogen --output changelog.md --release --push",
+    "test:format": "prettier --check \"**/*.{js,ts,jsx,tsx,css,json,md,yml}\"",
+    "test:css": "stylelint **/*.css",
+    "test:js": "eslint \"**/*.{js,ts,tsx}\"",
+    "test:types": "tsc --noEmit --pretty",
+    "test:unit": "vitest --run --coverage",
+    "test": "pnpm run /^test:/"
+  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "iconThemes": [
+      {
+        "id": "eyecons",
+        "label": "Eyecons",
+        "path": "./dist/extension/index.json",
+        "_watch": true
+      }
+    ],
+    "configuration": {
+      "title": "Eyecons",
+      "properties": {
+        "eyecons.theme": {
+          "type": "string",
+          "enumDescriptions": [
+            "%configuration.theme.inherit%",
+            "Adwaita Dark",
+            "Adwaita Light",
+            "Atom One Dark",
+            "Ayu Dark",
+            "Ayu Light",
+            "Cobalt 2",
+            "Dark (Visual Studio)",
+            "Dracula",
+            "GitHub Dark",
+            "GitHub Light",
+            "Gruvbox Dark",
+            "Gruvbox Light",
+            "Monokai Pro",
+            "Night Owl",
+            "Nord",
+            "Panda",
+            "Synthwave '84",
+            "Vitesse Dark",
+            "Vitesse Light"
+          ],
+          "enum": [
+            "inherit",
+            "adwaita-dark",
+            "adwaita-light",
+            "atom-one-dark",
+            "ayu-dark",
+            "ayu-light",
+            "cobalt-2",
+            "dark",
+            "dracula",
+            "github-dark",
+            "github-light",
+            "gruvbox-dark",
+            "gruvbox-light",
+            "monokai-pro",
+            "night-owl",
+            "nord",
+            "panda",
+            "synthwave-84",
+            "vitesse-dark",
+            "vitesse-light"
+          ],
+          "default": "inherit",
+          "description": "%configuration.theme%"
+        },
+        "eyecons.folderColor": {
+          "type": "string",
+          "default": "blue",
+          "description": "%configuration.folderColor%",
+          "enumDescriptions": [
+            "%configuration.folderColor.red%",
+            "%configuration.folderColor.orange%",
+            "%configuration.folderColor.yellow%",
+            "%configuration.folderColor.green%",
+            "%configuration.folderColor.blue%",
+            "%configuration.folderColor.purple%"
+          ],
+          "enum": [
+            "red",
+            "orange",
+            "yellow",
+            "green",
+            "blue",
+            "purple"
+          ]
+        },
+        "eyecons.hideExplorerArrows": {
+          "type": "boolean",
+          "default": true,
+          "description": "%configuration.hideExplorerArrows%"
+        }
+      }
+    },
+    "commands": [
+      {
+        "title": "%commands.rebuild%",
+        "command": "eyecons.rebuild",
+        "category": "Eyecons"
+      }
+    ]
+  },
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "dependencies": {
+    "culori": "^4.0.1",
+    "svg-parser": "^2.0.4",
+    "ts-retry": "^4.2.5"
+  },
+  "devDependencies": {
+    "@azat-io/eslint-config-typescript": "^1.10.0",
+    "@azat-io/stylelint-config": "^0.1.1",
+    "@builder.io/qwik": "^1.8.0",
+    "@builder.io/qwik-city": "^1.8.0",
+    "@commitlint/cli": "^19.4.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "@types/culori": "^2.1.1",
+    "@types/eslint": "^9.6.0",
+    "@types/node": "^22.2.0",
+    "@types/svg-parser": "^2.0.6",
+    "@types/vscode": "^1.92.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.1",
+    "@typescript-eslint/parser": "^8.0.1",
+    "@vitest/coverage-v8": "^2.0.5",
+    "browserslist": "^4.23.3",
+    "eslint": "^9.9.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-n": "^17.10.2",
+    "eslint-plugin-node-import": "^1.0.4",
+    "eslint-plugin-perfectionist": "^3.1.3",
+    "eslint-plugin-prefer-arrow": "^1.2.3",
+    "eslint-plugin-prefer-let": "^4.0.0",
+    "eslint-plugin-promise": "^7.1.0",
+    "eslint-plugin-sonarjs": "^1.0.4",
+    "eslint-plugin-unicorn": "^55.0.0",
+    "eslint-plugin-vitest": "^0.5.4",
+    "focus-trap": "^7.5.4",
+    "lightningcss": "^1.26.0",
+    "prettier": "^3.3.3",
+    "puppeteer": "^23.0.2",
+    "shiki": "^1.12.1",
+    "simple-git-hooks": "^2.11.1",
+    "stylelint": "^16.8.1",
+    "stylelint-config-recess-order": "^5.0.1",
+    "stylelint-gamut": "^1.3.4",
+    "stylelint-order": "^6.0.4",
+    "stylelint-plugin-logical-css": "^1.2.1",
+    "svgo": "^3.3.2",
+    "ts-dedent": "^2.2.0",
+    "tsx": "^4.17.0",
+    "typescript": "^5.5.4",
+    "undici": "^6.19.7",
+    "vite": "^5.4.0",
+    "vite-tsconfig-paths": "^4.3.2",
+    "vitest": "^2.0.5"
+  }
+}

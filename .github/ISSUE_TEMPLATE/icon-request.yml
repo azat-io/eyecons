@@ -1,0 +1,37 @@
+name: "\U0001F4CC Icon Request"
+description: Propose a new icon to be added to the Eyecons
+
+title: 'Icon Request: (fill in)'
+labels:
+  - feature
+
+body:
+  - type: textarea
+    id: icon-description
+    attributes:
+      label: Describe the icon
+      description: Specify the name and description of the icon. Provide links to the project where you can see the icon reference. Or send an image of a possible icon.
+    validations:
+      required: true
+
+  - type: textarea
+    id: extensions
+    attributes:
+      label: Extensions or file names
+      description: Specify extensions or file names where the icon should be used.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Additional comments
+      description: Is there anything else that's important to know?
+
+  - type: checkboxes
+    id: checkboxes
+    attributes:
+      label: Validations
+      description: Before submitting the issue, please make sure you do the following
+      options:
+        - label: Check that there isn't [already an issue](https://github.com/azat-io/eyecons/issues) that reports the same feature to avoid creating a duplicate.
+          required: true

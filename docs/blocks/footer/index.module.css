@@ -1,0 +1,4 @@
+.footer {
+  padding-block: var(--space-xl) calc(var(--space-l) * 2);
+  background: var(--color-background-primary);
+}

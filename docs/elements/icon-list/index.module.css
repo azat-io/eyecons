@@ -1,0 +1,12 @@
+.list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 68px);
+  gap: var(--space-xs);
+  padding-inline-start: 0;
+  margin-block: var(--space-xl);
+  list-style: none;
+
+  @container (inline-size >= 980px) {
+    margin-block: var(--space-l);
+  }
+}

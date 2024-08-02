@@ -1,0 +1,25 @@
+@font-face {
+  font-family: Menlo;
+  src: url('/fonts/menlo-regular.woff2');
+  font-display: swap;
+}
+
+:root {
+  --font-family-base: -apple-system, blinkmacsystemfont, 'Segoe UI', roboto,
+    oxygen-sans, ubuntu, cantarell, 'Helvetica Neue', sans-serif;
+  --font-family-mono: 'Menlo', monospace;
+
+  --font-size-xs: 0.7rem;
+  --font-size-s: clamp(0.8rem, -0.01vi + 0.8rem, 0.8rem);
+  --font-size-m: clamp(1rem, 0.11vi + 0.97rem, 1.06rem);
+  --font-size-l: clamp(1.25rem, 0.3vi + 1.17rem, 1.42rem);
+  --font-size-xl: clamp(1.56rem, 0.59vi + 1.41rem, 1.89rem);
+  --font-size-2xl: clamp(1.95rem, 1.02vi + 1.7rem, 2.52rem);
+
+  --font-xs: 400 var(--font-size-xs) / 1.5 var(--font-family-base);
+  --font-s: 400 var(--font-size-s) / 1.5 var(--font-family-base);
+  --font-m: 400 var(--font-size-m) / 1.5 var(--font-family-base);
+  --font-l: 400 var(--font-size-l) / 1.5 var(--font-family-base);
+  --font-xl: 400 var(--font-size-xl) / 1.5 var(--font-family-base);
+  --font-2xl: 400 var(--font-size-2xl) / 1.25 var(--font-family-base);
+}

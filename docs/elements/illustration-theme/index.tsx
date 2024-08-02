@@ -1,0 +1,147 @@
+import { component$ } from '@builder.io/qwik'
+
+import styles from './index.module.css'
+
+export let IllustrationTheme = component$(() => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class={styles.illustration}
+    viewBox="0 0 404 248"
+    fill="none"
+  >
+    <rect fill="var(--color-red)" height="16" width="53" rx="4" y="4" />
+    <rect fill="var(--color-red)" height="16" width="53" y="32" rx="4" />
+    <rect
+      fill="var(--color-yellow)"
+      width="110"
+      height="16"
+      x="61"
+      y="32"
+      rx="4"
+    />
+    <rect
+      fill="var(--color-yellow)"
+      width="150"
+      height="16"
+      x="61"
+      rx="4"
+      y="4"
+    />
+    <rect
+      fill="var(--color-red)"
+      height="16"
+      width="35"
+      x="179"
+      y="32"
+      rx="4"
+    />
+    <rect fill="var(--color-red)" height="16" width="35" x="219" rx="4" y="4" />
+    <rect
+      fill="var(--color-green)"
+      height="16"
+      width="91"
+      x="222"
+      y="32"
+      rx="4"
+    />
+    <rect
+      fill="var(--color-green)"
+      width="142"
+      height="16"
+      x="262"
+      rx="4"
+      y="4"
+    />
+    <rect fill="var(--color-red)" height="16" width="37" y="60" rx="4" />
+    <rect fill="var(--color-red)" height="16" width="37" x="45" y="88" rx="4" />
+    <rect
+      fill="var(--color-blue)"
+      width="110"
+      height="16"
+      y="116"
+      x="90"
+      rx="4"
+    />
+    <rect
+      fill="var(--color-blue)"
+      height="16"
+      width="89"
+      y="144"
+      x="90"
+      rx="4"
+    />
+    <rect
+      fill="var(--color-green)"
+      width="167"
+      height="16"
+      x="187"
+      y="144"
+      rx="4"
+    />
+    <rect
+      fill="var(--color-blue)"
+      height="16"
+      width="79"
+      y="172"
+      x="90"
+      rx="4"
+    />
+    <rect
+      fill="var(--color-green)"
+      width="107"
+      height="16"
+      x="177"
+      y="172"
+      rx="4"
+    />
+    <rect
+      fill="var(--color-blue)"
+      height="16"
+      width="54"
+      y="200"
+      x="91"
+      rx="4"
+    />
+    <rect fill="var(--color-orange)" height="16" width="29" y="228" rx="4" />
+    <rect
+      fill="var(--color-yellow)"
+      width="116"
+      height="16"
+      x="208"
+      y="116"
+      rx="4"
+    />
+    <rect
+      fill="var(--color-green)"
+      height="16"
+      width="62"
+      x="332"
+      y="115"
+      rx="4"
+    />
+    <rect
+      fill="var(--color-yellow)"
+      height="16"
+      width="81"
+      x="90"
+      y="88"
+      rx="4"
+    />
+    <rect
+      fill="var(--color-blue)"
+      height="16"
+      width="59"
+      x="45"
+      y="60"
+      rx="4"
+    />
+    <rect
+      fill="var(--color-orange)"
+      height="16"
+      width="29"
+      x="112"
+      y="60"
+      rx="4"
+    />
+  </svg>
+))

@@ -1,0 +1,20 @@
+.header {
+  position: relative;
+  overflow: clip;
+  background: var(--color-background-primary);
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-block: calc(var(--space-l) * 2) !important;
+}
+
+.buttons {
+  display: flex;
+  gap: var(--space-s);
+  align-items: center;
+  justify-content: center;
+  margin: var(--space-l) auto;
+}

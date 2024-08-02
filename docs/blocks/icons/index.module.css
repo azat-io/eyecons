@@ -1,0 +1,16 @@
+.icons {
+  padding-block: calc(var(--space-l) * 3);
+  background: var(--color-background-primary);
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: var(--space-l);
+}
+
+.illustration {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}

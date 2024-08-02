@@ -1,0 +1,15 @@
+.themes {
+  padding-block: calc(var(--space-l) * 3);
+  background: color-mix(
+    in oklch,
+    var(--color-background-primary) 85%,
+    var(--color-background-secondary)
+  );
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  gap: var(--space-l);
+  align-items: center;
+}

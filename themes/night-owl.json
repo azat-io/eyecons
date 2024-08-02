@@ -1,0 +1,78 @@
+{
+  "colors": [
+    "#ef5350",
+    "#f78c6c",
+    "#ffca28",
+    "#22da6e",
+    "#82aaff",
+    "#7e57c2",
+    "#80cbc4",
+    "#c792ea",
+    "#ecc48d",
+    "#c5e478",
+    "#d6deeb",
+    "#637777",
+    "#011627",
+    "#ffffff",
+    "#d3423e",
+    "#82b1ff",
+    "#a599e9",
+    "#234d70",
+    "#7fdbca",
+    "#ffcb8b",
+    "#b39554",
+    "#ff5874",
+    "#1d3b53",
+    "#c5e4fd",
+    "#575656",
+    "#b2ccd6",
+    "#021320"
+  ],
+  "overrides": {
+    "commitlint": {
+      "#4fb2dd": "#82aaff"
+    },
+    "css": {
+      "#2965f1": "#82aaff"
+    },
+    "docker": {
+      "#1c63ed": "#82aaff"
+    },
+    "html": {
+      "#f06529": "#f78c6c"
+    },
+    "jest": {
+      "#893f5b": "#f78c6c"
+    },
+    "less": {
+      "#1d355d": "#82aaff"
+    },
+    "markdown": {
+      "#083fa1": "#82aaff"
+    },
+    "nodejs": {
+      "#418b3d": "#22da6e"
+    },
+    "perl": {
+      "#0073a1": "#82aaff"
+    },
+    "php": {
+      "#4f5b93": "#82aaff"
+    },
+    "react": {
+      "#0a7ea3": "#82aaff"
+    },
+    "svgo": {
+      "#3f80c2": "#82aaff"
+    },
+    "typescript": {
+      "#007acc": "#82aaff"
+    },
+    "vitest": {
+      "#729b1b": "#22da6e"
+    },
+    "yarn": {
+      "#1c63ed": "#82aaff"
+    }
+  }
+}

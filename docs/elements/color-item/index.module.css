@@ -1,0 +1,7 @@
+.color {
+  inline-size: 1em;
+  block-size: 1em;
+  margin-block-end: var(--space-xs);
+  background: var(--color-item);
+  border-radius: 50%;
+}

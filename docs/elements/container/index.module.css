@@ -1,0 +1,7 @@
+.container {
+  inline-size: min(100%, 1280px);
+  block-size: 100%;
+  padding: var(--space-s) var(--space-m);
+  margin-inline: auto;
+  container-type: inline-size;
+}

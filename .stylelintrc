@@ -1,0 +1,4 @@
+{
+  "extends": "@azat-io/stylelint-config",
+  "ignoreFiles": ["coverage/**/*", "server/**/*", "dist/**/*"]
+}

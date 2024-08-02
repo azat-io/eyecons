@@ -1,0 +1,4 @@
+.illustration {
+  block-size: 260px;
+  padding-block-start: var(--space-l);
+}

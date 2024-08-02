@@ -1,0 +1,35 @@
+.demo {
+  padding-block: calc(var(--space-l) * 2);
+  background: color-mix(
+    in oklch,
+    var(--color-background-primary) 85%,
+    var(--color-background-secondary)
+  );
+}
+
+.demo-view {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-xl);
+
+  @container (inline-size >= 980px) {
+    grid-template-columns: 1fr 460px;
+  }
+}
+
+.description {
+  max-inline-size: 400px;
+  margin-inline: auto;
+}
+
+.selection {
+  display: grid;
+  grid-template-columns: minmax(auto, 400px) auto;
+  gap: var(--space-m);
+  align-items: end;
+}
+
+.code-example {
+  position: sticky;
+  inset-block-start: var(--space-m);
+}

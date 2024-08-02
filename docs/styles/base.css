@@ -1,0 +1,75 @@
+::selection {
+  color: var(--color-content-brand);
+  background: var(--color-background-brand);
+}
+
+* {
+  box-sizing: border-box;
+  transition:
+    color 100ms ease,
+    background 100ms ease;
+}
+
+html {
+  font: var(--font-m);
+  font-weight: 400;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-inline-size: 320px;
+  margin: 0;
+  color: var(--color-content-primary);
+  background: var(--color-background-primary);
+}
+
+button {
+  appearance: button;
+}
+
+button,
+input,
+select,
+optgroup,
+textarea {
+  font: inherit;
+}
+
+h1 {
+  margin-block: 0;
+  font-size: var(--font-size-2xl);
+}
+
+h2 {
+  margin-block: 0;
+  font-size: var(--font-size-xl);
+}
+
+h3 {
+  font-size: var(--font-size-l);
+}
+
+a,
+select:not(:disabled),
+button:not(:disabled) {
+  cursor: pointer;
+}
+
+pre,
+code {
+  margin-block: 0;
+  font-family: var(--font-family-mono);
+  font-size: 0.8rem;
+}
+
+pre {
+  padding: var(--space-m) var(--space-s);
+  overflow-inline: scroll;
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--border-radius);
+  outline: 0;
+
+  &:focus-visible {
+    box-shadow: 0 0 0 2px var(--color-background-brand);
+  }
+}

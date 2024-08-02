@@ -1,0 +1,18 @@
+:root {
+  color-scheme: dark;
+
+  --color-background-brand: oklch(65.62% 0.18 262.73);
+  --color-background-primary: oklch(29.25% 0.016 264.3);
+  --color-background-secondary: oklch(26.3% 0.013 258.37);
+  --color-background-tertiary: oklch(23.13% 0.012 270.86);
+  --color-content-brand: oklch(88.78% 0.009 264.52);
+  --color-content-primary: oklch(76.21% 0.02 262.99);
+  --color-border-primary: oklch(21.79% 0.01 268.21);
+  --color-border-secondary: oklch(21.79% 0.01 268.21);
+  --color-red: oklch(67.09% 0.145 17);
+  --color-orange: oklch(72.73% 0.095 63.82);
+  --color-yellow: oklch(82.49% 0.097 82.26);
+  --color-green: oklch(76.83% 0.11 133);
+  --color-blue: oklch(73.04% 0.121 245.3);
+  --color-purple: oklch(69.36% 0.164 318.21);
+}

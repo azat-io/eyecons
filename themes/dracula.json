@@ -1,0 +1,63 @@
+{
+  "colors": [
+    "#ff6e6e",
+    "#ffb86c",
+    "#f1fa8c",
+    "#50fa7b",
+    "#8be9fd",
+    "#ff79c6",
+    "#6272a4",
+    "#bd93f9",
+    "#d6acff",
+    "#ff5555",
+    "#a4ffff",
+    "#ffffa5",
+    "#ff92df",
+    "#69ff94",
+    "#282a36",
+    "#f8f8f2",
+    "#44475a",
+    "#21222c",
+    "#353747",
+    "#3e404a",
+    "#343746",
+    "#424450",
+    "#191a21",
+    "#ffffff"
+  ],
+  "overrides": {
+    "commitlint": {
+      "#4fb2dd": "#6272a4"
+    },
+    "editorconfig": {
+      "#6caaaa": "#6272a4"
+    },
+    "elixir": {
+      "#6d4b7b": "#bd93f9"
+    },
+    "graphql": {
+      "#f6009b": "#bd93f9"
+    },
+    "haskell": {
+      "#5e5085": "#bd93f9"
+    },
+    "html": {
+      "#f06529": "#ffb86c"
+    },
+    "jest": {
+      "#893f5b": "#ffb86c"
+    },
+    "less": {
+      "#1d355d": "#6272a4"
+    },
+    "markdown": {
+      "#083fa1": "#6272a4"
+    },
+    "nodejs": {
+      "#418b3d": "#50fa7b"
+    },
+    "storybook": {
+      "#ff4785": "#ff79c6"
+    }
+  }
+}

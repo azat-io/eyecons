@@ -1,0 +1,21 @@
+# Node.js
+node_modules/
+pnpm-debug.log*
+.nvmrc
+
+# Build
+lib-types/
+server/
+dist/
+lib/
+tmp/
+
+# Editor
+.vscode/
+.vim/
+
+# Test
+coverage/
+
+# Misc
+.DS_Store

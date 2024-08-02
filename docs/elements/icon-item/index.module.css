@@ -1,0 +1,6 @@
+.item svg {
+  display: flex;
+  inline-size: 56px;
+  block-size: 56px;
+  margin-inline: auto;
+}

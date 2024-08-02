@@ -1,0 +1,54 @@
+{
+  "colors": [
+    "#bf616a",
+    "#d08770",
+    "#ebcb8b",
+    "#a3be8c",
+    "#88c0d0",
+    "#81a1c1",
+    "#b48ead",
+    "#5e81ac",
+    "#8fbcbb",
+    "#d8dee9",
+    "#434c5e",
+    "#4c566a",
+    "#3b4252",
+    "#2e3440",
+    "#eceff4"
+  ],
+  "overrides": {
+    "elixir": {
+      "#6d4b7b": "#5d81ab"
+    },
+    "graphql": {
+      "#f6009b": "#b48ead"
+    },
+    "haskell": {
+      "#5e5085": "#5d81ab"
+    },
+    "jest": {
+      "#893f5b": "#d08770"
+    },
+    "less": {
+      "#1d355d": "#5d81ab"
+    },
+    "markdown": {
+      "#083fa1": "#5d81ab"
+    },
+    "php": {
+      "#4f5b93": "#5d81ab"
+    },
+    "sass": {
+      "#cf649a": "#b48ead"
+    },
+    "storybook": {
+      "#ff4785": "#b48ead"
+    },
+    "stylus": {
+      "#b3d108": "#a3be8c"
+    },
+    "webpack": {
+      "#75aecb": "#88c0d0"
+    }
+  }
+}
