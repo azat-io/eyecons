@@ -16,10 +16,7 @@
     "incremental": true,
     "isolatedModules": true,
     "outDir": "tmp",
-    "noEmit": true,
-    "paths": {
-      "~/*": ["./src/*"]
-    }
+    "noEmit": true
   },
   "exclude": ["node_modules"],
   "include": ["**/*.ts", "**/*.tsx"]

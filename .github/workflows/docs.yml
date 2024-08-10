@@ -1,0 +1,28 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Tools
+        uses: ./.github/actions/install-tools
+
+      - name: Install Dependencies
+        uses: ./.github/actions/install-dependencies
+
+      - name: Deploy to Netlify
+        run: pnpm run docs:deploy --prod
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        shell: bash

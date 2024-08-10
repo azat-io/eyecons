@@ -5,6 +5,7 @@ pnpm-debug.log*
 
 # Build
 lib-types/
+.netlify/
 server/
 dist/
 lib/

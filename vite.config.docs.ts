@@ -1,7 +1,6 @@
 import { qwikVite } from '@builder.io/qwik/optimizer'
 import { qwikCity } from '@builder.io/qwik-city/vite'
 import { browserslistToTargets } from 'lightningcss'
-import tsconfigPaths from 'vite-tsconfig-paths'
 import browserslist from 'browserslist'
 import { defineConfig } from 'vite'
 import path from 'node:path'
@@ -18,11 +17,9 @@ export default defineConfig({
       },
       ssr: {
         input: 'docs/entry.ssr.tsx',
-        outDir: 'docs/server',
       },
       srcDir: 'docs',
     }),
-    tsconfigPaths(),
   ],
   css: {
     lightningcss: {
@@ -42,6 +39,11 @@ export default defineConfig({
   server: {
     headers: {
       'Cache-Control': 'public, max-age=0',
+    },
+  },
+  resolve: {
+    alias: {
+      vscode: './docs/mocks/vscode.ts',
     },
   },
   build: {
