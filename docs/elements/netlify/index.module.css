@@ -1,0 +1,15 @@
+.link {
+  display: flex;
+  border-radius: var(--border-radius);
+  outline: 0;
+
+  &:focus-visible {
+    box-shadow: 0 0 0 2px var(--color-background-brand);
+  }
+}
+
+.netlify {
+  block-size: 50px;
+  overflow: hidden;
+  border-radius: var(--border-radius);
+}
