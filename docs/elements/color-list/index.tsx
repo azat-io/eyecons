@@ -2,8 +2,8 @@ import { useVisibleTask$, component$, useContext } from '@builder.io/qwik'
 import { isDev } from '@builder.io/qwik/build'
 
 import { updateBaseCSSVars, colorNames } from '../../utils/update-css-vars'
+import { ThemeTypeContext, ThemeContext } from '../theme'
 import { ColorItem } from '../color-item'
-import { ThemeContext } from '../theme'
 import styles from './index.module.css'
 
 let metaGlobData = import.meta.glob('../../../themes/*', {
@@ -13,8 +13,10 @@ let metaGlobData = import.meta.glob('../../../themes/*', {
 
 export let ColorList = component$(() => {
   let theme = useContext(ThemeContext)
+  let themeType = useContext(ThemeTypeContext)
 
   useVisibleTask$(async ({ track }) => {
+    track(() => themeType.value)
     track(() => theme.value)
 
     let dataPath = `../../../themes/${theme.value}.json`
@@ -23,7 +25,7 @@ export let ColorList = component$(() => {
       ? await metaGlobData[dataPath]()
       : metaGlobData[dataPath]
 
-    updateBaseCSSVars(dataValue.colors ?? [])
+    updateBaseCSSVars(dataValue.colors ?? [], themeType.value)
   })
 
   return (

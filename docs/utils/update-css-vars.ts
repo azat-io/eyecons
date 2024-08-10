@@ -1,3 +1,6 @@
+import { toOklch } from '../../extension/colorize/to-oklch'
+import { toRgb } from '../../extension/colorize/to-rgb'
+
 interface Args {
   colors: Record<string, undefined | string>
   themeType: 'light' | 'dark'
@@ -58,8 +61,18 @@ export let updateThemeCSSVars = ({ themeType, colors }: Args) => {
 
 export let colorNames = ['red', 'orange', 'yellow', 'green', 'blue', 'purple']
 
-export let updateBaseCSSVars = (colors: string[]) => {
+export let updateBaseCSSVars = (colors: string[], type: string) => {
   for (let [i, color] of colors.slice(0, colorNames.length).entries()) {
+    if (type === 'light') {
+      let oklch = toOklch(color)
+      oklch.l = oklch.l + 0.2
+      color = toRgb(oklch)
+    }
     set(colorNames[i], [color])
+  }
+  if (type === 'light') {
+    set('inverse', ['var(--color-content-primary)'])
+  } else {
+    set('inverse', ['transparent'])
   }
 }

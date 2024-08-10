@@ -8,7 +8,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-block: calc(var(--space-l) * 2) !important;
+  padding-block: calc(var(--space-l) * 1.25) calc(var(--space-l) * 1.75) !important;
 }
 
 .buttons {
