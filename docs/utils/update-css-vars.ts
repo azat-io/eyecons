@@ -73,6 +73,6 @@ export let updateBaseCSSVars = (colors: string[], type: string) => {
   if (type === 'light') {
     set('inverse', ['var(--color-content-primary)'])
   } else {
-    set('inverse', ['transparent'])
+    set('inverse', ['rgba(0, 0, 0, 0.15'])
   }
 }
