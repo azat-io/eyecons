@@ -6,6 +6,7 @@ import {
 import { isDev } from '@builder.io/qwik/build'
 import { component$ } from '@builder.io/qwik'
 
+import { Analytics } from './blocks/analytics'
 import { Head } from './blocks/head'
 import './styles/spaces.css'
 import './styles/colors.css'
@@ -18,6 +19,7 @@ export default component$(() => (
     <body lang="en-us">
       <RouterOutlet />
       {!isDev && <ServiceWorkerRegister />}
+      {!isDev && <Analytics />}
     </body>
   </QwikCityProvider>
 ))
