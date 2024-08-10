@@ -8,7 +8,7 @@
   width="160"
 />
 
-[![GitHub License](https://img.shields.io/badge/license-MIT-232428.svg?color=F1C40F&labelColor=4d3900)](https://github.com/azat-io/eslint-plugin-perfectionist/blob/main/license)
+[![GitHub License](https://img.shields.io/badge/license-MIT-232428.svg?color=b8bb25&labelColor=484900)](https://github.com/azat-io/eslint-plugin-perfectionist/blob/main/license)
 
 VS Code icon theme with adaptive icon colors that match the editor’s color theme.
 
