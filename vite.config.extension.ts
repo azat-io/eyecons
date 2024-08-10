@@ -1,5 +1,6 @@
 import type { Plugin } from 'vite'
 
+import { builtinModules } from 'node:module'
 import { defineConfig } from 'vite'
 import fs from 'node:fs/promises'
 import path from 'node:path'
@@ -113,11 +114,12 @@ export default defineConfig({
   ],
   build: {
     rollupOptions: {
+      external: (id: string) =>
+        id === 'vscode' || builtinModules.includes(id.replace('node:', '')),
       output: {
         preserveModules: true,
         exports: 'auto',
       },
-      external: (id: string) => !id.startsWith('.') && !path.isAbsolute(id),
     },
     lib: {
       entry: path.resolve(__dirname, 'extension', 'index.ts'),

@@ -1,9 +1,17 @@
 .github/
+.netlify/
 .vscode/
 coverage/
+data/
+dist/extension/index.json
+dist/extension/icons/
 docs/
 extension/
+icons/
 node_modules/
+scripts/
+test/
+themes/
 tmp/
 .browserslistrc
 .commitlintrc
@@ -16,7 +24,9 @@ tmp/
 changelog.config.json
 contributing.md
 eslint.config.js
+netlify.toml
 pnpm-lock.yaml
+svgo.config.js
 tsconfig.json
 vite.config.docs.ts
 vite.config.extension.ts

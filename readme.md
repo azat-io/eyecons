@@ -1,7 +1,7 @@
 # Eyecons
 
 <img
-  src="https://raw.githubusercontent.com/azat-io/eyecons/main/assets/logo.svg"
+  src="https://raw.githubusercontent.com/azat-io/eyecons/main/assets/logo.png"
   alt="Eyecons logo"
   align="right"
   height="160"
