@@ -12,6 +12,11 @@ module.exports = [
     },
   },
   {
-    ignores: ['**/coverage/**/*', '**/server/**/*', 'eslint.config.js'],
+    ignores: [
+      '**/coverage/**/*',
+      'eslint.config.js',
+      '**/server/**/*',
+      '.netlify/**/*',
+    ],
   },
 ]
