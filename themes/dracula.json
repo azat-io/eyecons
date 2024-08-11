@@ -60,6 +60,9 @@
     "nodejs": {
       "#418b3d": "#50fa7b"
     },
+    "python": {
+      "#ffe052": "#ffb86c"
+    },
     "storybook": {
       "#ff4785": "#ff79c6"
     }

@@ -335,6 +335,12 @@ export let fileIcons: FileIcon[] = [
     light: true,
   },
   {
+    extensions: ['py', 'pyc', 'pyd', 'pyo', 'pyw', 'pyz', 'pyi'],
+    name: 'Python',
+    id: 'python',
+    light: true,
+  },
+  {
     extensions: ['jsx', 'tsx'],
     name: 'React',
     id: 'react',

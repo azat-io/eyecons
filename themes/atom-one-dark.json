@@ -23,7 +23,7 @@
     "eslint": {
       "#8080f2": "#eeeeee",
       "#4b32c3": "#eeeeee",
-      "white": "#c678dd"
+      "#fff": "#c678dd"
     },
     "graphql": {
       "#f6009b": "#c678dd"
