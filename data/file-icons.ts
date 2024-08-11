@@ -366,6 +366,11 @@ export let fileIcons: FileIcon[] = [
     id: 'sass',
   },
   {
+    extensions: ['scala', 'sc'],
+    name: 'Scala',
+    id: 'scala',
+  },
+  {
     extensions: [
       'stories.js',
       'stories.jsx',
