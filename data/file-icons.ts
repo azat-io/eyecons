@@ -46,6 +46,11 @@ export let fileIcons: FileIcon[] = [
     id: 'cpp',
   },
   {
+    extensions: ['cs', 'csx'],
+    name: 'C#',
+    id: 'cs',
+  },
+  {
     extensions: ['coffee'],
     name: 'CoffeeScript',
     id: 'coffeescript',

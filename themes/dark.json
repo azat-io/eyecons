@@ -33,6 +33,9 @@
     "#d4d4d4"
   ],
   "overrides": {
+    "cs": {
+      "#953cad": "#c586c0"
+    },
     "editorconfig": {
       "#6caaaa": "#569cd6"
     },
