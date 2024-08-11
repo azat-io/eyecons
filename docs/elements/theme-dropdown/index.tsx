@@ -60,6 +60,8 @@ export let ThemeDropdown = component$<ThemeDropdownProps>(({ close }) => {
             setTheme$(id)
           }}
           class={styles['dropdown-item']}
+          data-umami-event="Select Theme"
+          data-umami-event-name={name}
           key={id}
         >
           {name}

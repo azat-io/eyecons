@@ -9,11 +9,13 @@ export const Head = component$(() => {
     <head>
       <meta charset="utf-8" />
 
-      <title>{`${head.title} | Advanced Icon Theme`}</title>
+      <title>{`${head.title} | Advanced VS Code Icon Theme`}</title>
 
       <link href={loc.url.href} rel="canonical" />
       <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+      <link rel="shortcut icon" href="/favicon.ico" sizes="32x32" />
       <link type="image/svg+xml" href="/favicon.svg" rel="icon" />
+      <link href="/apple-touch-icon.png" rel="apple-touch-icon" />
       <link href={`${import.meta.env.BASE_URL}manifest.json`} rel="manifest" />
 
       {head.meta.map(m => (

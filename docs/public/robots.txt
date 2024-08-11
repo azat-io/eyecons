@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Host: eyecons.dev
+Sitemap: https://eyecons.dev/sitemap.xml

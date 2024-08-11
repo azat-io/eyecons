@@ -19,6 +19,7 @@ export let Header = component$(() => (
       <div class={styles.buttons}>
         <Button
           href="https://marketplace.visualstudio.com/items?itemName=azat-io.eyecons"
+          data-umami-event="Open Marketplace"
           variant="primary"
           target="_blank"
         >
@@ -26,6 +27,7 @@ export let Header = component$(() => (
         </Button>
         <Button
           href="https://github.com/azat-io/eyecons"
+          data-umami-event="Open GitHub"
           variant="secondary"
           target="_blank"
         >

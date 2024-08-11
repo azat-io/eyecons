@@ -1,9 +1,23 @@
 {
-  "$schema": "https://json.schemastore.org/web-manifest-combined.json",
-  "name": "qwik-project-name",
-  "short_name": "Welcome to Qwik",
-  "start_url": ".",
+  "name": "Eyecons | Advanced VS Code Icon Theme",
+  "short_name": "Eyecons",
+  "description": "Advanced VS Code icon theme with adaptive icon colors that match the editor’s color theme",
   "display": "standalone",
-  "background_color": "#fff",
-  "description": "A Qwik project app."
+  "start_url": "/",
+  "theme_color": "#282c34",
+  "background_color": "#282c34",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ]
 }
