@@ -15,6 +15,9 @@
     "#ffffff"
   ],
   "overrides": {
+    "cpp": {
+      "#00599c": "#6fc1ff"
+    },
     "css": {
       "#2965f1": "#6fc1ff"
     },

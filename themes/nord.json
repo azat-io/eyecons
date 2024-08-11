@@ -17,6 +17,9 @@
     "#eceff4"
   ],
   "overrides": {
+    "cpp": {
+      "#00599c": "#5d81ab"
+    },
     "elixir": {
       "#6d4b7b": "#5d81ab"
     },

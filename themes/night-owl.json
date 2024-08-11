@@ -29,6 +29,9 @@
     "#021320"
   ],
   "overrides": {
+    "cpp": {
+      "#00599c": "#82aaff"
+    },
     "commitlint": {
       "#4fb2dd": "#82aaff"
     },

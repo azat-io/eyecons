@@ -11,6 +11,9 @@
     "#eeeeee"
   ],
   "overrides": {
+    "cpp": {
+      "#00599c": "#61afef"
+    },
     "css": {
       "#2965f1": "#61afef"
     },
