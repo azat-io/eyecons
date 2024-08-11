@@ -41,6 +41,11 @@ export let fileIcons: FileIcon[] = [
     id: 'browserslist',
   },
   {
+    extensions: ['c'],
+    name: 'C',
+    id: 'c',
+  },
+  {
     extensions: ['cc', 'cpp', 'cxx', 'c++', 'cp', 'mm', 'mii', 'ii'],
     name: 'C++',
     id: 'cpp',

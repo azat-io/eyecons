@@ -38,6 +38,9 @@
     "#e6edf3"
   ],
   "overrides": {
+    "c": {
+      "#394aab": "#1f6eeb"
+    },
     "cs": {
       "#953cad": "#bc8cff"
     },
