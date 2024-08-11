@@ -3,6 +3,7 @@ import type { BaseIcon } from '../../data/base-icons'
 
 import { fileIcons } from '../../data/file-icons'
 import { baseIcons } from '../../data/base-icons'
+import { getThemeValue } from './get-theme-value'
 import { makeIcon } from './make-icon'
 
 interface IconDefinitions {
@@ -68,12 +69,16 @@ export let generateIcons = async (config: Config): Promise<IconDefinitions> => {
       [],
     )
 
+  let themeValue = await getThemeValue()
+
   await Promise.all([
     ...formatIconsValues(baseIcons, 'base').map(
-      async value => await makeIcon(value, config, updateIconDefinitions),
+      async value =>
+        await makeIcon(value, config, themeValue, updateIconDefinitions),
     ),
     ...formatIconsValues(fileIcons, 'files').map(
-      async value => await makeIcon(value, config, updateIconDefinitions),
+      async value =>
+        await makeIcon(value, config, themeValue, updateIconDefinitions),
     ),
   ])
 

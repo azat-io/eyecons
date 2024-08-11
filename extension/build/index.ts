@@ -1,3 +1,4 @@
+import { setTimeout } from 'node:timers/promises'
 import { workspace } from 'vscode'
 import fs from 'node:fs/promises'
 import path from 'node:path'
@@ -39,6 +40,7 @@ export let build = async (): Promise<void> => {
     file: 'file',
   }
 
+  await setTimeout(1000)
   await fs.rm(iconsDir, { recursive: true, force: true })
   await fs.mkdir(iconsDir, { recursive: true })
   await fs.cp(tmpDir, iconsDir, { recursive: true })
