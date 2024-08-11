@@ -20,6 +20,9 @@
     "elixir": {
       "#6d4b7b": "#5d81ab"
     },
+    "eslint": {
+      "#4b32c3": "#5e81ac"
+    },
     "graphql": {
       "#f6009b": "#b48ead"
     },

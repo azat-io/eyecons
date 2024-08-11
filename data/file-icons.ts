@@ -98,6 +98,27 @@ export let fileIcons: FileIcon[] = [
   },
   {
     files: [
+      '.eslintrc.js',
+      '.eslintrc.cjs',
+      '.eslintrc.yaml',
+      '.eslintrc.json',
+      '.eslintrc-md.js',
+      '.eslintrc-jsdoc.js',
+      '.eslintrc',
+      '.eslintignore',
+      '.eslintcache',
+      '.eslint.config.js',
+      'eslint.config.js',
+      'eslint.config.cjs',
+      'eslint.config.mjs',
+      'eslint.config.ts',
+    ],
+    name: 'ESLint',
+    id: 'eslint',
+    light: true,
+  },
+  {
+    files: [
       '.git',
       '.gitignore',
       '.gitmessage',
