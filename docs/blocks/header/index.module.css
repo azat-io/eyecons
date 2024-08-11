@@ -13,8 +13,14 @@
 
 .buttons {
   display: flex;
-  gap: var(--space-s);
+  flex-direction: column;
+  gap: var(--space-l);
   align-items: center;
   justify-content: center;
   margin: var(--space-l) auto;
+
+  @container (inline-size >= 400px) {
+    flex-direction: row;
+    gap: var(--space-s);
+  }
 }

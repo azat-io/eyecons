@@ -20,14 +20,15 @@ export let ThemeSelect = component$(() => {
     <div class={styles.wrapper} ref={ref}>
       <Label for="theme">Select Theme:</Label>
       <div class={styles['input-wrapper']}>
-        <input
-          onFocus$={() => {
+        <button
+          onClick$={() => {
             dropdownVisible.value = true
           }}
-          value={getThemeNameById(theme.value)}
           class={styles.input}
           name="theme"
-        />
+        >
+          {getThemeNameById(theme.value)}
+        </button>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class={styles.icon}

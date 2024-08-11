@@ -1,16 +1,31 @@
 .icons {
   padding-block: calc(var(--space-l) * 3);
   background: var(--color-background-primary);
-}
-
-.container {
-  display: grid;
-  grid-template-columns: 5fr 7fr;
-  gap: var(--space-l);
+  container-type: inline-size;
 }
 
 .illustration {
   display: flex;
   align-items: center;
-  justify-content: end;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-xl);
+
+  .illustration {
+    justify-content: start;
+    margin-block-start: var(--space-l);
+  }
+
+  @container (inline-size >= 768px) {
+    grid-template-columns: 5fr 7fr;
+    gap: var(--space-l);
+
+    .illustration {
+      justify-content: end;
+      margin-block-start: 0;
+    }
+  }
 }

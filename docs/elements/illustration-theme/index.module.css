@@ -1,4 +1,5 @@
 .illustration {
+  max-inline-size: 100%;
   block-size: 260px;
   padding-block-start: var(--space-l);
 }

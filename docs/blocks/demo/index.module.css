@@ -11,6 +11,7 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-xl);
+  container-type: inline-size;
 
   @container (inline-size >= 980px) {
     grid-template-columns: 1fr 460px;
@@ -24,9 +25,14 @@
 
 .selection {
   display: grid;
-  grid-template-columns: minmax(auto, 400px) auto;
-  gap: var(--space-m);
+  grid-template-columns: 1fr;
+  gap: var(--space-xl);
   align-items: end;
+
+  @container (inline-size >= 560px) {
+    grid-template-columns: minmax(auto, 400px) auto;
+    gap: var(--space-m);
+  }
 }
 
 .code-example {

@@ -9,7 +9,7 @@ import styles from './index.module.css'
 export let Themes = component$(() => (
   <section class={styles.themes}>
     <Container class={styles.container}>
-      <div>
+      <div class={styles.illustration}>
         <IllustrationTheme />
       </div>
       <div>

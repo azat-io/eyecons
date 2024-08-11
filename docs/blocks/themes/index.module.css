@@ -5,11 +5,27 @@
     var(--color-background-primary) 85%,
     var(--color-background-secondary)
   );
+  container-type: inline-size;
 }
 
 .container {
   display: grid;
-  grid-template-columns: 7fr 5fr;
-  gap: var(--space-l);
+  grid-template-columns: 1fr;
+  gap: var(--space-xl);
   align-items: center;
+
+  .illustration {
+    order: 1;
+    margin-block-start: var(--space-l);
+  }
+
+  @container (inline-size >= 768px) {
+    grid-template-columns: 7fr 5fr;
+    gap: var(--space-l);
+
+    .illustration {
+      order: 0;
+      margin-block-start: 0;
+    }
+  }
 }

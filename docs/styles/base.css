@@ -17,7 +17,7 @@ html {
 }
 
 body {
-  min-inline-size: 320px;
+  min-inline-size: 300px;
   margin: 0;
   color: var(--color-content-primary);
   background: var(--color-background-primary);
@@ -63,7 +63,9 @@ code {
 }
 
 pre {
+  max-inline-size: calc(100vi - var(--space-s) * 2);
   padding: var(--space-m) var(--space-s);
+  overflow: scroll;
   overflow-inline: scroll;
   border: 1px solid var(--color-border-primary);
   border-radius: var(--border-radius);
