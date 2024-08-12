@@ -73,6 +73,10 @@ export let themes = [
     id: 'synthwave-84',
   },
   {
+    name: 'Tokyo Night',
+    id: 'tokyo-night',
+  },
+  {
     aliases: ['Vitesse Black'],
     name: 'Vitesse Dark',
     id: 'vitesse-dark',
