@@ -706,6 +706,11 @@ export let fileIcons: FileIcon[] = [
     light: true,
   },
   {
+    extensions: ['yaml', 'yml'],
+    name: 'Yaml',
+    id: 'yaml',
+  },
+  {
     files: [
       '.yarnrc',
       'yarn.lock',
