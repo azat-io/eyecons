@@ -22,7 +22,7 @@ export let ThemeSourceContext = createContextId<Signal<Object | null>>(
 )
 
 export let Theme = component$(() => {
-  let theme = useSignal('atom-one-dark')
+  let theme = useSignal('nord')
   let themeType = useSignal<'light' | 'dark'>('dark')
   let themeSource = useSignal<Record<'colors', Record<string, string>> | null>(
     null,
