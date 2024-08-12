@@ -46,7 +46,7 @@ export let build = async (): Promise<void> => {
   await fs.cp(tmpDir, iconsDir, { recursive: true })
   await fs.rm(tmpDir, { recursive: true })
 
-  console.log('Writing index.json', JSON.stringify(schema, null, 2))
+  console.log('Writing index.json', path.join(destDir, 'index.json'))
 
   await fs.writeFile(
     path.join(destDir, 'index.json'),
