@@ -20,6 +20,11 @@ export let themes = [
     id: 'ayu-light',
   },
   {
+    aliases: ['Catppuccin Frappé', 'Catppuccin Macchiato'],
+    name: 'Catppuccin Mocha',
+    id: 'catppuccin-mocha',
+  },
+  {
     name: 'Cobalt 2',
     id: 'cobalt-2',
   },

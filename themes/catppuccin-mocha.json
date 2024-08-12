@@ -1,0 +1,59 @@
+{
+  "colors": [
+    "#f38ba8",
+    "#fab387",
+    "#f9e2af",
+    "#a6e3a1",
+    "#89b4fa",
+    "#cba6f7",
+    "#b4befe",
+    "#89dceb",
+    "#94e2d5",
+    "#74c7ec",
+    "#f5c2e7",
+    "#eba0ac",
+    "#cdd6f4",
+    "#ffffff",
+    "#bac2de",
+    "#11111b",
+    "#1d1d2c"
+  ],
+  "overrides": {
+    "c": {
+      "#394aab": "#89b4fa"
+    },
+    "cs": {
+      "#953cad": "#cba6f7"
+    },
+    "cpp": {
+      "#00599c": "#89b4fa"
+    },
+    "elixir": {
+      "#6d4b7b": "#89b4fa"
+    },
+    "eslint": {
+      "#4b32c3": "#89b4fa"
+    },
+    "haskell": {
+      "#5e5085": "#cba6f7"
+    },
+    "html": {
+      "#f06529": "#fab387"
+    },
+    "jest": {
+      "#893f5b": "#fab387"
+    },
+    "less": {
+      "#1d355d": "#89b4fa"
+    },
+    "markdown": {
+      "#083fa1": "#89b4fa"
+    },
+    "php": {
+      "#4f5b93": "#89b4fa"
+    },
+    "vitest": {
+      "#fcc72b": "#f9e2af"
+    }
+  }
+}
