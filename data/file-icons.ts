@@ -413,6 +413,11 @@ export let fileIcons: FileIcon[] = [
     id: 'react',
   },
   {
+    files: ['readme.md', 'readme.rst', 'readme.txt', 'readme'],
+    name: 'Readme',
+    id: 'readme',
+  },
+  {
     extensions: ['sass', 'scss'],
     name: 'Sass',
     id: 'sass',
