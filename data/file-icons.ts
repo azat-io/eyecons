@@ -479,6 +479,12 @@ export let fileIcons: FileIcon[] = [
     id: 'vitest',
   },
   {
+    extensions: ['vue'],
+    name: 'Vue',
+    light: true,
+    id: 'vue',
+  },
+  {
     files: [
       'webpack.js',
       'webpack.cjs',
