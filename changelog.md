@@ -1,6 +1,27 @@
 # Changelog
 
 
+## v0.1.2
+
+[compare changes](https://github.com/azat-io/eyecons/compare/v0.1.1...v0.1.2)
+
+### 🚀 Features
+
+- Rebuild icons on extension update ([9d60627](https://github.com/azat-io/eyecons/commit/9d60627))
+- Support tokyo night theme ([cac9a1a](https://github.com/azat-io/eyecons/commit/cac9a1a))
+- Add vue icon ([efbce13](https://github.com/azat-io/eyecons/commit/efbce13))
+- Add license icon ([bf07ffc](https://github.com/azat-io/eyecons/commit/bf07ffc))
+- Add readme icon ([1b1e432](https://github.com/azat-io/eyecons/commit/1b1e432))
+- Add yaml icon ([ed37bca](https://github.com/azat-io/eyecons/commit/ed37bca))
+
+### 🐞 Bug Fixes
+
+- Fix appearance of json icon ([703b5da](https://github.com/azat-io/eyecons/commit/703b5da))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](http://github.com/azat-io))
+
 ## v0.1.1
 
 [compare changes](https://github.com/azat-io/eyecons/compare/v0.1.0...v0.1.1)
