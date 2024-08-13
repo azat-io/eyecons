@@ -27,11 +27,17 @@ export let generateThemeData = () => {
     if (icon.extensions) {
       icon.extensions.forEach(extension => {
         accumulator.dark.fileExtensions[extension] = icon.id
+        if (icon.light) {
+          accumulator.light.fileExtensions[extension] = `${icon.id}-light`
+        }
       })
     }
     if (icon.files) {
       icon.files.forEach(file => {
         accumulator.dark.fileNames[file] = icon.id
+        if (icon.light) {
+          accumulator.light.fileNames[file] = `${icon.id}-light`
+        }
       })
     }
 

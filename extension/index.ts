@@ -6,8 +6,14 @@ import { validate } from './build/validate'
 import { console } from './utils/console'
 import { build } from './build'
 
+let buildInProgress = false
+
 let buildEyecons = async () => {
   try {
+    if (buildInProgress) {
+      return
+    }
+    buildInProgress = true
     let validateValue = await validate()
     console.log('Validate:', validateValue)
 
@@ -16,6 +22,8 @@ let buildEyecons = async () => {
     }
   } catch (error) {
     console.log(error)
+  } finally {
+    buildInProgress = false
   }
 }
 

@@ -11,6 +11,7 @@ import { colorize } from '../colorize'
 
 interface IconOptions {
   type: 'folders' | 'files' | 'base'
+  theme?: 'light' | 'dark'
   id: string
 }
 
