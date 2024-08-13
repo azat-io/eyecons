@@ -1,6 +1,12 @@
 # Changelog
 
 
+## v1.0.0
+
+[compare changes](https://github.com/azat-io/eyecons/compare/v0.1.2...v1.0.0)
+
+### 🔥 Stable Release
+
 ## v0.1.2
 
 [compare changes](https://github.com/azat-io/eyecons/compare/v0.1.1...v0.1.2)
