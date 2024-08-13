@@ -1,4 +1,4 @@
-import { retryAsync } from 'ts-retry'
+import { waitUntilAsync, retryAsync } from 'ts-retry'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 
@@ -34,14 +34,16 @@ export let makeIcon = async (
   await retryAsync(
     async () => {
       console.log(`Making icon: ${icon.id}`)
-      try {
-        await fs.writeFile(
-          path.join(config.tmpDir, fileName),
-          await colorize(icon.id, theme, source),
-        )
-      } catch (error) {
-        console.log(`Error making icon: ${icon.id}`, error)
-      }
+
+      await waitUntilAsync(async () => {
+        try {
+          let colorized = await colorize(icon.id, theme, source)
+          await fs.writeFile(path.join(config.tmpDir, fileName), colorized)
+        } catch (error) {
+          console.log(`Error making icon: ${icon.id}`, error)
+          throw error
+        }
+      }, 3000)
     },
     {
       delay: 100,
