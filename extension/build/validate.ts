@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 
+import { getHideExplorerArrowValue } from './get-hide-explorer-arrow-value'
 import { getFolderValue } from './get-folder-value'
 import { getThemeValue } from './get-theme-value'
 import { baseIcons } from '../../data/base-icons'
@@ -14,15 +15,19 @@ export let validate = async (): Promise<boolean> => {
     let schema = path.join(destDir, 'index.json')
     console.log('Validating schema', schema)
 
-    let schemaVale = await fs.readFile(schema, 'utf-8')
-    if (!schemaVale) {
+    let schemaValue = await fs.readFile(schema, 'utf-8')
+    if (!schemaValue) {
       return false
     }
 
     let theme = await getThemeValue()
     let folderValue = getFolderValue()
-    let schemaJson = JSON.parse(schemaVale)
+    let schemaJson = JSON.parse(schemaValue)
     let fileNames: string[] = []
+
+    if (schemaJson.hideExplorerArrows !== getHideExplorerArrowValue()) {
+      return false
+    }
 
     for (let { id } of [baseIcons, fileIcons].flat()) {
       let iconHash = generateHash(id, theme, folderValue)

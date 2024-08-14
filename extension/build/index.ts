@@ -1,9 +1,9 @@
 import { setTimeout } from 'node:timers/promises'
-import { workspace } from 'vscode'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import os from 'node:os'
 
+import { getHideExplorerArrowValue } from './get-hide-explorer-arrow-value'
 import { generateThemeData } from './generate-theme-data'
 import { generateIcons } from './generate-icons'
 import { setupLoading } from './setup-loading'
@@ -20,9 +20,7 @@ export let build = async (): Promise<void> => {
   let iconDefinitions = await generateIcons({ tmpDir })
   let themeData = generateThemeData()
 
-  let hidesExplorerArrows =
-    workspace.getConfiguration('eyecons').get<boolean>('hideExplorerArrows') ??
-    true
+  let hidesExplorerArrows = getHideExplorerArrowValue()
 
   let schema = {
     folderNamesExpanded: {},
