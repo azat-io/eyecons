@@ -498,6 +498,18 @@ export let fileIcons: FileIcon[] = [
     id: 'swift',
   },
   {
+    files: [
+      'tailwind.js',
+      'tailwind.ts',
+      'tailwind.config.js',
+      'tailwind.config.cjs',
+      'tailwind.config.ts',
+      'tailwind.config.cts',
+    ],
+    name: 'Tailwind',
+    id: 'tailwind',
+  },
+  {
     extensions: ['ts', 'cts', 'mts'],
     name: 'TypeScript',
     id: 'typescript',

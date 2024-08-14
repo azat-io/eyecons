@@ -58,6 +58,9 @@
     "stylus": {
       "#b3d108": "#1e754f"
     },
+    "tailwind": {
+      "#15becb": "#2e808f"
+    },
     "vite": {
       "#7293ff": "#6f42c1",
       "#ffdd35": "#bda437"
