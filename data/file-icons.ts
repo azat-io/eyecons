@@ -158,6 +158,11 @@ export let fileIcons: FileIcon[] = [
     id: 'git',
   },
   {
+    extensions: ['go'],
+    name: 'Go',
+    id: 'go',
+  },
+  {
     extensions: ['graphql', 'gql'],
     name: 'GraphQL',
     id: 'graphql',
