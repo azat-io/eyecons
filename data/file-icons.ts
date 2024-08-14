@@ -350,6 +350,12 @@ export let fileIcons: FileIcon[] = [
     id: 'mdx',
   },
   {
+    extensions: ['nginx', 'nginxconfig'],
+    files: ['nginx.conf'],
+    name: 'Nginx',
+    id: 'nginx',
+  },
+  {
     files: [
       'package.json',
       'package-lock.json',
