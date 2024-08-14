@@ -1,6 +1,24 @@
 # Changelog
 
 
+## v1.1.0
+
+[compare changes](https://github.com/azat-io/eyecons/compare/v1.0.0...v1.1.0)
+
+### 🚀 Features
+
+- Add go icon ([a3769ad](https://github.com/azat-io/eyecons/commit/a3769ad))
+- Add nginx icon ([d98935a](https://github.com/azat-io/eyecons/commit/d98935a))
+- Add tailwind icon ([176c999](https://github.com/azat-io/eyecons/commit/176c999))
+
+### 🐞 Bug Fixes
+
+- Reload icons on hide explorer arrow value change ([8f1fac4](https://github.com/azat-io/eyecons/commit/8f1fac4))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](http://github.com/azat-io))
+
 ## v1.0.0
 
 [compare changes](https://github.com/azat-io/eyecons/compare/v0.1.2...v1.0.0)
