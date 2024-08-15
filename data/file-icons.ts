@@ -546,6 +546,19 @@ export let fileIcons: FileIcon[] = [
     id: 'vitest',
   },
   {
+    extensions: [
+      'vscodeignore',
+      'vsixmanifest',
+      'vsix',
+      'code-workplace',
+      'code-workspace',
+      'code-profile',
+      'code-snippets',
+    ],
+    name: 'VS Code',
+    id: 'vscode',
+  },
+  {
     extensions: ['vue'],
     name: 'Vue',
     light: true,

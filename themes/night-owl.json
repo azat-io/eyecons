@@ -83,6 +83,9 @@
     "vitest": {
       "#729b1b": "#22da6e"
     },
+    "vscode": {
+      "#007acc": "#82aaff"
+    },
     "yarn": {
       "#1c63ed": "#82aaff"
     }
