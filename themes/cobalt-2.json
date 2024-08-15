@@ -57,6 +57,9 @@
     "markdown": {
       "#083fa1": "#0088ff"
     },
+    "netlify": {
+      "#20c6b7": "#3192aa"
+    },
     "python": {
       "#ffe052": "#ffc600"
     }

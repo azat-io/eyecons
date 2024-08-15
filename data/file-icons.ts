@@ -350,6 +350,11 @@ export let fileIcons: FileIcon[] = [
     id: 'mdx',
   },
   {
+    files: ['netlify.json', 'netlify.yml', 'netlify.yaml', 'netlify.toml'],
+    name: 'Netlify',
+    id: 'netlify',
+  },
+  {
     extensions: ['nginx', 'nginxconfig'],
     files: ['nginx.conf'],
     name: 'Nginx',
