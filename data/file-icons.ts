@@ -520,6 +520,12 @@ export let fileIcons: FileIcon[] = [
     id: 'typescript',
   },
   {
+    files: ['vercel.json', '.vercelignore', 'now.json', '.nowignore'],
+    name: 'Vercel',
+    id: 'vercel',
+    light: true,
+  },
+  {
     files: [
       'vite.config.js',
       'vite.config.mjs',
