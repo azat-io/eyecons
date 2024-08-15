@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v1.2.0
+
+[compare changes](https://github.com/azat-io/eyecons/compare/v1.1.0...v1.2.0)
+
+### 🚀 Features
+
+- Add netlify icon ([c726b05](https://github.com/azat-io/eyecons/commit/c726b05))
+- Add vscode icon ([bf6f9b2](https://github.com/azat-io/eyecons/commit/bf6f9b2))
+- Add xml icon ([b8696ef](https://github.com/azat-io/eyecons/commit/b8696ef))
+- Add vercel icon ([a7555fd](https://github.com/azat-io/eyecons/commit/a7555fd))
+- Add astro icon ([739d334](https://github.com/azat-io/eyecons/commit/739d334))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](http://github.com/azat-io))
+
 ## v1.1.0
 
 [compare changes](https://github.com/azat-io/eyecons/compare/v1.0.0...v1.1.0)
