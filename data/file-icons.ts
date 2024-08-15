@@ -14,6 +14,12 @@ export let fileIcons: FileIcon[] = [
     light: true,
   },
   {
+    extensions: ['astro'],
+    name: 'Astro',
+    id: 'astro',
+    light: true,
+  },
+  {
     files: [
       '.babelrc',
       '.babelrc.cjs',

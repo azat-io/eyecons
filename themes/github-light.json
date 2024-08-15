@@ -22,6 +22,9 @@
     "#bc4c00"
   ],
   "overrides": {
+    "astro": {
+      "#fe5d01": "#953800"
+    },
     "commitlint": {
       "#4fb2dd": "#0550ae"
     },
