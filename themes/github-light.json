@@ -25,6 +25,9 @@
     "astro": {
       "#fe5d01": "#953800"
     },
+    "audio": {
+      "#fa465b": "#cf222e"
+    },
     "commitlint": {
       "#4fb2dd": "#0550ae"
     },

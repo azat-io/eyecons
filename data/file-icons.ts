@@ -20,6 +20,11 @@ export let fileIcons: FileIcon[] = [
     light: true,
   },
   {
+    extensions: ['mp3', 'flac', 'm4a', 'wma', 'aiff', 'wav'],
+    name: 'Audio',
+    id: 'audio',
+  },
+  {
     files: [
       '.babelrc',
       '.babelrc.cjs',

@@ -38,6 +38,9 @@
     "#f2e5bc"
   ],
   "overrides": {
+    "audio": {
+      "#fa465b": "#cc241d"
+    },
     "babel": {
       "#f5da55": "#d79921"
     },
