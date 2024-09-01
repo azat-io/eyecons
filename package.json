@@ -195,7 +195,7 @@
     "netlify-cli": "^17.34.3",
     "prettier": "^3.3.3",
     "puppeteer": "^23.2.0",
-    "shiki": "^1.14.1",
+    "shiki": "^1.15.2",
     "simple-git-hooks": "^2.11.1",
     "stylelint": "^16.8.2",
     "stylelint-config-recess-order": "^5.1.0",
