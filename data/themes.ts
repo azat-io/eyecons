@@ -65,6 +65,10 @@ export let themes = [
     id: 'nord',
   },
   {
+    name: 'One Monokai',
+    id: 'one-monokai',
+  },
+  {
     name: 'Panda',
     id: 'panda',
   },
