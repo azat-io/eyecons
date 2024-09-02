@@ -141,10 +141,10 @@
             "purple"
           ]
         },
-        "eyecons.hideExplorerArrows": {
+        "eyecons.hidesExplorerArrows": {
           "type": "boolean",
           "default": true,
-          "description": "%configuration.hideExplorerArrows%"
+          "description": "%configuration.hidesExplorerArrows%"
         }
       }
     },

@@ -7,7 +7,7 @@
   "configuration.folderColor.green": "Green",
   "configuration.folderColor.blue": "Blue",
   "configuration.folderColor.purple": "Purple",
-  "configuration.hideExplorerArrows": "Hide explorer arrows",
+  "configuration.hidesExplorerArrows": "Hide explorer arrows",
   "configuration.theme": "Select color theme",
   "configuration.theme.inherit": "Use the color theme of the current VS Code theme"
 }

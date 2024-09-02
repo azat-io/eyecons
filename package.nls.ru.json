@@ -7,7 +7,7 @@
   "configuration.folderColor.green": "Зелёный",
   "configuration.folderColor.blue": "Синий",
   "configuration.folderColor.purple": "Фиолетовый",
-  "configuration.hideExplorerArrows": "Скрыть стрелки проводника",
+  "configuration.hidesExplorerArrows": "Скрыть стрелки проводника",
   "configuration.theme": "Выберите цветовую тему",
   "configuration.theme.inherit": "Использовать цветовую тему текущей темы VS Code"
 }

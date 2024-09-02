@@ -25,7 +25,7 @@ export let validate = async (): Promise<boolean> => {
     let schemaJson = JSON.parse(schemaValue)
     let fileNames: string[] = []
 
-    if (schemaJson.hideExplorerArrows !== getHideExplorerArrowValue()) {
+    if (schemaJson.hidesExplorerArrows !== getHideExplorerArrowValue()) {
       return false
     }
 
