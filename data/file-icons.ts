@@ -361,6 +361,22 @@ export let fileIcons: FileIcon[] = [
     id: 'mdx',
   },
   {
+    files: [
+      '.nano-staged.js',
+      'nano-staged.js',
+      '.nano-staged.cjs',
+      'nano-staged.cjs',
+      '.nano-staged.mjs',
+      'nano-staged.mjs',
+      '.nano-staged.json',
+      'nano-staged.json',
+      '.nanostagedrc',
+    ],
+    name: 'Nano Staged',
+    id: 'nano-staged',
+    light: true,
+  },
+  {
     files: ['netlify.json', 'netlify.yml', 'netlify.yaml', 'netlify.toml'],
     name: 'Netlify',
     id: 'netlify',
