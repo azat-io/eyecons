@@ -1,6 +1,25 @@
 # Changelog
 
 
+## v1.3.0
+
+[compare changes](https://github.com/azat-io/eyecons/compare/v1.2.0...v1.3.0)
+
+### 🚀 Features
+
+- Support one monokai theme ([9a3f73e](https://github.com/azat-io/eyecons/commit/9a3f73e))
+- Add audio icon ([ec5b874](https://github.com/azat-io/eyecons/commit/ec5b874))
+- Add nano staged icon ([2cce274](https://github.com/azat-io/eyecons/commit/2cce274))
+
+### 🐞 Bug Fixes
+
+- Downgrade ts-retry ([94f4570](https://github.com/azat-io/eyecons/commit/94f4570))
+- Fix hide expolorer arrow validation ([8f744f6](https://github.com/azat-io/eyecons/commit/8f744f6))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](http://github.com/azat-io))
+
 ## v1.2.0
 
 [compare changes](https://github.com/azat-io/eyecons/compare/v1.1.0...v1.2.0)
