@@ -144,6 +144,11 @@ export let fileIcons: FileIcon[] = [
     light: true,
   },
   {
+    extensions: ['fs', 'fsx', 'fsi', 'fsproj'],
+    name: 'F#',
+    id: 'fs',
+  },
+  {
     files: [
       '.git',
       '.gitignore',

@@ -37,6 +37,9 @@
     "editorconfig": {
       "#6caaaa": "#1e754f"
     },
+    "fs": {
+      "#2fb8fb": "#296aa3"
+    },
     "git": {
       "#e84d32": "#ab5959"
     },
