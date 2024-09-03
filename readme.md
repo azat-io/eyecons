@@ -97,6 +97,7 @@ The extension currently supports the following color themes:
 - [Monokai Pro](https://github.com/Monokai/monokai-pro-vscode)
 - [Night Owl](https://github.com/sdras/night-owl-vscode-theme)
 - [Nord](https://github.com/nordtheme/visual-studio-code)
+- [One Monokai](https://github.com/azemoh/vscode-one-monokai)
 - [Panda](https://github.com/tinkertrain/panda-syntax-vscode)
 - [Synthwave '84](https://github.com/robb0wen/synthwave-vscode)
 - [Tokyo Night](https://github.com/tokyo-night/tokyo-night-vscode-theme)
