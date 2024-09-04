@@ -405,7 +405,7 @@ export let fileIcons: FileIcon[] = [
     light: true,
   },
   {
-    files: ['.npmignore', 'npmrc'],
+    files: ['.npmignore', '.npmrc'],
     name: 'npm',
     id: 'npm',
   },
