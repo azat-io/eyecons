@@ -19,5 +19,8 @@ tmp/
 # Test
 coverage/
 
+# Enviorment
+.env
+
 # Misc
 .DS_Store
