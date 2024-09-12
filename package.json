@@ -157,7 +157,7 @@
     ]
   },
   "engines": {
-    "vscode": "^1.92.0"
+    "vscode": "^1.90.0"
   },
   "devDependencies": {
     "@azat-io/eslint-config-typescript": "^1.10.0",
