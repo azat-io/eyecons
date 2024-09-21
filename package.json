@@ -172,7 +172,7 @@
     "@types/eslint": "^9.6.1",
     "@types/node": "^22.5.5",
     "@types/svg-parser": "^2.0.6",
-    "@types/vscode": "^1.93.0",
+    "@types/vscode": "^1.90.0",
     "@typescript-eslint/eslint-plugin": "^8.6.0",
     "@typescript-eslint/parser": "^8.6.0",
     "@vitest/coverage-v8": "^2.1.1",
