@@ -1,7 +1,7 @@
 import { useDocumentHead, useLocation } from '@builder.io/qwik-city'
 import { component$ } from '@builder.io/qwik'
 
-export const Head = component$(() => {
+export let Head = component$(() => {
   let head = useDocumentHead()
   let loc = useLocation()
 
@@ -18,31 +18,31 @@ export const Head = component$(() => {
       <link href="/apple-touch-icon.png" rel="apple-touch-icon" />
       <link href={`${import.meta.env.BASE_URL}manifest.json`} rel="manifest" />
 
-      {head.meta.map(m => (
-        <meta key={m.key} {...m} />
+      {head.meta.map(meta => (
+        <meta key={meta.key} {...meta} />
       ))}
 
-      {head.links.map(l => (
-        <link key={l.key} {...l} />
+      {head.links.map(link => (
+        <link key={link.key} {...link} />
       ))}
 
-      {head.styles.map(s => (
+      {head.styles.map(style => (
         <style
-          key={s.key}
-          {...s.props}
-          {...(s.props?.dangerouslySetInnerHTML
+          key={style.key}
+          {...style.props}
+          {...(style.props?.dangerouslySetInnerHTML
             ? {}
-            : { dangerouslySetInnerHTML: s.style })}
+            : { dangerouslySetInnerHTML: style.style })}
         />
       ))}
 
-      {head.scripts.map(s => (
+      {head.scripts.map(script => (
         <script
-          key={s.key}
-          {...s.props}
-          {...(s.props?.dangerouslySetInnerHTML
+          key={script.key}
+          {...script.props}
+          {...(script.props?.dangerouslySetInnerHTML
             ? {}
-            : { dangerouslySetInnerHTML: s.script })}
+            : { dangerouslySetInnerHTML: script.script })}
         />
       ))}
     </head>

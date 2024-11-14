@@ -23,7 +23,7 @@ export let colorize = async (
   let overrided = theme.overrides
     ? override(id, theme.overrides, source)
     : source
-  let recolored = await recolor(theme, overrided)
+  let recolored = recolor(theme, overrided)
   let parsed = parseSvg(recolored)
   if (!parsed) {
     return recolored

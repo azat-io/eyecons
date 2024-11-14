@@ -23,6 +23,6 @@ describe('toRgb', () => {
   })
 
   it('should throw error for invalid color', () => {
-    expect(() => toRgb('invalid')).toThrow('Could not convert invalid to RGB')
+    expect(() => toRgb('invalid')).toThrow('Could not convert "invalid" to RGB')
   })
 })

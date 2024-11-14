@@ -6,4 +6,4 @@ addEventListener('install', () => self.skipWaiting())
 
 addEventListener('activate', () => self.clients.claim())
 
-declare const self: ServiceWorkerGlobalScope
+declare let self: ServiceWorkerGlobalScope

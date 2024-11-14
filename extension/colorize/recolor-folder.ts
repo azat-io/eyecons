@@ -8,14 +8,11 @@ import { toRgb } from './to-rgb'
 let primaryColor = '#ffca28'
 let secondaryColor = '#ffa000'
 
-export let recolorFolder = async (
-  source: string,
-  colors: string[],
-): Promise<string> => {
+export let recolorFolder = (source: string, colors: string[]): string => {
   let folderColor = getFolderValue()
   let newPrimaryColor = colors[colorNames.indexOf(folderColor)]
   let newSecondaryColor: string | Oklch = toOklch(newPrimaryColor)
-  newSecondaryColor.l = newSecondaryColor.l - 0.2
+  newSecondaryColor.l -= 0.2
   newSecondaryColor = toRgb(newSecondaryColor)
 
   return source

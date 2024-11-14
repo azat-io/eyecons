@@ -2,7 +2,7 @@ import { netlifyEdgeAdapter } from '@builder.io/qwik-city/adapters/netlify-edge/
 import { extendConfig } from '@builder.io/qwik-city/vite'
 import path from 'node:path'
 
-import baseConfig from '../../../vite.config.docs'
+import baseConfig from '../../../vite.config.documentation'
 
 export default extendConfig(baseConfig, () => ({
   build: {

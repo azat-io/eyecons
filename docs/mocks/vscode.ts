@@ -1,5 +1,7 @@
 export let workspace = {
-  getConfiguration: () => ({
+  getConfiguration: (): {
+    get: () => void
+  } => ({
     get: () => {},
   }),
 }

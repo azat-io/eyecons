@@ -1,12 +1,12 @@
 import { toOklch } from '../../extension/colorize/to-oklch'
 import { toRgb } from '../../extension/colorize/to-rgb'
 
-interface Args {
-  colors: Record<string, undefined | string>
+export interface Arguments {
+  colors: Record<string, string>
   themeType: 'light' | 'dark'
 }
 
-let set = (key: string, values: (undefined | string)[]) => {
+let set = (key: string, values: (undefined | string)[]): void => {
   let root = document.documentElement
   for (let value of values) {
     if (value) {
@@ -16,21 +16,24 @@ let set = (key: string, values: (undefined | string)[]) => {
   }
 }
 
-export let updateThemeCSSVars = ({ themeType, colors }: Args) => {
+export let updateThemeCSSVariables = ({
+  themeType,
+  colors,
+}: Arguments): void => {
   set('background-brand', [
     colors['activityBarBadge.background'],
     colors['button.background'],
   ])
   set('background-primary', [colors['editor.background']])
   set('background-secondary', [
-    colors['editor.background']?.toLowerCase() !==
-    colors['tab.activeBackground']?.toLowerCase()
-      ? colors['tab.activeBackground']
-      : undefined,
-    colors['editor.background']?.toLowerCase() !==
-    colors['tab.inactiveBackground']?.toLowerCase()
-      ? colors['tab.inactiveBackground']
-      : undefined,
+    colors['editor.background'].toLowerCase() ===
+    colors['tab.activeBackground'].toLowerCase()
+      ? '#000'
+      : colors['tab.activeBackground'],
+    colors['editor.background'].toLowerCase() ===
+    colors['tab.inactiveBackground'].toLowerCase()
+      ? '#000'
+      : colors['tab.inactiveBackground'],
     colors['sideBar.background'],
   ])
   set('background-tertiary', [
@@ -61,11 +64,11 @@ export let updateThemeCSSVars = ({ themeType, colors }: Args) => {
 
 export let colorNames = ['red', 'orange', 'yellow', 'green', 'blue', 'purple']
 
-export let updateBaseCSSVars = (colors: string[], type: string) => {
+export let updateBaseCSSVariables = (colors: string[], type: string): void => {
   for (let [i, color] of colors.slice(0, colorNames.length).entries()) {
     if (type === 'light') {
       let oklch = toOklch(color)
-      oklch.l = oklch.l + 0.2
+      oklch.l += 0.2
       color = toRgb(oklch)
     }
     set(colorNames[i], [color])

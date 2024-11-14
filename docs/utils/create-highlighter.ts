@@ -1,4 +1,9 @@
-import type { HighlighterGeneric, BundledLanguage, BuiltinTheme } from 'shiki'
+import type {
+  HighlighterGeneric,
+  BundledLanguage,
+  BundledTheme,
+  BuiltinTheme,
+} from 'shiki'
 
 import {
   createHighlighter as createShikiHighlighter,
@@ -9,7 +14,9 @@ let highlighter: HighlighterGeneric<BundledLanguage, BuiltinTheme> | null = null
 
 let jsEngine = createJavaScriptRegexEngine()
 
-export let createHighlighter = async () => {
+export let createHighlighter = async (): Promise<
+  HighlighterGeneric<BundledLanguage, BundledTheme>
+> => {
   if (!highlighter) {
     highlighter = await createShikiHighlighter({
       engine: jsEngine,

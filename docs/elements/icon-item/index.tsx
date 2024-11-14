@@ -10,7 +10,7 @@ interface IconItemProps {
   id: string
 }
 
-export const IconItem = component$<IconItemProps>(
+export let IconItem = component$<IconItemProps>(
   ({ light = false, name, id }) => (
     <li class={styles.item}>
       <Icon light={light} id={id} />

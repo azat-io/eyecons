@@ -3,10 +3,11 @@ export let override = (
   overrides: Record<string, Record<string, string>>,
   source: string,
 ): string => {
+  let result = source
   if (id in overrides) {
     for (let [from, to] of Object.entries(overrides[id])) {
-      source = source.replaceAll(new RegExp(from, 'g'), to)
+      result = result.replaceAll(new RegExp(from, 'g'), to)
     }
   }
-  return source
+  return result
 }

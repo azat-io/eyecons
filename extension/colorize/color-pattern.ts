@@ -1,12 +1,12 @@
 import { colorsNamed } from 'culori'
 
-let getColorPattern = () => {
+let getColorPattern = (): RegExp => {
   let colorKeys = Object.keys(colorsNamed)
   let colorRegexPart = colorKeys
-    .reduce((acc, color) => acc + '|' + color, '')
+    .reduce((accumulator, color) => `${accumulator}|${color}`, '')
     .slice(1)
 
-  let hexPattern = /#([\da-f]{6}|[\da-f]{3})/gi
+  let hexPattern = /#(?<color>[\da-f]{6}|[\da-f]{3})/giu
   return new RegExp(`(${colorRegexPart}|${hexPattern.source})`, 'gi')
 }
 

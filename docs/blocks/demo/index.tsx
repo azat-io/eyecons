@@ -37,7 +37,7 @@ export let Demo = component$(() => (
             </div>
             <IconList>
               {fileIcons.map(icon => (
-                <IconItem {...icon} />
+                <IconItem key={icon.id} {...icon} />
               ))}
             </IconList>
           </div>

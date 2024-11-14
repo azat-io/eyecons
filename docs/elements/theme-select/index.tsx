@@ -1,3 +1,5 @@
+import type { NoSerialize } from '@builder.io/qwik'
+
 import { component$, useContext, useSignal, $ } from '@builder.io/qwik'
 
 import { useClickOutside } from '../../hooks/use-click-outside'
@@ -9,15 +11,15 @@ import { Label } from '../label'
 
 export let ThemeSelect = component$(() => {
   let dropdownVisible = useSignal(false)
-  let ref = useSignal<HTMLDivElement | undefined>(undefined)
+  let reference = useSignal<HTMLDivElement | undefined>()
   let theme = useContext(ThemeContext)
   let closeDropdown = $(() => {
     dropdownVisible.value = false
   })
-  useClickOutside(ref, closeDropdown)
+  useClickOutside(reference, closeDropdown)
 
   return (
-    <div class={styles.wrapper} ref={ref}>
+    <div class={styles.wrapper} ref={reference}>
       <Label for="theme">Select Theme:</Label>
       <div class={styles['input-wrapper']}>
         <button
@@ -44,7 +46,11 @@ export let ThemeSelect = component$(() => {
           />
         </svg>
       </div>
-      {dropdownVisible.value && <ThemeDropdown close={closeDropdown} />}
+      {dropdownVisible.value && (
+        <ThemeDropdown
+          close={closeDropdown as unknown as NoSerialize<() => void>}
+        />
+      )}
     </div>
   )
 })

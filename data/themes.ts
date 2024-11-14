@@ -91,7 +91,7 @@ export let themes = [
   },
 ]
 
-export let getThemeNameById = (id: string) => {
+export let getThemeNameById = (id: string): string => {
   let theme = themes.find(themeValue => themeValue.id === id)
   return theme ? theme.name : ''
 }

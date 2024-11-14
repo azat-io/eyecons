@@ -1,10 +1,11 @@
+import type { NoSerialize } from '@builder.io/qwik'
 import type { FocusTrap } from 'focus-trap'
 
 import {
-  useVisibleTask$,
   component$,
   useContext,
   useSignal,
+  useTask$,
   $,
 } from '@builder.io/qwik'
 import { createFocusTrap } from 'focus-trap'
@@ -14,32 +15,38 @@ import { ThemeContext } from '../theme'
 import styles from './index.module.css'
 
 interface ThemeDropdownProps {
-  close: () => void
+  close: NoSerialize<() => void>
 }
 
 export let ThemeDropdown = component$<ThemeDropdownProps>(({ close }) => {
-  let ref = useSignal<HTMLDivElement | undefined>(undefined)
+  let reference = useSignal<HTMLDivElement | undefined>()
   let theme = useContext(ThemeContext)
-  let setTheme$ = $((themeValue: string) => {
+
+  let setTheme$ = $((themeValue: string): void => {
     theme.value = themeValue
-    close()
+    close?.()
   })
 
-  useVisibleTask$(() => {
+  useTask$(({ track }) => {
+    track(() => reference.value)
+
     let focusTrap: FocusTrap | null = null
-    if (ref.value) {
-      focusTrap = createFocusTrap(ref.value, {
+    if (reference.value) {
+      focusTrap = createFocusTrap(reference.value, {
         returnFocusOnDeactivate: false,
         allowOutsideClick: true,
       })
     }
-    let handleEscape = (event: KeyboardEvent) => {
+
+    let handleEscape = (event: KeyboardEvent): void => {
       if (event.key === 'Escape') {
-        close()
+        close?.()
       }
     }
+
     document.addEventListener('keydown', handleEscape)
     focusTrap?.activate()
+
     return () => {
       focusTrap?.deactivate()
       document.removeEventListener('keydown', handleEscape)
@@ -52,12 +59,12 @@ export let ThemeDropdown = component$<ThemeDropdownProps>(({ close }) => {
         '--total': themes.length,
       }}
       class={styles.dropdown}
-      ref={ref}
+      ref={reference}
     >
       {themes.map(({ name, id }) => (
         <button
-          onClick$={() => {
-            setTheme$(id)
+          onClick$={async () => {
+            await setTheme$(id)
           }}
           class={styles['dropdown-item']}
           data-umami-event="Select Theme"

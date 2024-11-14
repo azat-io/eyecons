@@ -3,18 +3,18 @@ import type { Signal, QRL } from '@builder.io/qwik'
 import { useOnDocument, $ } from '@builder.io/qwik'
 
 export let useClickOutside = (
-  ref: Signal<HTMLElement | undefined>,
+  reference: Signal<HTMLElement | undefined>,
   onClickOut: QRL<() => void>,
-) => {
+): void => {
   useOnDocument(
     'click',
-    $(event => {
-      if (!ref.value) {
+    $(async event => {
+      if (!reference.value) {
         return
       }
       let target = event.target as HTMLElement
-      if (!ref.value.contains(target)) {
-        onClickOut()
+      if (!reference.value.contains(target)) {
+        await onClickOut()
       }
     }),
   )

@@ -8,12 +8,12 @@ describe('colorize', () => {
     colors: ['#ff0000', '#00ff00', '#0000ff', '#66cc66', '#eeeeee'],
   }
 
-  it('should colorize source code', async () => {
+  it('should colorize source code', () => {
     let source = dedent`
       <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
         <circle cx="50" cy="50" r="50" fill="#dc143c" />
       </svg>`
-    let result = await recolor(theme, source)
+    let result = recolor(theme, source)
 
     expect(result).toBe(dedent`
       <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -21,12 +21,12 @@ describe('colorize', () => {
       </svg>`)
   })
 
-  it('colorizes source code with light colors', async () => {
+  it('colorizes source code with light colors', () => {
     let source = dedent`
       <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
         <circle cx="50" cy="50" r="50" fill="#fff" />
       </svg>`
-    let result = await recolor(theme, source)
+    let result = recolor(theme, source)
 
     expect(result).toBe(dedent`
       <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -34,12 +34,12 @@ describe('colorize', () => {
       </svg>`)
   })
 
-  it('colorizes source code with dark colors', async () => {
+  it('colorizes source code with dark colors', () => {
     let source = dedent`
       <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
         <circle cx="50" cy="50" r="50" fill="#000" />
       </svg>`
-    let result = await recolor(theme, source)
+    let result = recolor(theme, source)
 
     expect(result).toBe(dedent`
       <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">

@@ -1,5 +1,10 @@
+import type { Signal } from '@builder.io/qwik'
+import type { ThemeInput } from 'shiki'
+
 import { component$, useContext, useSignal, useTask$ } from '@builder.io/qwik'
 import { isDev } from '@builder.io/qwik/build'
+
+import type { Theme } from '../../typings'
 
 import { ThemeSourceContext, ThemeTypeContext, ThemeContext } from '../theme'
 import { createHighlighter } from '../../utils/create-highlighter'
@@ -36,12 +41,12 @@ root.render(<Counter />)`
 let metaGlobThemes = import.meta.glob('../../themes/*', {
   import: 'default',
   eager: !isDev,
-}) as Record<string, any>
+}) as Record<string, () => Promise<Promise<Theme>>>
 
 export let Code = component$(() => {
-  let theme = useContext(ThemeContext)
-  let themeSource = useContext(ThemeSourceContext)
-  let themeType = useContext(ThemeTypeContext)
+  let theme = useContext<Signal<string>>(ThemeContext)
+  let themeSource = useContext<Signal<Theme | null>>(ThemeSourceContext)
+  let themeType = useContext<Signal<string>>(ThemeTypeContext)
 
   let html = useSignal('')
 
@@ -53,8 +58,8 @@ export let Code = component$(() => {
     let themePath = `../../themes/${theme.value}.json`
 
     let themeValue = isDev
-      ? await metaGlobThemes[themePath]()
-      : metaGlobThemes[themePath]
+      ? await (metaGlobThemes[themePath] as unknown as () => Promise<Theme>)()
+      : (metaGlobThemes[themePath] as unknown as Theme)
 
     if (themeValue.name.toLowerCase().includes('light')) {
       themeType.value = 'light'
@@ -67,7 +72,7 @@ export let Code = component$(() => {
     themeSource.value = themeValue
 
     let highlighter = await createHighlighter()
-    await highlighter.loadTheme(themeValue)
+    await highlighter.loadTheme(themeValue as unknown as ThemeInput)
 
     let htmlValue = highlighter.codeToHtml(code, {
       theme: getThemeNameById(theme.value),

@@ -15,8 +15,11 @@ interface MakeFilePluginOptions {
   dest: string
 }
 
-let copyRecursiveSync = async (src: string, dest: string) => {
-  let checkIfExists = async (file: string) => {
+let copyRecursive = async (
+  source: string,
+  destination: string,
+): Promise<void> => {
+  let checkIfExists = async (file: string): Promise<boolean> => {
     try {
       await fs.stat(file)
       return true
@@ -25,25 +28,27 @@ let copyRecursiveSync = async (src: string, dest: string) => {
     }
   }
 
-  let exists = await checkIfExists(src)
-  let stats = await fs.stat(src)
+  let exists = await checkIfExists(source)
+  let stats = await fs.stat(source)
   let isDirectory = exists && stats.isDirectory()
   if (isDirectory) {
-    fs.mkdir(dest, { recursive: true })
-    let children = await fs.readdir(src)
-    children.forEach(childItemName => {
-      copyRecursiveSync(
-        path.join(src, childItemName),
-        path.join(dest, childItemName),
-      )
-    })
+    await fs.mkdir(destination, { recursive: true })
+    let children = await fs.readdir(source)
+    await Promise.all(
+      children.map(async childItemName => {
+        await copyRecursive(
+          path.join(source, childItemName),
+          path.join(destination, childItemName),
+        )
+      }),
+    )
   } else {
-    await fs.copyFile(src, dest)
+    await fs.copyFile(source, destination)
   }
 }
 
 let copyFoldersPlugin = (options: CopyFoldersPluginOptions[] = []): Plugin => ({
-  closeBundle: () => {
+  closeBundle: async () => {
     if (!Array.isArray(options) || options.length === 0) {
       console.error(
         'vite-plugin-copy-folders: "options" should be a non-empty array',
@@ -51,19 +56,21 @@ let copyFoldersPlugin = (options: CopyFoldersPluginOptions[] = []): Plugin => ({
       return
     }
 
-    options.forEach(({ dest, src }) => {
-      if (!src || !dest) {
-        console.error(
-          'vite-plugin-copy-folders: "src" and "dest" options are required',
-        )
-        return
-      }
-      try {
-        copyRecursiveSync(src, dest)
-      } catch (error) {
-        console.error(`vite-plugin-copy-folders: ${error}`)
-      }
-    })
+    await Promise.all(
+      options.map(async ({ dest, src }) => {
+        if (!src || !dest) {
+          console.error(
+            'vite-plugin-copy-folders: "src" and "dest" options are required',
+          )
+          return
+        }
+        try {
+          await copyRecursive(src, dest)
+        } catch (error) {
+          console.error(`vite-plugin-copy-folders: ${error as string}`)
+        }
+      }),
+    )
   },
   name: 'vite-plugin-copy-folders',
   apply: 'build',
@@ -74,7 +81,7 @@ let makeFile = (options: MakeFilePluginOptions): Plugin => ({
     try {
       await fs.writeFile(options.dest, options.content)
     } catch (error) {
-      console.error(`vite-plugin-make-file: ${error}`)
+      console.error(`vite-plugin-make-file: ${error as string}`)
     }
   },
   name: 'vite-plugin-make-file',

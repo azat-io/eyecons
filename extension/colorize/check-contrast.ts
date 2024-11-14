@@ -5,5 +5,5 @@ interface SvgInfo {
   foreground: string
 }
 
-export let checkContrast = ({ background, foreground }: SvgInfo) =>
+export let checkContrast = ({ background, foreground }: SvgInfo): boolean =>
   wcagContrast(background, foreground) > 1.25

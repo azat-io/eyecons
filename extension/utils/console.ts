@@ -4,7 +4,7 @@ import { window } from 'vscode'
 
 let output: OutputChannel
 
-let getDate = () =>
+let getDate = (): string =>
   new Intl.DateTimeFormat('en-US', {
     minute: 'numeric',
     second: 'numeric',
@@ -16,11 +16,11 @@ let getDate = () =>
   }).format(new Date())
 
 export let console = {
-  init: () => {
+  init: (): void => {
     output = window.createOutputChannel('Eyecons')
     output.appendLine(`${getDate()}: Eyecons initialized`)
   },
-  log: (...args: unknown[]) => {
-    output.appendLine(`${getDate()}: ${args.join(' ')}`)
+  log: (...arguments_: unknown[]): void => {
+    output.appendLine(`${getDate()}: ${arguments_.join(' ')}`)
   },
 }

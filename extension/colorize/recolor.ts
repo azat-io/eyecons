@@ -3,10 +3,10 @@ import { differenceCiede2000, nearest } from 'culori'
 import { colorPattern } from './color-pattern'
 import { toOklch } from './to-oklch'
 
-export let recolor = async (
+export let recolor = (
   theme: Record<'colors', string[]>,
   source: string,
-): Promise<string> => {
+): string => {
   let findNearestBaseColor = nearest(theme.colors, differenceCiede2000(1, 2, 2))
   let findNearestExtremeColor = nearest(
     theme.colors,
