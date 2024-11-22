@@ -5,14 +5,14 @@ import { defineConfig } from 'vite'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 
-interface CopyFoldersPluginOptions {
-  dest: string
-  src: string
-}
-
 interface MakeFilePluginOptions {
   content: string
   dest: string
+}
+
+interface CopyFoldersPluginOptions {
+  dest: string
+  src: string
 }
 
 let copyRecursive = async (

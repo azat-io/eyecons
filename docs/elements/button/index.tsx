@@ -6,7 +6,7 @@ interface ButtonProps {
   target?: '_parent' | '_blank' | '_self' | '_top'
   type?: 'button' | 'submit' | 'reset'
   variant?: 'secondary' | 'primary'
-  onClick?: () => void
+  onClick?(): void
   href?: string
 }
 

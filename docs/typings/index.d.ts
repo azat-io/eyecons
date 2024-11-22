@@ -1,17 +1,3 @@
-export interface Theme {
-  semanticHighlighting: boolean
-  tokenColors: TokenColor[]
-  $schema: string
-  colors: Colors
-  name: string
-  type: string
-}
-
-export interface ThemeData {
-  overrides: Record<string, Record<string, string>>
-  colors: string[]
-}
-
 export interface Colors {
   'gitDecoration.conflictingResourceForeground': string
   'gitDecoration.untrackedResourceForeground': string
@@ -177,6 +163,20 @@ export interface Colors {
   'tab.border': string
   focusBorder: string
   foreground: string
+}
+
+export interface Theme {
+  semanticHighlighting: boolean
+  tokenColors: TokenColor[]
+  $schema: string
+  colors: Colors
+  name: string
+  type: string
+}
+
+export interface ThemeData {
+  overrides: Record<string, Record<string, string>>
+  colors: string[]
 }
 
 export interface TokenColor {

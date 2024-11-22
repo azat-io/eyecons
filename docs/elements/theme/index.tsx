@@ -33,6 +33,7 @@ export let Theme = component$(() => {
   useContextProvider(ThemeTypeContext, themeType)
   useContextProvider(ThemeSourceContext, themeSource)
 
+  // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(({ track }) => {
     track(() => themeSource.value)
     track(() => themeType.value)

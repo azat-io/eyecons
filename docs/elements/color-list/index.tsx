@@ -20,6 +20,7 @@ export let ColorList = component$(() => {
   let theme = useContext(ThemeContext)
   let themeType = useContext(ThemeTypeContext)
 
+  // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(async ({ track }) => {
     track(() => themeType.value)
     track(() => theme.value)

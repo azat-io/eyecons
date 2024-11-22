@@ -127,6 +127,7 @@ let createScreenshot = async (theme: string): Promise<void> => {
   }
 }
 
+// eslint-disable-next-line unicorn/prefer-top-level-await
 ;(async () => {
   await Promise.all(themes.map(createScreenshot))
 })()

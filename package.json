@@ -1,61 +1,53 @@
 {
   "name": "eyecons",
   "displayName": "Eyecons",
-  "description": "Advanced VS Code icon theme with adaptive icon colors that match the editor’s color theme",
   "version": "1.4.0",
-  "main": "./dist/extension/index.js",
-  "repository": "azat-io/eyecons",
-  "author": "Azat S. <to@azat.io>",
-  "publisher": "azat-io",
-  "license": "MIT",
-  "icon": "assets/logo.png",
-  "galleryBanner": {
-    "theme": "dark",
-    "color": "#161b22"
-  },
+  "description": "Advanced VS Code icon theme with adaptive icon colors that match the editor’s color theme",
+  "categories": [
+    "Themes",
+    "Other"
+  ],
   "keywords": [
     "icons",
     "theme",
     "icon-theme",
     "customization"
   ],
-  "categories": [
-    "Themes",
-    "Other"
-  ],
+  "repository": "azat-io/eyecons",
+  "license": "MIT",
+  "author": "Azat S. <to@azat.io>",
+  "publisher": "azat-io",
+  "main": "./dist/extension/index.js",
   "scripts": {
     "build": "vite build --config vite.config.extension.ts",
-    "docs:dev": "vite --open --host --mode ssr --config vite.config.documentation.ts",
+    "build.client": "vite build --config vite.config.documentation.ts",
+    "build.preview": "vite build --ssr docs/entry.preview.tsx --config vite.config.documentation.ts",
+    "build.server": "vite build --config ./docs/adapters/netlify-edge/vite.config.ts",
+    "build.types": "tsc --incremental --noEmit",
     "docs:build": "pnpm run docs:clean && qwik build",
+    "docs:clean": "pnpm run /^docs:clean:/",
     "docs:clean:dist": "node -e \"fs.rmSync('./docs/dist', { recursive: true, force: true })\"",
     "docs:clean:server": "node -e \"fs.rmSync('./.netlify', { recursive: true, force: true })\"",
     "docs:clean:temp": "node -e \"fs.rmSync('./tmp', { recursive: true, force: true })\"",
-    "docs:clean": "pnpm run /^docs:clean:/",
     "docs:debug": "node --inspect-brk ./node_modules/vite/bin/vite.js --mode ssr --force",
-    "docs:preview": "pnpm run docs:clean && qwik build preview && vite preview --open --config vite.config.documentation.ts",
     "docs:deploy": "netlify deploy --build",
-    "build.client": "vite build --config vite.config.documentation.ts",
-    "build.server": "vite build --config ./docs/adapters/netlify-edge/vite.config.ts",
-    "build.types": "tsc --incremental --noEmit",
-    "build.preview": "vite build --ssr docs/entry.preview.tsx --config vite.config.documentation.ts",
-    "scripts:preview": "tsx ./scripts/generate-preview.ts",
-    "scripts:svgo": "svgo --folder \"./icons/base\" && svgo --folder \"./icons/files\"",
+    "docs:dev": "vite --open --host --mode ssr --config vite.config.documentation.ts",
+    "docs:preview": "pnpm run docs:clean && qwik build preview && vite preview --open --config vite.config.documentation.ts",
     "release": "pnpm release:check && pnpm release:version && pnpm release:package && pnpm run /^release:publish:/",
     "release:check": "pnpm test && pnpm run build && pnpm scripts:preview && git add ./assets/",
     "release:package": "vsce package --no-dependencies",
-    "release:publish:vsce": "vsce publish --no-dependencies",
     "release:publish:ovsx": "ovsx publish eyecons-$(pnpm pkg get version | tr -d '\"').vsix -p $(grep OVSX_TOKEN .env | cut -d '=' -f2)",
+    "release:publish:vsce": "vsce publish --no-dependencies",
     "release:version": "changelogen --output changelog.md --release --push",
-    "test:format": "prettier --check \"**/*.{js,ts,jsx,tsx,css,json,md,yml}\"",
+    "scripts:preview": "tsx ./scripts/generate-preview.ts",
+    "scripts:svgo": "svgo --folder \"./icons/base\" && svgo --folder \"./icons/files\"",
+    "test": "pnpm run /^test:/",
     "test:css": "stylelint **/*.css",
-    "test:js": "eslint \"**/*.{js,ts,tsx}\"",
+    "test:format": "prettier --check \"**/*.{js,ts,jsx,tsx,css,json,md,yml}\"",
+    "test:js": "eslint --flag unstable_ts_config .",
     "test:types": "tsc --noEmit --pretty",
-    "test:unit": "vitest --run --coverage",
-    "test": "pnpm run /^test:/"
+    "test:unit": "vitest --run --coverage"
   },
-  "activationEvents": [
-    "onStartupFinished"
-  ],
   "contributes": {
     "iconThemes": [
       {
@@ -157,11 +149,11 @@
       }
     ]
   },
-  "engines": {
-    "vscode": "^1.90.0"
-  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "devDependencies": {
-    "@azat-io/eslint-config-typescript": "^1.10.0",
+    "@azat-io/eslint-config": "^2.2.0",
     "@azat-io/stylelint-config": "^0.1.1",
     "@builder.io/qwik": "^1.9.1",
     "@builder.io/qwik-city": "^1.9.1",
@@ -169,28 +161,15 @@
     "@commitlint/config-conventional": "^19.5.0",
     "@netlify/edge-functions": "^2.11.0",
     "@types/culori": "^2.1.1",
-    "@types/eslint": "^9.6.1",
     "@types/node": "^22.8.4",
     "@types/svg-parser": "^2.0.6",
     "@types/vscode": "^1.90.0",
-    "@typescript-eslint/eslint-plugin": "^8.12.2",
-    "@typescript-eslint/parser": "^8.12.2",
     "@vitest/coverage-v8": "^2.1.4",
     "@vscode/vsce": "^3.2.1",
     "browserslist": "^4.24.2",
     "changelogen": "^0.5.7",
     "culori": "^4.0.1",
     "eslint": "^9.13.0",
-    "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-n": "^17.11.1",
-    "eslint-plugin-node-import": "^1.0.4",
-    "eslint-plugin-perfectionist": "^3.9.1",
-    "eslint-plugin-prefer-arrow": "^1.2.3",
-    "eslint-plugin-prefer-let": "^4.0.0",
-    "eslint-plugin-promise": "^7.1.0",
-    "eslint-plugin-sonarjs": "^2.0.4",
-    "eslint-plugin-unicorn": "^56.0.0",
-    "eslint-plugin-vitest": "^0.5.4",
     "focus-trap": "^7.6.0",
     "lightningcss": "^1.27.0",
     "netlify-cli": "^17.37.2",
@@ -213,5 +192,13 @@
     "undici": "^6.20.1",
     "vite": "^5.4.10",
     "vitest": "^2.1.4"
+  },
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "icon": "assets/logo.png",
+  "galleryBanner": {
+    "theme": "dark",
+    "color": "#161b22"
   }
 }
