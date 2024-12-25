@@ -63,7 +63,7 @@ let createScreenshot = async (theme: string): Promise<void> => {
     let colorizeIcons = async (): Promise<string> =>
       await fileIcons.reduce(async (accumulatorPromise, { name, id }) => {
         let accumulator = await accumulatorPromise
-        let coloredIcon = await colorize(id, themeValueData, iconsSources[id])
+        let coloredIcon = await colorize(id, themeValueData, iconsSources[id]!)
         return dedent`
           ${accumulator}
           <div class="icon">

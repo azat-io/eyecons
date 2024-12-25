@@ -17,8 +17,8 @@ export let recolor = (
     let { l, c } = toOklch(color)
     let isExtreme = c < 0.05 && (l < 0.2 || l > 0.9)
     return isExtreme
-      ? findNearestExtremeColor(color)[0]
-      : findNearestBaseColor(color)[0]
+      ? findNearestExtremeColor(color)[0]!
+      : findNearestBaseColor(color)[0]!
   }
 
   return source.replaceAll(colorPattern, matched => updateColor(matched))

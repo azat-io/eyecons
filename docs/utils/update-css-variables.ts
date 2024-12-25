@@ -26,12 +26,12 @@ export let updateThemeCSSVariables = ({
   ])
   set('background-primary', [colors['editor.background']])
   set('background-secondary', [
-    colors['editor.background'].toLowerCase() ===
-    colors['tab.activeBackground'].toLowerCase()
+    colors['editor.background']?.toLowerCase() ===
+    colors['tab.activeBackground']?.toLowerCase()
       ? '#000'
       : colors['tab.activeBackground'],
-    colors['editor.background'].toLowerCase() ===
-    colors['tab.inactiveBackground'].toLowerCase()
+    colors['editor.background']?.toLowerCase() ===
+    colors['tab.inactiveBackground']?.toLowerCase()
       ? '#000'
       : colors['tab.inactiveBackground'],
     colors['sideBar.background'],
@@ -48,7 +48,7 @@ export let updateThemeCSSVariables = ({
   ])
   set('content-primary', [
     colors['editor.foreground'],
-    colors.foreground,
+    colors['foreground'],
     colors['sideBar.foreground'],
   ])
 
@@ -71,7 +71,7 @@ export let updateBaseCSSVariables = (colors: string[], type: string): void => {
       oklch.l += 0.2
       color = toRgb(oklch)
     }
-    set(colorNames[i], [color])
+    set(colorNames[i]!, [color])
   }
   if (type === 'light') {
     set('inverse', ['var(--color-content-primary)'])

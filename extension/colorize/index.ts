@@ -37,6 +37,6 @@ export let colorize = async (
   let enhancedColors = enhanceContrast([backgroundOklch, foregroundOklch])
   let [newBackground, newForeground] = enhancedColors.map(color => toRgb(color))
   return recolored
-    .replace(parsed.background, newBackground)
-    .replace(parsed.foreground, newForeground)
+    .replace(parsed.background, newBackground!)
+    .replace(parsed.foreground, newForeground!)
 }

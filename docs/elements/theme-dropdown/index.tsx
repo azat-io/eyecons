@@ -58,7 +58,7 @@ export let ThemeDropdown = component$<ThemeDropdownProps>(({ close }) => {
       style={{
         '--total': themes.length,
       }}
-      class={styles.dropdown}
+      class={styles['dropdown']}
       ref={reference}
     >
       {themes.map(({ name, id }) => (

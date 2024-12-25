@@ -28,7 +28,7 @@ export let ColorList = component$(() => {
     let dataPath = `../../../themes/${theme.value}.json`
 
     let dataValue = (
-      isDev ? await metaGlobData[dataPath]() : metaGlobData[dataPath]
+      isDev ? await metaGlobData[dataPath]?.() : metaGlobData[dataPath]
     ) as ThemeData
 
     updateBaseCSSVariables(
@@ -38,7 +38,7 @@ export let ColorList = component$(() => {
   })
 
   return (
-    <div class={styles.list}>
+    <div class={styles['list']}>
       {colorNames.map((color: string) => (
         <ColorItem color={`var(--color-${color})`} key={color} />
       ))}

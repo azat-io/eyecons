@@ -4,8 +4,8 @@ import { round } from 'culori'
 
 export let enhanceContrast = (colors: [Oklch, Oklch]): [Oklch, Oklch] => {
   let [color0, color1] = colors.map(color => structuredClone(color))
-  let { l: l0, c: c0 } = color0
-  let { l: l1, c: c1 } = color1
+  let { l: l0, c: c0 } = color0!
+  let { l: l1, c: c1 } = color1!
 
   let shouldEnhanceColor: 0 | 1
   let result: [Oklch, Oklch]

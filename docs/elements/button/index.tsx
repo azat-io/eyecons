@@ -19,7 +19,7 @@ export let Button = component$<ButtonProps>(
 
     return (
       <Tag
-        class={[styles.button, styles[`variant-${variant}`]]}
+        class={[styles['button'], styles[`variant-${variant}`]]}
         type={type}
         {...props}
       >

@@ -7,5 +7,5 @@ interface ColorItemProps {
 }
 
 export let ColorItem = component$<ColorItemProps>(({ color }) => (
-  <div style={{ '--color-item': color }} class={styles.color}></div>
+  <div style={{ '--color-item': color }} class={styles['color']}></div>
 ))

@@ -5,8 +5,8 @@ import { Container } from '../../elements/container'
 import styles from './index.module.css'
 
 export let Footer = component$(() => (
-  <footer class={styles.footer}>
-    <Container class={styles.container}>
+  <footer class={styles['footer']}>
+    <Container class={styles['container']}>
       <Typography align="center" mbe="2xs" size="s">
         Released under the MIT License
       </Typography>

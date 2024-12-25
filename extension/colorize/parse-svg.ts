@@ -13,7 +13,7 @@ export let parseSvg = (svg: string): SvgInfo | null => {
   if (
     root.type === 'element' &&
     root.tagName === 'svg' &&
-    typeof root.properties?.viewBox === 'string' &&
+    typeof root.properties?.['viewBox'] === 'string' &&
     root.children.filter(
       child =>
         typeof child === 'object' &&
@@ -25,12 +25,12 @@ export let parseSvg = (svg: string): SvgInfo | null => {
       if (
         typeof child === 'object' &&
         child.type === 'element' &&
-        typeof child.properties?.fill === 'string'
+        typeof child.properties?.['fill'] === 'string'
       ) {
         if (child.tagName === 'rect') {
-          background = child.properties.fill
+          background = child.properties['fill']
         } else if (child.tagName === 'path') {
-          foreground = child.properties.fill
+          foreground = child.properties['fill']
         }
       }
     }

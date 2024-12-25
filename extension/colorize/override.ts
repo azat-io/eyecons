@@ -5,7 +5,7 @@ export let override = (
 ): string => {
   let result = source
   if (id in overrides) {
-    for (let [from, to] of Object.entries(overrides[id])) {
+    for (let [from, to] of Object.entries(overrides[id]!)) {
       result = result.replaceAll(new RegExp(from, 'g'), to)
     }
   }

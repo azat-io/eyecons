@@ -5,7 +5,7 @@ import styles from './index.module.css'
 export let IllustrationTheme = component$(() => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    class={styles.illustration}
+    class={styles['illustration']}
     viewBox="0 0 404 248"
     fill="none"
   >

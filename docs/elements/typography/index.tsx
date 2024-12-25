@@ -29,12 +29,12 @@ export let Typography = component$<TypographyProps>(
     return (
       <Tag
         class={[
-          styles.typography,
+          styles['typography'],
           styles[`size-${size}`],
           styles[`align-${align}`],
           mbs && styles[`mbs-${mbs}`],
           mbe && styles[`mbe-${mbe}`],
-          bold && styles.bold,
+          bold && styles['bold'],
           className,
         ]}
         {...props}

@@ -19,21 +19,21 @@ export let ThemeSelect = component$(() => {
   useClickOutside(reference, closeDropdown)
 
   return (
-    <div class={styles.wrapper} ref={reference}>
+    <div class={styles['wrapper']} ref={reference}>
       <Label for="theme">Select Theme:</Label>
       <div class={styles['input-wrapper']}>
         <button
           onClick$={() => {
             dropdownVisible.value = true
           }}
-          class={styles.input}
+          class={styles['input']}
           name="theme"
         >
           {getThemeNameById(theme.value)}
         </button>
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class={styles.icon}
+          class={styles['icon']}
           viewBox="0 0 24 24"
         >
           <path

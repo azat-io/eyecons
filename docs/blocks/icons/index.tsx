@@ -7,8 +7,8 @@ import { Button } from '../../elements/button'
 import styles from './index.module.css'
 
 export let Icons = component$(() => (
-  <section class={styles.icons}>
-    <Container class={styles.container}>
+  <section class={styles['icons']}>
+    <Container class={styles['container']}>
       <div>
         <Typography size="xl" tag="h2" mbe="xs" bold>
           Icons
@@ -25,7 +25,7 @@ export let Icons = component$(() => (
           Request Icon
         </Button>
       </div>
-      <div class={styles.illustration}>
+      <div class={styles['illustration']}>
         <IllustrationIcons />
       </div>
     </Container>

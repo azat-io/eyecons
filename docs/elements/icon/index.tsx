@@ -37,13 +37,13 @@ export let Icon = component$<IconProps>(({ light, id }) => {
     }.svg`
 
     let svgValue = (
-      isDev ? await metaGlobIcons[iconPath]() : metaGlobIcons[iconPath]
+      isDev ? await metaGlobIcons[iconPath]?.() : metaGlobIcons[iconPath]
     ) as string
 
     let themeDataPath = `../../../themes/${theme.value}.json`
 
     let themeData = (isDev
-      ? await metaGlobThemeData[themeDataPath]()
+      ? await metaGlobThemeData[themeDataPath]?.()
       : metaGlobThemeData[themeDataPath]) as unknown as ThemeData
 
     icon.value = await colorize(id, themeData, svgValue)

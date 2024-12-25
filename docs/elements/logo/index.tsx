@@ -5,8 +5,8 @@ import styles from './index.module.css'
 export let Logo = component$(() => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
+    class={styles['logo']}
     viewBox="0 0 256 256"
-    class={styles.logo}
     fill="none"
   >
     <g clip-path="url(#clip0_3090_1010)">

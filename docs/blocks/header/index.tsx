@@ -7,8 +7,8 @@ import { Logo } from '../../elements/logo'
 import styles from './index.module.css'
 
 export let Header = component$(() => (
-  <header class={styles.header}>
-    <Container class={styles.container}>
+  <header class={styles['header']}>
+    <Container class={styles['container']}>
       <Logo />
       <Typography align="center" size="2xl" mbe="xs" tag="h1" bold>
         Eyecons
@@ -16,7 +16,7 @@ export let Header = component$(() => (
       <Typography align="center" size="l">
         Advanced VS Code Icon Theme
       </Typography>
-      <div class={styles.buttons}>
+      <div class={styles['buttons']}>
         <Button
           href="https://marketplace.visualstudio.com/items?itemName=azat-io.eyecons"
           data-umami-event="Open Marketplace"

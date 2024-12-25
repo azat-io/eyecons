@@ -7,7 +7,7 @@ interface ContainerProps {
 }
 
 export let Container = component$<ContainerProps>(({ class: className }) => (
-  <div class={[styles.container, className]}>
+  <div class={[styles['container'], className]}>
     <Slot />
   </div>
 ))

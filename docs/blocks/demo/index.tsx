@@ -13,14 +13,14 @@ import { Code } from '../../elements/code'
 import styles from './index.module.css'
 
 export let Demo = component$(() => (
-  <section class={styles.demo}>
+  <section class={styles['demo']}>
     <Container>
       <Theme>
         <Typography align="center" size="xl" tag="h2" mbe="xs" bold>
           Try it out
         </Typography>
         <Typography
-          class={styles.description}
+          class={styles['description']}
           align="center"
           size="m"
           mbe="l"
@@ -31,7 +31,7 @@ export let Demo = component$(() => (
         </Typography>
         <div class={styles['demo-view']}>
           <div>
-            <div class={styles.selection}>
+            <div class={styles['selection']}>
               <ThemeSelect />
               <ColorList />
             </div>
