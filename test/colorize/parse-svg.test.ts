@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { dedent } from 'ts-dedent'
+import dedent from 'dedent'
 
 import { parseSvg } from '../../extension/colorize/parse-svg'
 
@@ -11,7 +11,7 @@ describe('parseSvg', () => {
         viewBox="0 0 256 256"
         fill="none"
       >
-        <rect 
+        <rect
           fill="#F06529"
           height="226"
           width="226"

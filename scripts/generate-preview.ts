@@ -1,7 +1,7 @@
-import { dedent } from 'ts-dedent'
 import puppeteer from 'puppeteer'
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import dedent from 'dedent'
 
 import type { ThemeData, Theme } from '../docs/typings'
 
