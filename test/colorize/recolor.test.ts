@@ -12,38 +12,44 @@ describe('colorize', () => {
     let source = dedent`
       <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
         <circle cx="50" cy="50" r="50" fill="#dc143c" />
-      </svg>`
+      </svg>
+    `
     let result = recolor(theme, source)
 
     expect(result).toBe(dedent`
       <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
         <circle cx="50" cy="50" r="50" fill="#ff0000" />
-      </svg>`)
+      </svg>
+    `)
   })
 
   it('colorizes source code with light colors', () => {
     let source = dedent`
       <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
         <circle cx="50" cy="50" r="50" fill="#fff" />
-      </svg>`
+      </svg>
+    `
     let result = recolor(theme, source)
 
     expect(result).toBe(dedent`
       <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
         <circle cx="50" cy="50" r="50" fill="#eeeeee" />
-      </svg>`)
+      </svg>
+    `)
   })
 
   it('colorizes source code with dark colors', () => {
     let source = dedent`
       <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
         <circle cx="50" cy="50" r="50" fill="#000" />
-      </svg>`
+      </svg>
+    `
     let result = recolor(theme, source)
 
     expect(result).toBe(dedent`
       <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
         <circle cx="50" cy="50" r="50" fill="#0000ff" />
-      </svg>`)
+      </svg>
+    `)
   })
 })

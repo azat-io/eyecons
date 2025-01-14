@@ -32,7 +32,7 @@ export let ColorList = component$(() => {
     ) as ThemeData
 
     updateBaseCSSVariables(
-      dataValue.colors.length ? dataValue.colors : [],
+      dataValue.colors.length > 0 ? dataValue.colors : [],
       themeType.value,
     )
   })
