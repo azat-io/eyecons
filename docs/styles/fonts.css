@@ -5,8 +5,9 @@
 }
 
 :root {
-  --font-family-base: -apple-system, blinkmacsystemfont, 'Segoe UI', roboto,
-    oxygen-sans, ubuntu, cantarell, 'Helvetica Neue', sans-serif;
+  --font-family-base:
+    -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen-sans, ubuntu,
+    cantarell, 'Helvetica Neue', sans-serif;
   --font-family-mono: 'Menlo', monospace;
 
   --font-size-xs: 0.7rem;

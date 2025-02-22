@@ -13,10 +13,10 @@
   padding: calc(var(--space-xs) / 2) var(--space-s);
   color: var(--color-content-primary);
   text-align: start;
+  outline: none;
   background: var(--color-background-tertiary);
   border: 1px solid var(--color-border-secondary);
   border-radius: var(--border-radius);
-  outline: none;
   transition: all 150ms;
 
   &:active,

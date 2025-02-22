@@ -36,10 +36,10 @@
   font: var(--font-s);
   color: var(--color-content-primary);
   text-align: start;
+  outline: none;
   background: var(--color-background-primary);
   border: 0;
   border-radius: var(--border-radius);
-  outline: 0;
   transition: all 150ms ease-in-out;
 
   &:hover {
