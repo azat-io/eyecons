@@ -1,7 +1,7 @@
 .logo {
-  inline-size: 172px;
-  block-size: 172px;
-  margin-block-end: var(--space-s);
+  inline-size: 128px;
+  block-size: 128px;
+  margin-block-end: var(--space-m);
   color: var(--color-content-primary);
 
   path {

@@ -4,8 +4,8 @@
   "description": "Advanced VS Code icon theme with adaptive icon colors that match the editor’s color theme",
   "display": "standalone",
   "start_url": "/",
-  "theme_color": "#282c34",
-  "background_color": "#282c34",
+  "theme_color": "#151b23",
+  "background_color": "#151b23",
   "icons": [
     {
       "src": "/icon-192.png",
