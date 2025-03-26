@@ -24,12 +24,18 @@ export default defineConfig({
   css: {
     lightningcss: {
       targets: browserslistToTargets(
-        browserslist(null, {
-          config: path.join(__dirname, './.browserslistrc'),
-        }),
+        browserslist(
+          browserslist.loadConfig({ path: '.' }) ?? browserslist.defaults,
+        ),
       ),
     },
     transformer: 'lightningcss',
+  },
+  resolve: {
+    alias: {
+      'node:path': path.join(__dirname, './docs/mocks/path.ts'),
+      vscode: path.join(__dirname, './docs/mocks/vscode.ts'),
+    },
   },
   preview: {
     headers: {
@@ -39,11 +45,6 @@ export default defineConfig({
   server: {
     headers: {
       'Cache-Control': 'public, max-age=0',
-    },
-  },
-  resolve: {
-    alias: {
-      vscode: './docs/mocks/vscode.ts',
     },
   },
   build: {

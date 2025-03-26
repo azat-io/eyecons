@@ -25,24 +25,16 @@
 
   &:focus-visible,
   &:hover {
-    background: color-mix(
-      in oklch,
-      oklch(0% 0 0) 15%,
-      var(--color-background-brand)
-    );
+    background: oklch(from var(--color-background-brand) calc(l - 0.05) c h);
   }
 }
 
 .variant-secondary {
   color: var(--color-content-primary);
-  background: var(--color-background-secondary);
+  background: var(--color-background-tertiary);
 
   &:focus-visible,
   &:hover {
-    background: color-mix(
-      in oklch,
-      oklch(0% 0 0) 15%,
-      var(--color-background-secondary)
-    );
+    background: oklch(from var(--color-background-tertiary) calc(l + 0.05) c h);
   }
 }

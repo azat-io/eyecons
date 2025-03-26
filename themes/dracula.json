@@ -1,39 +1,45 @@
 {
+  "backgroundPrimary": "#282a36",
+  "backgroundSecondary": "#21222c",
+  "backgroundTertiary": "#424450",
+  "backgroundBrand": "#bd93f9",
+  "contentPrimary": "#f8f8f2",
+  "contentBrand": "#ffffff",
+  "border": "#21222c",
+  "main": {
+    "red": "#ff5555",
+    "orange": "#ffb86c",
+    "yellow": "#f1fa8c",
+    "green": "#50fa7b",
+    "blue": "#8be9fd",
+    "purple": "#bd93f9"
+  },
   "colors": [
-    "#ff6e6e",
-    "#ffb86c",
-    "#f1fa8c",
-    "#50fa7b",
-    "#8be9fd",
-    "#ff79c6",
-    "#6272a4",
-    "#bd93f9",
-    "#d6acff",
-    "#ff5555",
-    "#a4ffff",
-    "#ffffa5",
-    "#ff92df",
-    "#69ff94",
     "#282a36",
     "#f8f8f2",
     "#44475a",
+    "#6272a4",
+    "#8be9fd",
+    "#50fa7b",
+    "#ffb86c",
+    "#ff79c6",
+    "#bd93f9",
+    "#ff5555",
+    "#f1fa8c",
     "#21222c",
-    "#353747",
-    "#3e404a",
-    "#343746",
     "#424450",
+    "#ffffff",
     "#191a21",
-    "#ffffff"
+    "#343746",
+    "#353747",
+    "#3e404a"
   ],
   "overrides": {
-    "c": {
-      "#394aab": "#6272a4"
+    "babel": {
+      "#f5da55": "#f1fa8c"
     },
-    "cpp": {
-      "#00599c": "#6272a4"
-    },
-    "cs": {
-      "#953cad": "#bd93f9"
+    "browserslist": {
+      "#ffd539": "#f1fa8c"
     },
     "commitlint": {
       "#4fb2dd": "#6272a4"
@@ -41,42 +47,20 @@
     "editorconfig": {
       "#6caaaa": "#6272a4"
     },
-    "elixir": {
-      "#6d4b7b": "#bd93f9"
-    },
-    "eslint": {
-      "#4b32c3": "#6272a4",
-      "#8080f2": "#6272a4"
-    },
-    "graphql": {
-      "#f6009b": "#bd93f9"
-    },
-    "haskell": {
-      "#5e5085": "#bd93f9"
-    },
-    "html": {
-      "#f06529": "#ffb86c"
+    "javascript": {
+      "#f0db4f": "#f1fa8c"
     },
     "jest": {
       "#893f5b": "#ffb86c"
     },
-    "less": {
-      "#1d355d": "#6272a4"
+    "perl": {
+      "#0073a1": "#6272a4"
     },
-    "markdown": {
-      "#083fa1": "#6272a4"
+    "react": {
+      "#0a7ea3": "#6272a4"
     },
-    "nginx": {
-      "#019639": "#50fa7b"
-    },
-    "nodejs": {
-      "#418b3d": "#50fa7b"
-    },
-    "python": {
-      "#ffe052": "#ffb86c"
-    },
-    "storybook": {
-      "#ff4785": "#ff79c6"
+    "stylus": {
+      "#fff": "#282a36"
     }
   }
 }

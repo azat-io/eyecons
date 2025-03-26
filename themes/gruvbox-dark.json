@@ -1,45 +1,57 @@
 {
+  "backgroundPrimary": "#1d2021",
+  "backgroundSecondary": "#1c1f20",
+  "backgroundTertiary": "#282828",
+  "backgroundBrand": "#458588",
+  "contentPrimary": "#ebdbb2",
+  "contentBrand": "#ebdbb2",
+  "border": "#3c3836",
+  "main": {
+    "red": "#fb4934",
+    "orange": "#fe8019",
+    "yellow": "#fabd2f",
+    "green": "#b8bb26",
+    "blue": "#458588",
+    "purple": "#b16286"
+  },
   "colors": [
-    "#fb4934",
-    "#fe8019",
-    "#fabd2f",
-    "#b8bb26",
-    "#458588",
-    "#b16286",
-    "#689d6a",
-    "#a89984",
-    "#928374",
-    "#cc241d",
-    "#83a598",
-    "#98971a",
-    "#d79921",
-    "#d3869b",
-    "#8ec07c",
     "#ebdbb2",
+    "#3c3836",
+    "#fe8019",
+    "#83a598",
+    "#8ec07c",
+    "#b8bb26",
     "#1d2021",
-    "#d65d0e",
-    "#282828"
+    "#689d6a",
+    "#458588",
+    "#fb4934",
+    "#fabd2f",
+    "#98971a",
+    "#cc241d",
+    "#d79921",
+    "#b16286",
+    "#d3869b",
+    "#a89984",
+    "#928374"
   ],
   "overrides": {
-    "c": {
-      "#394aab": "#458588"
+    "commitlint": {
+      "#4fb2dd": "#83a598"
     },
-    "eslint": {
-      "#8080f2": "#458588",
-      "#4b32c3": "#458588"
+    "editorconfig": {
+      "#6caaaa": "#83a598"
     },
     "jest": {
-      "#893f5b": "#fe8018"
+      "#893f5b": "#fe8019"
     },
-    "less": {
-      "#1d355d": "#458488"
+    "vite": {
+      "#7293ff": "#b16286"
     },
-    "markdown": {
-      "#083fa1": "#458488"
+    "vitest": {
+      "#729b1b": "#b8bb26"
     },
-    "vue": {
-      "#35495e": "#458588",
-      "#41b883": "#b8bb26"
+    "webpack": {
+      "#75aecb": "#83a598"
     }
   }
 }

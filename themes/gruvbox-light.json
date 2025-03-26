@@ -1,78 +1,69 @@
 {
+  "backgroundPrimary": "#f9f5d7",
+  "backgroundSecondary": "#f6f2d4",
+  "backgroundTertiary": "#ebdbb2",
+  "backgroundBrand": "#458588",
+  "contentPrimary": "#3c3836",
+  "contentBrand": "#f9f5d7",
+  "border": "#ebdbb2",
+  "main": {
+    "red": "#cc241d",
+    "orange": "#d65d0e",
+    "yellow": "#d79921",
+    "green": "#689d6a",
+    "blue": "#458588",
+    "purple": "#b16286"
+  },
   "colors": [
-    "#cc241d",
-    "#d65d0e",
+    "#f9f5d7",
+    "#f2e5bc",
     "#d79921",
-    "#689d6a",
+    "#ebdbb2",
     "#458588",
-    "#b16286",
+    "#3c3836",
+    "#504945",
+    "#7c6f64",
     "#9d0006",
     "#af3a03",
     "#b57614",
-    "#98971a",
-    "#79740e",
-    "#427b58",
     "#076678",
     "#8f3f71",
-    "#7c6f64",
-    "#ebdbb2",
-    "#f2e5bc",
-    "#f9f5d7",
-    "#b57614",
-    "#af3a03",
-    "#f9f5d7",
-    "#3c3836",
-    "#7c6f64",
-    "#f2e5bc",
-    "#f9f5d7",
-    "#b57614",
-    "#d79921",
-    "#f9f5d7",
-    "#7c6f64",
-    "#f2e5bc",
-    "#f9f5d7",
-    "#b57614",
-    "#d79921",
-    "#f9f5d7",
-    "#7c6f64",
-    "#f2e5bc"
+    "#689d6a",
+    "#427b58",
+    "#d65d0e",
+    "#cc241d",
+    "#928374"
   ],
   "overrides": {
     "audio": {
       "#fa465b": "#cc241d"
     },
-    "babel": {
-      "#f5da55": "#d79921"
+    "eslint": {
+      "#4b32c3": "#458588"
     },
-    "browserslist": {
-      "#ffd539": "#d79921"
+    "php": {
+      "#4f5b93": "#458588"
     },
-    "commitlint": {
-      "#4fb2dd": "#458588"
+    "postcss": {
+      "#292826": "#cc241d",
+      "#fb4934": "#f9f5d7"
     },
-    "elm": {
-      "#8cd636": "#689d6a"
-    },
-    "git": {
-      "#e84d32": "#cc241d"
-    },
-    "javascript": {
-      "#f0db4f": "#d79921"
-    },
-    "json": {
-      "#fbc02d": "#d79921"
-    },
-    "less": {
-      "#1d355d": "#076678"
-    },
-    "python": {
-      "#ffe052": "#d79921"
-    },
-    "stylus": {
-      "#b3d108": "#689d6a"
+    "svg": {
+      "#ffb342": "#d79921"
     },
     "vite": {
-      "#7293ff": "#b16286"
+      "#ffdd35": "#f9f5d7"
+    },
+    "vitest": {
+      "#fcc72b": "#f9f5d7"
+    },
+    "vue": {
+      "#35495e": "#689d6a",
+      "#41b883": "#f9f5d7",
+      "#f4f2ee": "#f9f5d7"
+    },
+    "webpack": {
+      "#75aecb": "#458588"
     }
   }
 }

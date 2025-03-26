@@ -1,75 +1,57 @@
 {
+  "backgroundPrimary": "#f8f9fa",
+  "backgroundSecondary": "#f6f7f8",
+  "backgroundTertiary": "#fcfcfc",
+  "backgroundBrand": "#ffaa33",
+  "contentPrimary": "#5c6166",
+  "contentBrand": "#f8f9fa",
+  "border": "#6b7d8f1f",
+  "main": {
+    "red": "#f07171",
+    "orange": "#fa8d3e",
+    "yellow": "#f2ae49",
+    "green": "#86b300",
+    "blue": "#399ee6",
+    "purple": "#a37acc"
+  },
   "colors": [
-    "#e65050",
-    "#fa8d3e",
-    "#eca944",
-    "#6cbf43",
-    "#478acc",
-    "#9f40ff",
-    "#ff7383",
-    "#ea6c6d",
-    "#f07171",
-    "#ed9366",
-    "#ffaa33",
-    "#f9a52e",
-    "#f2ae49",
-    "#4cbf99",
-    "#3199e1",
-    "#399ee6",
-    "#a37acc",
-    "#8f30ef",
-    "#787b80",
-    "#8a9199",
-    "#5c6166",
+    "#f8f9fa",
     "#f3f4f5",
     "#fcfcfc",
-    "#f8f9fa"
+    "#ffaa33",
+    "#5c6166",
+    "#8a9199",
+    "#6b7d8f1f",
+    "#f07171",
+    "#fa8d3e",
+    "#ed9366",
+    "#f2ae49",
+    "#86b300",
+    "#4cbf99",
+    "#399ee6",
+    "#478acc",
+    "#55b4d4",
+    "#a37acc",
+    "#787b80"
   ],
   "overrides": {
-    "c": {
-      "#394aab": "#478acc"
-    },
-    "cpp": {
-      "#00599c": "#478acc"
-    },
-    "css": {
-      "#2965f1": "#478acc"
-    },
-    "docker": {
-      "#1c63ed": "#478acc"
-    },
-    "elixir": {
-      "#6d4b7b": "#9f40ff"
+    "eslint": {
+      "#4b32c3": "#399ee6"
     },
     "graphql": {
-      "#f6009b": "#9f40ff"
-    },
-    "html": {
-      "#f06529": "#fa8d3e"
+      "#f6009b": "#a37acc"
     },
     "jest": {
       "#893f5b": "#fa8d3e"
     },
-    "less": {
-      "#1d355d": "#478acc"
-    },
-    "markdown": {
-      "#083fa1": "#478acc"
-    },
-    "nodejs": {
-      "#418b3d": "#6cbf43"
-    },
-    "perl": {
-      "#0073a1": "#3199e1"
-    },
     "php": {
-      "#4f5b93": "#3199e1"
+      "#4f5b93": "#399ee6"
+    },
+    "sass": {
+      "#cf649a": "#a37acc"
     },
     "storybook": {
       "#ff4785": "#a37acc"
-    },
-    "yarn": {
-      "#1c63ed": "#478acc"
     }
   }
 }

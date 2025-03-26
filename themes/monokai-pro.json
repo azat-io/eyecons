@@ -1,65 +1,50 @@
 {
+  "backgroundPrimary": "#2d2a2e",
+  "backgroundSecondary": "#221f22",
+  "backgroundTertiary": "#403e41",
+  "backgroundBrand": "#ffd866",
+  "contentPrimary": "#fcfcfa",
+  "contentBrand": "#2d2a2e",
+  "border": "#403e41",
+  "main": {
+    "red": "#ff6188",
+    "orange": "#fc9867",
+    "yellow": "#ffd866",
+    "green": "#a9dc76",
+    "blue": "#78dce8",
+    "purple": "#ab9df2"
+  },
   "colors": [
+    "#2d2a2e",
+    "#221f22",
+    "#403e41",
+    "#fcfcfa",
+    "#c1c0c0",
     "#ff6188",
     "#fc9867",
     "#ffd866",
     "#a9dc76",
     "#78dce8",
     "#ab9df2",
-    "#fcfcfa",
-    "#c1c0c0",
-    "#c1c0c0",
-    "#c1c0c0",
-    "#c1c0c0",
-    "#221f22",
-    "#221f22",
-    "#2d2a2e",
-    "#403e41",
+    "#939293",
+    "#5b595c",
+    "#727072",
     "#19181a",
-    "#000000"
+    "#e6cc77",
+    "#79c0ff"
   ],
   "overrides": {
-    "c": {
-      "#394aab": "#78dce8"
+    "git": {
+      "#e84d32": "#ff6188"
     },
-    "cpp": {
-      "#00599c": "#78dce8"
-    },
-    "cs": {
-      "#953cad": "#ab9df2"
-    },
-    "docker": {
-      "#1c63ed": "#78dce8"
-    },
-    "elixir": {
-      "#6d4b7b": "#ab9df2"
-    },
-    "eslint": {
-      "#4b32c3": "#ab9df2"
-    },
-    "graphql": {
-      "#f6009b": "#ab9df2"
-    },
-    "haskell": {
-      "#5e5085": "#ab9df2"
+    "image": {
+      "#2dcc9f": "#a9dc76"
     },
     "jest": {
       "#893f5b": "#fc9867"
     },
-    "less": {
-      "#1d355d": "#78dce8"
-    },
-    "markdown": {
-      "#083fa1": "#78dce8"
-    },
-    "perl": {
-      "#0073a1": "#78dce8"
-    },
-    "php": {
-      "#4f5b93": "#78dce8"
-    },
-    "yarn": {
-      "#1c63ed": "#78dce8"
+    "scala": {
+      "#de3423": "#ff6188"
     }
   }
 }

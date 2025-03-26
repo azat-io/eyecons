@@ -1,96 +1,52 @@
 {
+  "backgroundPrimary": "#0b0e14",
+  "backgroundSecondary": "#0e1118",
+  "backgroundTertiary": "#11151c",
+  "backgroundBrand": "#e6b450",
+  "contentPrimary": "#bfbdb6",
+  "contentBrand": "#0b0e14",
+  "border": "#11151c",
+  "main": {
+    "red": "#f07178",
+    "orange": "#ff8f40",
+    "yellow": "#ffb454",
+    "green": "#aad94c",
+    "blue": "#59c2ff",
+    "purple": "#d2a6ff"
+  },
   "colors": [
-    "#d95757",
-    "#ff8f40",
-    "#ffb454",
-    "#aad94c",
-    "#59c2ff",
-    "#d2a6ff",
-    "#f26d78",
-    "#f07178",
-    "#f29668",
-    "#f9af4f",
-    "#ffb454",
-    "#f29668",
-    "#e6b450",
-    "#e1af4b",
-    "#ffb454",
-    "#7fd962",
-    "#aad94c",
-    "#39bae6",
-    "#73b8ff",
-    "#6c5980",
-    "#39bae6",
-    "#39bae6",
-    "#90e1c6",
-    "#95e6cb",
-    "#39bae6",
-    "#39bae6",
-    "#95e6cb",
     "#0b0e14",
     "#0f131a",
     "#11151c",
-    "#565b66",
+    "#e6b450",
     "#bfbdb6",
-    "#c7c7c7",
-    "#ffffff",
-    "#686868",
-    "#cda1fa",
-    "#c594c5"
+    "#565b66",
+    "#11151c",
+    "#f07178",
+    "#ff8f40",
+    "#f29668",
+    "#ffb454",
+    "#aad94c",
+    "#59c2ff",
+    "#73b8ff",
+    "#39bae6",
+    "#d2a6ff",
+    "#acb6bf",
+    "#f6f7f8"
   ],
   "overrides": {
-    "c": {
-      "#394aab": "#59c2ff"
-    },
-    "cpp": {
-      "#00599c": "#59c2ff"
-    },
-    "css": {
-      "#2965f1": "#59c2ff"
-    },
-    "docker": {
-      "#1c63ed": "#59c2ff"
-    },
-    "elixir": {
-      "#6d4b7b": "#d2a6ff"
-    },
     "eslint": {
-      "#4b32c3": "#6c5980",
-      "#8080f2": "#6c5980"
+      "#8080f2": "#59c2ff",
+      "#4b32c3": "#59c2ff"
     },
     "graphql": {
       "#f6009b": "#d2a6ff"
     },
-    "html": {
-      "#f06529": "#ff8f40"
-    },
-    "javascript": {
-      "#f0db4f": "#ffb454"
-    },
-    "less": {
-      "#1d355d": "#59c2ff"
-    },
-    "markdown": {
-      "#083fa1": "#59c2ff"
-    },
-    "nginx": {
-      "#019639": "#aad94c"
-    },
-    "nodejs": {
-      "#418b3d": "#aad94c"
-    },
-    "perl": {
-      "#0073a1": "#59c2ff"
+    "jest": {
+      "#893f5b": "#ff8f40"
     },
     "php": {
       "#4f5b93": "#59c2ff"
-    },
-    "python": {
-      "#387eb8": "#59c2ff",
-      "#ffe052": "#ffb454"
-    },
-    "react": {
-      "#0a7ea3": "#59c2ff"
     },
     "sass": {
       "#cf649a": "#d2a6ff"
@@ -98,23 +54,11 @@
     "storybook": {
       "#ff4785": "#d2a6ff"
     },
-    "svgo": {
-      "#3f80c2": "#59c2ff"
-    },
-    "typescript": {
-      "#007acc": "#59c2ff"
-    },
     "vite": {
-      "#ffdd35": "#fff"
+      "#ffdd35": "#f6f7f8"
     },
     "vitest": {
-      "#fcc72b": "#fff"
-    },
-    "vscode": {
-      "#007acc": "#59c2ff"
-    },
-    "yarn": {
-      "#1c63ed": "#59c2ff"
+      "#fcc72b": "#f6f7f8"
     }
   }
 }

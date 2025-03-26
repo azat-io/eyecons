@@ -1,67 +1,93 @@
 {
+  "backgroundPrimary": "#193549",
+  "backgroundSecondary": "#112839",
+  "backgroundTertiary": "#122738",
+  "backgroundBrand": "#0088ff",
+  "contentPrimary": "#fff",
+  "contentBrand": "#fff",
+  "border": "#0d3a58",
+  "main": {
+    "red": "#ff628c",
+    "orange": "#ff9d00",
+    "yellow": "#ffc600",
+    "green": "#3ad900",
+    "blue": "#0088ff",
+    "purple": "#fb94ff"
+  },
   "colors": [
+    "#193549",
+    "#15232d",
+    "#122738",
+    "#0088ff",
+    "#fff",
+    "#aaa",
+    "#0d3a58",
     "#ff628c",
     "#ff9d00",
     "#ffc600",
+    "#3ad900",
     "#a5ff90",
     "#9effff",
-    "#ff68b8",
-    "#ff5630",
-    "#a22929",
-    "#a22929",
-    "#ff7200",
-    "#ffc600",
-    "#ffc600",
-    "#ff94ff",
-    "#ffee80",
-    "#ff94ff",
-    "#3c9f4a",
-    "#3ad900",
-    "#80ffbb",
-    "#2f7366",
-    "#0088ff",
-    "#8dffff",
-    "#80fcff",
-    "#e1efff",
-    "#9effff",
-    "#e1efff",
-    "#80ffbb",
-    "#122738",
-    "#0d3a58",
-    "#193549",
-    "#15232d",
-    "#3b5364",
-    "#0d3a58",
-    "#027dff",
-    "#0050a4",
-    "#1f4662",
-    "#234e6d",
-    "#1f4662",
-    "#15232d",
-    "#185294",
-    "#ff68b8",
     "#fb94ff",
-    "#6639ba",
-    "#3192aa",
-    "#1b7c83",
-    "#a22929",
-    "#9a6700"
+    "#80ffbb",
+    "#e1efff",
+    "#ffee80",
+    "#ff0088"
   ],
   "overrides": {
+    "c": {
+      "#394aab": "#0088ff"
+    },
+    "editorconfig": {
+      "#6caaaa": "#0088ff"
+    },
     "eslint": {
-      "#4b32c3": "#027dff"
+      "#8080f2": "#0088ff",
+      "#4b32c3": "#0088ff"
     },
-    "less": {
-      "#1d355d": "#0088ff"
+    "go": {
+      "#2dbcaf": "#0088ff"
     },
-    "markdown": {
-      "#083fa1": "#0088ff"
+    "image": {
+      "#2dcc9f": "#3ad900"
     },
     "netlify": {
-      "#20c6b7": "#3192aa"
+      "#20c6b7": "#0088ff"
+    },
+    "perl": {
+      "#0073a1": "#0088ff"
+    },
+    "php": {
+      "#4f5b93": "#0088ff"
+    },
+    "prettier": {
+      "#56b3b4": "#0088ff",
+      "#f7ba3e": "#ff9d00"
     },
     "python": {
-      "#ffe052": "#ffc600"
+      "#387eb8": "#0088ff"
+    },
+    "react": {
+      "#0a7ea3": "#0088ff"
+    },
+    "readme": {
+      "#388dd1": "#0088ff"
+    },
+    "stylus": {
+      "#b3d108": "#3ad900"
+    },
+    "tailwind": {
+      "#15becb": "#0088ff"
+    },
+    "vitest": {
+      "#729b1b": "#3ad900"
+    },
+    "vue": {
+      "#41b883": "#3ad900"
+    },
+    "webpack": {
+      "#75aecb": "#0088ff",
+      "#5599c8": "#0088ff"
     }
   }
 }

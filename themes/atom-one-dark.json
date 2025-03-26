@@ -1,53 +1,55 @@
 {
+  "backgroundPrimary": "#282c34",
+  "backgroundSecondary": "#21252b",
+  "backgroundTertiary": "#2c313a",
+  "backgroundBrand": "#4d78cc",
+  "contentPrimary": "#abb2bf",
+  "contentBrand": "#ffffff",
+  "border": "#181a1f",
+  "main": {
+    "red": "#e06c75",
+    "orange": "#d19a66",
+    "yellow": "#e5c07b",
+    "green": "#98c379",
+    "blue": "#61afef",
+    "purple": "#c678dd"
+  },
   "colors": [
+    "#282c34",
+    "#21252b",
+    "#2c313a",
+    "#4d78cc",
+    "#abb2bf",
+    "#ffffff",
+    "#181a1f",
     "#e06c75",
     "#d19a66",
     "#e5c07b",
     "#98c379",
     "#61afef",
     "#c678dd",
-    "#282c34",
-    "#abb2bf",
-    "#eeeeee"
+    "#56b6c2",
+    "#528bff",
+    "#5c6370",
+    "#3e4451",
+    "#636d83"
   ],
   "overrides": {
+    "astro": {
+      "#fe5d01": "#e06c75"
+    },
     "c": {
       "#394aab": "#61afef"
     },
-    "cpp": {
-      "#00599c": "#61afef"
-    },
-    "css": {
-      "#2965f1": "#61afef"
-    },
-    "docker": {
-      "#1c63ed": "#61afef"
-    },
-    "elixir": {
-      "#6d4b7b": "#c678dd"
-    },
     "eslint": {
-      "#8080f2": "#eeeeee",
-      "#4b32c3": "#eeeeee",
-      "#fff": "#c678dd"
+      "#8080f2": "#61afef",
+      "#4b32c3": "#61afef"
     },
     "graphql": {
       "#f6009b": "#c678dd"
     },
-    "haskell": {
-      "#5e5085": "#c678dd"
-    },
-    "html": {
-      "#f06529": "#d19a66"
-    },
     "jest": {
       "#893f5b": "#d19a66"
-    },
-    "less": {
-      "#1d355d": "#61afef"
-    },
-    "markdown": {
-      "#083fa1": "#61afef"
     },
     "php": {
       "#4f5b93": "#61afef"
@@ -58,8 +60,8 @@
     "storybook": {
       "#ff4785": "#c678dd"
     },
-    "yarn": {
-      "#1c63ed": "#61afef"
+    "webpack": {
+      "#5599c8": "#4d78cc"
     }
   }
 }

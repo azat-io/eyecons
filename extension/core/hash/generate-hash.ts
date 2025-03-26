@@ -1,0 +1,24 @@
+import crypto from 'node:crypto'
+
+/**
+ * Generates a unique hash based on provided strings.
+ *
+ * @example
+ *   // Generate hash for an icon
+ *   const hash = generateHash('icon.svg', 'Dark Theme', 'blue')
+ *
+ *   // Generate hash for another context
+ *   const configHash = generateHash(
+ *     'settings',
+ *     'version-1.2.3',
+ *     'user-profile',
+ *   )
+ *
+ * @param {string[]} parts - Array of strings to include in hash generation.
+ * @returns {string} A unique hash string based on input values.
+ */
+export let generateHash = (...parts: string[]): string => {
+  let stringToHash = parts.join('--')
+  let hash = crypto.createHash('md5').update(stringToHash).digest('hex')
+  return hash.slice(0, 8)
+}

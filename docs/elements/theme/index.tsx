@@ -8,8 +8,9 @@ import {
   useSignal,
   Slot,
 } from '@builder.io/qwik'
+import { isDev } from '@builder.io/qwik/build'
 
-import type { Arguments as ThemeArguments } from '../../utils/update-css-variables'
+import type { ThemeSource } from '../../../extension/types/theme'
 import type { Theme as ThemeType } from '../../typings'
 
 import { updateThemeCSSVariables } from '../../utils/update-css-variables'
@@ -24,6 +25,11 @@ export let ThemeSourceContext = createContextId<Signal<ThemeType | null>>(
   'docs.theme-source-context',
 )
 
+let metaGlobData = import.meta.glob('../../../themes/*', {
+  import: 'default',
+  eager: !isDev,
+}) as Record<string, () => Promise<ThemeSource>>
+
 export let Theme = component$(() => {
   let theme = useSignal('nord')
   let themeType = useSignal<'light' | 'dark'>('dark')
@@ -34,15 +40,22 @@ export let Theme = component$(() => {
   useContextProvider(ThemeSourceContext, themeSource)
 
   // eslint-disable-next-line qwik/no-use-visible-task
-  useVisibleTask$(({ track }) => {
+  useVisibleTask$(async ({ track }) => {
     track(() => themeSource.value)
     track(() => themeType.value)
+    track(() => theme.value)
+
+    let dataPath = `../../../themes/${theme.value}.json`
+
+    let dataValue = (
+      isDev ? await metaGlobData[dataPath]?.() : metaGlobData[dataPath]
+    ) as ThemeSource
 
     if (themeSource.value) {
       updateThemeCSSVariables({
         themeType: themeType.value,
-        ...themeSource.value,
-      } as unknown as ThemeArguments)
+        ...dataValue,
+      })
     }
   })
 

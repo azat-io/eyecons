@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["es2022", "DOM", "WebWorker", "DOM.Iterable"],
+    "lib": ["esnext", "DOM", "WebWorker", "DOM.Iterable"],
     "noPropertyAccessFromIndexSignature": true,
     "forceConsistentCasingInFileNames": true,
     "jsxImportSource": "@builder.io/qwik",
@@ -18,8 +18,8 @@
     "noUnusedLocals": true,
     "skipLibCheck": true,
     "incremental": true,
-    "target": "es2022",
-    "module": "es2022",
+    "target": "esnext",
+    "module": "esnext",
     "jsx": "react-jsx",
     "outDir": "tmp",
     "allowJs": true,
