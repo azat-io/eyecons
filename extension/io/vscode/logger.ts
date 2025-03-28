@@ -89,9 +89,7 @@ let getFormattedDate = (): string =>
  * @returns {vscode.OutputChannel} VS Code output channel instance.
  */
 let getOutputChannel = (): vscode.OutputChannel => {
-  if (!outputChannel) {
-    outputChannel = vscode.window.createOutputChannel('Eyecons')
-  }
+  outputChannel ??= vscode.window.createOutputChannel('Eyecons')
   return outputChannel
 }
 

@@ -17,7 +17,7 @@ describe('toRelativePath', () => {
   })
 
   it('should handle paths with different separators', () => {
-    let absolutePath = '/user/extension/dist\\output\\icons\\file.svg'
+    let absolutePath = String.raw`/user/extension/dist\output\icons\file.svg`
     let basePath = '/user/extension/dist'
 
     let result = toRelativePath(absolutePath, {
@@ -61,9 +61,8 @@ describe('toRelativePath', () => {
   })
 
   it('should handle Windows-style paths', () => {
-    let absolutePath =
-      'C:\\Users\\user\\extension\\dist\\output\\icons\\file.svg'
-    let basePath = 'C:\\Users\\user\\extension\\dist'
+    let absolutePath = String.raw`C:\Users\user\extension\dist\output\icons\file.svg`
+    let basePath = String.raw`C:\Users\user\extension\dist`
 
     let result = toRelativePath(absolutePath, {
       outputPath: basePath,

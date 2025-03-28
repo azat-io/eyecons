@@ -24,7 +24,7 @@ export let replaceColorsInSvg = (
 
     let escapedColor = colorInfo.value.replaceAll(
       /[$()*+.?[\\\]^{|}]/gu,
-      '\\$&',
+      String.raw`\$&`,
     )
     let regex = new RegExp(escapedColor, 'g')
 

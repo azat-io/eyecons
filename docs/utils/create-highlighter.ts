@@ -17,12 +17,10 @@ let jsEngine = createJavaScriptRegexEngine()
 export let createHighlighter = async (): Promise<
   HighlighterGeneric<BundledLanguage, BundledTheme>
 > => {
-  if (!highlighter) {
-    highlighter = await createShikiHighlighter({
-      engine: jsEngine,
-      langs: ['tsx'],
-      themes: [],
-    })
-  }
+  highlighter ??= await createShikiHighlighter({
+    engine: jsEngine,
+    langs: ['tsx'],
+    themes: [],
+  })
   return highlighter
 }
