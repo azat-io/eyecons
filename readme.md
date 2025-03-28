@@ -46,6 +46,10 @@ See [docs](https://eyecons.dev).
 
 ![Eyecons example for Gruvbox Dark theme](https://raw.githubusercontent.com/azat-io/eyecons/main/assets/gruvbox-dark.webp)
 
+### Vitesse Dark
+
+![Eyecons example for Vitesse Dark theme](https://raw.githubusercontent.com/azat-io/eyecons/main/assets/vitesse-dark.webp)
+
 Look for more examples of icon theme integration with editor color themes on [the extension's website](https://eyecons.dev).
 
 ## Installation

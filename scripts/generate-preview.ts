@@ -11,7 +11,13 @@ import { adaptIconColors } from '../extension/core/color/adapt-icon-colors'
 import { getConfig } from '../extension/core/build/get-config'
 import { fileIcons } from '../data/file-icons'
 
-let themes = ['atom-one-dark', 'nord', 'monokai-pro', 'gruvbox-dark']
+let themes = [
+  'atom-one-dark',
+  'gruvbox-dark',
+  'vitesse-dark',
+  'monokai-pro',
+  'nord',
+]
 
 let createScreenshot = async (theme: string): Promise<void> => {
   try {
