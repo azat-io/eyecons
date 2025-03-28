@@ -26,21 +26,12 @@ importers:
       '@commitlint/config-conventional':
         specifier: ^19.7.1
         version: 19.7.1
-      '@netlify/edge-functions':
-        specifier: ^2.11.1
-        version: 2.11.1
       '@texel/color':
         specifier: ^1.1.9
         version: 1.1.9
-      '@types/culori':
-        specifier: ^2.1.1
-        version: 2.1.1
       '@types/node':
         specifier: ^22.13.9
         version: 22.13.9
-      '@types/svg-parser':
-        specifier: ^2.0.6
-        version: 2.0.6
       '@types/vscode':
         specifier: ^1.90.0
         version: 1.90.0
@@ -56,9 +47,6 @@ importers:
       changelogen:
         specifier: ^0.6.1
         version: 0.6.1(magicast@0.3.5)
-      culori:
-        specifier: ^4.0.1
-        version: 4.0.1
       cwebp:
         specifier: ^3.2.0
         version: 3.2.0
@@ -110,21 +98,12 @@ importers:
       stylelint-plugin-logical-css:
         specifier: ^1.2.1
         version: 1.2.1(stylelint@16.15.0(typescript@5.8.2))
-      svg-parser:
-        specifier: ^2.0.4
-        version: 2.0.4
       svgo:
         specifier: ^3.3.2
         version: 3.3.2
-      ts-retry:
-        specifier: ^4.2.5
-        version: 4.2.5
       typescript:
         specifier: ^5.8.2
         version: 5.8.2
-      undici:
-        specifier: ^7.4.0
-        version: 7.4.0
       vite:
         specifier: ^6.2.1
         version: 6.2.1(@types/node@22.13.9)(jiti@2.4.2)(lightningcss@1.29.2)(tsx@4.19.3)(yaml@2.7.0)
@@ -1679,9 +1658,6 @@ packages:
   '@types/conventional-commits-parser@5.0.1':
     resolution: {integrity: sha512-7uz5EHdzz2TqoMfV7ee61Egf5y6NkcO4FB/1iCCQnbeiI1F3xzv3vK5dBCXUCLQgGYS+mUeigK1iKQzvED+QnQ==}
 
-  '@types/culori@2.1.1':
-    resolution: {integrity: sha512-NzLYD0vNHLxTdPp8+RlvGbR2NfOZkwxcYGFwxNtm+WH2NuUNV8785zv1h0sulFQ5aFQ9n/jNDUuJeo3Bh7+oFA==}
-
   '@types/debug@4.1.12':
     resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
 
@@ -1735,9 +1711,6 @@ packages:
 
   '@types/retry@0.12.1':
     resolution: {integrity: sha512-xoDlM2S4ortawSWORYqsdU+2rxdh4LRW9ytc3zmT37RIKQh6IHyKwwtKhKis9ah8ol07DCkZxPt8BBvPjC6v4g==}
-
-  '@types/svg-parser@2.0.6':
-    resolution: {integrity: sha512-xrXwOltwMcLrKy79rv4MoalnD82oYLyXAVeeSyrkvR7XdCH4i7YqLNQWxyZ8KPpawtQShiKOse+pmtLeSLtCfQ==}
 
   '@types/triple-beam@1.3.5':
     resolution: {integrity: sha512-6WaYesThRMCl19iryMYP7/x2OVgCtbIVflDGFpWnb9irXI3UjYE4AzmYuiUKY1AJstGijoY+MgUszMgRxIYTYw==}
@@ -2846,10 +2819,6 @@ packages:
 
   csstype@3.1.3:
     resolution: {integrity: sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==}
-
-  culori@4.0.1:
-    resolution: {integrity: sha512-LSnjA6HuIUOlkfKVbzi2OlToZE8OjFi667JWN9qNymXVXzGDmvuP60SSgC+e92sd7B7158f7Fy3Mb6rXS5EDPw==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
   cwebp@3.2.0:
     resolution: {integrity: sha512-DfRnjuxG6GdtoBnGIF/LYcLA3pGTli/mc8ugk/Jqw0SKymlajIZZpLY7ki7yzBqHzClhGozCNyWoOVrKRyE17g==}
@@ -6689,9 +6658,6 @@ packages:
       svelte:
         optional: true
 
-  svg-parser@2.0.4:
-    resolution: {integrity: sha512-e4hG1hRwoOdRb37cIMSgzNsxyzKfayW6VOflrwvR+/bzrkyxY/31WkbgnQpgtrNp1SdpJvpUAGTa/ZoiPNDuRQ==}
-
   svg-tags@1.0.0:
     resolution: {integrity: sha512-ovssysQTa+luh7A5Weu3Rta6FJlFBBbInjOh722LIt6klpU2/HtdUbszju/G4devcvk8PGt7FCLv5wftu3THUA==}
 
@@ -6873,9 +6839,6 @@ packages:
         optional: true
       '@swc/wasm':
         optional: true
-
-  ts-retry@4.2.5:
-    resolution: {integrity: sha512-dFBa4pxMBkt/bjzdBio8EwYfbAdycEAwe0KZgzlUKKwU9Wr1WErK7Hg9QLqJuDDYJXTW4KYZyXAyqYKOdO/ehA==}
 
   tsconfig-paths@3.15.0:
     resolution: {integrity: sha512-2Ac2RgzDe/cn48GvOe3M+o82pEFewD3UPbyoUHHdKasHwJKjds4fLXWf/Ux5kATBKN20oaFGu+jbElp1pos0mg==}
@@ -9143,8 +9106,6 @@ snapshots:
     dependencies:
       '@types/node': 22.13.9
 
-  '@types/culori@2.1.1': {}
-
   '@types/debug@4.1.12':
     dependencies:
       '@types/ms': 2.1.0
@@ -9197,8 +9158,6 @@ snapshots:
   '@types/normalize-package-data@2.4.4': {}
 
   '@types/retry@0.12.1': {}
-
-  '@types/svg-parser@2.0.6': {}
 
   '@types/triple-beam@1.3.5': {}
 
@@ -10470,8 +10429,6 @@ snapshots:
       css-tree: 2.2.1
 
   csstype@3.1.3: {}
-
-  culori@4.0.1: {}
 
   cwebp@3.2.0:
     dependencies:
@@ -15269,8 +15226,6 @@ snapshots:
       postcss-scss: 4.0.9(postcss@8.5.3)
       postcss-selector-parser: 7.1.0
 
-  svg-parser@2.0.4: {}
-
   svg-tags@1.0.0: {}
 
   svgo@3.3.2:
@@ -15468,8 +15423,6 @@ snapshots:
       typescript: 5.8.2
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
-
-  ts-retry@4.2.5: {}
 
   tsconfig-paths@3.15.0:
     dependencies:
