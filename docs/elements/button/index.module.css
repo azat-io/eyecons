@@ -16,9 +16,11 @@
   color: var(--color-content-brand);
   background: var(--color-background-brand);
 
-  &:focus-visible,
-  &:hover {
-    background: oklch(from var(--color-background-brand) calc(l - 0.05) c h);
+  @media (hover: hover) {
+    &:focus-visible,
+    &:hover {
+      background: oklch(from var(--color-background-brand) calc(l - 0.05) c h);
+    }
   }
 }
 
@@ -26,9 +28,13 @@
   color: var(--color-content-primary);
   background: var(--color-background-tertiary);
 
-  &:focus-visible,
-  &:hover {
-    background: oklch(from var(--color-background-tertiary) calc(l + 0.05) c h);
+  @media (hover: hover) {
+    &:focus-visible,
+    &:hover {
+      background: oklch(
+        from var(--color-background-tertiary) calc(l + 0.05) c h
+      );
+    }
   }
 }
 

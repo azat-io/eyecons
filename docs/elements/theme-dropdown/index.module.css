@@ -42,8 +42,10 @@
   border-radius: var(--border-radius);
   transition: all 150ms ease-in-out;
 
-  &:hover {
-    background: var(--color-background-tertiary);
+  @media (hover: hover) {
+    &:hover {
+      background: var(--color-background-tertiary);
+    }
   }
 
   &:focus-visible {
