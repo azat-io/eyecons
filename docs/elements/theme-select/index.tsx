@@ -34,15 +34,13 @@ export let ThemeSelect = component$(() => {
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class={styles['icon']}
-          viewBox="0 0 24 24"
+          viewBox="0 0 16 16"
         >
           <path
-            stroke-linejoin="round"
-            stroke-linecap="round"
-            stroke="currentColor"
-            d="m6 10l6 6l6-6"
-            stroke-width="2"
-            fill="none"
+            d="m7.976 10.072l4.357-4.357l.62.618L8.284 11h-.618L3 6.333l.619-.618z"
+            fill="currentColor"
+            fill-rule="evenodd"
+            clip-rule="evenodd"
           />
         </svg>
       </div>

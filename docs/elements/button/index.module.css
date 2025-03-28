@@ -1,6 +1,4 @@
 .button {
-  min-inline-size: 180px;
-  padding: calc(var(--space-xs) / 1.25) var(--space-l);
   text-align: center;
   text-decoration: none;
   cursor: pointer;
@@ -8,11 +6,6 @@
   border: 0;
   border-radius: var(--border-radius);
   transition: all 150ms ease;
-
-  &:active {
-    padding-block: calc(var(--space-xs) / 1.25 + 2px)
-      calc(var(--space-xs) / 1.25 - 2px);
-  }
 
   &:focus-visible {
     box-shadow: 0 0 0 2px var(--color-background-brand);
@@ -36,5 +29,24 @@
   &:focus-visible,
   &:hover {
     background: oklch(from var(--color-background-tertiary) calc(l + 0.05) c h);
+  }
+}
+
+.size-s {
+  padding: calc(var(--space-xs) / 2) var(--space-2xs);
+
+  &:active {
+    padding-block: calc(var(--space-xs) / 2 + 1px)
+      calc(var(--space-xs) / 2 - 1px);
+  }
+}
+
+.size-m {
+  min-inline-size: 180px;
+  padding: calc(var(--space-xs) / 1.25) var(--space-l);
+
+  &:active {
+    padding-block: calc(var(--space-xs) / 1.25 + 2px)
+      calc(var(--space-xs) / 1.25 - 2px);
   }
 }

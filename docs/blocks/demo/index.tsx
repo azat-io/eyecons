@@ -1,5 +1,6 @@
 import { component$ } from '@builder.io/qwik'
 
+import { ThemeChanger } from '../../elements/theme-changer'
 import { ThemeSelect } from '../../elements/theme-select'
 import { Typography } from '../../elements/typography'
 import { ColorList } from '../../elements/color-list'
@@ -33,6 +34,7 @@ export let Demo = component$(() => (
           <div>
             <div class={styles['selection']}>
               <ThemeSelect />
+              <ThemeChanger />
               <ColorList />
             </div>
             <IconList>

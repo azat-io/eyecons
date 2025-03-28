@@ -6,12 +6,20 @@ interface ButtonProps {
   target?: '_parent' | '_blank' | '_self' | '_top'
   type?: 'button' | 'submit' | 'reset'
   variant?: 'secondary' | 'primary'
-  onClick?(): void
+  onClick$?(): void
+  size?: 's' | 'm'
+  class?: string
   href?: string
 }
 
 export let Button = component$<ButtonProps>(
-  ({ variant = 'primary', type = 'button', ...props }) => {
+  ({
+    variant = 'primary',
+    class: className,
+    type = 'button',
+    size = 'm',
+    ...props
+  }) => {
     let Tag: 'button' | 'a' = 'button'
     if (props.href) {
       Tag = 'a'
@@ -19,7 +27,12 @@ export let Button = component$<ButtonProps>(
 
     return (
       <Tag
-        class={[styles['button'], styles[`variant-${variant}`]]}
+        class={[
+          styles['button'],
+          styles[`variant-${variant}`],
+          styles[`size-${size}`],
+          className,
+        ]}
         type={type}
         {...props}
       >
