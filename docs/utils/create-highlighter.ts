@@ -12,7 +12,11 @@ import {
 
 let highlighter: HighlighterGeneric<BundledLanguage, BuiltinTheme> | null = null
 
-let jsEngine = createJavaScriptRegexEngine()
+let jsEngine = createJavaScriptRegexEngine({
+  target: 'ES2025',
+  cache: new Map(),
+  forgiving: true,
+})
 
 export let createHighlighter = async (): Promise<
   HighlighterGeneric<BundledLanguage, BundledTheme>
