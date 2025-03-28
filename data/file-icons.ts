@@ -1,10 +1,4 @@
-export interface FileIcon {
-  extensions?: string[]
-  files?: string[]
-  light?: boolean
-  name: string
-  id: string
-}
+import type { FileIcon } from '../extension/types/icon'
 
 export let fileIcons: FileIcon[] = [
   {
@@ -565,8 +559,9 @@ export let fileIcons: FileIcon[] = [
       'vite.config.ts',
       'vite.config.cts',
       'vite.config.mts',
-      'vite.config.docs.ts',
+      'vite.config.documentation.ts',
       'vite.config.extension.ts',
+      'vite.config.preview.ts',
     ],
     name: 'Vite',
     id: 'vite',

@@ -1,72 +1,104 @@
 {
+  "backgroundPrimary": "#ffffff",
+  "backgroundSecondary": "#f9fbfd",
+  "backgroundTertiary": "#f3f4f6",
+  "backgroundBrand": "#1f883d",
+  "contentPrimary": "#1f2328",
+  "contentBrand": "#ffffff",
+  "border": "#d0d7de",
+  "main": {
+    "red": "#cf222e",
+    "orange": "#bc4c00",
+    "yellow": "#9a6700",
+    "green": "#116329",
+    "blue": "#0969da",
+    "purple": "#8250df"
+  },
   "colors": [
-    "#cf222e",
-    "#953800",
-    "#d4a72c",
-    "#116329",
-    "#0550ae",
-    "#8250df",
-    "#1f2328",
-    "#0969da",
-    "#4ac26b",
-    "#0a3069",
-    "#9a6700",
-    "#fd8c73",
-    "#f6f8fa",
     "#ffffff",
-    "#6639ba",
-    "#a40e26",
-    "#bf3989",
-    "#eaeef2",
-    "#ff8182",
-    "#bc4c00"
+    "#f6f8fa",
+    "#f3f4f6",
+    "#1f883d",
+    "#1f2328",
+    "#d0d7de",
+    "#cf222e",
+    "#bc4c00",
+    "#9a6700",
+    "#116329",
+    "#0969da",
+    "#8250df",
+    "#0550ae",
+    "#656d76",
+    "#57606a",
+    "#6e7781",
+    "#8c959f",
+    "#ddf4ff"
   ],
   "overrides": {
-    "astro": {
-      "#fe5d01": "#953800"
+    "babel": {
+      "#1b1b1d": "#ffffff"
     },
-    "audio": {
-      "#fa465b": "#cf222e"
+    "browserslist": {
+      "#1e1e1e": "#ffffff"
     },
-    "commitlint": {
-      "#4fb2dd": "#0550ae"
+    "eslint": {
+      "#4b32c3": "#0969da"
     },
-    "editorconfig": {
-      "#6caaaa": "#0550ae"
+    "javascript": {
+      "#323330": "#ffffff"
     },
-    "elm": {
-      "#5fb4cb": "#0550ae"
+    "json": {
+      "#323330": "#ffffff"
     },
-    "fs": {
-      "#2fb8fb": "#0550ae"
+    "mdx": {
+      "#02040a": "#ffffff"
     },
-    "git": {
-      "#e84d32": "#cf222e"
-    },
-    "html": {
-      "#f06529": "#953800"
-    },
-    "image": {
-      "#2dcc9f": "#116329"
+    "nodejs": {
+      "#000": "#116329",
+      "#418b3d": "#ffffff"
     },
     "pnpm": {
       "#4e4e4e": "#1f2328"
     },
-    "storybook": {
-      "#ff4785": "#bf3989"
+    "postcss": {
+      "#292826": "#cf222e",
+      "#fb4934": "#ffffff"
     },
-    "stylus": {
-      "#b3d108": "#116329"
+    "prettier": {
+      "#bf85bf": "#ffffff",
+      "#f7ba3e": "#ffffff",
+      "#ea5e5e": "#ffffff",
+      "#56b3b4": "#ffffff"
+    },
+    "python": {
+      "#242938": "#0969da",
+      "#387eb8": "#ffffff",
+      "#ffe052": "#ffffff"
+    },
+    "sass": {
+      "#cf649a": "#8250df"
+    },
+    "storybook": {
+      "#ff4785": "#8250df"
+    },
+    "svg": {
+      "#000": "#ffffff"
     },
     "vite": {
-      "#7293ff": "#8250df"
+      "#ffdd35": "#ffffff"
     },
     "vitest": {
-      "#729b1b": "#116329"
+      "#fcc72b": "#ffffff"
+    },
+    "vue": {
+      "#35495e": "#116329",
+      "#41b883": "#ffffff",
+      "#f4f2ee": "#ffffff"
     },
     "webpack": {
-      "#5599c8": "#0550ae",
-      "#75aecb": "#0969da"
+      "#2b3a42": "#0969da",
+      "#75aecb": "#ffffff",
+      "#5599c8": "#ffffff"
     }
   }
 }

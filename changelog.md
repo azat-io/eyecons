@@ -1,6 +1,5 @@
 # Changelog
 
-
 ## v1.4.0
 
 [compare changes](https://github.com/azat-io/eyecons/compare/v1.3.0...v1.4.0)
@@ -121,4 +120,3 @@
 ## v0.1.0
 
 ### 🔥️️ Initial Release
-

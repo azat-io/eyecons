@@ -40,6 +40,12 @@
   text-align: end;
 }
 
+.no-wrap {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .mbs-2xs {
   margin-block-start: var(--space-2xs);
 }

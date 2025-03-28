@@ -1,66 +1,70 @@
 {
+  "backgroundPrimary": "#011627",
+  "backgroundSecondary": "#02192a",
+  "backgroundTertiary": "#021320",
+  "backgroundBrand": "#7e57c2",
+  "contentPrimary": "#d6deeb",
+  "contentBrand": "#ffffff",
+  "border": "#5f7e97",
+  "main": {
+    "red": "#ef5350",
+    "orange": "#f78c6c",
+    "yellow": "#ffeb95",
+    "green": "#c5e478",
+    "blue": "#82aaff",
+    "purple": "#c792ea"
+  },
   "colors": [
+    "#011627",
+    "#01111d",
+    "#021320",
+    "#7e57c2",
+    "#d6deeb",
+    "#ffffff",
+    "#5f7e97",
     "#ef5350",
     "#f78c6c",
-    "#ffca28",
-    "#22da6e",
-    "#82aaff",
-    "#7e57c2",
-    "#80cbc4",
-    "#c792ea",
-    "#ecc48d",
+    "#ffeb95",
     "#c5e478",
-    "#d6deeb",
-    "#637777",
-    "#011627",
-    "#ffffff",
-    "#d3423e",
-    "#82b1ff",
-    "#a599e9",
-    "#234d70",
+    "#82aaff",
+    "#c792ea",
     "#7fdbca",
-    "#ffcb8b",
-    "#b39554",
     "#ff5874",
-    "#1d3b53",
-    "#c5e4fd",
-    "#575656",
-    "#b2ccd6",
-    "#021320"
+    "#bec5d4",
+    "#80cbc4",
+    "#0b2942"
   ],
   "overrides": {
+    "astro": {
+      "#fe5d01": "#f78c6c"
+    },
     "cpp": {
       "#00599c": "#82aaff"
     },
     "commitlint": {
       "#4fb2dd": "#82aaff"
     },
-    "css": {
-      "#2965f1": "#82aaff"
-    },
-    "docker": {
-      "#1c63ed": "#82aaff"
-    },
     "eslint": {
-      "#4b32c3": "#7e57c2"
+      "#8080f2": "#82aaff",
+      "#4b32c3": "#82aaff"
+    },
+    "git": {
+      "#e84d32": "#ef5350"
     },
     "html": {
       "#f06529": "#f78c6c"
     },
+    "image": {
+      "#2dcc9f": "#c5e478"
+    },
     "jest": {
       "#893f5b": "#f78c6c"
     },
+    "license": {
+      "#eb7d2e": "#f78c6c"
+    },
     "less": {
       "#1d355d": "#82aaff"
-    },
-    "markdown": {
-      "#083fa1": "#82aaff"
-    },
-    "nginx": {
-      "#019639": "#22da6e"
-    },
-    "nodejs": {
-      "#418b3d": "#22da6e"
     },
     "perl": {
       "#0073a1": "#82aaff"
@@ -74,20 +78,24 @@
     "react": {
       "#0a7ea3": "#82aaff"
     },
+    "readme": {
+      "#388dd1": "#82aaff"
+    },
     "svgo": {
       "#3f80c2": "#82aaff"
     },
-    "typescript": {
-      "#007acc": "#82aaff"
-    },
     "vitest": {
-      "#729b1b": "#22da6e"
+      "#729b1b": "#80cbc4"
     },
-    "vscode": {
-      "#007acc": "#82aaff"
+    "webpack": {
+      "#75aecb": "#82aaff",
+      "#5599c8": "#82aaff"
     },
-    "yarn": {
-      "#1c63ed": "#82aaff"
+    "xml": {
+      "#fff": "#011627"
+    },
+    "yaml": {
+      "#fff": "#011627"
     }
   }
 }

@@ -1,79 +1,56 @@
 {
+  "backgroundPrimary": "#292a2b",
+  "backgroundSecondary": "#242526",
+  "backgroundTertiary": "#2a2c2d",
+  "backgroundBrand": "#45a9f9",
+  "contentPrimary": "#e6e6e6",
+  "contentBrand": "#ffffff",
+  "border": "#373b41",
+  "main": {
+    "red": "#ff75b5",
+    "orange": "#ffb86c",
+    "yellow": "#ffcc95",
+    "green": "#19f9d8",
+    "blue": "#6fc1ff",
+    "purple": "#b084eb"
+  },
   "colors": [
-    "#ff75b5",
+    "#292a2b",
+    "#242526",
+    "#2a2c2d",
+    "#45a9f9",
+    "#e6e6e6",
+    "#ffffff",
+    "#373b41",
+    "#ff2c6d",
     "#ffb86c",
     "#ffcc95",
     "#19f9d8",
     "#6fc1ff",
     "#b084eb",
-    "#ff2c6d",
+    "#ff75b5",
     "#ff9ac1",
-    "#45a9f9",
-    "#e6e6e6",
-    "#2a2c2d",
-    "#292a2b",
-    "#ffffff"
+    "#cdcdcd",
+    "#757575",
+    "#676b79"
   ],
   "overrides": {
-    "c": {
-      "#394aab": "#6fc1ff"
-    },
-    "cpp": {
-      "#00599c": "#6fc1ff"
-    },
-    "cs": {
-      "#953cad": "#b084eb"
-    },
-    "css": {
-      "#2965f1": "#6fc1ff"
-    },
-    "docker": {
-      "#1c63ed": "#6fc1ff"
-    },
-    "elixir": {
-      "#6d4b7b": "#b084eb"
-    },
     "eslint": {
-      "#4b32c3": "#b084eb"
-    },
-    "graphql": {
-      "#f6009b": "#b084eb"
-    },
-    "haskell": {
-      "#5e5085": "#b084eb"
-    },
-    "html": {
-      "#f06529": "#ffb86c"
+      "#8080f2": "#6fc1ff",
+      "#4b32c3": "#6fc1ff"
     },
     "jest": {
       "#893f5b": "#ffb86c"
     },
-    "less": {
-      "#1d355d": "#6fc1ff"
-    },
-    "markdown": {
-      "#083fa1": "#6fc1ff"
-    },
-    "nginx": {
-      "#019639": "#19f9d8"
-    },
-    "nodejs": {
-      "#418b3d": "#19f9d8"
-    },
     "php": {
       "#4f5b93": "#6fc1ff"
     },
-    "stylus": {
-      "#b3d108": "#19f9d8"
+    "vite": {
+      "#7293ff": "#b084eb",
+      "#ffdd35": "#ffffff"
     },
     "vitest": {
-      "#729b1b": "#19f9d8"
-    },
-    "vue": {
-      "#35495e": "#6fc1ff"
-    },
-    "yarn": {
-      "#1c63ed": "#6fc1ff"
+      "#fcc72b": "#ffffff"
     }
   }
 }

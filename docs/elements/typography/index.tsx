@@ -8,6 +8,7 @@ interface TypographyProps {
   mbs?: '2xs' | 'xs' | 'xl' | 's' | 'm' | 'l'
   mbe?: '2xs' | 'xs' | 'xl' | 's' | 'm' | 'l'
   align?: 'center' | 'start' | 'end'
+  noWrap?: boolean
   class?: string
   bold?: boolean
   for?: string
@@ -17,6 +18,7 @@ export let Typography = component$<TypographyProps>(
   ({
     class: className,
     align = 'start',
+    noWrap = false,
     tag = 'span',
     bold = false,
     size = 'm',
@@ -35,6 +37,7 @@ export let Typography = component$<TypographyProps>(
           mbs && styles[`mbs-${mbs}`],
           mbe && styles[`mbe-${mbe}`],
           bold && styles['bold'],
+          noWrap && styles['no-wrap'],
           className,
         ]}
         {...props}

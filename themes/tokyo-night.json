@@ -1,51 +1,62 @@
 {
+  "backgroundPrimary": "#1a1b26",
+  "backgroundSecondary": "#16161e",
+  "backgroundTertiary": "#14141b",
+  "backgroundBrand": "#3d59a1",
+  "contentPrimary": "#a9b1d6",
+  "contentBrand": "#ffffff",
+  "border": "#101014",
+  "main": {
+    "red": "#f7768e",
+    "orange": "#ff9e64",
+    "yellow": "#e0af68",
+    "green": "#9ece6a",
+    "blue": "#7aa2f7",
+    "purple": "#bb9af7"
+  },
   "colors": [
+    "#1a1b26",
+    "#16161e",
+    "#14141b",
+    "#3d59a1",
+    "#a9b1d6",
+    "#ffffff",
+    "#101014",
     "#f7768e",
     "#ff9e64",
     "#e0af68",
     "#9ece6a",
     "#7aa2f7",
     "#bb9af7",
-    "#7dcfff",
-    "#41a6b5",
-    "#9d7cd8",
-    "#0db9d7",
+    "#c0caf5",
     "#73daca",
-    "#6183bb",
-    "#d1dbff",
-    "#16161e",
-    "#101014",
-    "#1a1b26"
+    "#7dcfff",
+    "#2ac3de",
+    "#0db9d7"
   ],
   "overrides": {
+    "c": {
+      "#394aab": "#7aa2f7"
+    },
     "eslint": {
-      "#8080f2": "#6183bb",
-      "#4b32c3": "#6183bb"
+      "#8080f2": "#7aa2f7",
+      "#4b32c3": "#7aa2f7"
     },
     "graphql": {
-      "#f6009b": "#9d7cd8"
-    },
-    "haskell": {
-      "#5e5085": "#9d7cd8"
-    },
-    "javascript": {
-      "#f0db4f": "#e0af68"
+      "#f6009b": "#bb9af7"
     },
     "jest": {
-      "#893f5b": "#9d7cd8"
+      "#893f5b": "#ff9e64"
     },
-    "less": {
-      "#1d355d": "#7aa2f7"
+    "php": {
+      "#4f5b93": "#7aa2f7"
     },
-    "markdown": {
-      "#083fa1": "#7aa2f7"
+    "vite": {
+      "#7293ff": "#bb9af7",
+      "#ffdd35": "#ffffff"
     },
-    "vue": {
-      "#35495e": "#6183bb"
-    },
-    "webpack": {
-      "#75aecb": "#7aa2f7",
-      "#5599c8": "#6183bb"
+    "vitest": {
+      "#fcc72b": "#ffffff"
     }
   }
 }

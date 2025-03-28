@@ -5,3 +5,10 @@ export let workspace = {
     get: () => {},
   }),
 }
+
+export let window = {
+  createOutputChannel: (): Record<string, unknown> => ({
+    appendLine: (): void => {},
+  }),
+  showErrorMessage: (): void => {},
+}

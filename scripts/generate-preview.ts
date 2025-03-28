@@ -1,11 +1,14 @@
+import type { ExtensionContext } from 'vscode'
+
 import puppeteer from 'puppeteer'
 import fs from 'node:fs/promises'
-import path from 'node:path'
 import dedent from 'dedent'
+import cwebp from 'cwebp'
 
-import type { ThemeData, Theme } from '../docs/typings'
+import type { ThemeSource } from '../extension/types/theme'
 
-import { colorize } from '../extension/colorize'
+import { adaptIconColors } from '../extension/core/color/adapt-icon-colors'
+import { getConfig } from '../extension/core/build/get-config'
 import { fileIcons } from '../data/file-icons'
 
 let themes = ['atom-one-dark', 'nord', 'monokai-pro', 'gruvbox-dark']
@@ -22,17 +25,14 @@ let createScreenshot = async (theme: string): Promise<void> => {
     let paddingSize = 16
     let gapSize = 20
 
-    let themeData = (await import(
-      path.join(__dirname, '../docs/themes', `${theme}.json`)
-    )) as Theme
-    let themeValueData = (await import(
-      path.join(__dirname, '../themes', `${theme}.json`)
-    )) as ThemeData
+    let themeFilePath = `${process.cwd()}/themes/${theme}.json`
+    let themeFileContent = await fs.readFile(themeFilePath, 'utf8')
+    let themeValueData = JSON.parse(themeFileContent) as ThemeSource
 
     let getIconsSources = async (): Promise<Record<string, string>> => {
       let iconPromises = fileIcons.map(async ({ id }) => {
         let iconContent = await fs.readFile(
-          path.join(__dirname, `../icons/files/${id}.svg`),
+          `${process.cwd()}/icons/files/${id}.svg`,
           'utf8',
         )
         return { iconContent, id }
@@ -62,8 +62,20 @@ let createScreenshot = async (theme: string): Promise<void> => {
 
     let colorizeIcons = async (): Promise<string> =>
       await fileIcons.reduce(async (accumulatorPromise, { name, id }) => {
+        let themeValue = {
+          folderColor: 'blue',
+          id: theme,
+          ...themeValueData,
+        }
         let accumulator = await accumulatorPromise
-        let coloredIcon = await colorize(id, themeValueData, iconsSources[id]!)
+        let coloredIcon = adaptIconColors(
+          {
+            svgContent: iconsSources[id]!,
+            id,
+          },
+          themeValue,
+          getConfig({} as ExtensionContext),
+        )
         return dedent`
           ${accumulator}
           <div class="icon">
@@ -80,8 +92,8 @@ let createScreenshot = async (theme: string): Promise<void> => {
         html,
         body {
           margin: 0;
-          background: ${themeData.colors['editor.background']};
-          color: ${themeData.colors['editor.foreground']};
+          background: ${themeValueData.backgroundPrimary};
+          color: ${themeValueData.contentPrimary};
           font-family: sans-serif;
         }
 
@@ -102,6 +114,9 @@ let createScreenshot = async (theme: string): Promise<void> => {
         .name {
           font-size: 9px;
           text-align: center;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
           margin: 0;
         }
       </style>
@@ -114,20 +129,35 @@ let createScreenshot = async (theme: string): Promise<void> => {
       waitUntil: 'networkidle0',
     })
 
+    let screenshotPath = `${process.cwd()}/assets/${theme}.webp`
+
     await page.screenshot({
-      path: path.join(__dirname, '../assets', `${theme}.webp`),
+      path: screenshotPath,
       omitBackground: true,
       fullPage: true,
       type: 'webp',
     })
 
     await browser.close()
+
+    let encoder = cwebp(screenshotPath)
+
+    encoder._args['q'] = [75]
+    encoder._args['m'] = [6]
+    encoder._args['alpha_q'] = [100]
+
+    let temporaryPath = `${process.cwd()}/assets/${theme}.temp.webp`
+
+    try {
+      await encoder.write(temporaryPath)
+      await fs.unlink(screenshotPath)
+      await fs.rename(temporaryPath, screenshotPath)
+    } catch (error) {
+      console.error(`Ошибка при оптимизации ${theme}.webp:`, error)
+    }
   } catch (error) {
     console.error('error', error)
   }
 }
 
-// eslint-disable-next-line unicorn/prefer-top-level-await
-;(async () => {
-  await Promise.all(themes.map(createScreenshot))
-})()
+await Promise.all(themes.map(createScreenshot))

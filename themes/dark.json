@@ -1,61 +1,68 @@
 {
+  "backgroundPrimary": "#1e1e1e",
+  "backgroundSecondary": "#202020",
+  "backgroundTertiary": "#202020",
+  "backgroundBrand": "#0078d4",
+  "contentPrimary": "#d4d4d4",
+  "contentBrand": "#ffffff",
+  "border": "#3c3c3c",
+  "main": {
+    "red": "#d16969",
+    "orange": "#ce9178",
+    "yellow": "#d7ba7d",
+    "green": "#4ec9b0",
+    "blue": "#569cd6",
+    "purple": "#c586c0"
+  },
   "colors": [
-    "#d16969",
-    "#ce9178",
-    "#dcdcaa",
-    "#4ec9b0",
-    "#569cd6",
-    "#c586c0",
-    "#f85149",
-    "#9e6a03",
-    "#d7ba7d",
-    "#608b4e",
-    "#b5cea8",
-    "#007acc",
-    "#9cdcfe",
-    "#40a6ff",
-    "#4daafc",
     "#1e1e1e",
-    "#264f78",
-    "#3a3d41",
-    "#010409",
+    "#252525",
     "#202020",
     "#0078d4",
-    "#313131",
-    "#2488db",
-    "#222222",
-    "#1f1f1f",
-    "#34414b",
+    "#d4d4d4",
+    "#ffffff",
     "#3c3c3c",
-    "#404040",
-    "#383b3d",
-    "#6e7681",
-    "#d4d4d4"
+    "#d16969",
+    "#ce9178",
+    "#d7ba7d",
+    "#608b4e",
+    "#569cd6",
+    "#c586c0",
+    "#4ec9b0",
+    "#9cdcfe",
+    "#dcdcaa",
+    "#b5cea8",
+    "#808080",
+    "#505050"
   ],
   "overrides": {
-    "cs": {
-      "#953cad": "#c586c0"
+    "commitlint": {
+      "#4fb2dd": "#569cd6"
     },
-    "editorconfig": {
-      "#6caaaa": "#569cd6"
+    "eslint": {
+      "#8080f2": "#569cd6",
+      "#4b32c3": "#0078d4"
+    },
+    "fs": {
+      "#2fb8fb": "#569cd6"
     },
     "graphql": {
       "#f6009b": "#c586c0"
     },
-    "html": {
-      "#f06529": "#ce9178"
-    },
     "jest": {
       "#893f5b": "#ce9178"
     },
-    "less": {
-      "#1d355d": "#569cd6"
+    "perl": {
+      "#0073a1": "#0078d4"
+    },
+    "php": {
+      "#4f5b93": "#569cd6"
+    },
+    "react": {
+      "#0a7ea3": "#569cd6"
     },
     "storybook": {
       "#ff4785": "#c586c0"
-    },
-    "stylus": {
-      "#b3d108": "#4ec9b0"
     }
   }
 }

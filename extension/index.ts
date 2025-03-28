@@ -2,57 +2,62 @@ import type { ExtensionContext } from 'vscode'
 
 import { workspace, commands } from 'vscode'
 
-import { validate } from './build/validate'
-import { console } from './utils/console'
-import { build } from './build'
+import type { Config } from './types/config'
+import type { Theme } from './types/theme'
+
+import { buildIcons } from './core/build/build-icons'
+import { getConfig } from './core/build/get-config'
+import { validate } from './core/validate/validate'
+import { getTheme } from './core/build/get-theme'
+import { logger } from './io/vscode/logger'
 
 let buildInProgress = false
 
-let buildEyecons = async (): Promise<void> => {
-  try {
-    if (buildInProgress) {
-      return
-    }
-    buildInProgress = true
-    let validateValue = await validate()
-    console.log('Validate:', validateValue)
-
-    if (!validateValue) {
-      await build()
-    }
-  } catch (error) {
-    console.log(error)
-  } finally {
-    buildInProgress = false
-  }
-}
-
 export let activate = async (context: ExtensionContext): Promise<void> => {
-  console.init()
+  logger.init()
 
-  try {
-    let previousVersion = context.globalState.get<string>('extensionVersion')
-    let currentVersion = (
-      context.extension.packageJSON as {
-        version: string
+  let buildEyecons = async (): Promise<void> => {
+    try {
+      if (buildInProgress) {
+        return
       }
-    ).version
+      let config: Config = getConfig(context)
+      let theme: Theme = await getTheme()
 
-    commands.registerCommand('eyecons.rebuild', build)
-    workspace.onDidChangeConfiguration(buildEyecons)
+      buildInProgress = true
 
-    console.log('Previous version:', previousVersion)
-    console.log('Current version:', currentVersion)
+      let validationResult = await validate(theme, config)
+      logger.info(
+        `Validation result: ${validationResult.isValid ? 'valid' : 'invalid'}`,
+      )
 
-    if (previousVersion === currentVersion) {
-      await buildEyecons()
-    } else {
-      await build()
-      await context.globalState.update('extensionVersion', currentVersion)
+      if (validationResult.reason) {
+        logger.info(`Validation reason: ${validationResult.reason}`)
+      }
+
+      if (!validationResult.isValid) {
+        await buildIcons(theme, config)
+      }
+    } catch (error) {
+      logger.error(
+        `Error during build: ${error instanceof Error ? error.message : String(error)}`,
+      )
+    } finally {
+      buildInProgress = false
     }
-  } catch (error) {
-    console.log(error)
   }
+
+  let forceBuild = async (): Promise<void> => {
+    let config: Config = getConfig(context)
+    let theme: Theme = await getTheme()
+
+    await buildIcons(theme, config)
+  }
+
+  commands.registerCommand('eyecons.rebuild', forceBuild)
+  workspace.onDidChangeConfiguration(buildEyecons)
+
+  await buildEyecons()
 }
 
 export let deactivate = (): void => {}

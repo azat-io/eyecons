@@ -1,49 +1,57 @@
 {
+  "backgroundPrimary": "#1d1d1d",
+  "backgroundSecondary": "#202020",
+  "backgroundTertiary": "#303030",
+  "backgroundBrand": "#3584e4",
+  "contentPrimary": "#c0bfbc",
+  "contentBrand": "#ffffff",
+  "border": "#454545",
+  "main": {
+    "red": "#f66151",
+    "orange": "#ff7800",
+    "yellow": "#f5c211",
+    "green": "#33b2a4",
+    "blue": "#3584e4",
+    "purple": "#7d8ac7"
+  },
   "colors": [
+    "#1d1d1d",
+    "#242424",
+    "#303030",
+    "#3584e4",
+    "#c0bfbc",
+    "#ffffff",
+    "#454545",
     "#f66151",
     "#ff7800",
     "#ffa348",
-    "#33b2a4",
-    "#62a0ea",
-    "#7d8ac7",
-    "#4e57ba",
-    "#c0bfbc",
-    "#9a9996",
-    "#77767b",
-    "#a51d2d",
-    "#e66100",
     "#f5c211",
+    "#33b2a4",
     "#5bc8af",
     "#1f7f56",
-    "#1a5fb4",
-    "#cccccc",
-    "#666666",
-    "#5f7999",
-    "#454545",
-    "#4990e7",
-    "#3584e4",
-    "#303030",
-    "#262626",
-    "#363636",
-    "#242424",
-    "#333333",
-    "#1d1d1d",
-    "#444444",
-    "#ededed",
-    "#1b497e"
+    "#8ff0a4",
+    "#62a0ea",
+    "#7d8ac7",
+    "#77767b"
   ],
   "overrides": {
     "graphql": {
       "#f6009b": "#7d8ac7"
     },
-    "scala": {
-      "#de3423": "#f66151"
+    "nginx": {
+      "#019639": "#33b2a4"
+    },
+    "nodejs": {
+      "#418b3d": "#33b2a4"
     },
     "stylus": {
       "#b3d108": "#33b2a4"
     },
     "vitest": {
       "#729b1b": "#33b2a4"
+    },
+    "webpack": {
+      "#5599c8": "#3584e4"
     }
   }
 }

@@ -1,8 +1,4 @@
-export interface BaseIcon {
-  light?: boolean
-  name: string
-  id: string
-}
+import type { BaseIcon } from '../extension/types/icon'
 
 export let baseIcons: BaseIcon[] = [
   {

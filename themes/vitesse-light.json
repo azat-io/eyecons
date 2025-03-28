@@ -1,81 +1,70 @@
 {
+  "backgroundPrimary": "#ffffff",
+  "backgroundSecondary": "#fafafa",
+  "backgroundTertiary": "#f0f0f0",
+  "backgroundBrand": "#1c6b48",
+  "contentPrimary": "#393a34",
+  "contentBrand": "#ffffff",
+  "border": "#f0f0f0",
+  "main": {
+    "red": "#ab5959",
+    "orange": "#a65e2b",
+    "yellow": "#bda437",
+    "green": "#1e754f",
+    "blue": "#296aa3",
+    "purple": "#a13865"
+  },
   "colors": [
+    "#ffffff",
+    "#f7f7f7",
+    "#f0f0f0",
+    "#1c6b48",
+    "#393a34",
+    "#ffffff",
+    "#f0f0f0",
     "#ab5959",
     "#a65e2b",
     "#bda437",
     "#1e754f",
     "#296aa3",
-    "#6f42c1",
-    "#ab5e3f",
-    "#b31d28",
-    "#b56959",
-    "#b07d48",
-    "#e36209",
-    "#1c6b48",
-    "#22863a",
-    "#2993a3",
-    "#2e8f82",
-    "#2e808f",
-    "#586069",
-    "#5a6aa6",
     "#a13865",
-    "#999999",
-    "#a0ada0",
-    "#393a34",
-    "#4e4f47",
-    "#6a737d",
-    "#d1d5da",
-    "#e1e4e8",
-    "#f0f0f0",
-    "#f7f7f7",
-    "#ffffff"
+    "#2993a3",
+    "#b56959",
+    "#59873a",
+    "#b07d48",
+    "#5a6aa6",
+    "#998418"
   ],
   "overrides": {
-    "commitlint": {
-      "#4fb2dd": "#296aa3"
+    "babel": {
+      "#f5da55": "#bda437"
     },
-    "editorconfig": {
-      "#6caaaa": "#1e754f"
+    "browserslist": {
+      "#ffd539": "#bda437"
     },
-    "fs": {
-      "#2fb8fb": "#296aa3"
+    "javascript": {
+      "#f0db4f": "#bda437"
     },
-    "git": {
-      "#e84d32": "#ab5959"
+    "jest": {
+      "#893f5b": "#a65e2b"
     },
-    "go": {
-      "#2dbcaf": "#1e754f"
+    "mdx": {
+      "#fcb32c": "#bda437"
     },
-    "image": {
-      "#2dcc9f": "#1e754f"
+    "postcss": {
+      "#292826": "#ab5959",
+      "#fb4934": "#ffffff"
     },
-    "less": {
-      "#1d355d": "#296aa3"
-    },
-    "markdown": {
-      "#083fa1": "#296aa3"
-    },
-    "netlify": {
-      "#20c6b7": "#1e754f"
-    },
-    "python": {
-      "#ffe052": "#bda437"
-    },
-    "stylus": {
-      "#b3d108": "#1e754f"
-    },
-    "tailwind": {
-      "#15becb": "#2e808f"
+    "svg": {
+      "#ffb342": "#bda437"
     },
     "vite": {
-      "#7293ff": "#6f42c1",
       "#ffdd35": "#bda437"
     },
-    "vitest": {
-      "#729b1b": "#1e754f"
-    },
-    "yaml": {
-      "#f2932a": "#a65e2b"
+    "vue": {
+      "#35495e": "#1e754f",
+      "#41b883": "#ffffff",
+      "#f4f2ee": "#ffffff"
     }
   }
 }

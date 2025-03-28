@@ -1,10 +1,13 @@
+import type { ExtensionContext } from 'vscode'
+
 import { component$, useContext, useSignal, useTask$ } from '@builder.io/qwik'
 import { isDev } from '@builder.io/qwik/build'
 
-import type { ThemeData } from '../../typings'
+import type { ThemeSource } from '../../../extension/types/theme'
 
+import { adaptIconColors } from '../../../extension/core/color/adapt-icon-colors'
+import { getConfig } from '../../../extension/core/build/get-config'
 import { ThemeTypeContext, ThemeContext } from '../theme'
-import { colorize } from '../../../extension/colorize'
 
 interface IconProps {
   light: boolean
@@ -17,10 +20,10 @@ let metaGlobIcons = import.meta.glob('../../../icons/files/*', {
   query: '?raw',
 }) as Record<string, () => Promise<string>>
 
-let metaGlobThemeData = import.meta.glob('../../../themes/*', {
+let metaGlobData = import.meta.glob('../../../themes/*', {
   import: 'default',
   eager: !isDev,
-}) as Record<string, () => Promise<string>>
+}) as Record<string, () => Promise<ThemeSource>>
 
 export let Icon = component$<IconProps>(({ light, id }) => {
   let icon = useSignal<string | null>(null)
@@ -36,17 +39,32 @@ export let Icon = component$<IconProps>(({ light, id }) => {
       themeType.value === 'light' && light ? '-light' : ''
     }.svg`
 
-    let svgValue = (
+    let svgContent = (
       isDev ? await metaGlobIcons[iconPath]?.() : metaGlobIcons[iconPath]
     ) as string
 
-    let themeDataPath = `../../../themes/${theme.value}.json`
+    let dataPath = `../../../themes/${theme.value}.json`
 
-    let themeData = (isDev
-      ? await metaGlobThemeData[themeDataPath]?.()
-      : metaGlobThemeData[themeDataPath]) as unknown as ThemeData
+    let dataValue = (
+      isDev ? await metaGlobData[dataPath]?.() : metaGlobData[dataPath]
+    ) as ThemeSource
 
-    icon.value = await colorize(id, themeData, svgValue)
+    let themeValue = {
+      folderColor: 'blue',
+      id: theme.value,
+      ...dataValue,
+    }
+
+    let extensionContext = {} as ExtensionContext
+
+    icon.value = adaptIconColors(
+      {
+        svgContent,
+        id,
+      },
+      themeValue,
+      getConfig(extensionContext),
+    )
   })
 
   if (!icon.value) {

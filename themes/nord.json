@@ -1,66 +1,88 @@
 {
+  "backgroundPrimary": "#2e3440",
+  "backgroundSecondary": "#303643",
+  "backgroundTertiary": "#3a4252",
+  "backgroundBrand": "#88c0d0",
+  "contentPrimary": "#d8dee9",
+  "contentBrand": "#2e3440",
+  "border": "#3b4252",
+  "main": {
+    "red": "#bf616a",
+    "orange": "#d08770",
+    "yellow": "#ebcb8b",
+    "green": "#a3be8c",
+    "blue": "#88c0d0",
+    "purple": "#81a1c1"
+  },
   "colors": [
+    "#2e3440",
+    "#3b4252",
+    "#434c5e",
+    "#4c566a",
+    "#d8dee9",
+    "#e5e9f0",
+    "#eceff4",
+    "#8fbcbb",
+    "#88c0d0",
+    "#81a1c1",
+    "#5e81ac",
     "#bf616a",
     "#d08770",
     "#ebcb8b",
     "#a3be8c",
-    "#88c0d0",
-    "#81a1c1",
     "#b48ead",
-    "#5e81ac",
-    "#8fbcbb",
-    "#d8dee9",
-    "#434c5e",
-    "#4c566a",
-    "#3b4252",
-    "#2e3440",
-    "#eceff4"
+    "#2d3339",
+    "#616e88"
   ],
   "overrides": {
+    "astro": {
+      "#fe5d01": "#d08770"
+    },
     "c": {
-      "#394aab": "#81a1c1"
-    },
-    "cs": {
-      "#953cad": "#81a1c1"
-    },
-    "cpp": {
-      "#00599c": "#5d81ab"
+      "#394aab": "#5e81ac"
     },
     "elixir": {
-      "#6d4b7b": "#5d81ab"
+      "#6d4b7b": "#5e81ac"
     },
     "eslint": {
+      "#8080f2": "#81a1c1",
       "#4b32c3": "#5e81ac"
+    },
+    "git": {
+      "#e84d32": "#bf616a"
     },
     "graphql": {
       "#f6009b": "#b48ead"
     },
     "haskell": {
-      "#5e5085": "#5d81ab"
+      "#5e5085": "#5e81ac"
+    },
+    "html": {
+      "#f06529": "#d08770"
     },
     "jest": {
       "#893f5b": "#d08770"
     },
-    "less": {
-      "#1d355d": "#5d81ab"
-    },
-    "markdown": {
-      "#083fa1": "#5d81ab"
-    },
     "php": {
-      "#4f5b93": "#5d81ab"
+      "#4f5b93": "#5e81ac"
     },
     "sass": {
       "#cf649a": "#b48ead"
     },
+    "scala": {
+      "#de3423": "#bf616a"
+    },
     "storybook": {
       "#ff4785": "#b48ead"
     },
-    "stylus": {
-      "#b3d108": "#a3be8c"
+    "vite": {
+      "#7293ff": "#b48ead"
     },
-    "webpack": {
-      "#75aecb": "#88c0d0"
+    "xml": {
+      "#f57b02": "#d08770"
+    },
+    "yaml": {
+      "#fff": "#2d3339"
     }
   }
 }
