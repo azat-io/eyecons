@@ -546,6 +546,11 @@ export let fileIcons: FileIcon[] = [
     id: 'typescript',
   },
   {
+    extensions: ['v', 'vsh'],
+    name: 'V',
+    id: 'v',
+  },
+  {
     files: ['vercel.json', '.vercelignore', 'now.json', '.nowignore'],
     name: 'Vercel',
     id: 'vercel',
