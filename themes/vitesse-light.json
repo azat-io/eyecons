@@ -55,6 +55,12 @@
       "#292826": "#ab5959",
       "#fb4934": "#ffffff"
     },
+    "prettier": {
+      "#bf85bf": "#ffffff",
+      "#f7ba3e": "#ffffff",
+      "#ea5e5e": "#ffffff",
+      "#56b3b4": "#ffffff"
+    },
     "svg": {
       "#ffb342": "#bda437"
     },
