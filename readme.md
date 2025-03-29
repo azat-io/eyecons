@@ -62,7 +62,7 @@ Or install the extension using the command line:
 code --install-extension azat-io.eyecons
 ```
 
-## Options
+## Configuration
 
 You can customize the extension to suit your needs!
 
@@ -81,6 +81,24 @@ All folders use the colors of your color theme.
 ### Hide Explorer Arrows
 
 If the option is enabled, arrows will additionally be displayed in the document tree. This can be useful to visually identify folders more quickly and distinguish them from regular files.
+
+### Configuration via settings.json
+
+You can also configure the extension directly in your VS Code `settings.json` file:
+
+```json
+{
+  "eyecons.theme": "inherit",
+  "eyecons.folderColor": "yellow",
+  "eyecons.hideExplorerArrows": true
+}
+```
+
+Available settings:
+
+- `eyecons.theme`: Set your preferred theme (e.g., "inherit", "gruvbox-dark", "nord")
+- `eyecons.folderColor`: Choose folder color (available options depend on the theme)
+- `eyecons.hideExplorerArrows`: Set to true/false to show/hide explorer arrows
 
 ## Themes
 
