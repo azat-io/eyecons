@@ -825,4 +825,9 @@ export let fileIcons: FileIcon[] = [
     name: 'Yarn',
     id: 'yarn',
   },
+  {
+    extensions: ['zig', 'zir', 'zigr', 'zon'],
+    name: 'Zig',
+    id: 'zig',
+  },
 ]
