@@ -10,7 +10,7 @@
 
 [![Version](https://img.shields.io/visual-studio-marketplace/v/azat-io.eyecons?color=07af62&labelColor=151B23)](https://marketplace.visualstudio.com/items?itemName=azat-io.eyecons)
 [![Code Coverage](https://img.shields.io/codecov/c/github/azat-io/eyecons.svg?color=07af62&labelColor=151B23)](https://npmjs.com/package/eyecons)
-[![GitHub License](https://img.shields.io/badge/license-MIT-232428.svg?color=07af62&labelColor=151B23)](https://github.com/azat-io/eslint-plugin-perfectionist/blob/main/license)
+[![GitHub License](https://img.shields.io/badge/license-MIT-232428.svg?color=07af62&labelColor=151B23)](https://github.com/azat-io/eyecons/blob/main/license.md)
 
 VS Code icon theme with adaptive icon colors that match the editor’s color theme.
 
