@@ -20,6 +20,20 @@ jobs:
       - name: Install Tools
         uses: ./.github/actions/install-tools
 
+      - name: Build Extension
+        run: pnpm run build
+
+      - name: Package extension (.vsix)
+        run: pnpm release:package
+
+      - name: Publish to VS Code Marketplace
+        run: |
+          pnpm vsce publish --no-dependencies --pat ${{ secrets.VSCE_TOKEN }}
+
+      - name: Publish to Open VSX
+        run: |
+          pnpm ovsx publish eyecons-$(pnpm pkg get version | tr -d '"').vsix -p ${{ secrets.OVSX_TOKEN }}
+
       - name: Create GitHub Release
         run: pnpx changelogithub
         env:
