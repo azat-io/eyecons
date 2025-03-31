@@ -41,6 +41,9 @@
     "browserslist": {
       "#1e1e1e": "#ffffff"
     },
+    "env": {
+      "#59727e": "#0969da"
+    },
     "eslint": {
       "#4b32c3": "#0969da"
     },

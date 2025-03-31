@@ -44,6 +44,9 @@
     "commitlint": {
       "#4fb2dd": "#82aaff"
     },
+    "env": {
+      "#59727e": "#82aaff"
+    },
     "eslint": {
       "#8080f2": "#82aaff",
       "#4b32c3": "#82aaff"

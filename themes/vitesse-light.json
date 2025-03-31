@@ -42,6 +42,9 @@
     "browserslist": {
       "#ffd539": "#bda437"
     },
+    "env": {
+      "#59727e": "#296aa3"
+    },
     "javascript": {
       "#f0db4f": "#bda437"
     },
