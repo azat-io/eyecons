@@ -20,10 +20,13 @@ jobs:
       - name: Install Tools
         uses: ./.github/actions/install-tools
 
+      - name: Install Dependencies
+        uses: ./.github/actions/install-dependencies
+
       - name: Build Extension
         run: pnpm run build
 
-      - name: Package extension (.vsix)
+      - name: Package extension
         run: pnpm release:package
 
       - name: Publish to VS Code Marketplace
