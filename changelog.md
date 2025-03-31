@@ -1,5 +1,26 @@
 # Changelog
 
+## v1.5.0
+
+[compare changes](https://github.com/azat-io/eyecons/compare/v1.4.0...v1.5.0)
+
+### 🚀 Features
+
+- Rebrand with new logo ([06802f2](https://github.com/azat-io/eyecons/commit/06802f2))
+- Rewrite extension ([f0f1355](https://github.com/azat-io/eyecons/commit/f0f1355))
+- Add v icon ([a8a826c](https://github.com/azat-io/eyecons/commit/a8a826c))
+- Add zig icon ([d3071b7](https://github.com/azat-io/eyecons/commit/d3071b7))
+- Add env icon ([30ad82c](https://github.com/azat-io/eyecons/commit/30ad82c))
+- Add console icon ([9f1810c](https://github.com/azat-io/eyecons/commit/9f1810c))
+
+### 🐞 Bug Fixes
+
+- Improve appearance of prettier icon in vitesse light ([a37cb8c](https://github.com/azat-io/eyecons/commit/a37cb8c))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](https://github.com/azat-io))
+
 ## v1.4.0
 
 [compare changes](https://github.com/azat-io/eyecons/compare/v1.3.0...v1.4.0)
