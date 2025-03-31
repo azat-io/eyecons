@@ -35,6 +35,6 @@ jobs:
           pnpm ovsx publish eyecons-$(pnpm pkg get version | tr -d '"').vsix -p ${{ secrets.OVSX_TOKEN }}
 
       - name: Create GitHub Release
-        run: pnpx changelogithub
+        run: pnpm changelogithub
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
