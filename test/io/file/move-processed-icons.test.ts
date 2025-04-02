@@ -9,8 +9,8 @@ import { logger } from '../../../extension/io/vscode/logger'
 
 vi.mock('node:fs/promises', () => ({
   default: {
-    rename: vi.fn(),
     mkdir: vi.fn(),
+    cp: vi.fn(),
     rm: vi.fn(),
   },
 }))
@@ -76,7 +76,7 @@ describe('moveProcessedIcons', () => {
 
     vi.mocked(fs.mkdir).mockResolvedValue('')
     vi.mocked(fs.rm).mockResolvedValue()
-    vi.mocked(fs.rename).mockResolvedValue()
+    vi.mocked(fs.cp).mockResolvedValue()
 
     await moveProcessedIcons(temporaryDirectory, mockConfig)
 
@@ -86,7 +86,13 @@ describe('moveProcessedIcons', () => {
       recursive: true,
       force: true,
     })
-    expect(fs.rename).toHaveBeenCalledWith(temporaryDirectory, 'icons/theme')
+    expect(fs.cp).toHaveBeenCalledWith(temporaryDirectory, 'icons/theme', {
+      recursive: true,
+    })
+    expect(fs.rm).toHaveBeenCalledWith(temporaryDirectory, {
+      recursive: true,
+      force: true,
+    })
 
     expect(mockLoggerContext.debug).toHaveBeenCalledWith(
       `Moving icons from ${temporaryDirectory} to icons/theme`,
@@ -95,7 +101,7 @@ describe('moveProcessedIcons', () => {
       'Removed existing output directory: icons/theme',
     )
     expect(mockLoggerContext.info).toHaveBeenCalledWith(
-      'Successfully moved icons to icons/theme',
+      'Successfully copied icons to icons/theme',
     )
   })
 
@@ -103,8 +109,10 @@ describe('moveProcessedIcons', () => {
     let temporaryDirectory = '/tmp/eyecons-12345'
 
     vi.mocked(fs.mkdir).mockResolvedValue('')
-    vi.mocked(fs.rm).mockRejectedValue(new Error('Cannot remove directory'))
-    vi.mocked(fs.rename).mockResolvedValue()
+    vi.mocked(fs.rm)
+      .mockRejectedValueOnce(new Error('Cannot remove directory'))
+      .mockResolvedValueOnce()
+    vi.mocked(fs.cp).mockResolvedValue()
 
     await moveProcessedIcons(temporaryDirectory, mockConfig)
 
@@ -113,7 +121,13 @@ describe('moveProcessedIcons', () => {
       recursive: true,
       force: true,
     })
-    expect(fs.rename).toHaveBeenCalledWith(temporaryDirectory, 'icons/theme')
+    expect(fs.cp).toHaveBeenCalledWith(temporaryDirectory, 'icons/theme', {
+      recursive: true,
+    })
+    expect(fs.rm).toHaveBeenCalledWith(temporaryDirectory, {
+      recursive: true,
+      force: true,
+    })
 
     expect(mockLoggerContext.debug).toHaveBeenCalledWith(
       'Output directory did not exist or could not be removed: icons/theme',
@@ -124,8 +138,10 @@ describe('moveProcessedIcons', () => {
     let temporaryDirectory = '/tmp/eyecons-12345'
 
     vi.mocked(fs.mkdir).mockResolvedValue('')
-    vi.mocked(fs.rm).mockRejectedValue('Cannot remove directory')
-    vi.mocked(fs.rename).mockResolvedValue()
+    vi.mocked(fs.rm)
+      .mockRejectedValueOnce('Cannot remove directory')
+      .mockResolvedValueOnce()
+    vi.mocked(fs.cp).mockResolvedValue()
 
     await moveProcessedIcons(temporaryDirectory, mockConfig)
 
@@ -134,44 +150,50 @@ describe('moveProcessedIcons', () => {
       recursive: true,
       force: true,
     })
-    expect(fs.rename).toHaveBeenCalledWith(temporaryDirectory, 'icons/theme')
+    expect(fs.cp).toHaveBeenCalledWith(temporaryDirectory, 'icons/theme', {
+      recursive: true,
+    })
+    expect(fs.rm).toHaveBeenCalledWith(temporaryDirectory, {
+      recursive: true,
+      force: true,
+    })
 
     expect(mockLoggerContext.debug).toHaveBeenCalledWith(
       'Output directory did not exist or could not be removed: icons/theme',
     )
   })
 
-  it('should throw and log error when rename fails', async () => {
+  it('should throw and log error when copy fails', async () => {
     let temporaryDirectory = '/tmp/eyecons-12345'
-    let error = new Error('Rename failed')
+    let error = new Error('Copy failed')
 
     vi.mocked(fs.mkdir).mockResolvedValue('')
     vi.mocked(fs.rm).mockResolvedValue()
-    vi.mocked(fs.rename).mockRejectedValue(error)
+    vi.mocked(fs.cp).mockRejectedValue(error)
 
     await expect(
       moveProcessedIcons(temporaryDirectory, mockConfig),
     ).rejects.toThrow(error)
 
     expect(mockLoggerContext.error).toHaveBeenCalledWith(
-      'Failed to move icons: Rename failed',
+      'Failed to move icons: Copy failed',
     )
   })
 
-  it('should throw and log error when rename fails with string error', async () => {
+  it('should throw and log error when copy fails with string error', async () => {
     let temporaryDirectory = '/tmp/eyecons-12345'
-    let error = 'Rename failed'
+    let error = 'Copy failed'
 
     vi.mocked(fs.mkdir).mockResolvedValue('')
     vi.mocked(fs.rm).mockResolvedValue()
-    vi.mocked(fs.rename).mockRejectedValue(error)
+    vi.mocked(fs.cp).mockRejectedValue(error)
 
     await expect(
       moveProcessedIcons(temporaryDirectory, mockConfig),
     ).rejects.toThrow(error)
 
     expect(mockLoggerContext.error).toHaveBeenCalledWith(
-      'Failed to move icons: Rename failed',
+      'Failed to move icons: Copy failed',
     )
   })
 
@@ -189,6 +211,6 @@ describe('moveProcessedIcons', () => {
       'Failed to move icons: Mkdir failed',
     )
     expect(fs.rm).not.toHaveBeenCalled()
-    expect(fs.rename).not.toHaveBeenCalled()
+    expect(fs.cp).not.toHaveBeenCalled()
   })
 })

@@ -41,8 +41,9 @@ export let moveProcessedIcons = async (
       )
     }
 
-    await fs.rename(temporaryDirectory, config.outputIconsPath)
-    moveLogger.info(`Successfully moved icons to ${config.outputIconsPath}`)
+    await fs.cp(temporaryDirectory, config.outputIconsPath, { recursive: true })
+    await fs.rm(temporaryDirectory, { recursive: true, force: true })
+    moveLogger.info(`Successfully copied icons to ${config.outputIconsPath}`)
   } catch (error) {
     moveLogger.error(
       `Failed to move icons: ${
