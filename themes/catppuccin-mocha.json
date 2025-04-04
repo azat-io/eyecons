@@ -48,6 +48,9 @@
     "javascript": {
       "#f0db4f": "#f9e2af"
     },
+    "rust": {
+      "#f74b01": "#fab387"
+    },
     "toml": {
       "#9c4121": "#fab387"
     },
