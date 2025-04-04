@@ -53,6 +53,10 @@ export let themes = [
     id: 'gruvbox-light',
   },
   {
+    name: 'Houston',
+    id: 'houston',
+  },
+  {
     name: 'Monokai Pro',
     id: 'monokai-pro',
   },

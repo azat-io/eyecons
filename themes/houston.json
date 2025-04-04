@@ -1,0 +1,75 @@
+{
+  "backgroundPrimary": "#17191e",
+  "backgroundSecondary": "#181b21",
+  "backgroundTertiary": "#343841",
+  "backgroundBrand": "#4bf3c8",
+  "contentPrimary": "#eef0f9",
+  "contentBrand": "#17191e",
+  "border": "#3c3836",
+  "main": {
+    "red": "#f4587e",
+    "orange": "#ff8551",
+    "yellow": "#ffd493",
+    "green": "#4bf3c8",
+    "blue": "#54b9ff",
+    "purple": "#acafff"
+  },
+  "colors": [
+    "#17191e",
+    "#23262d",
+    "#343841",
+    "#545864",
+    "#858b98",
+    "#bfc1c9",
+    "#eef0f9",
+    "#4bf3c8",
+    "#00daef",
+    "#54b9ff",
+    "#acafff",
+    "#cc75f4",
+    "#f4587e",
+    "#f06788",
+    "#ffd493",
+    "#dc3657",
+    "#545864",
+    "#ffffff"
+  ],
+  "overrides": {
+    "astro": {
+      "#fe5d01": "#f4587e"
+    },
+    "css": {
+      "#2965f1": "#54b9ff"
+    },
+    "env": {
+      "#59727e": "#54b9ff"
+    },
+    "html": {
+      "#f06529": "#ff8551"
+    },
+    "jest": {
+      "#893f5b": "#ff8551"
+    },
+    "license": {
+      "#eb7d2e": "#ff8551"
+    },
+    "svelte": {
+      "#ff3e00": "#ff8551"
+    },
+    "swift": {
+      "#f05137": "#ff8551"
+    },
+    "toml": {
+      "#9c4121": "#ff8551"
+    },
+    "xml": {
+      "#f57b02": "#ff8551"
+    },
+    "yaml": {
+      "#fff": "#17191e"
+    },
+    "zig": {
+      "#fff": "#17191e"
+    }
+  }
+}
