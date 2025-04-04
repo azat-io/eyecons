@@ -104,6 +104,7 @@ Available settings:
 
 The extension currently supports the following color themes:
 
+- [2077](https://github.com/endormi/vscode-2077-theme)
 - [Adwaita Dark](https://github.com/piousdeer/vscode-adwaita)
 - [Adwaita Light](https://github.com/piousdeer/vscode-adwaita)
 - [Atom One Dark](https://github.com/akamud/vscode-theme-onedark)

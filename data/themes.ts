@@ -1,5 +1,9 @@
 export let themes = [
   {
+    name: '2077',
+    id: '2077',
+  },
+  {
     name: 'Adwaita Dark',
     id: 'adwaita-dark',
   },

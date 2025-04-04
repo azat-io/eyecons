@@ -1,0 +1,79 @@
+{
+  "backgroundPrimary": "#030d22",
+  "backgroundSecondary": "#04112c",
+  "backgroundTertiary": "#222858",
+  "backgroundBrand": "#087eb4",
+  "contentPrimary": "#fdfeff",
+  "contentBrand": "#ffffff",
+  "border": "#030f27",
+  "main": {
+    "red": "#ff2e97",
+    "orange": "#ff8f40",
+    "yellow": "#ffd400",
+    "green": "#3dd69c",
+    "blue": "#0ab2fa",
+    "purple": "#ea00d9"
+  },
+  "colors": [
+    "#030d22",
+    "#04112c",
+    "#222858",
+    "#0a0631",
+    "#1d1641",
+    "#141138",
+    "#fdfeff",
+    "#ff2e97",
+    "#ff8f40",
+    "#ffd400",
+    "#3dd69c",
+    "#0ab2fa",
+    "#ea00d9",
+    "#0ef3ff",
+    "#ee0077",
+    "#47a1fa",
+    "#0097fc",
+    "#c832ff",
+    "#e1efff",
+    "#ff1bf0",
+    "#40a9ff",
+    "#dbcd00",
+    "#ff2cf1",
+    "#39c0ff",
+    "#0098df",
+    "#a83dff",
+    "#00d7e2"
+  ],
+  "overrides": {
+    "c": {
+      "#394aab": "#0ab2fa"
+    },
+    "css": {
+      "#2965f1": "#0ab2fa"
+    },
+    "env": {
+      "#59727e": "#0ab2fa"
+    },
+    "eslint": {
+      "#8080f2": "#0ab2fa",
+      "#4b32c3": "#0ab2fa"
+    },
+    "haskell": {
+      "#5e5085": "#ea00d9"
+    },
+    "less": {
+      "#1d355d": "#0ab2fa"
+    },
+    "php": {
+      "#4f5b93": "#0ab2fa"
+    },
+    "toml": {
+      "#9c4121": "#ff8f40"
+    },
+    "vite": {
+      "#7293ff": "#ea00d9"
+    },
+    "vitest": {
+      "#729b1b": "#3dd69c"
+    }
+  }
+}
