@@ -598,6 +598,11 @@ export let fileIcons: FileIcon[] = [
     id: 'tailwind',
   },
   {
+    extensions: ['toml'],
+    name: 'TOML',
+    id: 'toml',
+  },
+  {
     extensions: ['ts', 'cts', 'mts'],
     name: 'TypeScript',
     id: 'typescript',

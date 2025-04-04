@@ -48,6 +48,9 @@
     "php": {
       "#4f5b93": "#6fc1ff"
     },
+    "toml": {
+      "#9c4121": "#ffb86c"
+    },
     "vite": {
       "#7293ff": "#b084eb",
       "#ffdd35": "#ffffff"

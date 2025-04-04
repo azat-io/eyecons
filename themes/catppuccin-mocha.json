@@ -48,6 +48,9 @@
     "javascript": {
       "#f0db4f": "#f9e2af"
     },
+    "toml": {
+      "#9c4121": "#fab387"
+    },
     "vite": {
       "#ffdd35": "#ffffff"
     },

@@ -61,6 +61,9 @@
     "storybook": {
       "#ff4785": "#c678dd"
     },
+    "toml": {
+      "#9c4121": "#d19a66"
+    },
     "vite": {
       "#7293ff": "#c678dd",
       "#ffdd35": "#f8fafd"
