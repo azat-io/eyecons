@@ -62,6 +62,10 @@ export let themes = [
     id: 'houston',
   },
   {
+    name: 'Matcha',
+    id: 'matcha',
+  },
+  {
     name: 'Monokai Pro',
     id: 'monokai-pro',
   },

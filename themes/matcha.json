@@ -1,0 +1,46 @@
+{
+  "backgroundPrimary": "#273136",
+  "backgroundSecondary": "#222a2d",
+  "backgroundTertiary": "#323e45",
+  "backgroundBrand": "#d9d4b8",
+  "contentPrimary": "#d1ded3",
+  "contentBrand": "#1c2427",
+  "border": "#323e45",
+  "main": {
+    "red": "#c6a685",
+    "orange": "#c0ae69",
+    "yellow": "#d9d4b8",
+    "green": "#a4b07e",
+    "blue": "#7eb0a3",
+    "purple": "#8a7eb0"
+  },
+  "colors": [
+    "#273136",
+    "#1c2427",
+    "#323e45",
+    "#707c4f",
+    "#a4b07e",
+    "#c0ae69",
+    "#d1ded3",
+    "#c6a685",
+    "#d9d4b8",
+    "#7ea4b0",
+    "#8a7eb0",
+    "#7eb0a3"
+  ],
+  "overrides": {
+    "css": {
+      "#2965f1": "#7eb0a3"
+    },
+    "docker": {
+      "#1c63ed": "#7eb0a3"
+    },
+    "eslint": {
+      "#8080f2": "#7eb0a3",
+      "#4b32c3": "#7eb0a3"
+    },
+    "php": {
+      "#4f5b93": "#7eb0a3"
+    }
+  }
+}

@@ -119,6 +119,7 @@ The extension currently supports the following color themes:
 - [Gruvbox Dark](https://github.com/jdinhify/vscode-theme-gruvbox)
 - [Gruvbox Light](https://github.com/jdinhify/vscode-theme-gruvbox)
 - [Houston](https://github.com/withastro/houston-vscode)
+- [Matcha](https://github.com/lucafalasco/matcha)
 - [Monokai Pro](https://github.com/Monokai/monokai-pro-vscode)
 - [Night Owl](https://github.com/sdras/night-owl-vscode-theme)
 - [Nord](https://github.com/nordtheme/visual-studio-code)
