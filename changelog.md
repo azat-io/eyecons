@@ -1,5 +1,26 @@
 # Changelog
 
+## v1.6.0
+
+[compare changes](https://github.com/azat-io/eyecons/compare/v1.5.0...v1.6.0)
+
+### 🚀 Features
+
+- Add toml icon ([1f72a93](https://github.com/azat-io/eyecons/commit/1f72a93))
+- Support houston theme ([9cc18b6](https://github.com/azat-io/eyecons/commit/9cc18b6))
+- Support 2077 theme ([81bdcbd](https://github.com/azat-io/eyecons/commit/81bdcbd))
+- Add rust icon ([5e35d03](https://github.com/azat-io/eyecons/commit/5e35d03))
+- Add alias for pustota theme ([38b79db](https://github.com/azat-io/eyecons/commit/38b79db))
+- Support matcha theme ([4457dcc](https://github.com/azat-io/eyecons/commit/4457dcc))
+
+### 🐞 Bug Fixes
+
+- Properly move icons between different filesystems ([7908097](https://github.com/azat-io/eyecons/commit/7908097))
+
+### ❤️ Contributors
+
+- Azat S. <to@azat.io>
+
 ## v1.5.0
 
 [compare changes](https://github.com/azat-io/eyecons/compare/v1.4.0...v1.5.0)
