@@ -30,10 +30,6 @@ This creates a consistent and harmonious look across your dev environment.
 
 See [docs](https://eyecons.dev).
 
-### Atom One Dark
-
-![Eyecons example for Atom One Dark theme](https://raw.githubusercontent.com/azat-io/eyecons/main/assets/atom-one-dark.webp)
-
 ### Nord
 
 ![Eyecons example for Nord theme](https://raw.githubusercontent.com/azat-io/eyecons/main/assets/nord.webp)
