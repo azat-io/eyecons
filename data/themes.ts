@@ -90,6 +90,10 @@ export let themes = [
     id: 'solarized-dark',
   },
   {
+    name: 'Solarized Light',
+    id: 'solarized-light',
+  },
+  {
     name: 'SynthWave 84',
     id: 'synthwave-84',
   },

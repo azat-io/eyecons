@@ -122,6 +122,7 @@ The extension currently supports the following color themes:
 - [One Monokai](https://github.com/azemoh/vscode-one-monokai)
 - [Panda](https://github.com/tinkertrain/panda-syntax-vscode)
 - [Solarized Dark](https://github.com/ryanolsonx/vscode-solarized-theme)
+- [Solarized Light](https://github.com/ryanolsonx/vscode-solarized-theme)
 - [Synthwave '84](https://github.com/robb0wen/synthwave-vscode)
 - [Tokyo Night](https://github.com/tokyo-night/tokyo-night-vscode-theme)
 - [Vitesse Dark](https://github.com/antfu/vscode-theme-vitesse)
