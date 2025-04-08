@@ -28,6 +28,7 @@ export let ThemeChanger = component$(() => {
         aria-label="Previous theme"
         class={styles['button']}
         variant="secondary"
+        bordered
         size="s"
       >
         <svg
@@ -48,6 +49,7 @@ export let ThemeChanger = component$(() => {
         onClick$={setNextTheme$}
         aria-label="Next theme"
         variant="secondary"
+        bordered
         size="s"
       >
         <svg
