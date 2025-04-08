@@ -1,0 +1,75 @@
+{
+  "backgroundPrimary": "#002b36",
+  "backgroundSecondary": "#012530",
+  "backgroundTertiary": "#073642",
+  "backgroundBrand": "#268bd2",
+  "contentPrimary": "#93a1a1",
+  "contentBrand": "#ffffff",
+  "border": "#586e75",
+  "main": {
+    "red": "#dc322f",
+    "orange": "#cb4b16",
+    "yellow": "#b58900",
+    "green": "#859900",
+    "blue": "#268bd2",
+    "purple": "#d33682"
+  },
+  "colors": [
+    "#002b36",
+    "#073642",
+    "#586e75",
+    "#657b83",
+    "#839496",
+    "#93a1a1",
+    "#eee8d5",
+    "#fdf6e3",
+    "#b58900",
+    "#cb4b16",
+    "#dc322f",
+    "#d33682",
+    "#6c71c4",
+    "#268bd2",
+    "#2aa198",
+    "#859900",
+    "#184c71",
+    "#14181d"
+  ],
+  "overrides": {
+    "astro": {
+      "#fe5d01": "#dc322f"
+    },
+    "commitlint": {
+      "#4fb2dd": "#268bd2"
+    },
+    "css": {
+      "#2965f1": "#268bd2"
+    },
+    "env": {
+      "#59727e": "#268bd2"
+    },
+    "html": {
+      "#f06529": "#cb4b16"
+    },
+    "less": {
+      "#1d355d": "#268bd2"
+    },
+    "perl": {
+      "#0073a1": "#268bd2"
+    },
+    "pnpm": {
+      "#4e4e4e": "#002b36"
+    },
+    "react": {
+      "#0a7ea3": "#268bd2"
+    },
+    "vite": {
+      "#ffdd35": "#fdf6e3"
+    },
+    "vitest": {
+      "#fcc72b": "#fdf6e3"
+    },
+    "xml": {
+      "#f57b02": "#cb4b16"
+    }
+  }
+}

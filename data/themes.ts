@@ -86,6 +86,10 @@ export let themes = [
     id: 'panda',
   },
   {
+    name: 'Solarized Dark',
+    id: 'solarized-dark',
+  },
+  {
     name: 'SynthWave 84',
     id: 'synthwave-84',
   },
