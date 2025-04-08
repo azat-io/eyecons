@@ -1,5 +1,18 @@
 # Changelog
 
+## v1.7.0
+
+[compare changes](https://github.com/azat-io/eyecons/compare/v1.6.0...v1.7.0)
+
+### 🚀 Features
+
+- Support solarized dark theme ([0891ed8](https://github.com/azat-io/eyecons/commit/0891ed8))
+- Support solarized light theme ([bb33dbb](https://github.com/azat-io/eyecons/commit/bb33dbb))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](https://github.com/azat-io))
+
 ## v1.6.0
 
 [compare changes](https://github.com/azat-io/eyecons/compare/v1.5.0...v1.6.0)
