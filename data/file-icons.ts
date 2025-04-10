@@ -369,6 +369,20 @@ export let fileIcons: FileIcon[] = [
   },
   {
     files: [
+      'knip.json',
+      'knip.jsonc',
+      '.knip.json',
+      '.knip.jsonc',
+      'knip.ts',
+      'knip.js',
+      'knip.config.ts',
+      'knip.config.js',
+    ],
+    name: 'Knip',
+    id: 'knip',
+  },
+  {
+    files: [
       'copying',
       'copying.md',
       'copying.rst',
