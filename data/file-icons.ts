@@ -51,6 +51,16 @@ export let fileIcons: FileIcon[] = [
     id: 'c',
   },
   {
+    extensions: ['cc', 'cpp', 'cxx', 'c++', 'cp', 'mm', 'mii', 'ii'],
+    name: 'C++',
+    id: 'cpp',
+  },
+  {
+    extensions: ['cs', 'csx'],
+    name: 'C#',
+    id: 'cs',
+  },
+  {
     extensions: [
       'sh',
       'ksh',
@@ -68,16 +78,6 @@ export let fileIcons: FileIcon[] = [
     files: ['commit-msg', 'pre-commit', 'pre-push', 'post-merge'],
     name: 'Console',
     id: 'console',
-  },
-  {
-    extensions: ['cc', 'cpp', 'cxx', 'c++', 'cp', 'mm', 'mii', 'ii'],
-    name: 'C++',
-    id: 'cpp',
-  },
-  {
-    extensions: ['cs', 'csx'],
-    name: 'C#',
-    id: 'cs',
   },
   {
     files: ['.clineignore', '.clinerules'],
