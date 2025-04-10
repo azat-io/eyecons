@@ -80,6 +80,11 @@ export let fileIcons: FileIcon[] = [
     id: 'cs',
   },
   {
+    files: ['.clineignore', '.clinerules'],
+    name: 'Cline',
+    id: 'cline',
+  },
+  {
     extensions: ['coffee'],
     name: 'CoffeeScript',
     id: 'coffeescript',
