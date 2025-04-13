@@ -426,6 +426,11 @@ export let fileIcons: FileIcon[] = [
     id: 'less',
   },
   {
+    extensions: ['lua'],
+    name: 'Lua',
+    id: 'lua',
+  },
+  {
     extensions: ['md', 'markdown', 'rst'],
     name: 'Markdown',
     id: 'markdown',
