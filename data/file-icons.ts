@@ -536,6 +536,11 @@ export let fileIcons: FileIcon[] = [
     id: 'readme',
   },
   {
+    extensions: ['rb', 'erb', 'rbw'],
+    name: 'Ruby',
+    id: 'ruby',
+  },
+  {
     extensions: ['rs', 'ron'],
     name: 'Rust',
     id: 'rust',
