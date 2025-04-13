@@ -1,5 +1,24 @@
 # Changelog
 
+## v1.8.0
+
+[compare changes](https://github.com/azat-io/eyecons/compare/v1.7.0...v1.8.0)
+
+### 🚀 Features
+
+- Add knip icon ([db0b03f](https://github.com/azat-io/eyecons/commit/db0b03f))
+- Add cline icon ([e92574f](https://github.com/azat-io/eyecons/commit/e92574f))
+- Add ruby icon ([009384e](https://github.com/azat-io/eyecons/commit/009384e))
+- Add lua icon ([1491ab8](https://github.com/azat-io/eyecons/commit/1491ab8))
+
+### 🐞 Bug Fixes
+
+- Fix cline icon color in nord theme ([c1ec475](https://github.com/azat-io/eyecons/commit/c1ec475))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](https://github.com/azat-io))
+
 ## v1.7.0
 
 [compare changes](https://github.com/azat-io/eyecons/compare/v1.6.0...v1.7.0)
