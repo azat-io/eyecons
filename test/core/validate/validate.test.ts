@@ -65,7 +65,6 @@ describe('validate', () => {
   beforeEach(() => {
     vi.clearAllMocks()
 
-    // eslint-disable-next-line no-undefined
     vi.mocked(fs.access).mockResolvedValue(undefined)
     vi.mocked(logger.withContext).mockReturnValue(mockLoggerContext)
     vi.mocked(getHideExplorerArrowValue).mockReturnValue(true)

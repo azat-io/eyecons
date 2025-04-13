@@ -56,7 +56,6 @@ describe('getHideExplorerArrowValue', () => {
   })
 
   it('should return true by default when hidesExplorerArrows is undefined', () => {
-    // eslint-disable-next-line no-undefined
     mockGet.mockReturnValue(undefined)
 
     let result = getHideExplorerArrowValue()

@@ -152,7 +152,6 @@ describe('toOklch', () => {
   })
 
   it('should handle errors for unrecognized named color', () => {
-    // eslint-disable-next-line no-undefined
     vi.mocked(NAMED_COLORS.get).mockReturnValueOnce(undefined)
 
     expect(() => toOklch('nonexistentcolor')).toThrow()
