@@ -699,6 +699,12 @@ export let fileIcons: FileIcon[] = [
     id: 'vue',
   },
   {
+    files: ['wallaby.js'],
+    name: 'Wallaby',
+    id: 'wallaby',
+    light: true,
+  },
+  {
     files: [
       'webpack.js',
       'webpack.cjs',
