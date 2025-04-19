@@ -1,5 +1,18 @@
 # Changelog
 
+## v1.9.0
+
+[compare changes](https://github.com/azat-io/eyecons/compare/v1.8.0...v1.9.0)
+
+### 🚀 Features
+
+- Add wallaby icon ([68642e3](https://github.com/azat-io/eyecons/commit/68642e3))
+- Support new prettier config formats ([b90ecbf](https://github.com/azat-io/eyecons/commit/b90ecbf))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](https://github.com/azat-io))
+
 ## v1.8.0
 
 [compare changes](https://github.com/azat-io/eyecons/compare/v1.7.0...v1.8.0)
