@@ -1,7 +1,7 @@
 {
   "name": "eyecons",
   "displayName": "Eyecons",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "description": "Advanced VS Code icon theme with adaptive icon colors that match the editor’s color theme",
   "categories": [
     "Themes",
