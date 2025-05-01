@@ -51,6 +51,7 @@
     "test:css": "stylelint **/*.css",
     "test:format": "prettier --check \"**/*.{js,ts,jsx,tsx,css,json,md,yml}\"",
     "test:js": "eslint .",
+    "test:packages": "pnpm dedupe --check",
     "test:types": "tsc --noEmit --pretty",
     "test:unit": "vitest --run --coverage"
   },
