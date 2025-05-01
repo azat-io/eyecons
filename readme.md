@@ -86,7 +86,7 @@ You can also configure the extension directly in your VS Code `settings.json` fi
 {
   "eyecons.theme": "inherit",
   "eyecons.folderColor": "yellow",
-  "eyecons.hideExplorerArrows": true
+  "eyecons.hidesExplorerArrows": true
 }
 ```
 
@@ -94,7 +94,7 @@ Available settings:
 
 - `eyecons.theme`: Set your preferred theme (e.g., "inherit", "gruvbox-dark", "nord")
 - `eyecons.folderColor`: Choose folder color (available options depend on the theme)
-- `eyecons.hideExplorerArrows`: Set to true/false to show/hide explorer arrows
+- `eyecons.hidesExplorerArrows`: Set to true/false to show/hide explorer arrows
 
 ## Themes
 
