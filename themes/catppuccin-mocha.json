@@ -42,6 +42,9 @@
     "browserslist": {
       "#ffd539": "#f9e2af"
     },
+    "claude": {
+      "#d97757": "#fab387"
+    },
     "env": {
       "#59727e": "#cba6f7"
     },

@@ -35,6 +35,9 @@
     "#928374"
   ],
   "overrides": {
+    "claude": {
+      "#d97757": "#fe8019"
+    },
     "commitlint": {
       "#4fb2dd": "#83a598"
     },
