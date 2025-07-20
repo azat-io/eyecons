@@ -18,7 +18,7 @@ import type { Config } from '../../types/config'
  * @param {Config} config - The configuration with threshold values.
  * @returns {boolean} True if the color is considered achromatic.
  */
-export let isAchromatic = (color: Vector, config: Config): boolean => {
+export function isAchromatic(color: Vector, config: Config): boolean {
   let [lightness, chroma] = color as [number, number, number]
   let { extremeLightnessThresholds, lowSaturationThreshold } = config.processing
 

@@ -17,9 +17,9 @@ import { isAchromatic } from './is-achromatic'
  * @returns {Vector[]} Filtered palette colors containing only chromatic colors
  *   if available.
  */
-export let filterPaletteForChromatic = (
+export function filterPaletteForChromatic(
   context: ColorMatchContext,
-): Vector[] => {
+): Vector[] {
   let { themePalette, config } = context
   let colorLogger = logger.withContext('ColorMatch')
 

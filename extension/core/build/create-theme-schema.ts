@@ -24,11 +24,11 @@ interface CreateThemeSchemaOptions {
  *   config
  * @returns {ThemeSchema} The complete theme schema
  */
-export let createThemeSchema = (
+export function createThemeSchema(
   iconDefinitions: IconDefinitions,
   themeData: ThemeData,
   options: CreateThemeSchemaOptions,
-): ThemeSchema => {
+): ThemeSchema {
   let { config, theme } = options
   let fileId = 'file'
   let fileLightId = 'file-light'

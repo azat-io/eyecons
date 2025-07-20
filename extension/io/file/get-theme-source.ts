@@ -14,7 +14,7 @@ import { logger } from '../vscode/logger'
  *   overrides mapping
  * @throws {Error} If the theme file cannot be read or parsed
  */
-export let getThemeSource = async (themeId: string): Promise<ThemeSource> => {
+export async function getThemeSource(themeId: string): Promise<ThemeSource> {
   let themeLogger = logger.withContext('ThemeSource')
   let themePath = path.join(__dirname, '../../../themes', `${themeId}.json`)
 

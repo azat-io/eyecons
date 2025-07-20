@@ -17,22 +17,6 @@ interface ValidationResult {
 }
 
 /**
- * Checks if a file or directory exists.
- *
- * @param {string} pathName - Path to check.
- * @returns {Promise<boolean>} True if the file or directory exists, false
- *   otherwise.
- */
-let fileExists = async (pathName: string): Promise<boolean> => {
-  try {
-    await fs.access(pathName)
-    return true
-  } catch {
-    return false
-  }
-}
-
-/**
  * Validates if the current icon theme is up-to-date and doesn't need
  * rebuilding.
  *
@@ -41,10 +25,10 @@ let fileExists = async (pathName: string): Promise<boolean> => {
  * @returns {Promise<ValidationResult>} Result indicating if the theme is valid
  *   and reason if not.
  */
-export let validate = async (
+export async function validate(
   theme: Theme,
   config: Config,
-): Promise<ValidationResult> => {
+): Promise<ValidationResult> {
   let validateLogger = logger.withContext('Validate')
   validateLogger.info('Validating icon theme')
 
@@ -173,5 +157,21 @@ export let validate = async (
       }`,
       isValid: false,
     }
+  }
+}
+
+/**
+ * Checks if a file or directory exists.
+ *
+ * @param {string} pathName - Path to check.
+ * @returns {Promise<boolean>} True if the file or directory exists, false
+ *   otherwise.
+ */
+async function fileExists(pathName: string): Promise<boolean> {
+  try {
+    await fs.access(pathName)
+    return true
+  } catch {
+    return false
   }
 }

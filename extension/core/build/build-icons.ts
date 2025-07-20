@@ -18,7 +18,7 @@ import { processIcons } from './process-icons'
  * @param {Config} config - Extension configuration.
  * @returns {Promise<void>} Promise that resolves when the build is complete.
  */
-export let buildIcons = async (theme: Theme, config: Config): Promise<void> => {
+export async function buildIcons(theme: Theme, config: Config): Promise<void> {
   let buildLogger = logger.withContext('Build')
   buildLogger.info('Starting icon theme build process')
 

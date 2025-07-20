@@ -5,35 +5,37 @@ import type { Config } from '../../../extension/types/config'
 import { adjustSaturation } from '../../../extension/core/color/adjust-saturation'
 
 describe('adjustSaturation', () => {
-  let createConfig = (
+  function createConfig(
     adjustContrast = true,
     lowSaturationThreshold = 0.05,
     saturationFactor = 1.2,
-  ): Config => ({
-    processing: {
-      extremeLightnessThresholds: {
-        light: 0.95,
-        dark: 0.05,
+  ): Config {
+    return {
+      processing: {
+        extremeLightnessThresholds: {
+          light: 0.95,
+          dark: 0.05,
+        },
+        lowSaturationThreshold,
+        saturationFactor,
+        adjustContrast,
       },
-      lowSaturationThreshold,
-      saturationFactor,
-      adjustContrast,
-    },
-    errorHandling: {
-      showNotifications: true,
-      continueOnError: true,
-    },
-    logging: {
-      level: 'info',
-      toFile: false,
-    },
-    iconDefinitionsPath: '',
-    sourceIconsPath: '',
-    outputIconsPath: '',
-    extensionPath: '',
-    version: '1.0.0',
-    outputPath: '',
-  })
+      errorHandling: {
+        showNotifications: true,
+        continueOnError: true,
+      },
+      logging: {
+        level: 'info',
+        toFile: false,
+      },
+      iconDefinitionsPath: '',
+      sourceIconsPath: '',
+      outputIconsPath: '',
+      extensionPath: '',
+      version: '1.0.0',
+      outputPath: '',
+    }
+  }
 
   it('should return the same color when adjustContrast is false', () => {
     let color: [number, number, number] = [0.5, 0.03, 180]

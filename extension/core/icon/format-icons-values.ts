@@ -7,11 +7,11 @@ import type { FormattedIconValue, BaseIcon, FileIcon } from '../../types/icon'
  * @param {'files' | 'base'} type - Type of icons to format.
  * @returns {FormattedIconValue[]} Formatted icon values.
  */
-export let formatIconsValues = (
+export function formatIconsValues(
   icons: (BaseIcon | FileIcon)[],
   type: 'files' | 'base',
-): FormattedIconValue[] =>
-  icons.reduce(
+): FormattedIconValue[] {
+  return icons.reduce(
     (
       accumulator: FormattedIconValue[],
       { light = false, name, id, ...properties },
@@ -38,3 +38,4 @@ export let formatIconsValues = (
     ],
     [],
   )
+}

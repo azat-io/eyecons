@@ -18,9 +18,9 @@ let jsEngine = createJavaScriptRegexEngine({
   forgiving: true,
 })
 
-export let createHighlighter = async (): Promise<
+export async function createHighlighter(): Promise<
   HighlighterGeneric<BundledLanguage, BundledTheme>
-> => {
+> {
   highlighter ??= await createShikiHighlighter({
     engine: jsEngine,
     langs: ['tsx'],

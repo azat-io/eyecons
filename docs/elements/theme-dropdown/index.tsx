@@ -38,7 +38,7 @@ export let ThemeDropdown = component$<ThemeDropdownProps>(({ close }) => {
       })
     }
 
-    let handleEscape = (event: KeyboardEvent): void => {
+    function handleEscape(event: KeyboardEvent): void {
       if (event.key === 'Escape') {
         close?.()
       }

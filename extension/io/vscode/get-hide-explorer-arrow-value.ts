@@ -6,6 +6,9 @@ import { workspace } from 'vscode'
  * @returns {boolean} The value of the `hidesExplorerArrows` setting or true if
  *   not set.
  */
-export let getHideExplorerArrowValue = (): boolean =>
-  workspace.getConfiguration('eyecons').get<boolean>('hidesExplorerArrows') ??
-  true
+export function getHideExplorerArrowValue(): boolean {
+  return (
+    workspace.getConfiguration('eyecons').get<boolean>('hidesExplorerArrows') ??
+    true
+  )
+}

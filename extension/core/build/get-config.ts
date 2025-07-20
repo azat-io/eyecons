@@ -14,7 +14,7 @@ import { version } from '../../../package.json'
  * @param {ExtensionContext} context - VSCode extension context.
  * @returns {Config} The extension configuration object
  */
-export let getConfig = (context: ExtensionContext): Config => {
+export function getConfig(context: ExtensionContext): Config {
   let configLogger = logger.withContext('Config')
   let extensionPath = path.join(context.extensionPath, 'dist')
   let outputPath = path.join(extensionPath, 'output')

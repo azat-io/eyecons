@@ -10,7 +10,7 @@ import { logger } from './logger'
  *
  * @returns {Promise<string>} Theme ID to use for icon generation.
  */
-export let getUserThemeId = (): string => {
+export function getUserThemeId(): string {
   let themeLogger = logger.withContext('UserTheme')
 
   let themeSetting: undefined | string = vscode.workspace

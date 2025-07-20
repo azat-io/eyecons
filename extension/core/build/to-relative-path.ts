@@ -7,10 +7,10 @@ import type { Config } from '../../types/config'
  * @param {string} basePath - Base path to convert from (extension root path).
  * @returns {string} Relative path starting with './' for use in theme schema.
  */
-export let toRelativePath = (
+export function toRelativePath(
   absolutePath: string,
   { outputPath }: Config,
-): string => {
+): string {
   let normalizedAbsolutePath = absolutePath.replaceAll('\\', '/')
   let normalizedBasePath = outputPath.replaceAll('\\', '/')
 

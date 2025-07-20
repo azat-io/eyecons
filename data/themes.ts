@@ -112,7 +112,7 @@ export let themes = [
   },
 ]
 
-export let getThemeNameById = (id: string): string => {
+export function getThemeNameById(id: string): string {
   let theme = themes.find(themeValue => themeValue.id === id)
   return theme ? theme.name : ''
 }

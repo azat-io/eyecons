@@ -1,7 +1,7 @@
 .wrapper {
   position: relative;
-  container-type: inline-size;
   min-inline-size: 300px;
+  container-type: inline-size;
 }
 
 .input-wrapper {

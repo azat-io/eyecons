@@ -18,10 +18,10 @@ import { COLOR_THRESHOLDS, COLOR_WEIGHTS } from './constants'
  * @param {boolean} isColorAchromatic - Whether the color is achromatic.
  * @returns {ColorComponents} The appropriate weights for the color.
  */
-export let determineColorWeights = (
+export function determineColorWeights(
   color: Vector,
   isColorAchromatic: boolean,
-): ColorComponents => {
+): ColorComponents {
   if (isColorAchromatic) {
     return COLOR_WEIGHTS.ACHROMATIC
   }

@@ -6,7 +6,7 @@ import { COLOR_CATEGORIES } from './constants'
  * @param {number} hue - The hue value in degrees (0-360).
  * @returns {string} The category name ('red', 'blue', etc.).
  */
-export let categorizeColorByHue = (hue: number): string => {
+export function categorizeColorByHue(hue: number): string {
   let normalizedHue = ((hue % 360) + 360) % 360
 
   for (let category of Object.values(COLOR_CATEGORIES)) {

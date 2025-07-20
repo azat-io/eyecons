@@ -1,7 +1,7 @@
 .icons {
   padding-block: calc(var(--space-l) * 3);
-  background: var(--color-background-primary);
   container-type: inline-size;
+  background: var(--color-background-primary);
 }
 
 .illustration {

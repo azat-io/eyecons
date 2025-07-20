@@ -72,8 +72,8 @@ let outputChannel: vscode.OutputChannel | undefined
  *
  * @returns {string} Formatted date string.
  */
-let getFormattedDate = (): string =>
-  new Intl.DateTimeFormat('en-US', {
+function getFormattedDate(): string {
+  return new Intl.DateTimeFormat('en-US', {
     minute: 'numeric',
     second: 'numeric',
     month: 'numeric',
@@ -82,13 +82,14 @@ let getFormattedDate = (): string =>
     day: 'numeric',
     hour12: false,
   }).format(new Date())
+}
 
 /**
  * Gets or creates VS Code output channel.
  *
  * @returns {vscode.OutputChannel} VS Code output channel instance.
  */
-let getOutputChannel = (): vscode.OutputChannel => {
+function getOutputChannel(): vscode.OutputChannel {
   outputChannel ??= vscode.window.createOutputChannel('Eyecons')
   return outputChannel
 }
@@ -99,7 +100,7 @@ let getOutputChannel = (): vscode.OutputChannel => {
  * @param {string} message - Message to show.
  * @returns {void} Nothing.
  */
-let showInformationMessage = (message: string): void => {
+function showInformationMessage(message: string): void {
   void vscode.window.showInformationMessage(message)
 }
 
@@ -109,7 +110,7 @@ let showInformationMessage = (message: string): void => {
  * @param {string} message - Message to show.
  * @returns {void} Nothing.
  */
-let showWarningMessage = (message: string): void => {
+function showWarningMessage(message: string): void {
   void vscode.window.showWarningMessage(message)
 }
 
@@ -119,7 +120,7 @@ let showWarningMessage = (message: string): void => {
  * @param {string} message - Message to show.
  * @returns {void} Nothing.
  */
-let showErrorMessage = (message: string): void => {
+function showErrorMessage(message: string): void {
   void vscode.window.showErrorMessage(message)
 }
 

@@ -13,10 +13,10 @@ import { logger } from '../vscode/logger'
  * @param {Config} config - Extension configuration.
  * @returns {Promise<string>} The relative path to the saved loader icon.
  */
-export let saveLoaderIcon = async (
+export async function saveLoaderIcon(
   loaderSvgContent: string,
   config: Config,
-): Promise<string> => {
+): Promise<string> {
   let ioLogger = logger.withContext('IO')
 
   try {

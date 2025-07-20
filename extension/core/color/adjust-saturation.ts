@@ -9,7 +9,7 @@ import type { Config } from '../../types/config'
  * @param {Config} config - The configuration with adjustment parameters.
  * @returns {Vector} The adjusted OKLCH color.
  */
-export let adjustSaturation = (color: Vector, config: Config): Vector => {
+export function adjustSaturation(color: Vector, config: Config): Vector {
   if (!config.processing.adjustContrast) {
     return color
   }

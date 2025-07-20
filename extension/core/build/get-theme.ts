@@ -12,7 +12,7 @@ import { logger } from '../../io/vscode/logger'
  * @returns {Promise<Theme>} Complete theme configuration for icon generation.
  * @throws {Error} If theme source data cannot be loaded.
  */
-export let getTheme = async (): Promise<Theme> => {
+export async function getTheme(): Promise<Theme> {
   let themeLogger = logger.withContext('ThemeBuilder')
 
   let userThemeId = getUserThemeId()

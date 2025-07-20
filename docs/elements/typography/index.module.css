@@ -1,7 +1,7 @@
 .typography {
   display: block;
   margin-block: 0;
-  font-weight: 400;
+  font-weight: normal;
 }
 
 .size-xs {
@@ -95,5 +95,5 @@
 }
 
 .bold {
-  font-weight: 700;
+  font-weight: bold;
 }

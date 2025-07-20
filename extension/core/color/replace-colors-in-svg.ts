@@ -9,11 +9,11 @@ import type { ColorInfo } from './extract-colors-from-svg'
  * @param {ColorInfo[]} colorInfos - Color information extracted from SVG.
  * @returns {string} SVG string with replaced colors.
  */
-export let replaceColorsInSvg = (
+export function replaceColorsInSvg(
   svgContent: string,
   colorMapping: Map<string, string>,
   colorInfos: ColorInfo[],
-): string => {
+): string {
   let result = svgContent
 
   for (let colorInfo of colorInfos) {

@@ -12,7 +12,7 @@
 
 html {
   font: var(--font-m);
-  font-weight: 400;
+  font-weight: normal;
   scroll-behavior: smooth;
 }
 
@@ -24,7 +24,7 @@ body {
 }
 
 button {
-  appearance: button;
+  appearance: auto;
 }
 
 button,

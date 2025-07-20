@@ -5,5 +5,6 @@
  * @param {string} hash - Generated hash for the icon.
  * @returns {string} Icon filename to save.
  */
-export let getIconFilename = (id: string, hash: string): string =>
-  `${id}--${hash}.svg`
+export function getIconFilename(id: string, hash: string): string {
+  return `${id}--${hash}.svg`
+}

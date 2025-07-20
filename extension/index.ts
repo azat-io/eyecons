@@ -13,10 +13,10 @@ import { logger } from './io/vscode/logger'
 
 let buildInProgress = false
 
-export let activate = async (context: ExtensionContext): Promise<void> => {
+export async function activate(context: ExtensionContext): Promise<void> {
   logger.init()
 
-  let buildEyecons = async (): Promise<void> => {
+  async function buildEyecons(): Promise<void> {
     try {
       if (buildInProgress) {
         return
@@ -47,7 +47,7 @@ export let activate = async (context: ExtensionContext): Promise<void> => {
     }
   }
 
-  let forceBuild = async (): Promise<void> => {
+  async function forceBuild(): Promise<void> {
     let config: Config = getConfig(context)
     let theme: Theme = await getTheme()
 
@@ -60,4 +60,4 @@ export let activate = async (context: ExtensionContext): Promise<void> => {
   await buildEyecons()
 }
 
-export let deactivate = (): void => {}
+export function deactivate(): void {}

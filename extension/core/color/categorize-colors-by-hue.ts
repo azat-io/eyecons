@@ -16,9 +16,9 @@ type CategorizedColors = Record<string, Vector[]>
  * @param {Vector[]} chromaticColors - Array of chromatic colors to categorize.
  * @returns {CategorizedColors} Dictionary of colors organized by hue category.
  */
-export let categorizeColorsByHue = (
+export function categorizeColorsByHue(
   chromaticColors: Vector[],
-): CategorizedColors => {
+): CategorizedColors {
   let colorCategories: CategorizedColors = {
     yellowGreen: [],
     magenta: [],

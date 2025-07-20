@@ -59,7 +59,7 @@ describe('logger', () => {
 
   it('should log info message', () => {
     logger.info('Test info message')
-    expect(mockAppendLine).toHaveBeenCalledTimes(1)
+    expect(mockAppendLine).toHaveBeenCalledOnce()
     expect(mockAppendLine).toHaveBeenCalledWith(
       expect.stringContaining('[INFO] Test info message'),
     )
@@ -67,7 +67,7 @@ describe('logger', () => {
 
   it('should log warning message', () => {
     logger.warn('Test warning message')
-    expect(mockAppendLine).toHaveBeenCalledTimes(1)
+    expect(mockAppendLine).toHaveBeenCalledOnce()
     expect(mockAppendLine).toHaveBeenCalledWith(
       expect.stringContaining('[WARN] Test warning message'),
     )
@@ -75,7 +75,7 @@ describe('logger', () => {
 
   it('should log error message', () => {
     logger.error('Test error message')
-    expect(mockAppendLine).toHaveBeenCalledTimes(1)
+    expect(mockAppendLine).toHaveBeenCalledOnce()
     expect(mockAppendLine).toHaveBeenCalledWith(
       expect.stringContaining('[ERROR] Test error message'),
     )
@@ -83,7 +83,7 @@ describe('logger', () => {
 
   it('should log debug message', () => {
     logger.debug('Test debug message')
-    expect(mockAppendLine).toHaveBeenCalledTimes(1)
+    expect(mockAppendLine).toHaveBeenCalledOnce()
     expect(mockAppendLine).toHaveBeenCalledWith(
       expect.stringContaining('[DEBUG] Test debug message'),
     )
@@ -91,7 +91,7 @@ describe('logger', () => {
 
   it('should log general message', () => {
     logger.log('Test', 'general', 'message')
-    expect(mockAppendLine).toHaveBeenCalledTimes(1)
+    expect(mockAppendLine).toHaveBeenCalledOnce()
     expect(mockAppendLine).toHaveBeenCalledWith(
       expect.stringContaining('Test general message'),
     )

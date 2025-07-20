@@ -39,11 +39,11 @@ interface ProcessedIconResult {
  * @returns {Promise<ProcessedIconResult>} Result containing the icon ID and
  *   path
  */
-export let processSingleIcon = async (
+export async function processSingleIcon(
   parameters: IconProcessingParameters,
   theme: Theme,
   config: Config,
-): Promise<ProcessedIconResult> => {
+): Promise<ProcessedIconResult> {
   try {
     let preparedIcon = prepareIconProcessing(parameters, theme, config)
     let { temporaryFilePath, iconPath, type, id } = preparedIcon

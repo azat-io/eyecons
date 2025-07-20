@@ -29,11 +29,11 @@ interface AdaptIconColorsParameters {
  * @param {Config} config - The extension configuration.
  * @returns {string} The SVG content with adapted colors.
  */
-export let adaptIconColors = (
+export function adaptIconColors(
   parameters: AdaptIconColorsParameters,
   theme: Theme,
   config: Config,
-): string => {
+): string {
   let { svgContent, id } = parameters
   let colorLogger = logger.withContext('IconColor')
 

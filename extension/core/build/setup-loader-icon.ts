@@ -17,10 +17,10 @@ import { logger } from '../../io/vscode/logger'
  * @param {Config} config - Extension configuration.
  * @returns {Promise<void>} Promise that resolves when the setup is complete.
  */
-export let setupLoaderIcon = async (
+export async function setupLoaderIcon(
   theme: Theme,
   config: Config,
-): Promise<void> => {
+): Promise<void> {
   let setupLogger = logger.withContext('SetupLoader')
 
   try {

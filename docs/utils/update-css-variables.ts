@@ -13,12 +13,7 @@ export let colorNames = [
   'purple',
 ] as const
 
-let setColor = (key: string, value: string): void => {
-  let root = document.documentElement
-  root.style.setProperty(`--color-${key}`, value)
-}
-
-export let updateThemeCSSVariables = ({
+export function updateThemeCSSVariables({
   backgroundSecondary,
   backgroundTertiary,
   backgroundPrimary,
@@ -28,7 +23,7 @@ export let updateThemeCSSVariables = ({
   themeType,
   border,
   main,
-}: AdditionalData & ThemeSource): void => {
+}: AdditionalData & ThemeSource): void {
   setColor('background-brand', backgroundBrand)
   setColor('background-primary', backgroundPrimary)
   setColor('background-secondary', backgroundSecondary)
@@ -42,4 +37,9 @@ export let updateThemeCSSVariables = ({
   }
 
   document.documentElement.style.setProperty('color-scheme', themeType)
+}
+
+function setColor(key: string, value: string): void {
+  let root = document.documentElement
+  root.style.setProperty(`--color-${key}`, value)
 }

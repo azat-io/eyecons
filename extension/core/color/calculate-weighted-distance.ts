@@ -88,36 +88,41 @@ interface DistanceParameters {
 }
 
 /**
- * Normalizes the difference between two hue values to account for circular
- * nature of hue.
+ * Calculates weighted distance between two OKLCH colors with different weights
+ * for each component.
  *
- * @param {number} hue1 - First hue value in degrees.
- * @param {number} hue2 - Second hue value in degrees.
- * @returns {number} Normalized difference between hues (0-180).
+ * The distance calculation takes into account:
+ *
+ * 1. Lightness differences (L component)
+ * 2. Chroma/saturation differences (C component)
+ * 3. Hue differences (H component) - only considered when both colors have
+ *    sufficient chroma
+ * 4. A special penalty for comparing chromatic colors to near-achromatic colors
+ *
+ * @param {DistanceParameters} parameters - Parameters for distance calculation.
+ * @returns {number} The weighted distance between the colors.
  */
-let normalizeHueDifference = (hue1: number, hue2: number): number => {
-  let rawDifference = Math.abs(hue1 - hue2)
-  return Math.min(rawDifference, 360 - rawDifference)
-}
+export function calculateWeightedDistance(
+  parameters: DistanceParameters,
+): number {
+  let { weights, color1, color2, config } = parameters
+  let [l1, c1, h1] = color1 as [number, number, number]
+  let [l2, c2, h2] = color2 as [number, number, number]
 
-/**
- * Calculates basic weighted differences in lightness and chroma between two
- * colors.
- *
- * @param {ColorComponents} color1 - First color components.
- * @param {ColorComponents} color2 - Second color components.
- * @param {ColorComponents} weights - Weights for each component.
- * @returns {{ lightnessDiff: number; chromaDiff: number }} Object containing
- *   weighted differences.
- */
-let calculateBasicDifferences = (
-  color1: ColorComponents,
-  color2: ColorComponents,
-  weights: ColorComponents,
-): { lightnessDiff: number; chromaDiff: number } => ({
-  lightnessDiff: (color1.lightness - color2.lightness) ** 2 * weights.lightness,
-  chromaDiff: (color1.chroma - color2.chroma) ** 2 * weights.chroma,
-})
+  let components1 = { lightness: l1, chroma: c1, hue: h1 }
+  let components2 = { lightness: l2, chroma: c2, hue: h2 }
+
+  let { lightnessDiff, chromaDiff } = calculateBasicDifferences(
+    components1,
+    components2,
+    weights,
+  )
+
+  let hueDiff = calculateHueDifference(components1, components2, weights)
+  let chromaPenalty = calculateChromaPenalty(components1, components2, config)
+
+  return Math.sqrt(lightnessDiff + chromaDiff + hueDiff + chromaPenalty)
+}
 
 /**
  * Determines the multiplier for hue difference based on specific hue ranges.
@@ -128,7 +133,7 @@ let calculateBasicDifferences = (
  * @param {number} hue2 - Hue value of the second color in degrees.
  * @returns {number} Multiplier for hue difference calculation.
  */
-let getHueMultiplier = (hue1: number, hue2: number): number => {
+function getHueMultiplier(hue1: number, hue2: number): number {
   if (hue1 >= HUE_RANGES.YELLOW.MIN && hue1 <= HUE_RANGES.YELLOW.MAX) {
     if (hue2 > HUE_RANGES.YELLOW.MAX) {
       return HUE_MULTIPLIERS.YELLOW_FAR
@@ -175,56 +180,6 @@ let getHueMultiplier = (hue1: number, hue2: number): number => {
 }
 
 /**
- * Determines the power for hue difference calculation based on the normalized
- * difference.
- *
- * @param {number} normalizedDifference - Normalized difference between hues
- *   (0-180).
- * @returns {number} Power to use in hue difference calculation.
- */
-let getHuePower = (normalizedDifference: number): number =>
-  normalizedDifference > LARGE_HUE_DIFFERENCE
-    ? HUE_POWERS.LARGE
-    : HUE_POWERS.NORMAL
-
-/**
- * Calculates the weighted difference in hue between two colors, taking into
- * account their chroma values and applying various multipliers based on hue
- * ranges.
- *
- * @param {ColorComponents} color1 - First color components.
- * @param {ColorComponents} color2 - Second color components.
- * @param {ColorComponents} weights - Weights for each component.
- * @returns {number} Weighted hue difference.
- */
-let calculateHueDifference = (
-  color1: ColorComponents,
-  color2: ColorComponents,
-  weights: ColorComponents,
-): number => {
-  if (color1.chroma <= MIN_CHROMA || color2.chroma <= MIN_CHROMA) {
-    return 0
-  }
-
-  let normalizedDifference = normalizeHueDifference(color1.hue, color2.hue)
-  let huePower = getHuePower(normalizedDifference)
-  let multiplier = getHueMultiplier(color1.hue, color2.hue)
-
-  let baseDifference =
-    (normalizedDifference / HUE_NORMALIZATION_ANGLE) ** huePower *
-    weights.hue *
-    multiplier
-
-  if (normalizedDifference > VERY_LARGE_HUE_DIFFERENCE) {
-    return baseDifference * LARGE_HUE_MULTIPLIER
-  }
-  if (normalizedDifference > MODERATE_HUE_DIFFERENCE) {
-    return baseDifference * MODERATE_HUE_MULTIPLIER
-  }
-  return baseDifference
-}
-
-/**
  * Calculates penalty for differences in chroma between colors, with special
  * handling for near-achromatic colors and large hue differences in saturated
  * colors.
@@ -234,11 +189,11 @@ let calculateHueDifference = (
  * @param {Config} config - Configuration with thresholds.
  * @returns {number} Combined chroma penalty.
  */
-let calculateChromaPenalty = (
+function calculateChromaPenalty(
   color1: ColorComponents,
   color2: ColorComponents,
   config: Config,
-): number => {
+): number {
   let { lowSaturationThreshold } = config.processing
   let penalty = 0
 
@@ -278,38 +233,87 @@ let calculateChromaPenalty = (
 }
 
 /**
- * Calculates weighted distance between two OKLCH colors with different weights
- * for each component.
+ * Calculates the weighted difference in hue between two colors, taking into
+ * account their chroma values and applying various multipliers based on hue
+ * ranges.
  *
- * The distance calculation takes into account:
- *
- * 1. Lightness differences (L component)
- * 2. Chroma/saturation differences (C component)
- * 3. Hue differences (H component) - only considered when both colors have
- *    sufficient chroma
- * 4. A special penalty for comparing chromatic colors to near-achromatic colors
- *
- * @param {DistanceParameters} parameters - Parameters for distance calculation.
- * @returns {number} The weighted distance between the colors.
+ * @param {ColorComponents} color1 - First color components.
+ * @param {ColorComponents} color2 - Second color components.
+ * @param {ColorComponents} weights - Weights for each component.
+ * @returns {number} Weighted hue difference.
  */
-export let calculateWeightedDistance = (
-  parameters: DistanceParameters,
-): number => {
-  let { weights, color1, color2, config } = parameters
-  let [l1, c1, h1] = color1 as [number, number, number]
-  let [l2, c2, h2] = color2 as [number, number, number]
+function calculateHueDifference(
+  color1: ColorComponents,
+  color2: ColorComponents,
+  weights: ColorComponents,
+): number {
+  if (color1.chroma <= MIN_CHROMA || color2.chroma <= MIN_CHROMA) {
+    return 0
+  }
 
-  let components1 = { lightness: l1, chroma: c1, hue: h1 }
-  let components2 = { lightness: l2, chroma: c2, hue: h2 }
+  let normalizedDifference = normalizeHueDifference(color1.hue, color2.hue)
+  let huePower = getHuePower(normalizedDifference)
+  let multiplier = getHueMultiplier(color1.hue, color2.hue)
 
-  let { lightnessDiff, chromaDiff } = calculateBasicDifferences(
-    components1,
-    components2,
-    weights,
-  )
+  let baseDifference =
+    (normalizedDifference / HUE_NORMALIZATION_ANGLE) ** huePower *
+    weights.hue *
+    multiplier
 
-  let hueDiff = calculateHueDifference(components1, components2, weights)
-  let chromaPenalty = calculateChromaPenalty(components1, components2, config)
+  if (normalizedDifference > VERY_LARGE_HUE_DIFFERENCE) {
+    return baseDifference * LARGE_HUE_MULTIPLIER
+  }
+  if (normalizedDifference > MODERATE_HUE_DIFFERENCE) {
+    return baseDifference * MODERATE_HUE_MULTIPLIER
+  }
+  return baseDifference
+}
 
-  return Math.sqrt(lightnessDiff + chromaDiff + hueDiff + chromaPenalty)
+/**
+ * Calculates basic weighted differences in lightness and chroma between two
+ * colors.
+ *
+ * @param {ColorComponents} color1 - First color components.
+ * @param {ColorComponents} color2 - Second color components.
+ * @param {ColorComponents} weights - Weights for each component.
+ * @returns {{ lightnessDiff: number; chromaDiff: number }} Object containing
+ *   weighted differences.
+ */
+function calculateBasicDifferences(
+  color1: ColorComponents,
+  color2: ColorComponents,
+  weights: ColorComponents,
+): { lightnessDiff: number; chromaDiff: number } {
+  return {
+    lightnessDiff:
+      (color1.lightness - color2.lightness) ** 2 * weights.lightness,
+    chromaDiff: (color1.chroma - color2.chroma) ** 2 * weights.chroma,
+  }
+}
+
+/**
+ * Normalizes the difference between two hue values to account for circular
+ * nature of hue.
+ *
+ * @param {number} hue1 - First hue value in degrees.
+ * @param {number} hue2 - Second hue value in degrees.
+ * @returns {number} Normalized difference between hues (0-180).
+ */
+function normalizeHueDifference(hue1: number, hue2: number): number {
+  let rawDifference = Math.abs(hue1 - hue2)
+  return Math.min(rawDifference, 360 - rawDifference)
+}
+
+/**
+ * Determines the power for hue difference calculation based on the normalized
+ * difference.
+ *
+ * @param {number} normalizedDifference - Normalized difference between hues
+ *   (0-180).
+ * @returns {number} Power to use in hue difference calculation.
+ */
+function getHuePower(normalizedDifference: number): number {
+  return normalizedDifference > LARGE_HUE_DIFFERENCE
+    ? HUE_POWERS.LARGE
+    : HUE_POWERS.NORMAL
 }

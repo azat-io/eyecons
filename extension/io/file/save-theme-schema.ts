@@ -13,10 +13,10 @@ import { logger } from '../vscode/logger'
  * @param {Config} config - Extension configuration.
  * @returns {Promise<void>} Promise that resolves when the save is complete.
  */
-export let saveThemeSchema = async (
+export async function saveThemeSchema(
   schema: ThemeSchema,
   config: Config,
-): Promise<void> => {
+): Promise<void> {
   let ioLogger = logger.withContext('IO')
 
   try {

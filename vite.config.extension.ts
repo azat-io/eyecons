@@ -15,11 +15,42 @@ interface CopyFoldersPluginOptions {
   src: string
 }
 
-let copyRecursive = async (
+function copyFoldersPlugin(options: CopyFoldersPluginOptions[] = []): Plugin {
+  return {
+    closeBundle: async () => {
+      if (!Array.isArray(options) || options.length === 0) {
+        console.error(
+          'vite-plugin-copy-folders: "options" should be a non-empty array',
+        )
+        return
+      }
+
+      await Promise.all(
+        options.map(async ({ dest, src }) => {
+          if (!src || !dest) {
+            console.error(
+              'vite-plugin-copy-folders: "src" and "dest" options are required',
+            )
+            return
+          }
+          try {
+            await copyRecursive(src, dest)
+          } catch (error) {
+            console.error(`vite-plugin-copy-folders: ${error as string}`)
+          }
+        }),
+      )
+    },
+    name: 'vite-plugin-copy-folders',
+    apply: 'build',
+  }
+}
+
+async function copyRecursive(
   source: string,
   destination: string,
-): Promise<void> => {
-  let checkIfExists = async (file: string): Promise<boolean> => {
+): Promise<void> {
+  async function checkIfExists(file: string): Promise<boolean> {
     try {
       await fs.stat(file)
       return true
@@ -47,46 +78,19 @@ let copyRecursive = async (
   }
 }
 
-let copyFoldersPlugin = (options: CopyFoldersPluginOptions[] = []): Plugin => ({
-  closeBundle: async () => {
-    if (!Array.isArray(options) || options.length === 0) {
-      console.error(
-        'vite-plugin-copy-folders: "options" should be a non-empty array',
-      )
-      return
-    }
-
-    await Promise.all(
-      options.map(async ({ dest, src }) => {
-        if (!src || !dest) {
-          console.error(
-            'vite-plugin-copy-folders: "src" and "dest" options are required',
-          )
-          return
-        }
-        try {
-          await copyRecursive(src, dest)
-        } catch (error) {
-          console.error(`vite-plugin-copy-folders: ${error as string}`)
-        }
-      }),
-    )
-  },
-  name: 'vite-plugin-copy-folders',
-  apply: 'build',
-})
-
-let makeFile = (options: MakeFilePluginOptions): Plugin => ({
-  closeBundle: async () => {
-    try {
-      await fs.writeFile(options.dest, options.content)
-    } catch (error) {
-      console.error(`vite-plugin-make-file: ${error as string}`)
-    }
-  },
-  name: 'vite-plugin-make-file',
-  apply: 'build',
-})
+function makeFile(options: MakeFilePluginOptions): Plugin {
+  return {
+    closeBundle: async () => {
+      try {
+        await fs.writeFile(options.dest, options.content)
+      } catch (error) {
+        console.error(`vite-plugin-make-file: ${error as string}`)
+      }
+    },
+    name: 'vite-plugin-make-file',
+    apply: 'build',
+  }
+}
 
 export default defineConfig({
   plugins: [

@@ -23,11 +23,11 @@ import { isAchromatic } from './is-achromatic'
  * @param {Config} config - The configuration for color matching.
  * @returns {Vector} The closest matching color from the theme palette.
  */
-export let findClosestColor = (
+export function findClosestColor(
   sourceColor: Vector,
   themePalette: Vector[],
   config: Config,
-): Vector => {
+): Vector {
   let colorLogger = logger.withContext('ColorMatch')
 
   if (themePalette.length === 0) {

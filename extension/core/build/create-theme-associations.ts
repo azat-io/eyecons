@@ -11,9 +11,9 @@ import type { FormattedIconValue } from '../../types/icon'
  * @returns {ThemeData} Map of file extensions and file names to icon IDs for
  *   light and dark themes
  */
-export let createThemeAssociations = (
+export function createThemeAssociations(
   icons: FormattedIconValue[],
-): ThemeData => {
+): ThemeData {
   let themeData: ThemeData = {
     light: {
       fileExtensions: {},

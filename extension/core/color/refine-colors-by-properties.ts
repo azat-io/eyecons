@@ -28,26 +28,26 @@ interface ColorFilter {
 }
 
 /**
+ * Extracts color parameters from a vector.
+ *
+ * @param {Vector} color - Color vector in OKLCH format.
+ * @returns {ColorComponents} Extracted color parameters.
+ */
+function getColorComponents(color: Vector): ColorComponents {
+  let [lightness, chroma, hue] = color as [number, number, number]
+  return { lightness, chroma, hue }
+}
+
+/**
  * Calculates normalized hue difference between two colors.
  *
  * @param {number} hue1 - First hue value.
  * @param {number} hue2 - Second hue value.
  * @returns {number} Normalized hue difference.
  */
-let getNormalizedHueDiff = (hue1: number, hue2: number): number => {
+function getNormalizedHueDiff(hue1: number, hue2: number): number {
   let diff = Math.abs(hue1 - hue2)
   return Math.min(diff, 360 - diff)
-}
-
-/**
- * Extracts color parameters from a vector.
- *
- * @param {Vector} color - Color vector in OKLCH format.
- * @returns {ColorComponents} Extracted color parameters.
- */
-let getColorComponents = (color: Vector): ColorComponents => {
-  let [lightness, chroma, hue] = color as [number, number, number]
-  return { lightness, chroma, hue }
 }
 
 /** Collection of color filters with their conditions and filtering logic. */
@@ -136,10 +136,10 @@ const COLOR_FILTERS: ColorFilter[] = [
  * @param {Vector[]} filteredPalette - Palette already filtered by hue.
  * @returns {Vector[]} Further refined palette.
  */
-export let refineColorsByProperties = (
+export function refineColorsByProperties(
   sourceColor: Vector,
   filteredPalette: Vector[],
-): Vector[] => {
+): Vector[] {
   if (filteredPalette.length <= 1) {
     return filteredPalette
   }

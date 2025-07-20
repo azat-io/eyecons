@@ -13,10 +13,10 @@ import { logger } from '../../io/vscode/logger'
  * @param {Config} config - Extension configuration with output path information
  * @returns {Promise<void>} - Promise that resolves when all files are moved
  */
-export let moveProcessedIcons = async (
+export async function moveProcessedIcons(
   temporaryDirectory: string,
   config: Config,
-): Promise<void> => {
+): Promise<void> {
   let moveLogger = logger.withContext('MoveIcons')
   moveLogger.debug(
     `Moving icons from ${temporaryDirectory} to ${config.outputIconsPath}`,

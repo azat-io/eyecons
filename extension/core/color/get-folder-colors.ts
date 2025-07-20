@@ -11,10 +11,10 @@ type MainColorKey = keyof Theme['main']
 const FOLDER_PRIMARY_COLOR = '#ffca28'
 const FOLDER_SECONDARY_COLOR = '#ffa000'
 
-export let getFolderColors = ({
+export function getFolderColors({
   folderColor,
   main,
-}: Theme): Map<string, string> => {
+}: Theme): Map<string, string> {
   let isValidKey = Object.keys(main).includes(folderColor)
   let baseColor = isValidKey ? main[folderColor as MainColorKey] : main.blue
 

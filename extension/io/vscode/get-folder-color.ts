@@ -18,7 +18,7 @@ const COLOR_NAMES = new Set([
  *
  * @returns {string} The folder color to use for icon generation.
  */
-export let getFolderColor = (): string => {
+export function getFolderColor(): string {
   let folderLogger = logger.withContext('FolderColor')
 
   let folderColor: undefined | string = vscode.workspace

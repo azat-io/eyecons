@@ -18,7 +18,7 @@ interface LoaderIconOptions {
  *   appearance.
  * @returns {string} SVG string containing an animated loader icon.
  */
-export let createLoaderIcon = (options: LoaderIconOptions = {}): string => {
+export function createLoaderIcon(options: LoaderIconOptions = {}): string {
   let color = options.color ?? '#636363'
   let circleRadius = options.circleRadius ?? 6
   let duration = options.duration ?? 1

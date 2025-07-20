@@ -13,7 +13,7 @@ import { fileIcons } from '../data/file-icons'
 
 let themes = ['gruvbox-dark', 'vitesse-dark', 'monokai-pro', 'nord']
 
-let createScreenshot = async (theme: string): Promise<void> => {
+async function createScreenshot(theme: string): Promise<void> {
   try {
     let browser = await puppeteer.launch({
       headless: true,
@@ -29,7 +29,7 @@ let createScreenshot = async (theme: string): Promise<void> => {
     let themeFileContent = await fs.readFile(themeFilePath, 'utf8')
     let themeValueData = JSON.parse(themeFileContent) as ThemeSource
 
-    let getIconsSources = async (): Promise<Record<string, string>> => {
+    async function getIconsSources(): Promise<Record<string, string>> {
       let iconPromises = fileIcons.map(async ({ id }) => {
         let iconContent = await fs.readFile(
           `${process.cwd()}/icons/files/${id}.svg`,
@@ -60,30 +60,34 @@ let createScreenshot = async (theme: string): Promise<void> => {
       height: 10,
     })
 
-    let colorizeIcons = async (): Promise<string> =>
-      await fileIcons.reduce(async (accumulatorPromise, { name, id }) => {
-        let themeValue = {
-          folderColor: 'blue',
-          id: theme,
-          ...themeValueData,
-        }
-        let accumulator = await accumulatorPromise
-        let coloredIcon = adaptIconColors(
-          {
-            svgContent: iconsSources[id]!,
-            id,
-          },
-          themeValue,
-          getConfig({} as ExtensionContext),
-        )
-        return dedent`
-          ${accumulator}
-          <div class="icon">
-            ${coloredIcon}
-            <p class="name">${name}</p>
-          </div>
-        `
-      }, Promise.resolve(''))
+    async function colorizeIcons(): Promise<string> {
+      return await fileIcons.reduce(
+        async (accumulatorPromise, { name, id }) => {
+          let themeValue = {
+            folderColor: 'blue',
+            id: theme,
+            ...themeValueData,
+          }
+          let accumulator = await accumulatorPromise
+          let coloredIcon = adaptIconColors(
+            {
+              svgContent: iconsSources[id]!,
+              id,
+            },
+            themeValue,
+            getConfig({} as ExtensionContext),
+          )
+          return dedent`
+            ${accumulator}
+            <div class="icon">
+              ${coloredIcon}
+              <p class="name">${name}</p>
+            </div>
+          `
+        },
+        Promise.resolve(''),
+      )
+    }
 
     let colorizedIcons = await colorizeIcons()
 

@@ -47,59 +47,13 @@ interface ColorMatcher {
 type ColorHandler = (value: string) => Vector
 
 /**
- * Converts a named color to RGB array.
- *
- * @param {string} colorName - The name of the color to convert.
- * @returns {Vector} RGB values in the range 0-1.
- * @throws {Error} If the color name is not recognized.
- */
-let namedColorToRgb = (colorName: string): Vector => {
-  let vector = NAMED_COLORS.get(colorName.toLowerCase())
-
-  if (!vector) {
-    throw new Error(`Color "${colorName}" is not recognized.`)
-  }
-
-  let [red, green, blue] = vector
-  return [red! / 255, green! / 255, blue! / 255]
-}
-
-/**
- * Parses an RGB or RGBA color string into RGB components.
- *
- * @param {string} rgbString - The RGB(A) color string.
- * @returns {Vector} RGB values in the range 0-1.
- * @throws {Error} If parsing fails.
- */
-let parseRgb = (rgbString: string): Vector => {
-  RGB_REGEX.lastIndex = 0
-
-  let match = RGB_REGEX.exec(rgbString)
-  if (!match?.groups) {
-    throw new Error(`Failed to parse RGB string: "${rgbString}"`)
-  }
-
-  let { g: green, b: blue, r: red } = match.groups as unknown as RGBRegexGroups
-
-  return [red, green, blue].map(value => Number.parseInt(value, 10) / 255)
-}
-
-/**
- * Converts HSL values to RGB.
- *
- * @param {Vector} input - The color in HSL format as [H, S, L].
- * @returns {Vector} RGB values in the range 0-1.
- */
-let hslToRgb = (input: Vector): Vector => convert(input, OKHSL, sRGB)
-
-/**
  * Parses an HSL or HSLA color string into HSL components.
  *
  * @param {string} hslString - The HSL(A) color string.
  * @returns {Vector} HSL values.
  * @throws {Error} If parsing fails.
  */
-let parseHsl = (hslString: string): Vector => {
+function parseHsl(hslString: string): Vector {
   HSL_REGEX.lastIndex = 0
 
   let match = HSL_REGEX.exec(hslString)
@@ -118,6 +72,54 @@ let parseHsl = (hslString: string): Vector => {
     Number.parseInt(saturation, 10),
     Number.parseInt(lightness, 10),
   ]
+}
+
+/**
+ * Parses an RGB or RGBA color string into RGB components.
+ *
+ * @param {string} rgbString - The RGB(A) color string.
+ * @returns {Vector} RGB values in the range 0-1.
+ * @throws {Error} If parsing fails.
+ */
+function parseRgb(rgbString: string): Vector {
+  RGB_REGEX.lastIndex = 0
+
+  let match = RGB_REGEX.exec(rgbString)
+  if (!match?.groups) {
+    throw new Error(`Failed to parse RGB string: "${rgbString}"`)
+  }
+
+  let { g: green, b: blue, r: red } = match.groups as unknown as RGBRegexGroups
+
+  return [red, green, blue].map(value => Number.parseInt(value, 10) / 255)
+}
+
+/**
+ * Converts a named color to RGB array.
+ *
+ * @param {string} colorName - The name of the color to convert.
+ * @returns {Vector} RGB values in the range 0-1.
+ * @throws {Error} If the color name is not recognized.
+ */
+function namedColorToRgb(colorName: string): Vector {
+  let vector = NAMED_COLORS.get(colorName.toLowerCase())
+
+  if (!vector) {
+    throw new Error(`Color "${colorName}" is not recognized.`)
+  }
+
+  let [red, green, blue] = vector
+  return [red! / 255, green! / 255, blue! / 255]
+}
+
+/**
+ * Converts HSL values to RGB.
+ *
+ * @param {Vector} input - The color in HSL format as [H, S, L].
+ * @returns {Vector} RGB values in the range 0-1.
+ */
+function hslToRgb(input: Vector): Vector {
+  return convert(input, OKHSL, sRGB)
 }
 
 /**
@@ -181,13 +183,34 @@ let colorMatchers: ColorMatcher[] = [
 ]
 
 /**
+ * Converts a color value from any supported format to OKLCH format. Supported
+ * formats: hex, rgb, rgba, hsl, hsla, and named colors.
+ *
+ * @param {string} colorValue - The color value as a string in any supported
+ *   format.
+ * @returns {Vector} The color in OKLCH format as [Lightness, Chroma, Hue].
+ * @throws {Error} If the color format is not recognized or parsing fails.
+ */
+export function toOklch(colorValue: string): Vector {
+  let colorLogger = logger.withContext('Color')
+  try {
+    let rgbColor = parseColor(colorValue)
+    return rgbToOklch(rgbColor)
+  } catch (error) {
+    let errorMessage = error instanceof Error ? error.message : String(error)
+    colorLogger.error(`Failed to convert color: ${errorMessage}`)
+    throw error
+  }
+}
+
+/**
  * Determines the color type and routes to the appropriate handler.
  *
  * @param {string} colorValue - The color value as a string.
  * @returns {Vector} RGB values.
  * @throws {Error} If the color format is not recognized or parsing fails.
  */
-let parseColor = (colorValue: string): Vector => {
+function parseColor(colorValue: string): Vector {
   let preparedValue = colorValue.trim()
 
   let matcher = colorMatchers.find(colorMatcher =>
@@ -203,25 +226,6 @@ let parseColor = (colorValue: string): Vector => {
  * @param {Vector} rgb - The RGB values to convert.
  * @returns {Vector} OKLCH values.
  */
-let rgbToOklch = (rgb: Vector): Vector => convert(rgb, sRGB, OKLCH)
-
-/**
- * Converts a color value from any supported format to OKLCH format. Supported
- * formats: hex, rgb, rgba, hsl, hsla, and named colors.
- *
- * @param {string} colorValue - The color value as a string in any supported
- *   format.
- * @returns {Vector} The color in OKLCH format as [Lightness, Chroma, Hue].
- * @throws {Error} If the color format is not recognized or parsing fails.
- */
-export let toOklch = (colorValue: string): Vector => {
-  let colorLogger = logger.withContext('Color')
-  try {
-    let rgbColor = parseColor(colorValue)
-    return rgbToOklch(rgbColor)
-  } catch (error) {
-    let errorMessage = error instanceof Error ? error.message : String(error)
-    colorLogger.error(`Failed to convert color: ${errorMessage}`)
-    throw error
-  }
+function rgbToOklch(rgb: Vector): Vector {
+  return convert(rgb, sRGB, OKLCH)
 }

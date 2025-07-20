@@ -54,11 +54,11 @@ interface IconProcessingParameters {
  * @returns {IconProcessingPreparation} Preparation result with paths and other
  *   data.
  */
-export let prepareIconProcessing = (
+export function prepareIconProcessing(
   parameters: IconProcessingParameters,
   theme: Theme,
   config: Config,
-): IconProcessingPreparation => {
+): IconProcessingPreparation {
   let { temporaryDirectory, icon } = parameters
 
   let { theme: iconTheme, type, id } = icon

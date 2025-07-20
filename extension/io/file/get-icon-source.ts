@@ -13,11 +13,11 @@ import { logger } from '../vscode/logger'
  * @param {Config} config - Extension configuration.
  * @returns {Promise<string>} SVG content.
  */
-export let getIconSource = async (
+export async function getIconSource(
   iconId: string,
   iconType: string,
   config: Config,
-): Promise<string> => {
+): Promise<string> {
   let ioLogger = logger.withContext('IconSource')
 
   try {

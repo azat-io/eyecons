@@ -30,10 +30,10 @@ interface ProcessIconsResult {
  * @returns {Promise<ProcessIconsResult>} Promise that resolves when the icons
  *   are processed.
  */
-export let processIcons = async (
+export async function processIcons(
   theme: Theme,
   config: Config,
-): Promise<ProcessIconsResult> => {
+): Promise<ProcessIconsResult> {
   let processLogger = logger.withContext('ProcessIcons')
   processLogger.info('Processing icons in temporary directory')
 
