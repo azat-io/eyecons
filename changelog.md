@@ -1,5 +1,19 @@
 # Changelog
 
+## v1.10.0
+
+[compare changes](https://github.com/azat-io/eyecons/compare/v1.9.1...v1.10.0)
+
+### 🚀 Features
+
+- Add claude icon ([4246e09](https://github.com/azat-io/eyecons/commit/4246e09))
+- Add token-limit icon ([98554a9](https://github.com/azat-io/eyecons/commit/98554a9))
+- Add cspell icon ([d6f4ee3](https://github.com/azat-io/eyecons/commit/d6f4ee3))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](https://github.com/azat-io))
+
 ## v1.9.1
 
 [compare changes](https://github.com/azat-io/eyecons/compare/v1.9.0...v1.9.1)

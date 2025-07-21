@@ -7,6 +7,9 @@ on:
   workflow_dispatch:
 
 permissions:
+  id-token: write
+  contents: write
+  packages: write
   models: read
 
 jobs:
@@ -33,10 +36,12 @@ jobs:
         run: pnpm release:package
 
       - name: Publish to VS Code Marketplace
+        continue-on-error: true
         run: |
           pnpm vsce publish --no-dependencies --pat ${{ secrets.VSCE_TOKEN }}
 
       - name: Publish to Open VSX
+        continue-on-error: true
         run: |
           pnpm ovsx publish eyecons-$(pnpm pkg get version | tr -d '"').vsix -p ${{ secrets.OVSX_TOKEN }}
 
