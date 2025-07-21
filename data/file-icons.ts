@@ -116,6 +116,22 @@ export let fileIcons: FileIcon[] = [
     id: 'console',
   },
   {
+    files: [
+      '.cspell.json',
+      'cspell.json',
+      'cspell.config.js',
+      'cspell.config.cjs',
+      'cspell.config.json',
+      'cspell.config.yaml',
+      'cspell.config.yml',
+      'cspell.config.toml',
+      'cspell.yaml',
+      'cspell.yml',
+    ],
+    name: 'CSpell',
+    id: 'cspell',
+  },
+  {
     extensions: ['css'],
     name: 'CSS',
     id: 'css',

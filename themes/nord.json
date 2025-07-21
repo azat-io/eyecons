@@ -47,6 +47,9 @@
     "console": {
       "#a7b2b5": "#eceff4"
     },
+    "cspell": {
+      "#b51a00": "#bf616a"
+    },
     "env": {
       "#59727e": "#5e81ac"
     },
