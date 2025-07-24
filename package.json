@@ -163,6 +163,7 @@
   "devDependencies": {
     "@azat-io/eslint-config": "^2.39.0",
     "@azat-io/stylelint-config": "^1.1.0",
+    "@azat-io/typescript-config": "^1.1.1",
     "@builder.io/qwik": "^1.15.0",
     "@builder.io/qwik-city": "^1.15.0",
     "@commitlint/cli": "^19.8.1",
