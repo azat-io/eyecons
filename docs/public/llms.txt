@@ -1,0 +1,45 @@
+# Eyecons
+
+> Advanced VS Code icon theme with adaptive icon colors that match the editor's color theme. Experience a dynamic and visually appealing development environment where icons seamlessly adapt to your chosen color scheme.
+
+Eyecons is a Visual Studio Code extension that revolutionizes the way icons appear in your editor. Unlike traditional static icon themes, Eyecons dynamically adjusts icon colors based on your active VS Code theme, creating a consistent and harmonious visual experience across your entire development environment.
+
+Key features:
+
+- Adaptive icon colors that automatically match your VS Code theme
+- Extensive file type support with distinctive icons for 70+ technologies
+- Customizable folder colors with multiple options
+- Support for 28+ popular VS Code color themes
+- Regular updates with new icons and improvements
+- Lightweight and performant
+
+## Installation
+
+- [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=azat-io.eyecons): Install Eyecons directly from the Visual Studio Code Marketplace
+- [Command Line Installation](https://github.com/azat-io/eyecons#installation): Install using the VS Code CLI with `code --install-extension azat-io.eyecons`
+
+## Configuration
+
+- [Theme Selection](https://github.com/azat-io/eyecons#configuration): Choose your preferred color theme or use "inherit" for automatic detection
+- [Folder Customization](https://github.com/azat-io/eyecons#configuration): Configure folder colors with six available options
+- [Explorer Arrows](https://github.com/azat-io/eyecons#configuration): Toggle visibility of folder arrows in the file explorer
+- [Settings JSON](https://github.com/azat-io/eyecons#configuration): Configure directly in VS Code settings.json with `eyecons.theme`, `eyecons.folderColor`, and `eyecons.hidesExplorerArrows`
+
+## Supported Technologies
+
+- [File Type Icons](https://eyecons.dev/): View the complete gallery of supported file types and their adaptive icons
+- [Language Support](https://eyecons.dev/): Icons for JavaScript, TypeScript, Python, Rust, Go, and 65+ more languages
+- [Framework Icons](https://eyecons.dev/): Special icons for React, Vue, Angular, Svelte, and other frameworks
+- [Tool Icons](https://eyecons.dev/): Configuration file icons for ESLint, Prettier, Docker, Git, and more
+
+## Supported Themes
+
+- [Theme Gallery](https://eyecons.dev/): Interactive preview of how icons look with different VS Code themes
+- [Popular Themes](https://github.com/azat-io/eyecons#supported-themes): Support for Dracula, Nord, Monokai, GitHub, Tokyo Night, and 23+ more themes
+- [Request a Theme](https://github.com/azat-io/eyecons/issues/new?assignees=&labels=feature&projects=&template=theme-request.yml&title=Theme+Request%3A+%28fill+in%29): Submit a request for your favorite theme
+
+## Optional
+
+- [GitHub Repository](https://github.com/azat-io/eyecons): Source code, issues, and contributions
+- [Contributing Guide](https://github.com/azat-io/eyecons/blob/main/contributing.md): Guidelines for contributing new icons or theme support
+- [Icon Requests](https://github.com/azat-io/eyecons/issues/new?assignees=&labels=feature&projects=&template=icon-request.yml): Request support for new file types or technologies
