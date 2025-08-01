@@ -13,8 +13,8 @@ type CategorizedColors = Record<string, Vector[]>
  * aligns with human perception of color similarity. Colors with extremely low
  * saturation are excluded as their hue is not visually significant.
  *
- * @param {Vector[]} chromaticColors - Array of chromatic colors to categorize.
- * @returns {CategorizedColors} Dictionary of colors organized by hue category.
+ * @param chromaticColors - Array of chromatic colors to categorize.
+ * @returns Dictionary of colors organized by hue category.
  */
 export function categorizeColorsByHue(
   chromaticColors: Vector[],

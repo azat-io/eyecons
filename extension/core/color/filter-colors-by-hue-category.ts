@@ -31,7 +31,7 @@ const COLOR_THRESHOLDS = {
   PINK_HUE_MAX: 30,
 } as const
 
-/** Function type for filtering colors */
+/** Function type for filtering colors. */
 type ColorFilter = (color: Vector) => boolean
 
 /**
@@ -43,10 +43,9 @@ type ColorFilter = (color: Vector) => boolean
  * 2. If none found, looks in adjacent categories (e.g., blue→cyan, blue→purple).
  * 3. If still no matches, uses all available chromatic colors.
  *
- * @param {Vector} sourceColor - The source color to match (OKLCH vector).
- * @param {Vector[]} chromaticColors - Available chromatic colors (array of
- *   OKLCH vectors).
- * @returns {Vector[]} Colors with similar hue to the source.
+ * @param sourceColor - The source color to match (OKLCH vector).
+ * @param chromaticColors - Available chromatic colors (array of OKLCH vectors).
+ * @returns Colors with similar hue to the source.
  */
 export function filterColorsByHueCategory(
   sourceColor: Vector,
@@ -140,9 +139,9 @@ export function filterColorsByHueCategory(
  * Checks if a color belongs to the yellow family based on source and target
  * colors.
  *
- * @param {ColorComponents} source - Source color parameters.
- * @param {ColorComponents} color - Target color parameters to check.
- * @returns {boolean} True if the color belongs to yellow family.
+ * @param source - Source color parameters.
+ * @param color - Target color parameters to check.
+ * @returns True if the color belongs to yellow family.
  */
 function isInYellowFamily(
   source: ColorComponents,
@@ -169,9 +168,9 @@ function isInYellowFamily(
  * Checks if a color belongs to the purple-pink family based on source and
  * target colors.
  *
- * @param {ColorComponents} source - Source color parameters.
- * @param {ColorComponents} color - Target color parameters to check.
- * @returns {boolean} True if the color belongs to purple-pink family.
+ * @param source - Source color parameters.
+ * @param color - Target color parameters to check.
+ * @returns True if the color belongs to purple-pink family.
  */
 function isInPurplePinkFamily(
   source: ColorComponents,
@@ -197,12 +196,12 @@ function isInPurplePinkFamily(
 /**
  * Creates a color matcher function based on source color and filter function.
  *
- * @param {Vector} sourceColor - Source color vector in OKLCH format.
- * @param {function(ColorComponents, ColorComponents): boolean} filterFunction
+ * @param sourceColor - Source color vector in OKLCH format.
+ * @param filterFunction
+ *
  *   - Function to filter colors based on parameters.
  *
- * @returns {ColorFilter} Function that takes a color vector and returns
- *   boolean.
+ * @returns Function that takes a color vector and returns boolean.
  */
 function createColorMatcher(
   sourceColor: Vector,
@@ -228,9 +227,9 @@ function createColorMatcher(
 /**
  * Checks if a color is bright based on source and target colors.
  *
- * @param {ColorComponents} source - Source color parameters.
- * @param {ColorComponents} color - Target color parameters to check.
- * @returns {boolean} True if the color is considered bright.
+ * @param source - Source color parameters.
+ * @param color - Target color parameters to check.
+ * @returns True if the color is considered bright.
  */
 function isBrightColor(
   source: ColorComponents,
@@ -248,8 +247,8 @@ function isBrightColor(
 /**
  * Checks if a color belongs to the red-orange family.
  *
- * @param {ColorComponents} color - Color parameters to check.
- * @returns {boolean} True if the color belongs to red-orange family.
+ * @param color - Color parameters to check.
+ * @returns True if the color belongs to red-orange family.
  */
 function isInRedOrangeFamily(color: ColorComponents): boolean {
   return (

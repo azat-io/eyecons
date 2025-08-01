@@ -12,11 +12,11 @@ import { COLOR_THRESHOLDS, COLOR_WEIGHTS } from './constants'
  * - Achromatic colors prioritize lightness matching
  * - Highly saturated colors prioritize hue matching with some attention to chroma
  * - Colors with low saturation (but not achromatic) balance lightness and hue
- * - Medium saturation colors prioritize hue with balanced lightness and chroma
+ * - Medium saturation colors prioritize hue with balanced lightness and chroma.
  *
- * @param {Vector} color - The OKLCH color to analyze.
- * @param {boolean} isColorAchromatic - Whether the color is achromatic.
- * @returns {ColorComponents} The appropriate weights for the color.
+ * @param color - The OKLCH color to analyze.
+ * @param isColorAchromatic - Whether the color is achromatic.
+ * @returns The appropriate weights for the color.
  */
 export function determineColorWeights(
   color: Vector,

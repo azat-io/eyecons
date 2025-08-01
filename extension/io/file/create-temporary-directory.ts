@@ -7,7 +7,7 @@ import { logger } from '../vscode/logger'
 /**
  * Creates a temporary directory for storing icons.
  *
- * @returns {Promise<string>} The path to the created temporary directory.
+ * @returns The path to the created temporary directory.
  */
 export async function createTemporaryDirectory(): Promise<string> {
   let ioLogger = logger.withContext('TemporaryDirectory')

@@ -12,10 +12,9 @@ import { isAchromatic } from './is-achromatic'
  * matching colored icons to grayscale colors. This is essential for maintaining
  * the visual distinction between colored and monochrome elements.
  *
- * @param {ColorMatchContext} context - Context with source color, palette, and
- *   config.
- * @returns {Vector[]} Filtered palette colors containing only chromatic colors
- *   if available.
+ * @param context - Context with source color, palette, and config.
+ * @returns Filtered palette colors containing only chromatic colors if
+ *   available.
  */
 export function filterPaletteForChromatic(
   context: ColorMatchContext,

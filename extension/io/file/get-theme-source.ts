@@ -8,11 +8,9 @@ import { logger } from '../vscode/logger'
 /**
  * Loads and parses theme source data from a JSON file.
  *
- * @param {string} themeId - The ID of the theme to load (file name without
- *   extension)
- * @returns {Promise<ThemeSource>} Parsed theme data with colors array and
- *   overrides mapping
- * @throws {Error} If the theme file cannot be read or parsed
+ * @param themeId - The ID of the theme to load (file name without extension).
+ * @returns Parsed theme data with colors array and overrides mapping.
+ * @throws {Error} If the theme file cannot be read or parsed.
  */
 export async function getThemeSource(themeId: string): Promise<ThemeSource> {
   let themeLogger = logger.withContext('ThemeSource')

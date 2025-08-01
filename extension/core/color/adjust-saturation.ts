@@ -5,9 +5,9 @@ import type { Config } from '../../types/config'
 /**
  * Adjusts saturation of a color to improve contrast if needed.
  *
- * @param {Vector} color - The OKLCH color to adjust.
- * @param {Config} config - The configuration with adjustment parameters.
- * @returns {Vector} The adjusted OKLCH color.
+ * @param color - The OKLCH color to adjust.
+ * @param config - The configuration with adjustment parameters.
+ * @returns The adjusted OKLCH color.
  */
 export function adjustSaturation(color: Vector, config: Config): Vector {
   if (!config.processing.adjustContrast) {

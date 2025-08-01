@@ -9,9 +9,9 @@ import { logger } from '../vscode/logger'
 /**
  * Saves the loader icon to the output directory.
  *
- * @param {string} loaderSvgContent - SVG content of the loader icon to save.
- * @param {Config} config - Extension configuration.
- * @returns {Promise<string>} The relative path to the saved loader icon.
+ * @param loaderSvgContent - SVG content of the loader icon to save.
+ * @param config - Extension configuration.
+ * @returns The relative path to the saved loader icon.
  */
 export async function saveLoaderIcon(
   loaderSvgContent: string,

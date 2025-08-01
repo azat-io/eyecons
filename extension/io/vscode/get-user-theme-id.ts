@@ -8,7 +8,7 @@ import { logger } from './logger'
  * If the user has specified a theme in extension settings, it will be used.
  * Otherwise, it will try to detect the current VS Code theme.
  *
- * @returns {Promise<string>} Theme ID to use for icon generation.
+ * @returns Theme ID to use for icon generation.
  */
 export function getUserThemeId(): string {
   let themeLogger = logger.withContext('UserTheme')

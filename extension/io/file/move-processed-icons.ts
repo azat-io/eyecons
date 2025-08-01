@@ -8,10 +8,10 @@ import { logger } from '../../io/vscode/logger'
 /**
  * Moves processed icons from the temporary directory to the output directory.
  *
- * @param {string} temporaryDirectory - Path to the temporary directory with
- *   processed icons
- * @param {Config} config - Extension configuration with output path information
- * @returns {Promise<void>} - Promise that resolves when all files are moved
+ * @param temporaryDirectory - Path to the temporary directory with processed
+ *   icons.
+ * @param config - Extension configuration with output path information.
+ * @returns - Promise that resolves when all files are moved.
  */
 export async function moveProcessedIcons(
   temporaryDirectory: string,

@@ -32,12 +32,10 @@ interface ProcessedIconResult {
  * Processes a single icon by preparing its data, getting its source SVG, and
  * writing it to the temporary directory.
  *
- * @param {IconProcessingParameters} parameters - Parameters for icon processing
- *   preparation.
- * @param {Theme} theme - Current VS Code theme and its colors.
- * @param {Config} config - Extension configuration.
- * @returns {Promise<ProcessedIconResult>} Result containing the icon ID and
- *   path
+ * @param parameters - Parameters for icon processing preparation.
+ * @param theme - Current VS Code theme and its colors.
+ * @param config - Extension configuration.
+ * @returns Result containing the icon ID and path.
  */
 export async function processSingleIcon(
   parameters: IconProcessingParameters,

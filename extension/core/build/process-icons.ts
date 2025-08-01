@@ -25,10 +25,9 @@ interface ProcessIconsResult {
 /**
  * Processes all icons in the temporary directory.
  *
- * @param {Theme} theme - Current VS Code theme and its colors.
- * @param {Config} config - Extension configuration.
- * @returns {Promise<ProcessIconsResult>} Promise that resolves when the icons
- *   are processed.
+ * @param theme - Current VS Code theme and its colors.
+ * @param config - Extension configuration.
+ * @returns Promise that resolves when the icons are processed.
  */
 export async function processIcons(
   theme: Theme,

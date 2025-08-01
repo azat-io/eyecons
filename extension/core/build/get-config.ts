@@ -11,8 +11,8 @@ import { version } from '../../../package.json'
  * Returns the extension configuration with default values. This function
  * centralizes configuration management and makes it easier to test.
  *
- * @param {ExtensionContext} context - VSCode extension context.
- * @returns {Config} The extension configuration object
+ * @param context - VSCode extension context.
+ * @returns The extension configuration object.
  */
 export function getConfig(context: ExtensionContext): Config {
   let configLogger = logger.withContext('Config')

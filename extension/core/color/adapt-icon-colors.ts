@@ -23,11 +23,10 @@ interface AdaptIconColorsParameters {
  * Adapts the colors in an SVG icon based on the current theme. This is a
  * placeholder that combines extraction and replacement steps.
  *
- * @param {AdaptIconColorsParameters} parameters - Parameters for the color
- *   adaptation.
- * @param {Theme} theme - The current theme.
- * @param {Config} config - The extension configuration.
- * @returns {string} The SVG content with adapted colors.
+ * @param parameters - Parameters for the color adaptation.
+ * @param theme - The current theme.
+ * @param config - The extension configuration.
+ * @returns The SVG content with adapted colors.
  */
 export function adaptIconColors(
   parameters: AdaptIconColorsParameters,

@@ -47,12 +47,10 @@ interface IconProcessingParameters {
 /**
  * Prepares data for icon processing without any side effects.
  *
- * @param {IconProcessingParameters} parameters - Parameters for icon processing
- *   preparation.
- * @param {Theme} theme - Current VS Code theme and its colors.
- * @param {Config} config - Extension configuration.
- * @returns {IconProcessingPreparation} Preparation result with paths and other
- *   data.
+ * @param parameters - Parameters for icon processing preparation.
+ * @param theme - Current VS Code theme and its colors.
+ * @param config - Extension configuration.
+ * @returns Preparation result with paths and other data.
  */
 export function prepareIconProcessing(
   parameters: IconProcessingParameters,

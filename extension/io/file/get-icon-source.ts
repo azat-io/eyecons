@@ -8,10 +8,10 @@ import { logger } from '../vscode/logger'
 /**
  * Gets the source SVG content for an icon.
  *
- * @param {string} iconId - The icon identifier.
- * @param {string} iconType - The icon type (e.g. 'files', 'folder').
- * @param {Config} config - Extension configuration.
- * @returns {Promise<string>} SVG content.
+ * @param iconId - The icon identifier.
+ * @param iconType - The icon type (e.g. 'files', 'folder').
+ * @param config - Extension configuration.
+ * @returns SVG content.
  */
 export async function getIconSource(
   iconId: string,

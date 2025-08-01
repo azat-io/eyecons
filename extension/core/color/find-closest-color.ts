@@ -17,11 +17,10 @@ import { isAchromatic } from './is-achromatic'
  * Finds the closest matching color from a theme palette for a given source
  * color.
  *
- * @param {Vector} sourceColor - The OKLCH color to match.
- * @param {Vector[]} themePalette - Array of available theme colors in OKLCH
- *   format.
- * @param {Config} config - The configuration for color matching.
- * @returns {Vector} The closest matching color from the theme palette.
+ * @param sourceColor - The OKLCH color to match.
+ * @param themePalette - Array of available theme colors in OKLCH format.
+ * @param config - The configuration for color matching.
+ * @returns The closest matching color from the theme palette.
  */
 export function findClosestColor(
   sourceColor: Vector,

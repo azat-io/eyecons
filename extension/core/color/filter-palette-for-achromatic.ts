@@ -16,11 +16,10 @@ const LIGHT_COLOR_CHROMA_THRESHOLD = 0.1
  * This function is specialized for achromatic colors and handles two cases:
  *
  * - Light colors (near white) - matches with other light colors
- * - Other achromatic colors (gray, black) - matches with other achromatic colors
+ * - Other achromatic colors (gray, black) - matches with other achromatic colors.
  *
- * @param {ColorMatchContext} context - Context with source color, palette, and
- *   config.
- * @returns {Vector[]} Filtered palette colors that match achromatic properties.
+ * @param context - Context with source color, palette, and config.
+ * @returns Filtered palette colors that match achromatic properties.
  */
 export function filterPaletteForAchromatic(
   context: ColorMatchContext,
@@ -55,8 +54,8 @@ export function filterPaletteForAchromatic(
  * Finds light colors in the theme palette. Light colors are defined as having
  * lightness above 0.8 and chroma below 0.1.
  *
- * @param {Vector[]} themePalette - Array of color vectors in OKLCH format.
- * @returns {Vector[]} Array of light colors from the palette.
+ * @param themePalette - Array of color vectors in OKLCH format.
+ * @returns Array of light colors from the palette.
  */
 function findLightColors(themePalette: Vector[]): Vector[] {
   return themePalette.filter(
@@ -70,10 +69,9 @@ function findLightColors(themePalette: Vector[]): Vector[] {
  * Finds achromatic colors in the theme palette. Uses isAchromatic function to
  * determine if a color is achromatic based on the provided configuration.
  *
- * @param {Vector[]} themePalette - Array of color vectors in OKLCH format.
- * @param {ColorMatchContext['config']} config - Configuration for color
- *   matching.
- * @returns {Vector[]} Array of achromatic colors from the palette.
+ * @param themePalette - Array of color vectors in OKLCH format.
+ * @param config - Configuration for color matching.
+ * @returns Array of achromatic colors from the palette.
  */
 function findAchromaticColors(
   themePalette: Vector[],
@@ -86,9 +84,8 @@ function findAchromaticColors(
  * Checks if a color is light and achromatic. A color is considered light
  * achromatic when its lightness is above 0.9 and chroma is below 0.03.
  *
- * @param {Vector} color - Color vector in OKLCH format [lightness, chroma,
- *   hue].
- * @returns {boolean} True if the color is light and achromatic.
+ * @param color - Color vector in OKLCH format [lightness, chroma, hue].
+ * @returns True if the color is light and achromatic.
  */
 function isLightAchromatic([lightness, chroma]: Vector): boolean {
   return lightness! > LIGHTNESS_THRESHOLD_HIGH && chroma! < CHROMA_THRESHOLD_LOW

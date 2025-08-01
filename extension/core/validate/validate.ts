@@ -20,10 +20,9 @@ interface ValidationResult {
  * Validates if the current icon theme is up-to-date and doesn't need
  * rebuilding.
  *
- * @param {Theme} theme - Current VS Code theme and its colors.
- * @param {Config} config - Extension configuration.
- * @returns {Promise<ValidationResult>} Result indicating if the theme is valid
- *   and reason if not.
+ * @param theme - Current VS Code theme and its colors.
+ * @param config - Extension configuration.
+ * @returns Result indicating if the theme is valid and reason if not.
  */
 export async function validate(
   theme: Theme,
@@ -163,9 +162,8 @@ export async function validate(
 /**
  * Checks if a file or directory exists.
  *
- * @param {string} pathName - Path to check.
- * @returns {Promise<boolean>} True if the file or directory exists, false
- *   otherwise.
+ * @param pathName - Path to check.
+ * @returns True if the file or directory exists, false otherwise.
  */
 async function fileExists(pathName: string): Promise<boolean> {
   try {

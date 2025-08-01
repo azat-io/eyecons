@@ -9,9 +9,9 @@ import { logger } from '../vscode/logger'
 /**
  * Saves the theme definition schema to a JSON file.
  *
- * @param {ThemeSchema} schema - The theme schema to save.
- * @param {Config} config - Extension configuration.
- * @returns {Promise<void>} Promise that resolves when the save is complete.
+ * @param schema - The theme schema to save.
+ * @param config - Extension configuration.
+ * @returns Promise that resolves when the save is complete.
  */
 export async function saveThemeSchema(
   schema: ThemeSchema,

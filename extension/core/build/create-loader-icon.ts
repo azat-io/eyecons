@@ -14,9 +14,8 @@ interface LoaderIconOptions {
  * Creates an animated SVG loader icon for use during the icon generation
  * process. The loader is displayed while the theme is being built.
  *
- * @param {LoaderIconOptions} [options] - Options to customize the loader
- *   appearance.
- * @returns {string} SVG string containing an animated loader icon.
+ * @param [options] - Options to customize the loader appearance.
+ * @returns SVG string containing an animated loader icon.
  */
 export function createLoaderIcon(options: LoaderIconOptions = {}): string {
   let color = options.color ?? '#636363'

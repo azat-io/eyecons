@@ -2,59 +2,59 @@
 export interface ThemeSource {
   /**
    * Essential semantic colors for the theme These colors are used for syntax
-   * highlighting and UI elements
+   * highlighting and UI elements.
    */
   main: {
-    /** Orange color, used for types and certain keywords */
+    /** Orange color, used for types and certain keywords. */
     orange: string
 
-    /** Yellow color, used for warnings and certain syntax elements */
+    /** Yellow color, used for warnings and certain syntax elements. */
     yellow: string
 
-    /** Purple color, used for constants, numbers, and special tokens */
+    /** Purple color, used for constants, numbers, and special tokens. */
     purple: string
 
-    /** Green color, used for strings, additions, and success states */
+    /** Green color, used for strings, additions, and success states. */
     green: string
 
-    /** Blue color, used for functions, links, and information */
+    /** Blue color, used for functions, links, and information. */
     blue: string
 
-    /** Red color, used for errors, deletions, and certain keywords */
+    /** Red color, used for errors, deletions, and certain keywords. */
     red: string
   }
 
-  /** A mapping for theme color overrides */
+  /** A mapping for theme color overrides. */
   overrides: Record<string, Record<string, string>>
 
   /**
    * The secondary background color, slightly different from primary Used for
-   * panels, sidebars, and other UI elements
+   * panels, sidebars, and other UI elements.
    */
   backgroundSecondary: string
 
-  /** The tertiary background color used for hover states and highlights */
+  /** The tertiary background color used for hover states and highlights. */
   backgroundTertiary: string
 
-  /** The primary background color used in code editor area */
+  /** The primary background color used in code editor area. */
   backgroundPrimary: string
 
-  /** Background color used for branded elements like buttons and badges */
+  /** Background color used for branded elements like buttons and badges. */
   backgroundBrand: string
 
-  /** Primary text color used for code and UI content */
+  /** Primary text color used for code and UI content. */
   contentPrimary: string
 
-  /** Text color used on branded elements like buttons */
+  /** Text color used on branded elements like buttons. */
   contentBrand: string
 
   /**
    * Complete collection of unique colors used throughout the theme This
-   * includes all the main semantic colors plus additional UI colors
+   * includes all the main semantic colors plus additional UI colors.
    */
   colors: string[]
 
-  /** Color used for borders on inputs, panels, and other UI elements */
+  /** Color used for borders on inputs, panels, and other UI elements. */
   border: string
 }
 
@@ -139,7 +139,7 @@ export interface IconPathDefinition {
   iconPath: string
 }
 
-/** Definitions for icons */
+/** Definitions for icons. */
 export type IconDefinitions = Record<string, IconPathDefinition>
 
 /** Interface representing file extension associations. */

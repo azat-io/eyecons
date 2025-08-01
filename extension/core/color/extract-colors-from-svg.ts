@@ -44,8 +44,8 @@ interface ColorData {
  *   const colors = extractColorsFromSvg(svgString)
  *   // Returns array of ColorInfo objects with information about found colors
  *
- * @param {string} svgContent - The SVG content as a string.
- * @returns {ColorInfo[]} Array of unique ColorInfo objects found in the SVG.
+ * @param svgContent - The SVG content as a string.
+ * @returns Array of unique ColorInfo objects found in the SVG.
  */
 export function extractColorsFromSvg(svgContent: string): ColorInfo[] {
   let colorMap = new Map<string, ColorInfo>()
@@ -60,8 +60,8 @@ export function extractColorsFromSvg(svgContent: string): ColorInfo[] {
 /**
  * Extracts colors from inline occurrences of color formats.
  *
- * @param {string} svgContent - The SVG content as a string.
- * @param {Map<string, ColorInfo>} colorMap - The map to store colors in.
+ * @param svgContent - The SVG content as a string.
+ * @param colorMap - The map to store colors in.
  */
 function extractInlineColors(
   svgContent: string,
@@ -106,8 +106,8 @@ function extractInlineColors(
 /**
  * Extracts colors from CSS properties.
  *
- * @param {string} styleContent - The CSS content as a string.
- * @param {Map<string, ColorInfo>} colorMap - The map to store colors in.
+ * @param styleContent - The CSS content as a string.
+ * @param colorMap - The map to store colors in.
  */
 function extractColorsFromCssProperties(
   styleContent: string,
@@ -138,8 +138,8 @@ function extractColorsFromCssProperties(
 /**
  * Extracts colors from SVG attributes like fill, stroke, and stop-color.
  *
- * @param {string} svgContent - The SVG content as a string.
- * @param {Map<string, ColorInfo>} colorMap - The map to store colors in.
+ * @param svgContent - The SVG content as a string.
+ * @param colorMap - The map to store colors in.
  */
 function extractColorsFromAttributes(
   svgContent: string,
@@ -168,8 +168,8 @@ function extractColorsFromAttributes(
 /**
  * Extracts colors from CSS style blocks.
  *
- * @param {string} svgContent - The SVG content as a string.
- * @param {Map<string, ColorInfo>} colorMap - The map to store colors in.
+ * @param svgContent - The SVG content as a string.
+ * @param colorMap - The map to store colors in.
  */
 function extractColorsFromStyleBlocks(
   svgContent: string,
@@ -191,9 +191,8 @@ function extractColorsFromStyleBlocks(
 /**
  * Adds a color to the color map if it's valid.
  *
- * @param {Map<string, ColorInfo>} colorMap - The map to store colors in.
- * @param {ColorData} colorData - The color data to add to the map if valid.
- * @returns {void} Nothing.
+ * @param colorMap - The map to store colors in.
+ * @param colorData - The color data to add to the map if valid.
  */
 function addColorToMap(
   colorMap: Map<string, ColorInfo>,

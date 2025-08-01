@@ -97,10 +97,10 @@ interface DistanceParameters {
  * 2. Chroma/saturation differences (C component)
  * 3. Hue differences (H component) - only considered when both colors have
  *    sufficient chroma
- * 4. A special penalty for comparing chromatic colors to near-achromatic colors
+ * 4. A special penalty for comparing chromatic colors to near-achromatic colors.
  *
- * @param {DistanceParameters} parameters - Parameters for distance calculation.
- * @returns {number} The weighted distance between the colors.
+ * @param parameters - Parameters for distance calculation.
+ * @returns The weighted distance between the colors.
  */
 export function calculateWeightedDistance(
   parameters: DistanceParameters,
@@ -129,9 +129,9 @@ export function calculateWeightedDistance(
  * Applies special handling for yellows, yellow-greens, red-purples, and warm
  * colors.
  *
- * @param {number} hue1 - Hue value of the first color in degrees.
- * @param {number} hue2 - Hue value of the second color in degrees.
- * @returns {number} Multiplier for hue difference calculation.
+ * @param hue1 - Hue value of the first color in degrees.
+ * @param hue2 - Hue value of the second color in degrees.
+ * @returns Multiplier for hue difference calculation.
  */
 function getHueMultiplier(hue1: number, hue2: number): number {
   if (hue1 >= HUE_RANGES.YELLOW.MIN && hue1 <= HUE_RANGES.YELLOW.MAX) {
@@ -184,10 +184,10 @@ function getHueMultiplier(hue1: number, hue2: number): number {
  * handling for near-achromatic colors and large hue differences in saturated
  * colors.
  *
- * @param {ColorComponents} color1 - First color components.
- * @param {ColorComponents} color2 - Second color components.
- * @param {Config} config - Configuration with thresholds.
- * @returns {number} Combined chroma penalty.
+ * @param color1 - First color components.
+ * @param color2 - Second color components.
+ * @param config - Configuration with thresholds.
+ * @returns Combined chroma penalty.
  */
 function calculateChromaPenalty(
   color1: ColorComponents,
@@ -237,10 +237,10 @@ function calculateChromaPenalty(
  * account their chroma values and applying various multipliers based on hue
  * ranges.
  *
- * @param {ColorComponents} color1 - First color components.
- * @param {ColorComponents} color2 - Second color components.
- * @param {ColorComponents} weights - Weights for each component.
- * @returns {number} Weighted hue difference.
+ * @param color1 - First color components.
+ * @param color2 - Second color components.
+ * @param weights - Weights for each component.
+ * @returns Weighted hue difference.
  */
 function calculateHueDifference(
   color1: ColorComponents,
@@ -273,11 +273,10 @@ function calculateHueDifference(
  * Calculates basic weighted differences in lightness and chroma between two
  * colors.
  *
- * @param {ColorComponents} color1 - First color components.
- * @param {ColorComponents} color2 - Second color components.
- * @param {ColorComponents} weights - Weights for each component.
- * @returns {{ lightnessDiff: number; chromaDiff: number }} Object containing
- *   weighted differences.
+ * @param color1 - First color components.
+ * @param color2 - Second color components.
+ * @param weights - Weights for each component.
+ * @returns Object containing weighted differences.
  */
 function calculateBasicDifferences(
   color1: ColorComponents,
@@ -295,9 +294,9 @@ function calculateBasicDifferences(
  * Normalizes the difference between two hue values to account for circular
  * nature of hue.
  *
- * @param {number} hue1 - First hue value in degrees.
- * @param {number} hue2 - Second hue value in degrees.
- * @returns {number} Normalized difference between hues (0-180).
+ * @param hue1 - First hue value in degrees.
+ * @param hue2 - Second hue value in degrees.
+ * @returns Normalized difference between hues (0-180).
  */
 function normalizeHueDifference(hue1: number, hue2: number): number {
   let rawDifference = Math.abs(hue1 - hue2)
@@ -308,9 +307,8 @@ function normalizeHueDifference(hue1: number, hue2: number): number {
  * Determines the power for hue difference calculation based on the normalized
  * difference.
  *
- * @param {number} normalizedDifference - Normalized difference between hues
- *   (0-180).
- * @returns {number} Power to use in hue difference calculation.
+ * @param normalizedDifference - Normalized difference between hues (0-180).
+ * @returns Power to use in hue difference calculation.
  */
 function getHuePower(normalizedDifference: number): number {
   return normalizedDifference > LARGE_HUE_DIFFERENCE

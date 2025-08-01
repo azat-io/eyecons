@@ -16,7 +16,7 @@ const COLOR_NAMES = new Set([
  * not set or not in the list of valid colors, returns the default 'blue'
  * color.
  *
- * @returns {string} The folder color to use for icon generation.
+ * @returns The folder color to use for icon generation.
  */
 export function getFolderColor(): string {
   let folderLogger = logger.withContext('FolderColor')

@@ -49,8 +49,8 @@ type ColorHandler = (value: string) => Vector
 /**
  * Parses an HSL or HSLA color string into HSL components.
  *
- * @param {string} hslString - The HSL(A) color string.
- * @returns {Vector} HSL values.
+ * @param hslString - The HSL(A) color string.
+ * @returns HSL values.
  * @throws {Error} If parsing fails.
  */
 function parseHsl(hslString: string): Vector {
@@ -77,8 +77,8 @@ function parseHsl(hslString: string): Vector {
 /**
  * Parses an RGB or RGBA color string into RGB components.
  *
- * @param {string} rgbString - The RGB(A) color string.
- * @returns {Vector} RGB values in the range 0-1.
+ * @param rgbString - The RGB(A) color string.
+ * @returns RGB values in the range 0-1.
  * @throws {Error} If parsing fails.
  */
 function parseRgb(rgbString: string): Vector {
@@ -97,8 +97,8 @@ function parseRgb(rgbString: string): Vector {
 /**
  * Converts a named color to RGB array.
  *
- * @param {string} colorName - The name of the color to convert.
- * @returns {Vector} RGB values in the range 0-1.
+ * @param colorName - The name of the color to convert.
+ * @returns RGB values in the range 0-1.
  * @throws {Error} If the color name is not recognized.
  */
 function namedColorToRgb(colorName: string): Vector {
@@ -115,8 +115,8 @@ function namedColorToRgb(colorName: string): Vector {
 /**
  * Converts HSL values to RGB.
  *
- * @param {Vector} input - The color in HSL format as [H, S, L].
- * @returns {Vector} RGB values in the range 0-1.
+ * @param input - The color in HSL format as [H, S, L].
+ * @returns RGB values in the range 0-1.
  */
 function hslToRgb(input: Vector): Vector {
   return convert(input, OKHSL, sRGB)
@@ -125,8 +125,8 @@ function hslToRgb(input: Vector): Vector {
 /**
  * Handles hex colors.
  *
- * @param {string} colorValue - The hex color value to convert.
- * @returns {Vector} RGB values.
+ * @param colorValue - The hex color value to convert.
+ * @returns RGB values.
  * @throws {Error} If parsing fails.
  */
 let handleHex: ColorHandler = (colorValue: string): Vector =>
@@ -135,8 +135,8 @@ let handleHex: ColorHandler = (colorValue: string): Vector =>
 /**
  * Handles RGB colors.
  *
- * @param {string} colorValue - The RGB color value to convert.
- * @returns {Vector} RGB values.
+ * @param colorValue - The RGB color value to convert.
+ * @returns RGB values.
  * @throws {Error} If parsing fails.
  */
 let handleRgb: ColorHandler = (colorValue: string): Vector =>
@@ -145,8 +145,8 @@ let handleRgb: ColorHandler = (colorValue: string): Vector =>
 /**
  * Handles HSL colors.
  *
- * @param {string} colorValue - The HSL color value to convert.
- * @returns {Vector} RGB values.
+ * @param colorValue - The HSL color value to convert.
+ * @returns RGB values.
  * @throws {Error} If parsing fails.
  */
 let handleHsl: ColorHandler = (colorValue: string): Vector =>
@@ -155,8 +155,8 @@ let handleHsl: ColorHandler = (colorValue: string): Vector =>
 /**
  * Handles named colors.
  *
- * @param {string} colorValue - The named color to convert.
- * @returns {Vector} RGB values.
+ * @param colorValue - The named color to convert.
+ * @returns RGB values.
  * @throws {Error} If the color is not recognized.
  */
 let handleNamedColor: ColorHandler = (colorValue: string): Vector =>
@@ -186,9 +186,8 @@ let colorMatchers: ColorMatcher[] = [
  * Converts a color value from any supported format to OKLCH format. Supported
  * formats: hex, rgb, rgba, hsl, hsla, and named colors.
  *
- * @param {string} colorValue - The color value as a string in any supported
- *   format.
- * @returns {Vector} The color in OKLCH format as [Lightness, Chroma, Hue].
+ * @param colorValue - The color value as a string in any supported format.
+ * @returns The color in OKLCH format as [Lightness, Chroma, Hue].
  * @throws {Error} If the color format is not recognized or parsing fails.
  */
 export function toOklch(colorValue: string): Vector {
@@ -206,8 +205,8 @@ export function toOklch(colorValue: string): Vector {
 /**
  * Determines the color type and routes to the appropriate handler.
  *
- * @param {string} colorValue - The color value as a string.
- * @returns {Vector} RGB values.
+ * @param colorValue - The color value as a string.
+ * @returns RGB values.
  * @throws {Error} If the color format is not recognized or parsing fails.
  */
 function parseColor(colorValue: string): Vector {
@@ -223,8 +222,8 @@ function parseColor(colorValue: string): Vector {
 /**
  * Converts RGB values to OKLCH format.
  *
- * @param {Vector} rgb - The RGB values to convert.
- * @returns {Vector} OKLCH values.
+ * @param rgb - The RGB values to convert.
+ * @returns OKLCH values.
  */
 function rgbToOklch(rgb: Vector): Vector {
   return convert(rgb, sRGB, OKLCH)

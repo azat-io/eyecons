@@ -3,8 +3,8 @@ import { COLOR_CATEGORIES } from './constants'
 /**
  * Categorizes a color based on its hue value.
  *
- * @param {number} hue - The hue value in degrees (0-360).
- * @returns {string} The category name ('red', 'blue', etc.).
+ * @param hue - The hue value in degrees (0-360).
+ * @returns The category name ('red', 'blue', etc.).
  */
 export function categorizeColorByHue(hue: number): string {
   let normalizedHue = ((hue % 360) + 360) % 360

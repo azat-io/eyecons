@@ -14,8 +14,8 @@ import crypto from 'node:crypto'
  *     'user-profile',
  *   )
  *
- * @param {string[]} parts - Array of strings to include in hash generation.
- * @returns {string} A unique hash string based on input values.
+ * @param parts - Array of strings to include in hash generation.
+ * @returns A unique hash string based on input values.
  */
 export function generateHash(...parts: string[]): string {
   let stringToHash = parts.join('--')

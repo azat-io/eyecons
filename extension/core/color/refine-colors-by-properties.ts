@@ -30,8 +30,8 @@ interface ColorFilter {
 /**
  * Extracts color parameters from a vector.
  *
- * @param {Vector} color - Color vector in OKLCH format.
- * @returns {ColorComponents} Extracted color parameters.
+ * @param color - Color vector in OKLCH format.
+ * @returns Extracted color parameters.
  */
 function getColorComponents(color: Vector): ColorComponents {
   let [lightness, chroma, hue] = color as [number, number, number]
@@ -41,9 +41,9 @@ function getColorComponents(color: Vector): ColorComponents {
 /**
  * Calculates normalized hue difference between two colors.
  *
- * @param {number} hue1 - First hue value.
- * @param {number} hue2 - Second hue value.
- * @returns {number} Normalized hue difference.
+ * @param hue1 - First hue value.
+ * @param hue2 - Second hue value.
+ * @returns Normalized hue difference.
  */
 function getNormalizedHueDiff(hue1: number, hue2: number): number {
   let diff = Math.abs(hue1 - hue2)
@@ -126,15 +126,15 @@ const COLOR_FILTERS: ColorFilter[] = [
  * based on the source color's characteristics:
  *
  * - For highly saturated colors: prioritizes other highly saturated colors
- * - For bright saturated colors: prioritizes other bright colors
+ * - For bright saturated colors: prioritizes other bright colors.
  *
  * This ensures that vibrant colors match with other vibrant colors, and bright
  * colors match with other bright colors, preserving the visual quality and
  * impact of the original.
  *
- * @param {Vector} sourceColor - The source color to match.
- * @param {Vector[]} filteredPalette - Palette already filtered by hue.
- * @returns {Vector[]} Further refined palette.
+ * @param sourceColor - The source color to match.
+ * @param filteredPalette - Palette already filtered by hue.
+ * @returns Further refined palette.
  */
 export function refineColorsByProperties(
   sourceColor: Vector,

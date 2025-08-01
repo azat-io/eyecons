@@ -9,7 +9,7 @@ import { logger } from '../../io/vscode/logger'
  * Builds a complete theme configuration by combining user theme ID, folder
  * color preference, and theme source data.
  *
- * @returns {Promise<Theme>} Complete theme configuration for icon generation.
+ * @returns Complete theme configuration for icon generation.
  * @throws {Error} If theme source data cannot be loaded.
  */
 export async function getTheme(): Promise<Theme> {

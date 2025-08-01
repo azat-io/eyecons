@@ -1,8 +1,8 @@
 interface CWebpEncoder {
   /**
-   * Encode the image with the given options
+   * Encode the image with the given options.
    *
-   * @param output - Output file path
+   * @param output - Output file path.
    */
   write(output: string): Promise<void>
 
@@ -11,10 +11,10 @@ interface CWebpEncoder {
 
 declare module 'cwebp' {
   /**
-   * Create a new WebP encoder
+   * Create a new WebP encoder.
    *
-   * @param {string} source - Source file path.
-   * @returns {CWebpEncoder} A new CWebpEncoder instance.
+   * @param source - Source file path.
+   * @returns A new CWebpEncoder instance.
    */
   function cwebp(source: string): CWebpEncoder
 

@@ -14,9 +14,9 @@ import { processIcons } from './process-icons'
  * Main function that starts the process of building all icons and creating the
  * theme.
  *
- * @param {Theme} theme - Current VS Code theme and its colors.
- * @param {Config} config - Extension configuration.
- * @returns {Promise<void>} Promise that resolves when the build is complete.
+ * @param theme - Current VS Code theme and its colors.
+ * @param config - Extension configuration.
+ * @returns Promise that resolves when the build is complete.
  */
 export async function buildIcons(theme: Theme, config: Config): Promise<void> {
   let buildLogger = logger.withContext('Build')

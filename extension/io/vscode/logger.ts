@@ -5,43 +5,38 @@ interface LoggerWithContext {
   /**
    * Log an error message with context.
    *
-   * @param {string} message - Message to log.
-   * @param {boolean} [notify] - Whether to show notification.
-   * @returns {void} Nothing.
+   * @param message - Message to log.
+   * @param [notify] - Whether to show notification.
    */
   error(message: string, notify?: boolean): void
 
   /**
    * Log an info message with context.
    *
-   * @param {string} message - Message to log.
-   * @param {boolean} [notify] - Whether to show notification.
-   * @returns {void} Nothing.
+   * @param message - Message to log.
+   * @param [notify] - Whether to show notification.
    */
   info(message: string, notify?: boolean): void
 
   /**
    * Log a warning message with context.
    *
-   * @param {string} message - Message to log.
-   * @param {boolean} [notify] - Whether to show notification.
-   * @returns {void} Nothing.
+   * @param message - Message to log.
+   * @param [notify] - Whether to show notification.
    */
   warn(message: string, notify?: boolean): void
 
   /**
    * General log method with context.
    *
-   * @param {unknown[]} arguments_ - Messages to log.
-   * @returns {void} Nothing.
+   * @param arguments_ - Messages to log.
    */
   log(...arguments_: unknown[]): void
 
   /**
    * Log a debug message with context.
    *
-   * @param {string} message - Message to log.
-   * @returns {void} Nothing.
+   * @param message - Message to log.
    */
   debug(message: string): void
 }
@@ -51,17 +46,12 @@ interface Logger extends LoggerWithContext {
   /**
    * Creates a logger with predefined context prefix.
    *
-   * @param {string} context - Context name to prepend to messages.
-   * @returns {LoggerWithContext} Context-specific logger with the same methods
-   *   as the main logger.
+   * @param context - Context name to prepend to messages.
+   * @returns Context-specific logger with the same methods as the main logger.
    */
   withContext(context: string): LoggerWithContext
 
-  /**
-   * Initialize the logger and create output channel.
-   *
-   * @returns {void} Nothing.
-   */
+  /** Initialize the logger and create output channel. */
   init(): void
 }
 
@@ -70,7 +60,7 @@ let outputChannel: vscode.OutputChannel | undefined
 /**
  * Formats current date and time in a readable format.
  *
- * @returns {string} Formatted date string.
+ * @returns Formatted date string.
  */
 function getFormattedDate(): string {
   return new Intl.DateTimeFormat('en-US', {
@@ -87,7 +77,7 @@ function getFormattedDate(): string {
 /**
  * Gets or creates VS Code output channel.
  *
- * @returns {vscode.OutputChannel} VS Code output channel instance.
+ * @returns VS Code output channel instance.
  */
 function getOutputChannel(): vscode.OutputChannel {
   outputChannel ??= vscode.window.createOutputChannel('Eyecons')
@@ -97,8 +87,7 @@ function getOutputChannel(): vscode.OutputChannel {
 /**
  * Shows a VS Code information message and explicitly handles the promise.
  *
- * @param {string} message - Message to show.
- * @returns {void} Nothing.
+ * @param message - Message to show.
  */
 function showInformationMessage(message: string): void {
   void vscode.window.showInformationMessage(message)
@@ -107,8 +96,7 @@ function showInformationMessage(message: string): void {
 /**
  * Shows a VS Code warning message and explicitly handles the promise.
  *
- * @param {string} message - Message to show.
- * @returns {void} Nothing.
+ * @param message - Message to show.
  */
 function showWarningMessage(message: string): void {
   void vscode.window.showWarningMessage(message)
@@ -117,8 +105,7 @@ function showWarningMessage(message: string): void {
 /**
  * Shows a VS Code error message and explicitly handles the promise.
  *
- * @param {string} message - Message to show.
- * @returns {void} Nothing.
+ * @param message - Message to show.
  */
 function showErrorMessage(message: string): void {
   void vscode.window.showErrorMessage(message)
@@ -143,17 +130,16 @@ export let logger: Logger = {
   /**
    * Creates a logger with predefined context prefix.
    *
-   * @param {string} context - Context name to prepend to messages.
-   * @returns {LoggerWithContext} Context-specific logger with the same methods
-   *   as the main logger.
+   * @param context - Context name to prepend to messages.
+   * @returns Context-specific logger with the same methods as the main logger.
    */
   withContext: (context: string): LoggerWithContext => ({
     /**
      * Log an error message with context.
      *
-     * @param {string} message - Message to log.
-     * @param {boolean} [notify] - Whether to show notification.
-     * @returns {void} Nothing.
+     * @param message - Message to log.
+     * @param [notify] - Whether to show notification.
+     * @returns Nothing.
      */
     error: (message: string, notify = false): void =>
       logger.error(`[${context}] ${message}`, notify),
@@ -161,9 +147,9 @@ export let logger: Logger = {
     /**
      * Log an info message with context.
      *
-     * @param {string} message - Message to log.
-     * @param {boolean} [notify] - Whether to show notification.
-     * @returns {void} Nothing.
+     * @param message - Message to log.
+     * @param [notify] - Whether to show notification.
+     * @returns Nothing.
      */
     info: (message: string, notify = false): void =>
       logger.info(`[${context}] ${message}`, notify),
@@ -171,9 +157,9 @@ export let logger: Logger = {
     /**
      * Log a warning message with context.
      *
-     * @param {string} message - Message to log.
-     * @param {boolean} [notify] - Whether to show notification.
-     * @returns {void} Nothing.
+     * @param message - Message to log.
+     * @param [notify] - Whether to show notification.
+     * @returns Nothing.
      */
     warn: (message: string, notify = false): void =>
       logger.warn(`[${context}] ${message}`, notify),
@@ -181,8 +167,8 @@ export let logger: Logger = {
     /**
      * General log method with context.
      *
-     * @param {unknown[]} arguments_ - Messages to log.
-     * @returns {void} Nothing.
+     * @param arguments_ - Messages to log.
+     * @returns Nothing.
      */
     log: (...arguments_: unknown[]): void =>
       logger.log(`[${context}]`, ...arguments_),
@@ -190,8 +176,8 @@ export let logger: Logger = {
     /**
      * Log a debug message with context.
      *
-     * @param {string} message - Message to log.
-     * @returns {void} Nothing.
+     * @param message - Message to log.
+     * @returns Nothing.
      */
     debug: (message: string): void => logger.debug(`[${context}] ${message}`),
   }),
@@ -199,9 +185,8 @@ export let logger: Logger = {
   /**
    * Log an info message.
    *
-   * @param {string} message - Message to log.
-   * @param {boolean} [notify] - Whether to show notification.
-   * @returns {void} Nothing.
+   * @param message - Message to log.
+   * @param [notify] - Whether to show notification.
    */
   info: (message: string, notify = false): void => {
     let channel = getOutputChannel()
@@ -215,9 +200,8 @@ export let logger: Logger = {
   /**
    * Log a warning message.
    *
-   * @param {string} message - Message to log.
-   * @param {boolean} [notify] - Whether to show notification.
-   * @returns {void} Nothing.
+   * @param message - Message to log.
+   * @param [notify] - Whether to show notification.
    */
   warn: (message: string, notify = false): void => {
     let channel = getOutputChannel()
@@ -231,9 +215,8 @@ export let logger: Logger = {
   /**
    * Log an error message.
    *
-   * @param {string} message - Message to log.
-   * @param {boolean} [notify] - Whether to show notification.
-   * @returns {void} Nothing.
+   * @param message - Message to log.
+   * @param [notify] - Whether to show notification.
    */
   error: (message: string, notify = false): void => {
     let channel = getOutputChannel()
@@ -247,8 +230,7 @@ export let logger: Logger = {
   /**
    * General log method (similar to original console.log).
    *
-   * @param {unknown[]} arguments_ - Messages to log.
-   * @returns {void} Nothing.
+   * @param arguments_ - Messages to log.
    */
   log: (...arguments_: unknown[]): void => {
     let channel = getOutputChannel()
@@ -258,19 +240,14 @@ export let logger: Logger = {
   /**
    * Log a debug message.
    *
-   * @param {string} message - Message to log.
-   * @returns {void} Nothing.
+   * @param message - Message to log.
    */
   debug: (message: string): void => {
     let channel = getOutputChannel()
     channel.appendLine(`${getFormattedDate()}: [DEBUG] ${message}`)
   },
 
-  /**
-   * Initialize the logger and create output channel.
-   *
-   * @returns {void} Nothing.
-   */
+  /** Initialize the logger and create output channel. */
   init: (): void => {
     let channel = getOutputChannel()
     channel.appendLine(`${getFormattedDate()}: Eyecons initialized`)

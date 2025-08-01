@@ -13,9 +13,9 @@ import { logger } from '../../io/vscode/logger'
  * coordinates the process of saving the loader icon and creating a temporary
  * schema.
  *
- * @param {Theme} theme - Current VS Code theme and its colors.
- * @param {Config} config - Extension configuration.
- * @returns {Promise<void>} Promise that resolves when the setup is complete.
+ * @param theme - Current VS Code theme and its colors.
+ * @param config - Extension configuration.
+ * @returns Promise that resolves when the setup is complete.
  */
 export async function setupLoaderIcon(
   theme: Theme,

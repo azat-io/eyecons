@@ -3,8 +3,7 @@ import { workspace } from 'vscode'
 /**
  * Get the value of the `hidesExplorerArrows` setting.
  *
- * @returns {boolean} The value of the `hidesExplorerArrows` setting or true if
- *   not set.
+ * @returns The value of the `hidesExplorerArrows` setting or true if not set.
  */
 export function getHideExplorerArrowValue(): boolean {
   return (

@@ -16,13 +16,10 @@ interface CreateThemeSchemaOptions {
 /**
  * Creates a complete theme schema with all icon definitions and associations.
  *
- * @param {IconDefinitions} iconDefinitions - Definitions of all icons used in
- *   the theme
- * @param {ThemeData} themeData - Light and dark theme specific file
- *   associations
- * @param {CreateThemeSchemaOptions} options - Options containing theme and
- *   config
- * @returns {ThemeSchema} The complete theme schema
+ * @param iconDefinitions - Definitions of all icons used in the theme.
+ * @param themeData - Light and dark theme specific file associations.
+ * @param options - Options containing theme and config.
+ * @returns The complete theme schema.
  */
 export function createThemeSchema(
   iconDefinitions: IconDefinitions,

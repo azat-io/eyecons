@@ -195,7 +195,7 @@ export const ATTRIBUTES_PATTERNS = COLOR_ATTRIBUTES.map(
  *   crucial
  * - CHROMATIC: For medium-saturation colors that balance hue and lightness
  * - LOW_SATURATION: For colors with some but minimal saturation
- * - ACHROMATIC: For grayscale colors where only lightness matters
+ * - ACHROMATIC: For grayscale colors where only lightness matters.
  */
 export const COLOR_WEIGHTS = {
   /**
@@ -230,7 +230,7 @@ export const COLOR_WEIGHTS = {
 
   /**
    * Weights for colors in the yellow family, which have unique perceptual.
-   * properties.
+   * Properties.
    */
   YELLOW_FAMILY: {
     lightness: 0.15,
@@ -276,7 +276,7 @@ export const COLOR_WEIGHTS = {
  *
  * - Below MEDIUM_SATURATION: Considered low saturation
  * - Between MEDIUM and HIGH: Considered medium saturation
- * - Above HIGH_SATURATION: Considered highly saturated
+ * - Above HIGH_SATURATION: Considered highly saturated.
  *
  * These thresholds are for OKLCH chroma values, not traditional HSL saturation.
  */

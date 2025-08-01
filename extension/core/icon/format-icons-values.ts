@@ -3,9 +3,9 @@ import type { FormattedIconValue, BaseIcon, FileIcon } from '../../types/icon'
 /**
  * Formats icon values from base and file icons collections.
  *
- * @param {(BaseIcon | FileIcon)[]} icons - Icons to format.
- * @param {'files' | 'base'} type - Type of icons to format.
- * @returns {FormattedIconValue[]} Formatted icon values.
+ * @param icons - Icons to format.
+ * @param type - Type of icons to format.
+ * @returns Formatted icon values.
  */
 export function formatIconsValues(
   icons: (BaseIcon | FileIcon)[],

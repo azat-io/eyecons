@@ -6,10 +6,9 @@ import type { FormattedIconValue } from '../../types/icon'
  * dark themes. Processes an array of formatted icon values and extracts file
  * associations for each theme type.
  *
- * @param {FormattedIconValue[]} icons - Formatted icon values to extract
- *   associations from
- * @returns {ThemeData} Map of file extensions and file names to icon IDs for
- *   light and dark themes
+ * @param icons - Formatted icon values to extract associations from.
+ * @returns Map of file extensions and file names to icon IDs for light and dark
+ *   themes.
  */
 export function createThemeAssociations(
   icons: FormattedIconValue[],
