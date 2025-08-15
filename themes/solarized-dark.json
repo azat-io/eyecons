@@ -65,6 +65,9 @@
     "react": {
       "#0a7ea3": "#268bd2"
     },
+    "rolldown": {
+      "#ff7e17": "#cb4b16"
+    },
     "vite": {
       "#ffdd35": "#fdf6e3"
     },

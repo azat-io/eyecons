@@ -570,6 +570,18 @@ export let fileIcons: FileIcon[] = [
     id: 'readme',
   },
   {
+    files: [
+      'rolldown.config.js',
+      'rolldown.config.mjs',
+      'rolldown.config.cjs',
+      'rolldown.config.ts',
+      'rolldown.config.cts',
+      'rolldown.config.mts',
+    ],
+    name: 'RollDown',
+    id: 'rolldown',
+  },
+  {
     extensions: ['rb', 'erb', 'rbw'],
     name: 'Ruby',
     id: 'ruby',

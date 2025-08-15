@@ -59,6 +59,9 @@
     "license": {
       "#eb7d2e": "#ff8551"
     },
+    "rolldown": {
+      "#ff7e17": "#ff8551"
+    },
     "rust": {
       "#f74b01": "#ff8551"
     },
