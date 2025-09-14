@@ -161,7 +161,7 @@ export const NAMED_COLORS = new Map<string, Vector>([
 ])
 
 export const NAMED_COLOR_REGEX = new RegExp(
-  `(?:^|\\W)(?<color>${[...NAMED_COLORS.keys()].sort().join('|')})(?:$|\\W)`,
+  `(?:^|\\W)(?<color>${[...NAMED_COLORS.keys()].toSorted().join('|')})(?:$|\\W)`,
   'giu',
 )
 

@@ -161,7 +161,9 @@ describe('categorizeColorsByHue', () => {
       'blue',
       'red',
     ]
-    expect(Object.keys(result).sort()).toEqual(expectedCategories.toSorted())
+    expect(Object.keys(result).toSorted()).toEqual(
+      expectedCategories.toSorted(),
+    )
   })
 
   it('should preserve original color objects', () => {

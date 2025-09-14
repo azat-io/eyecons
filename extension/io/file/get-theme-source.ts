@@ -30,6 +30,8 @@ export async function getThemeSource(themeId: string): Promise<ThemeSource> {
         error instanceof Error ? error.message : String(error)
       }`,
     )
-    throw new Error(`Failed to load theme ${themeId}`)
+    throw new Error(`Failed to load theme ${themeId}`, {
+      cause: error,
+    })
   }
 }
