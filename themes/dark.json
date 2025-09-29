@@ -36,6 +36,9 @@
     "#505050"
   ],
   "overrides": {
+    "codecov": {
+      "#f07": "#c586c0"
+    },
     "commitlint": {
       "#4fb2dd": "#569cd6"
     },

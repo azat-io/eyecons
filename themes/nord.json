@@ -44,6 +44,9 @@
     "cline": {
       "#9f58fa": "#5e81ac"
     },
+    "codecov": {
+      "#f07": "#b48ead"
+    },
     "console": {
       "#a7b2b5": "#eceff4"
     },

@@ -44,6 +44,9 @@
     "claude": {
       "#d97757": "#ff8b39"
     },
+    "codecov": {
+      "#f07": "#ff7edb"
+    },
     "cspell": {
       "#b51a00": "#fe4450"
     },
