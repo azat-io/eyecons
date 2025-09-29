@@ -236,6 +236,11 @@ export let fileIcons: FileIcon[] = [
     id: 'fs',
   },
   {
+    files: ['gemini.md'],
+    name: 'Gemini',
+    id: 'gemini',
+  },
+  {
     files: [
       '.git',
       '.gitignore',
