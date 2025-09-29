@@ -76,6 +76,11 @@ export let fileIcons: FileIcon[] = [
     id: 'codecov',
   },
   {
+    files: ['.coderabbit.yml', 'coderabbit.yaml'],
+    name: 'CodeRabbit',
+    id: 'coderabbit',
+  },
+  {
     extensions: ['coffee'],
     name: 'CoffeeScript',
     id: 'coffeescript',

@@ -47,6 +47,9 @@
     "codecov": {
       "#f07": "#b48ead"
     },
+    "coderabbit": {
+      "#d75d2c": "#d08770"
+    },
     "console": {
       "#a7b2b5": "#eceff4"
     },

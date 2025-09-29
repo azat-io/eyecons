@@ -38,6 +38,9 @@
     "astro": {
       "#fe5d01": "#dc322f"
     },
+    "coderabbit": {
+      "#d75d2c": "#cb4b16"
+    },
     "commitlint": {
       "#4fb2dd": "#268bd2"
     },

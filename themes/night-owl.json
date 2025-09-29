@@ -41,6 +41,9 @@
     "cpp": {
       "#00599c": "#82aaff"
     },
+    "coderabbit": {
+      "#d75d2c": "#f78c6c"
+    },
     "commitlint": {
       "#4fb2dd": "#82aaff"
     },
