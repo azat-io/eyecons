@@ -16,6 +16,10 @@ export let themes = [
     id: 'atom-one-dark',
   },
   {
+    name: 'Aura',
+    id: 'aura',
+  },
+  {
     aliases: ['pustota'],
     name: 'Ayu Dark',
     id: 'ayu-dark',
