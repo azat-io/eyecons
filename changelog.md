@@ -1,5 +1,21 @@
 # Changelog
 
+## v1.11.0
+
+[compare changes](https://github.com/azat-io/eyecons/compare/v1.10.0...v1.11.0)
+
+### 🚀 Features
+
+- Add rolldown icon ([d190591](https://github.com/azat-io/eyecons/commit/d190591))
+- Add codecov icon ([d0d9351](https://github.com/azat-io/eyecons/commit/d0d9351))
+- Add coderabbit icon ([8a33207](https://github.com/azat-io/eyecons/commit/8a33207))
+- Add gemini icon ([b6e8927](https://github.com/azat-io/eyecons/commit/b6e8927))
+- Support aura theme ([90a36c9](https://github.com/azat-io/eyecons/commit/90a36c9))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](https://github.com/azat-io))
+
 ## v1.10.0
 
 [compare changes](https://github.com/azat-io/eyecons/compare/v1.9.1...v1.10.0)
