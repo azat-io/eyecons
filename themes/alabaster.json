@@ -1,0 +1,79 @@
+{
+  "backgroundPrimary": "#f7f7f7",
+  "backgroundSecondary": "#f0f0f0",
+  "backgroundTertiary": "#dddddd",
+  "backgroundBrand": "#007acc",
+  "contentPrimary": "#000000",
+  "contentBrand": "#ffffff",
+  "border": "#cccccc",
+  "main": {
+    "red": "#aa3731",
+    "orange": "#cb9000",
+    "yellow": "#ffbc5d",
+    "green": "#448c27",
+    "blue": "#325cc0",
+    "purple": "#7a3e9d"
+  },
+  "colors": [
+    "#f7f7f7",
+    "#f0f0f0",
+    "#dddddd",
+    "#007acc",
+    "#000000",
+    "#cccccc",
+    "#aa3731",
+    "#cb9000",
+    "#ffbc5d",
+    "#448c27",
+    "#325cc0",
+    "#7a3e9d",
+    "#777777",
+    "#474747",
+    "#9da39a",
+    "#bfdbfe",
+    "#0083b2",
+    "#e6e6e6",
+    "#660000",
+    "#60cb00"
+  ],
+  "overrides": {
+    "astro": {
+      "#fe5d01": "#7a3e9d"
+    },
+    "coderabbit": {
+      "#d75d2c": "#cb9000"
+    },
+    "html": {
+      "#f06529": "#cb9000"
+    },
+    "knip": {
+      "#f56e0f": "#cb9000"
+    },
+    "license": {
+      "#eb7d2e": "#cb9000"
+    },
+    "postcss": {
+      "#292826": "#aa3731",
+      "#fb4934": "#f7f7f7"
+    },
+    "rolldown": {
+      "#ff7e17": "#cb9000"
+    },
+    "vite": {
+      "#7293ff": "#7a3e9d",
+      "#ffdd35": "#ffbc5d"
+    },
+    "vitest": {
+      "#fcc72b": "#ffbc5d"
+    },
+    "xml": {
+      "#f57b02": "#cb9000"
+    },
+    "yaml": {
+      "#f2932a": "#cb9000"
+    },
+    "zig": {
+      "#f7a41d": "#cb9000"
+    }
+  }
+}

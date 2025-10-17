@@ -12,6 +12,10 @@ export let themes = [
     id: 'adwaita-light',
   },
   {
+    name: 'Alabaster',
+    id: 'alabaster',
+  },
+  {
     name: 'Atom One Dark',
     id: 'atom-one-dark',
   },
