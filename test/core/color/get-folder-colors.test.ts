@@ -71,8 +71,8 @@ describe('getFolderColors', () => {
     vi.mocked(toOklchModule.toOklch).mockReturnValue([0.6, 0.2, 240])
 
     vi.mocked(serialize)
-      .mockReturnValueOnce('oklch(0.6 0.2 240)')
       .mockReturnValueOnce('oklch(0.5 0.2 240)')
+      .mockReturnValueOnce('oklch(0.6 0.2 240)')
 
     let result = getFolderColors(mockTheme)
 

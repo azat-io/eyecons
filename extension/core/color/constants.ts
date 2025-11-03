@@ -161,7 +161,7 @@ export const NAMED_COLORS = new Map<string, Vector>([
 ])
 
 export const NAMED_COLOR_REGEX = new RegExp(
-  `(?:^|\\W)(?<color>${[...NAMED_COLORS.keys()].toSorted().join('|')})(?:$|\\W)`,
+  String.raw`(?:^|\W)(?<color>${[...NAMED_COLORS.keys()].toSorted().join('|')})(?:$|\W)`,
   'giu',
 )
 
@@ -181,7 +181,7 @@ export const CSS_PROPERTY_REGEX =
 
 export const ATTRIBUTES_PATTERNS = COLOR_ATTRIBUTES.map(
   attribute =>
-    new RegExp(`${attribute}\\s*=\\s*["'](?<value>[^"']+)["']`, 'gi'),
+    new RegExp(String.raw`${attribute}\s*=\s*["'](?<value>[^"']+)["']`, 'gi'),
 )
 
 /**

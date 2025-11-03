@@ -22,9 +22,8 @@ export function getFolderColors({
   let [lightness, chroma, hue] = primaryColor
   let secondaryColor: Vector = [lightness! - 0.1, chroma!, hue!]
 
-  let colorMapping = new Map<string, string>()
-  colorMapping.set(FOLDER_PRIMARY_COLOR, serialize(primaryColor, OKLCH))
-  colorMapping.set(FOLDER_SECONDARY_COLOR, serialize(secondaryColor, OKLCH))
-
-  return colorMapping
+  return new Map<string, string>([
+    [FOLDER_SECONDARY_COLOR, serialize(secondaryColor, OKLCH)],
+    [FOLDER_PRIMARY_COLOR, serialize(primaryColor, OKLCH)],
+  ])
 }
