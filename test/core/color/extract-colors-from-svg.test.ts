@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import { extractColorsFromSvg } from '../../../extension/core/color/extract-colors-from-svg'
+import { NAMED_COLOR_REGEX } from '../../../extension/core/color/constants'
 
 describe('extractColorsFromSvg', () => {
   it('should extract hex colors', () => {
@@ -75,6 +76,40 @@ describe('extractColorsFromSvg', () => {
     let blueColor = colorInfos.find(info => info.value === 'blue')
     expect(blueColor?.source).toBe('attribute')
     expect(blueColor?.property).toBe('stroke')
+  })
+
+  it('should skip named color matches without captured groups', () => {
+    let svg = '<svg><rect fill="red" /><circle stroke="blue" /></svg>'
+    let originalExec = NAMED_COLOR_REGEX.exec
+    let callCount = 0
+
+    let fakeExec: typeof originalExec = function (this: RegExp, input: string) {
+      callCount += 1
+
+      if (callCount === 1) {
+        this.lastIndex = 0
+        let fakeMatch = ['invalid'] as RegExpExecArray
+        fakeMatch.index = 0
+        fakeMatch.input = input
+        return fakeMatch
+      }
+
+      return originalExec.call(this, input)
+    }
+
+    NAMED_COLOR_REGEX.exec = fakeExec
+
+    try {
+      let colorInfos = extractColorsFromSvg(svg)
+      let values = colorInfos.map(info => info.value)
+
+      expect(values).toContain('red')
+      expect(values).toContain('blue')
+      expect(values).not.toContain('invalid')
+    } finally {
+      NAMED_COLOR_REGEX.exec = originalExec
+      NAMED_COLOR_REGEX.lastIndex = 0
+    }
   })
 
   it('should extract colors from style blocks', () => {

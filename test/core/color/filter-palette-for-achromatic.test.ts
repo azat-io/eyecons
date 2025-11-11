@@ -159,6 +159,32 @@ describe('filterPaletteForAchromatic', () => {
     isAchromaticSpy.mockRestore()
   })
 
+  it('should return palette when achromatic filtering finds no matches', () => {
+    let isAchromaticSpy = vi.spyOn(isAchromaticModule, 'isAchromatic')
+    isAchromaticSpy.mockReturnValue(false)
+
+    let sourceColor: Vector = [0.4, 0.02, 0]
+    let themePalette: Vector[] = [
+      [0.7, 0.2, 0],
+      [0.3, 0.25, 120],
+      [0.5, 0.3, 240],
+    ]
+
+    let context: ColorMatchContext = {
+      sourceAchromatic: true,
+      config: mockConfig,
+      themePalette,
+      sourceColor,
+    }
+
+    let result = filterPaletteForAchromatic(context)
+
+    expect(result).toBe(themePalette)
+    expect(result).toHaveLength(3)
+
+    isAchromaticSpy.mockRestore()
+  })
+
   it('should handle edge case with empty palette', () => {
     let sourceColor: Vector = [0.95, 0.02, 0]
     let themePalette: Vector[] = []

@@ -125,6 +125,20 @@ describe('refineColorsByProperties', () => {
     )
   })
 
+  it('should continue when a refinement condition matches but no colors pass filter', () => {
+    let purpleSource: Vector = [0.6, 0.08, 300]
+    let palette: Vector[] = [
+      [0.5, 0.05, 200],
+      [0.55, 0.06, 150],
+      [0.52, 0.04, 90],
+    ]
+
+    let result = refineColorsByProperties(purpleSource, palette)
+
+    expect(result).toBe(palette)
+    expect(mockLoggerContext.info).not.toHaveBeenCalled()
+  })
+
   it('should return original palette when no refinement conditions match', () => {
     let normalColor: Vector = [0.5, 0.04, 180]
     let palette: Vector[] = [
