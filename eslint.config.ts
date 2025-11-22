@@ -7,6 +7,7 @@ export default eslintConfig({
     {
       rules: {
         'no-void': ['error', { allowAsStatement: true }],
+        'package-json/scripts-name-casing': 'off',
       },
     },
   ],
