@@ -191,7 +191,7 @@ describe('buildIcons', () => {
     let error = new Error('Setup loader error')
     vi.mocked(setupLoaderIcon).mockRejectedValueOnce(error)
 
-    await expect(buildIcons(mockTheme, mockConfig)).rejects.toThrow(error)
+    await expect(buildIcons(mockTheme, mockConfig)).rejects.toThrowError(error)
 
     expect(processIcons).not.toHaveBeenCalled()
     expect(mockLoggerContext.error).toHaveBeenCalledWith(
@@ -204,7 +204,7 @@ describe('buildIcons', () => {
     let error = new Error('Process icons error')
     vi.mocked(processIcons).mockRejectedValueOnce(error)
 
-    await expect(buildIcons(mockTheme, mockConfig)).rejects.toThrow(error)
+    await expect(buildIcons(mockTheme, mockConfig)).rejects.toThrowError(error)
 
     expect(moveProcessedIcons).not.toHaveBeenCalled()
     expect(mockLoggerContext.error).toHaveBeenCalledWith(
@@ -217,7 +217,7 @@ describe('buildIcons', () => {
     let error = new Error('Move icons error')
     vi.mocked(moveProcessedIcons).mockRejectedValueOnce(error)
 
-    await expect(buildIcons(mockTheme, mockConfig)).rejects.toThrow(error)
+    await expect(buildIcons(mockTheme, mockConfig)).rejects.toThrowError(error)
 
     expect(setTimeout).not.toHaveBeenCalled()
     expect(saveThemeSchema).not.toHaveBeenCalled()
@@ -231,7 +231,7 @@ describe('buildIcons', () => {
     let error = new Error('Save schema error')
     vi.mocked(saveThemeSchema).mockRejectedValueOnce(error)
 
-    await expect(buildIcons(mockTheme, mockConfig)).rejects.toThrow(error)
+    await expect(buildIcons(mockTheme, mockConfig)).rejects.toThrowError(error)
 
     expect(setTimeout).toHaveBeenCalledWith(1000)
     expect(mockLoggerContext.error).toHaveBeenCalledWith(
@@ -244,7 +244,7 @@ describe('buildIcons', () => {
     let error = 'Save schema error'
     vi.mocked(saveThemeSchema).mockRejectedValueOnce(error)
 
-    await expect(buildIcons(mockTheme, mockConfig)).rejects.toThrow(error)
+    await expect(buildIcons(mockTheme, mockConfig)).rejects.toThrowError(error)
 
     expect(mockLoggerContext.error).toHaveBeenCalledWith(
       'Build process failed: Save schema error',

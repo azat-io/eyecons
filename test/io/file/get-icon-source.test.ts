@@ -86,9 +86,9 @@ describe('getIconSource', () => {
     let mockError = new Error('File not found')
     vi.mocked(fs.readFile).mockRejectedValueOnce(mockError)
 
-    await expect(getIconSource(iconId, iconType, mockConfig)).rejects.toThrow(
-      mockError,
-    )
+    await expect(
+      getIconSource(iconId, iconType, mockConfig),
+    ).rejects.toThrowError(mockError)
     expect(mockLoggerContext.error).toHaveBeenCalledWith(
       'Failed to read source for icon nonexistent: File not found',
     )

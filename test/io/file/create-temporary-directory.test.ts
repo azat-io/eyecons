@@ -52,7 +52,7 @@ describe('createTemporaryDirectory', () => {
     let mockError = new Error('Permission denied')
     vi.mocked(fs.mkdtemp).mockRejectedValueOnce(mockError)
 
-    await expect(createTemporaryDirectory()).rejects.toThrow(mockError)
+    await expect(createTemporaryDirectory()).rejects.toThrowError(mockError)
     expect(mockLoggerContext.error).toHaveBeenCalledWith(
       'Failed to create temporary directory: Permission denied',
     )

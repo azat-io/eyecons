@@ -74,7 +74,7 @@ describe('getThemeSource', () => {
     let mockError = new Error('File not found')
     vi.mocked(fs.readFile).mockRejectedValue(mockError)
 
-    await expect(getThemeSource('unknown')).rejects.toThrow(
+    await expect(getThemeSource('unknown')).rejects.toThrowError(
       'Failed to load theme unknown',
     )
     expect(mockLoggerContext.error).toHaveBeenCalledWith(
@@ -86,7 +86,7 @@ describe('getThemeSource', () => {
     let mockError = 'File not found'
     vi.mocked(fs.readFile).mockRejectedValue(mockError)
 
-    await expect(getThemeSource('unknown')).rejects.toThrow(
+    await expect(getThemeSource('unknown')).rejects.toThrowError(
       'Failed to load theme unknown',
     )
     expect(mockLoggerContext.error).toHaveBeenCalledWith(
@@ -99,7 +99,7 @@ describe('getThemeSource', () => {
       Buffer.from('invalid JSON content'),
     )
 
-    await expect(getThemeSource('broken')).rejects.toThrow(
+    await expect(getThemeSource('broken')).rejects.toThrowError(
       'Failed to load theme broken',
     )
 

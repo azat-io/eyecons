@@ -111,7 +111,7 @@ describe('toOklch', () => {
       throw new Error('Invalid hex color')
     })
 
-    expect(() => toOklch('#invalid')).toThrow('Invalid hex color')
+    expect(() => toOklch('#invalid')).toThrowError('Invalid hex color')
     expect(mockLoggerContext.error).toHaveBeenCalledWith(
       'Failed to convert color: Invalid hex color',
     )
@@ -123,7 +123,7 @@ describe('toOklch', () => {
       throw error
     })
 
-    expect(() => toOklch('#invalid')).toThrow('Invalid hex color')
+    expect(() => toOklch('#invalid')).toThrowError('Invalid hex color')
     expect(mockLoggerContext.error).toHaveBeenCalledWith(
       'Failed to convert color: Invalid hex color',
     )
@@ -132,7 +132,7 @@ describe('toOklch', () => {
   it('should handle errors for invalid RGB format', () => {
     vi.mocked(RGB_REGEX.exec).mockReturnValueOnce(null)
 
-    expect(() => toOklch('rgb(invalid)')).toThrow(
+    expect(() => toOklch('rgb(invalid)')).toThrowError(
       'Failed to parse RGB string: "rgb(invalid)"',
     )
     expect(mockLoggerContext.error).toHaveBeenCalledWith(
@@ -143,7 +143,7 @@ describe('toOklch', () => {
   it('should handle errors for invalid HSL format', () => {
     vi.mocked(HSL_REGEX.exec).mockReturnValueOnce(null)
 
-    expect(() => toOklch('hsl(invalid)')).toThrow(
+    expect(() => toOklch('hsl(invalid)')).toThrowError(
       'Failed to parse HSL string: "hsl(invalid)"',
     )
     expect(mockLoggerContext.error).toHaveBeenCalledWith(
@@ -154,7 +154,7 @@ describe('toOklch', () => {
   it('should handle errors for unrecognized named color', () => {
     vi.mocked(NAMED_COLORS.get).mockReturnValueOnce(undefined)
 
-    expect(() => toOklch('nonexistentcolor')).toThrow()
+    expect(() => toOklch('nonexistentcolor')).toThrowError()
     expect(mockLoggerContext.error).toHaveBeenCalledWith(
       'Failed to convert color: Color "nonexistentcolor" is not recognized.',
     )

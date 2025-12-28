@@ -173,7 +173,7 @@ describe('moveProcessedIcons', () => {
 
     await expect(
       moveProcessedIcons(temporaryDirectory, mockConfig),
-    ).rejects.toThrow(error)
+    ).rejects.toThrowError(error)
 
     expect(mockLoggerContext.error).toHaveBeenCalledWith(
       'Failed to move icons: Copy failed',
@@ -190,7 +190,7 @@ describe('moveProcessedIcons', () => {
 
     await expect(
       moveProcessedIcons(temporaryDirectory, mockConfig),
-    ).rejects.toThrow(error)
+    ).rejects.toThrowError(error)
 
     expect(mockLoggerContext.error).toHaveBeenCalledWith(
       'Failed to move icons: Copy failed',
@@ -205,7 +205,7 @@ describe('moveProcessedIcons', () => {
 
     await expect(
       moveProcessedIcons(temporaryDirectory, mockConfig),
-    ).rejects.toThrow(error)
+    ).rejects.toThrowError(error)
 
     expect(mockLoggerContext.error).toHaveBeenCalledWith(
       'Failed to move icons: Mkdir failed',

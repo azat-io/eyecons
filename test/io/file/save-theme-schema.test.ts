@@ -122,7 +122,9 @@ describe('saveThemeSchema', () => {
     let error = new Error('Test error')
     vi.mocked(fs.mkdir).mockRejectedValueOnce(error)
 
-    await expect(saveThemeSchema(mockSchema, mockConfig)).rejects.toThrow(error)
+    await expect(saveThemeSchema(mockSchema, mockConfig)).rejects.toThrowError(
+      error,
+    )
     expect(mockLoggerContext.error).toHaveBeenCalledWith(
       'Failed to save theme definition: Test error',
     )
@@ -144,7 +146,9 @@ describe('saveThemeSchema', () => {
     let error = new Error('Test error')
     vi.mocked(fs.writeFile).mockRejectedValueOnce(error)
 
-    await expect(saveThemeSchema(mockSchema, mockConfig)).rejects.toThrow(error)
+    await expect(saveThemeSchema(mockSchema, mockConfig)).rejects.toThrowError(
+      error,
+    )
     expect(mockLoggerContext.error).toHaveBeenCalledWith(
       'Failed to save theme definition: Test error',
     )

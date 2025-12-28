@@ -42,13 +42,13 @@ describe('generateHash', () => {
   it('should handle empty strings', () => {
     expect(() => {
       generateHash('', 'Theme', '')
-    }).not.toThrow()
+    }).not.toThrowError()
   })
 
   it('should handle special characters in inputs', () => {
     expect(() => {
       generateHash('file-with-специальные-символы.svg', 'Theme!@#$', '青色')
-    }).not.toThrow()
+    }).not.toThrowError()
   })
 
   it('should generate a hash even with no inputs', () => {

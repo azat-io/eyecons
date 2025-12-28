@@ -128,7 +128,7 @@ describe('getTheme', () => {
     let mockError = new Error('Theme source not found')
     vi.mocked(getThemeSource).mockRejectedValue(mockError)
 
-    await expect(getTheme()).rejects.toThrow('Theme source not found')
+    await expect(getTheme()).rejects.toThrowError('Theme source not found')
 
     expect(getUserThemeId).toHaveBeenCalledOnce()
     expect(getFolderColor).toHaveBeenCalledOnce()

@@ -110,9 +110,9 @@ describe('saveLoaderIcon', () => {
     let error = new Error('Test error')
     mockMkdir.mockRejectedValueOnce(error)
 
-    await expect(saveLoaderIcon(mockLoaderSvg, mockConfig)).rejects.toThrow(
-      error,
-    )
+    await expect(
+      saveLoaderIcon(mockLoaderSvg, mockConfig),
+    ).rejects.toThrowError(error)
     expect(mockLoggerContext.error).toHaveBeenCalledWith(
       'Failed to save loader icon: Test error',
     )
@@ -122,9 +122,9 @@ describe('saveLoaderIcon', () => {
     let error = new Error('Test error')
     mockWriteFile.mockRejectedValueOnce(error)
 
-    await expect(saveLoaderIcon(mockLoaderSvg, mockConfig)).rejects.toThrow(
-      error,
-    )
+    await expect(
+      saveLoaderIcon(mockLoaderSvg, mockConfig),
+    ).rejects.toThrowError(error)
     expect(mockLoggerContext.error).toHaveBeenCalledWith(
       'Failed to save loader icon: Test error',
     )
