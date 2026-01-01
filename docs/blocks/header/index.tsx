@@ -18,16 +18,24 @@ export let Header = component$(() => (
       </Typography>
       <div class={styles['buttons']}>
         <Button
+          onClick$={() => {
+            if (globalThis.fathom) {
+              globalThis.fathom.trackEvent('click: marketplace')
+            }
+          }}
           href="https://marketplace.visualstudio.com/items?itemName=azat-io.eyecons"
-          data-umami-event="Open Marketplace"
           variant="primary"
           target="_blank"
         >
           Install
         </Button>
         <Button
+          onClick$={() => {
+            if (globalThis.fathom) {
+              globalThis.fathom.trackEvent('click: github')
+            }
+          }}
           href="https://github.com/azat-io/eyecons"
-          data-umami-event="Open GitHub"
           variant="secondary"
           target="_blank"
         >

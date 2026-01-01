@@ -22,8 +22,11 @@ export let ThemeDropdown = component$<ThemeDropdownProps>(({ close }) => {
   let reference = useSignal<HTMLDivElement | undefined>()
   let theme = useContext(ThemeContext)
 
-  let setTheme$ = $((themeValue: string): void => {
+  let setTheme$ = $((themeValue: string, themeName: string): void => {
     theme.value = themeValue
+    if (globalThis.fathom) {
+      globalThis.fathom.trackEvent(`settings: theme ${themeName.toLowerCase()}`)
+    }
     close?.()
   })
 
@@ -64,11 +67,9 @@ export let ThemeDropdown = component$<ThemeDropdownProps>(({ close }) => {
       {themes.map(({ name, id }) => (
         <button
           onClick$={async () => {
-            await setTheme$(id)
+            await setTheme$(id, name)
           }}
           class={styles['dropdown-item']}
-          data-umami-event="Select Theme"
-          data-umami-event-name={name}
           key={id}
         >
           {name}

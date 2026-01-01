@@ -20,6 +20,11 @@ export let Icons = component$(() => (
         <Typography mbe="xl">Is there some icon missing?</Typography>
         <Button
           href="https://github.com/azat-io/eyecons/issues/new?assignees=&labels=feature&projects=&template=icon-request.yml&title=Icon+Request%3A+%28fill+in%29"
+          onClick$={() => {
+            if (globalThis.fathom) {
+              globalThis.fathom.trackEvent('click: request icon')
+            }
+          }}
           target="_blank"
         >
           Request Icon

@@ -25,6 +25,11 @@ export let Themes = component$(() => (
         </Typography>
         <Button
           href="https://github.com/azat-io/eyecons/issues/new?assignees=&labels=feature&projects=&template=theme-request.yml&title=Theme+Request%3A+%28fill+in%29"
+          onClick$={() => {
+            if (globalThis.fathom) {
+              globalThis.fathom.trackEvent('click: request theme')
+            }
+          }}
           target="_blank"
         >
           Request Theme

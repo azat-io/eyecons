@@ -15,6 +15,9 @@ export let ThemeChanger = component$(() => {
     let newThemeValue = themes[newThemeIndex]?.id
     if (newThemeValue && newThemeValue !== theme.value) {
       theme.value = newThemeValue
+      if (globalThis.fathom) {
+        globalThis.fathom.trackEvent('settings: theme switched')
+      }
     }
   })
 
