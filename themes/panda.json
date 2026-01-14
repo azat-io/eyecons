@@ -51,6 +51,9 @@
     "php": {
       "#4f5b93": "#6fc1ff"
     },
+    "rolldown": {
+      "#f50": "#ffb86c"
+    },
     "rust": {
       "#f74b01": "#ffb86c"
     },

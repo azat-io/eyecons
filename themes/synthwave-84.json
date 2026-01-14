@@ -59,6 +59,9 @@
     "javascript": {
       "#f0db4f": "#fede5d"
     },
+    "rolldown": {
+      "#f50": "#ff8b39"
+    },
     "storybook": {
       "#ff4785": "#ff7edb"
     },
