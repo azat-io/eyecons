@@ -96,9 +96,6 @@
     "svgo": {
       "#3f80c2": "#82aaff"
     },
-    "vitest": {
-      "#729b1b": "#80cbc4"
-    },
     "webpack": {
       "#75aecb": "#82aaff",
       "#5599c8": "#82aaff"

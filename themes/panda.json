@@ -56,9 +56,6 @@
     },
     "toml": {
       "#9c4121": "#ffb86c"
-    },
-    "vitest": {
-      "#fcc72b": "#ffffff"
     }
   }
 }

@@ -62,9 +62,6 @@
     "rolldown": {
       "#ff7e17": "#cb4b16"
     },
-    "vitest": {
-      "#fcc72b": "#fdf6e3"
-    },
     "vue": {
       "#35495e": "#2aa198",
       "#41b883": "#ffffff",

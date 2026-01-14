@@ -83,9 +83,6 @@
     },
     "storybook": {
       "#ff4785": "#bc8cff"
-    },
-    "vitest": {
-      "#fcc72b": "#ffffff"
     }
   }
 }
