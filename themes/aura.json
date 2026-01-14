@@ -63,6 +63,9 @@
     "license": {
       "#fff": "#15141b"
     },
+    "oxc": {
+      "#32f3ef": "#82e2ff"
+    },
     "storybook": {
       "#ff4785": "#f694ff"
     },

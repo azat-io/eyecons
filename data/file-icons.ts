@@ -524,6 +524,16 @@ export let fileIcons: FileIcon[] = [
     id: 'npm',
   },
   {
+    files: [
+      '.oxlintrc.json',
+      '.oxlintrc.jsonc',
+      '.oxfmtrc.json',
+      '.oxfmtrc.jsonc',
+    ],
+    name: 'Oxc',
+    id: 'oxc',
+  },
+  {
     extensions: ['pl', 'pm', 'raku'],
     name: 'Perl',
     id: 'perl',
