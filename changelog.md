@@ -1,5 +1,23 @@
 # Changelog
 
+## v1.12.0
+
+[compare changes](https://github.com/azat-io/eyecons/compare/v1.11.0...v1.12.0)
+
+### 🚀 Features
+
+- Support alabaster theme ([db11fc7](https://github.com/azat-io/eyecons/commit/db11fc7))
+- Support ts cspell configs ([2fc10d9](https://github.com/azat-io/eyecons/commit/2fc10d9))
+- Support ts stylelint configs ([a143dde](https://github.com/azat-io/eyecons/commit/a143dde))
+- Update vite icon ([4118c6f](https://github.com/azat-io/eyecons/commit/4118c6f))
+- Update vitest icon ([0d56240](https://github.com/azat-io/eyecons/commit/0d56240))
+- Update rolldown icon ([ea1263c](https://github.com/azat-io/eyecons/commit/ea1263c))
+- Add oxc icon ([faaaf3d](https://github.com/azat-io/eyecons/commit/faaaf3d))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](https://github.com/azat-io))
+
 ## v1.11.0
 
 [compare changes](https://github.com/azat-io/eyecons/compare/v1.10.0...v1.11.0)
