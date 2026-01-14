@@ -60,9 +60,6 @@
     "toml": {
       "#9c4121": "#fab387"
     },
-    "vite": {
-      "#ffdd35": "#ffffff"
-    },
     "vitest": {
       "#fcc72b": "#ffffff"
     }

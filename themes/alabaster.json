@@ -59,10 +59,6 @@
     "rolldown": {
       "#ff7e17": "#cb9000"
     },
-    "vite": {
-      "#7293ff": "#7a3e9d",
-      "#ffdd35": "#ffbc5d"
-    },
     "vitest": {
       "#fcc72b": "#ffbc5d"
     },

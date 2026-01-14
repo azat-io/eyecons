@@ -60,9 +60,6 @@
     "storybook": {
       "#ff4785": "#d2a6ff"
     },
-    "vite": {
-      "#ffdd35": "#f6f7f8"
-    },
     "vitest": {
       "#fcc72b": "#f6f7f8"
     }

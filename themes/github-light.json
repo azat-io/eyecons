@@ -87,9 +87,6 @@
     "svg": {
       "#000": "#ffffff"
     },
-    "vite": {
-      "#ffdd35": "#ffffff"
-    },
     "vitest": {
       "#fcc72b": "#ffffff"
     },
