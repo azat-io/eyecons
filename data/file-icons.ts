@@ -156,6 +156,7 @@ export let fileIcons: FileIcon[] = [
       'docker-compose.yml',
       'docker-compose.yaml',
     ],
+    extensions: ['dockerfile'],
     name: 'Docker',
     id: 'docker',
   },
