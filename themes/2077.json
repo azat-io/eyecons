@@ -75,6 +75,9 @@
     "lua": {
       "navy": "#0ab2fa"
     },
+    "makefile": {
+      "#818181": "#0ab2fa"
+    },
     "php": {
       "#4f5b93": "#0ab2fa"
     },

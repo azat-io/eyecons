@@ -59,6 +59,9 @@
     "javascript": {
       "#f0db4f": "#fede5d"
     },
+    "makefile": {
+      "#818181": "#495495"
+    },
     "rolldown": {
       "#f50": "#ff8b39"
     },

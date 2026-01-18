@@ -470,6 +470,12 @@ export let fileIcons: FileIcon[] = [
     id: 'lua',
   },
   {
+    files: ['makefile', 'gnumakefile', 'kbuild'],
+    extensions: ['mk'],
+    name: 'Makefile',
+    id: 'makefile',
+  },
+  {
     extensions: ['md', 'markdown', 'rst'],
     name: 'Markdown',
     id: 'markdown',
