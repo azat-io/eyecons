@@ -302,6 +302,11 @@ export let fileIcons: FileIcon[] = [
     id: 'html',
   },
   {
+    extensions: ['pot', 'po', 'mo', 'lang', 'xlf'],
+    name: 'I18n',
+    id: 'i18n',
+  },
+  {
     extensions: [
       'png',
       'jpeg',
