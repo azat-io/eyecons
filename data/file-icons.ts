@@ -413,6 +413,12 @@ export let fileIcons: FileIcon[] = [
     id: 'jest',
   },
   {
+    extensions: ['jl'],
+    name: 'Julia',
+    id: 'julia',
+    light: true,
+  },
+  {
     extensions: ['json', 'jsonc', 'json5'],
     name: 'JSON',
     id: 'json',
