@@ -746,6 +746,11 @@ export let fileIcons: FileIcon[] = [
     id: 'toml',
   },
   {
+    extensions: ['twig'],
+    name: 'Twig',
+    id: 'twig',
+  },
+  {
     extensions: ['ts', 'cts', 'mts'],
     name: 'TypeScript',
     id: 'typescript',
