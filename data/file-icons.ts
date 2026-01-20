@@ -600,6 +600,12 @@ export let fileIcons: FileIcon[] = [
     light: true,
   },
   {
+    extensions: ['pure', 'purs'],
+    name: 'PureScript',
+    id: 'purescript',
+    light: true,
+  },
+  {
     extensions: ['py', 'pyc', 'pyd', 'pyo', 'pyw', 'pyz', 'pyi'],
     name: 'Python',
     id: 'python',
