@@ -115,7 +115,6 @@ function showErrorMessage(message: string): void {
  * Logger for the Eyecons extension.
  *
  * @example
- *   // Initialize the logger
  *   logger.init()
  *
  *   // Log messages

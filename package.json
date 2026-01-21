@@ -165,7 +165,7 @@
     "sharp": "^0.34.5"
   },
   "devDependencies": {
-    "@azat-io/eslint-config": "^2.65.0",
+    "@azat-io/eslint-config": "^2.66.0",
     "@azat-io/stylelint-config": "^1.4.0",
     "@azat-io/typescript-config": "^1.1.1",
     "@builder.io/qwik": "^1.18.0",
@@ -187,8 +187,8 @@
     "dedent": "^1.7.1",
     "eslint": "^9.39.2",
     "focus-trap": "^7.8.0",
-    "lightningcss": "^1.30.2",
-    "netlify-cli": "^23.13.4",
+    "lightningcss": "^1.31.1",
+    "netlify-cli": "^23.13.5",
     "ovsx": "^0.10.8",
     "prettier": "^3.8.0",
     "prettier-plugin-jsdoc": "^1.8.0",

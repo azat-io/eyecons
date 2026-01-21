@@ -4,7 +4,6 @@ import crypto from 'node:crypto'
  * Generates a unique hash based on provided strings.
  *
  * @example
- *   // Generate hash for an icon
  *   const hash = generateHash('icon.svg', 'Dark Theme', 'blue')
  *
  *   // Generate hash for another context
