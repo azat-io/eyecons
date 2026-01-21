@@ -1,5 +1,19 @@
 # Changelog
 
+## v1.14.0
+
+[compare changes](https://github.com/azat-io/eyecons/compare/v1.13.0...v1.14.0)
+
+### 🚀 Features
+
+- Add julia icon ([c46c642](https://github.com/azat-io/eyecons/commit/c46c642))
+- Add twig icon ([2971299](https://github.com/azat-io/eyecons/commit/2971299))
+- Add purescript icon ([689998a](https://github.com/azat-io/eyecons/commit/689998a))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](https://github.com/azat-io))
+
 ## v1.13.0
 
 [compare changes](https://github.com/azat-io/eyecons/compare/v1.12.0...v1.13.0)
