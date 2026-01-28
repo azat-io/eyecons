@@ -11,7 +11,7 @@ export let Footer = component$(() => (
         Released under the MIT License
       </Typography>
       <Typography align="center" size="s">
-        Copyright © 2025 Azat S. & Contributors
+        Copyright © 2026 Azat S. & Contributors
       </Typography>
     </Container>
   </footer>
