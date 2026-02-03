@@ -542,6 +542,11 @@ export let fileIcons: FileIcon[] = [
     id: 'npm',
   },
   {
+    extensions: ['ml', 'mli', 'cmx'],
+    name: 'OCaml',
+    id: 'ocaml',
+  },
+  {
     files: [
       '.oxlintrc.json',
       '.oxlintrc.jsonc',
