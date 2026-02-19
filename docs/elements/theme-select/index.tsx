@@ -19,7 +19,10 @@ export let ThemeSelect = component$(() => {
   useClickOutside(reference, closeDropdown)
 
   return (
-    <div class={styles['wrapper']} ref={reference}>
+    <div
+      class={styles['wrapper']}
+      ref={reference}
+    >
       <Label for="theme">Select Theme:</Label>
       <div class={styles['input-wrapper']}>
         <button

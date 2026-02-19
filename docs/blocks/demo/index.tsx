@@ -17,7 +17,13 @@ export let Demo = component$(() => (
   <section class={styles['demo']}>
     <Container>
       <Theme>
-        <Typography align="center" size="xl" tag="h2" mbe="xs" bold>
+        <Typography
+          align="center"
+          size="xl"
+          tag="h2"
+          mbe="xs"
+          bold
+        >
           Try it out
         </Typography>
         <Typography
@@ -39,7 +45,10 @@ export let Demo = component$(() => (
             </div>
             <IconList>
               {fileIcons.map(icon => (
-                <IconItem key={icon.id} {...icon} />
+                <IconItem
+                  key={icon.id}
+                  {...icon}
+                />
               ))}
             </IconList>
           </div>

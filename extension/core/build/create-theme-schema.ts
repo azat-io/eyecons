@@ -4,12 +4,18 @@ import type { Theme } from '../../types/theme'
 
 import { getHideExplorerArrowValue } from '../../io/vscode/get-hide-explorer-arrow-value'
 
-/** Options for creating a theme schema. */
+/**
+ * Options for creating a theme schema.
+ */
 interface CreateThemeSchemaOptions {
-  /** Extension configuration. */
+  /**
+   * Extension configuration.
+   */
   config: Config
 
-  /** Current VS Code theme and its colors. */
+  /**
+   * Current VS Code theme and its colors.
+   */
   theme: Theme
 }
 

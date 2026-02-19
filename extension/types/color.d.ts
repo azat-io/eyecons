@@ -2,29 +2,47 @@ import type { Vector } from '@texel/color'
 
 import type { Config } from './config'
 
-/** Color matching context for palette filtering operations. */
+/**
+ * Color matching context for palette filtering operations.
+ */
 export interface ColorMatchContext {
-  /** Whether the source color is achromatic. */
+  /**
+   * Whether the source color is achromatic.
+   */
   sourceAchromatic: boolean
 
-  /** Available colors from theme palette. */
+  /**
+   * Available colors from theme palette.
+   */
   themePalette: Vector[]
 
-  /** Source color to be matched. */
+  /**
+   * Source color to be matched.
+   */
   sourceColor: Vector
 
-  /** Application configuration. */
+  /**
+   * Application configuration.
+   */
   config: Config
 }
 
-/** Components of a color in OKLCH color space. */
+/**
+ * Components of a color in OKLCH color space.
+ */
 export interface ColorComponents {
-  /** Lightness component (L). */
+  /**
+   * Lightness component (L).
+   */
   lightness: number
 
-  /** Chroma/saturation component (C). */
+  /**
+   * Chroma/saturation component (C).
+   */
   chroma: number
 
-  /** Hue component (H). */
+  /**
+   * Hue component (H).
+   */
   hue: number
 }

@@ -1,41 +1,69 @@
-/** Configuration for the icon theme extension. */
+/**
+ * Configuration for the icon theme extension.
+ */
 export interface Config {
-  /** Icon processing settings. */
+  /**
+   * Icon processing settings.
+   */
   processing: {
-    /** Threshold values for determining extreme lightness. */
+    /**
+     * Threshold values for determining extreme lightness.
+     */
     extremeLightnessThresholds: {
-      /** Lightness value above which the color is considered close to white. */
+      /**
+       * Lightness value above which the color is considered close to white.
+       */
       light: number
 
-      /** Lightness value below which the color is considered close to black. */
+      /**
+       * Lightness value below which the color is considered close to black.
+       */
       dark: number
     }
 
-    /** Minimum saturation value below which the color is considered achromatic. */
+    /**
+     * Minimum saturation value below which the color is considered achromatic.
+     */
     lowSaturationThreshold: number
 
-    /** Saturation increase factor. */
+    /**
+     * Saturation increase factor.
+     */
     saturationFactor: number
 
-    /** Whether to adjust saturation to improve contrast. */
+    /**
+     * Whether to adjust saturation to improve contrast.
+     */
     adjustContrast: boolean
   }
 
-  /** Logging settings. */
+  /**
+   * Logging settings.
+   */
   logging: {
-    /** Minimum logging level. Possible values: 'debug', 'info', 'warn', 'error'. */
+    /**
+     * Minimum logging level. Possible values: 'debug', 'info', 'warn', 'error'.
+     */
     level: 'debug' | 'error' | 'info' | 'warn'
 
-    /** Path to the log file, if toFile = true. */
+    /**
+     * Path to the log file, if toFile = true.
+     */
     filePath?: string
 
-    /** Whether to log to a file in addition to console output. */
+    /**
+     * Whether to log to a file in addition to console output.
+     */
     toFile: boolean
   }
 
-  /** Behavior when processing errors occur. */
+  /**
+   * Behavior when processing errors occur.
+   */
   errorHandling: {
-    /** Whether to show notifications to the user about errors. */
+    /**
+     * Whether to show notifications to the user about errors.
+     */
     showNotifications: boolean
 
     /**
@@ -45,21 +73,33 @@ export interface Config {
     continueOnError: boolean
   }
 
-  /** Path to the icon definitions file. */
+  /**
+   * Path to the icon definitions file.
+   */
   iconDefinitionsPath: string
 
-  /** Path to the directory with source icons. */
+  /**
+   * Path to the directory with source icons.
+   */
   sourceIconsPath: string
 
-  /** Path to the directory for processed icons. */
+  /**
+   * Path to the directory for processed icons.
+   */
   outputIconsPath: string
 
-  /** Path to the extension directory. */
+  /**
+   * Path to the extension directory.
+   */
   extensionPath: string
 
-  /** Path to the output directory. */
+  /**
+   * Path to the output directory.
+   */
   outputPath: string
 
-  /** Extension version for cache compatibility checking. */
+  /**
+   * Extension version for cache compatibility checking.
+   */
   version: string
 }

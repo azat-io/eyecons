@@ -5,45 +5,73 @@ import { hexToRGB as hexToRgb, convert, OKLCH, OKHSL, sRGB } from '@texel/color'
 import { NAMED_COLORS, HSL_REGEX, RGB_REGEX } from './constants'
 import { logger } from '../../io/vscode/logger'
 
-/** Interface for named groups in HSL regular expression. */
+/**
+ * Interface for named groups in HSL regular expression.
+ */
 interface HSLRegexGroups {
-  /** Optional alpha transparency value (0-1). */
+  /**
+   * Optional alpha transparency value (0-1).
+   */
   a?: string
 
-  /** Hue value in degrees (0-360). */
+  /**
+   * Hue value in degrees (0-360).
+   */
   h: string
 
-  /** Saturation value in percentage (0-100%). */
+  /**
+   * Saturation value in percentage (0-100%).
+   */
   s: string
 
-  /** Lightness value in percentage (0-100%). */
+  /**
+   * Lightness value in percentage (0-100%).
+   */
   l: string
 }
 
-/** Interface for named groups in RGB regular expression. */
+/**
+ * Interface for named groups in RGB regular expression.
+ */
 interface RGBRegexGroups {
-  /** Optional alpha transparency value (0-1). */
+  /**
+   * Optional alpha transparency value (0-1).
+   */
   a?: string
 
-  /** Red color component (0-255). */
+  /**
+   * Red color component (0-255).
+   */
   r: string
 
-  /** Green color component (0-255). */
+  /**
+   * Green color component (0-255).
+   */
   g: string
 
-  /** Blue color component (0-255). */
+  /**
+   * Blue color component (0-255).
+   */
   b: string
 }
 
-/** A matcher that checks if a color value matches a specific format. */
+/**
+ * A matcher that checks if a color value matches a specific format.
+ */
 interface ColorMatcher {
-  /** Predicate to check if the value matches this handler. */
+  /**
+   * Predicate to check if the value matches this handler.
+   */
   predicate(value: string): boolean
-  /** Handler function to process matching values. */
+  /**
+   * Handler function to process matching values.
+   */
   handler: ColorHandler
 }
 
-/** A color handler function that takes a color value and returns RGB values. */
+/**
+ * A color handler function that takes a color value and returns RGB values.
+ */
 type ColorHandler = (value: string) => Vector
 
 /**
@@ -162,7 +190,9 @@ let handleHsl: ColorHandler = (colorValue: string): Vector =>
 let handleNamedColor: ColorHandler = (colorValue: string): Vector =>
   namedColorToRgb(colorValue)
 
-/** List of matchers for different color formats, in order of priority. */
+/**
+ * List of matchers for different color formats, in order of priority.
+ */
 let colorMatchers: ColorMatcher[] = [
   {
     predicate: (value: string) => value.startsWith('#'),

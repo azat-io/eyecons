@@ -10,7 +10,12 @@ export let Icons = component$(() => (
   <section class={styles['icons']}>
     <Container class={styles['container']}>
       <div>
-        <Typography size="xl" tag="h2" mbe="xs" bold>
+        <Typography
+          size="xl"
+          tag="h2"
+          mbe="xs"
+          bold
+        >
           Icons
         </Typography>
         <Typography mbe="m">

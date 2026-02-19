@@ -17,13 +17,19 @@ body:
   - type: textarea
     attributes:
       label: Additional comments
-      description: Is there anything else that's important to know? Specify your VS Code version and operating system.
+      description:
+        Is there anything else that's important to know? Specify your VS Code
+        version and operating system.
 
   - type: checkboxes
     id: checkboxes
     attributes:
       label: Validations
-      description: Before submitting the issue, please make sure you do the following
+      description:
+        Before submitting the issue, please make sure you do the following
       options:
-        - label: Check that there isn't [already an issue](https://github.com/azat-io/eyecons/issues) that reports the same bug to avoid creating a duplicate.
+        - label:
+            Check that there isn't [already an
+            issue](https://github.com/azat-io/eyecons/issues) that reports the
+            same bug to avoid creating a duplicate.
           required: true

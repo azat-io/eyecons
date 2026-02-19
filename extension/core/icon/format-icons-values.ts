@@ -24,17 +24,17 @@ export function formatIconsValues(
         id,
         ...properties,
       },
-      ...(light
-        ? [
-            {
-              theme: 'light' as const,
-              id: `${id}-light`,
-              name,
-              type,
-              ...properties,
-            },
-          ]
-        : []),
+      ...(light ?
+        [
+          {
+            theme: 'light' as const,
+            id: `${id}-light`,
+            name,
+            type,
+            ...properties,
+          },
+        ]
+      : []),
     ],
     [],
   )

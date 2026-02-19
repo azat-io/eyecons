@@ -281,10 +281,14 @@ export const COLOR_WEIGHTS = {
  * These thresholds are for OKLCH chroma values, not traditional HSL saturation.
  */
 export const COLOR_THRESHOLDS = {
-  /** Threshold for medium saturation colors. */
+  /**
+   * Threshold for medium saturation colors.
+   */
   MEDIUM_SATURATION: 0.08,
 
-  /** Threshold for high saturation colors. */
+  /**
+   * Threshold for high saturation colors.
+   */
   HIGH_SATURATION: 0.14,
 }
 
@@ -340,7 +344,9 @@ export const COLOR_CATEGORIES = {
   },
 }
 
-/** Maps each color category to its adjacent categories for fallback matching. */
+/**
+ * Maps each color category to its adjacent categories for fallback matching.
+ */
 export const ADJACENT_CATEGORIES = {
   [COLOR_CATEGORIES.YELLOW.name]: [
     COLOR_CATEGORIES.ORANGE.name,

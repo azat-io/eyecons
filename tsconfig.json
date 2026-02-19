@@ -1,6 +1,6 @@
 {
   "extends": "@azat-io/typescript-config",
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": ["**/*.ts", "**/*.mts", "**/*.tsx"],
   "compilerOptions": {
     "jsxImportSource": "@builder.io/qwik",
     "types": ["vite/client"],

@@ -166,6 +166,7 @@
   },
   "devDependencies": {
     "@azat-io/eslint-config": "^2.66.0",
+    "@azat-io/prettier-config": "^1.1.1",
     "@azat-io/stylelint-config": "^1.4.0",
     "@azat-io/typescript-config": "^1.1.1",
     "@builder.io/qwik": "^1.18.0",
@@ -191,7 +192,6 @@
     "netlify-cli": "^23.13.5",
     "ovsx": "^0.10.8",
     "prettier": "^3.8.0",
-    "prettier-plugin-jsdoc": "^1.8.0",
     "puppeteer": "^24.35.0",
     "shiki": "^3.21.0",
     "simple-git-hooks": "^2.13.1",

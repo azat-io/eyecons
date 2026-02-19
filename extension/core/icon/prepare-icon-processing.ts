@@ -8,39 +8,63 @@ import { toRelativePath } from '../build/to-relative-path'
 import { getIconFilename } from './get-icon-filename'
 import { generateHash } from '../hash/generate-hash'
 
-/** Result of icon processing preparation. */
+/**
+ * Result of icon processing preparation.
+ */
 interface IconProcessingPreparation {
-  /** Temporary file path where the processed icon will be saved. */
+  /**
+   * Temporary file path where the processed icon will be saved.
+   */
   temporaryFilePath: string
 
-  /** Processed icon file name. */
+  /**
+   * Processed icon file name.
+   */
   fileName: string
 
-  /** Path to the icon for use in the theme schema. */
+  /**
+   * Path to the icon for use in the theme schema.
+   */
   iconPath: string
 
-  /** Whether this is a light variant of the icon. */
+  /**
+   * Whether this is a light variant of the icon.
+   */
   isLight: boolean
 
-  /** Base icon identifier (without -light suffix). */
+  /**
+   * Base icon identifier (without -light suffix).
+   */
   baseId: string
 
-  /** Generated hash for the icon. */
+  /**
+   * Generated hash for the icon.
+   */
   hash: string
 
-  /** Icon type (e.g. 'base', 'files'). */
+  /**
+   * Icon type (e.g. 'base', 'files').
+   */
   type: string
 
-  /** Icon identifier. */
+  /**
+   * Icon identifier.
+   */
   id: string
 }
 
-/** Icon processing preparation parameters. */
+/**
+ * Icon processing preparation parameters.
+ */
 interface IconProcessingParameters {
-  /** Temporary directory path. */
+  /**
+   * Temporary directory path.
+   */
   temporaryDirectory: string
 
-  /** The icon to prepare for processing. */
+  /**
+   * The icon to prepare for processing.
+   */
   icon: FormattedIconValue
 }
 

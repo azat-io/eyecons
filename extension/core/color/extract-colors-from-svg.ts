@@ -9,27 +9,43 @@ import {
   RGB_REGEX,
 } from './constants'
 
-/** Information about a color found in an SVG. */
+/**
+ * Information about a color found in an SVG.
+ */
 export interface ColorInfo {
-  /** The source type of the color (attribute, CSS property, inline). */
+  /**
+   * The source type of the color (attribute, CSS property, inline).
+   */
   source: 'attribute' | 'inline' | 'css'
 
-  /** The attribute or property name (if applicable). */
+  /**
+   * The attribute or property name (if applicable).
+   */
   property?: string
 
-  /** The original color value as string. */
+  /**
+   * The original color value as string.
+   */
   value: string
 }
 
-/** Color data needed to create a ColorInfo object. */
+/**
+ * Color data needed to create a ColorInfo object.
+ */
 interface ColorData {
-  /** The source of the color. */
+  /**
+   * The source of the color.
+   */
   source: 'attribute' | 'inline' | 'css'
 
-  /** The property name (if applicable). */
+  /**
+   * The property name (if applicable).
+   */
   property?: string
 
-  /** The color value. */
+  /**
+   * The color value.
+   */
   value: string
 }
 
@@ -39,10 +55,13 @@ interface ColorData {
  * blocks.
  *
  * @example
- *   const svgString =
- *     '<svg><rect fill="#ff0000" /><circle stroke="rgb(0,0,255)" /></svg>'
- *   const colors = extractColorsFromSvg(svgString)
- *   // Returns array of ColorInfo objects with information about found colors
+ *
+ * ```ts
+ * const svgString =
+ *   '<svg><rect fill="#ff0000" /><circle stroke="rgb(0,0,255)" /></svg>'
+ * const colors = extractColorsFromSvg(svgString)
+ * // Returns array of ColorInfo objects with information about found colors
+ * ```
  *
  * @param svgContent - The SVG content as a string.
  * @returns Array of unique ColorInfo objects found in the SVG.

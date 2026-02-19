@@ -8,7 +8,8 @@
 
 - Add julia icon ([c46c642](https://github.com/azat-io/eyecons/commit/c46c642))
 - Add twig icon ([2971299](https://github.com/azat-io/eyecons/commit/2971299))
-- Add purescript icon ([689998a](https://github.com/azat-io/eyecons/commit/689998a))
+- Add purescript icon
+  ([689998a](https://github.com/azat-io/eyecons/commit/689998a))
 
 ### ❤️ Contributors
 
@@ -20,12 +21,14 @@
 
 ### 🚀 Features
 
-- Add makefile icon ([d186889](https://github.com/azat-io/eyecons/commit/d186889))
+- Add makefile icon
+  ([d186889](https://github.com/azat-io/eyecons/commit/d186889))
 - Add i18n icon ([eb8a8ec](https://github.com/azat-io/eyecons/commit/eb8a8ec))
 
 ### 🐞 Bug Fixes
 
-- Support dockerfile extension ([cc96119](https://github.com/azat-io/eyecons/commit/cc96119))
+- Support dockerfile extension
+  ([cc96119](https://github.com/azat-io/eyecons/commit/cc96119))
 
 ### ❤️ Contributors
 
@@ -37,12 +40,18 @@
 
 ### 🚀 Features
 
-- Support alabaster theme ([db11fc7](https://github.com/azat-io/eyecons/commit/db11fc7))
-- Support ts cspell configs ([2fc10d9](https://github.com/azat-io/eyecons/commit/2fc10d9))
-- Support ts stylelint configs ([a143dde](https://github.com/azat-io/eyecons/commit/a143dde))
-- Update vite icon ([4118c6f](https://github.com/azat-io/eyecons/commit/4118c6f))
-- Update vitest icon ([0d56240](https://github.com/azat-io/eyecons/commit/0d56240))
-- Update rolldown icon ([ea1263c](https://github.com/azat-io/eyecons/commit/ea1263c))
+- Support alabaster theme
+  ([db11fc7](https://github.com/azat-io/eyecons/commit/db11fc7))
+- Support ts cspell configs
+  ([2fc10d9](https://github.com/azat-io/eyecons/commit/2fc10d9))
+- Support ts stylelint configs
+  ([a143dde](https://github.com/azat-io/eyecons/commit/a143dde))
+- Update vite icon
+  ([4118c6f](https://github.com/azat-io/eyecons/commit/4118c6f))
+- Update vitest icon
+  ([0d56240](https://github.com/azat-io/eyecons/commit/0d56240))
+- Update rolldown icon
+  ([ea1263c](https://github.com/azat-io/eyecons/commit/ea1263c))
 - Add oxc icon ([faaaf3d](https://github.com/azat-io/eyecons/commit/faaaf3d))
 
 ### ❤️ Contributors
@@ -55,11 +64,15 @@
 
 ### 🚀 Features
 
-- Add rolldown icon ([d190591](https://github.com/azat-io/eyecons/commit/d190591))
-- Add codecov icon ([d0d9351](https://github.com/azat-io/eyecons/commit/d0d9351))
-- Add coderabbit icon ([8a33207](https://github.com/azat-io/eyecons/commit/8a33207))
+- Add rolldown icon
+  ([d190591](https://github.com/azat-io/eyecons/commit/d190591))
+- Add codecov icon
+  ([d0d9351](https://github.com/azat-io/eyecons/commit/d0d9351))
+- Add coderabbit icon
+  ([8a33207](https://github.com/azat-io/eyecons/commit/8a33207))
 - Add gemini icon ([b6e8927](https://github.com/azat-io/eyecons/commit/b6e8927))
-- Support aura theme ([90a36c9](https://github.com/azat-io/eyecons/commit/90a36c9))
+- Support aura theme
+  ([90a36c9](https://github.com/azat-io/eyecons/commit/90a36c9))
 
 ### ❤️ Contributors
 
@@ -72,7 +85,8 @@
 ### 🚀 Features
 
 - Add claude icon ([4246e09](https://github.com/azat-io/eyecons/commit/4246e09))
-- Add token-limit icon ([98554a9](https://github.com/azat-io/eyecons/commit/98554a9))
+- Add token-limit icon
+  ([98554a9](https://github.com/azat-io/eyecons/commit/98554a9))
 - Add cspell icon ([d6f4ee3](https://github.com/azat-io/eyecons/commit/d6f4ee3))
 
 ### ❤️ Contributors
@@ -85,7 +99,8 @@
 
 ### 🐞 Bug Fixes
 
-- Improve github dark theme colors ([6438af0](https://github.com/azat-io/eyecons/commit/6438af0))
+- Improve github dark theme colors
+  ([6438af0](https://github.com/azat-io/eyecons/commit/6438af0))
 
 ### ❤️ Contributors
 
@@ -97,8 +112,10 @@
 
 ### 🚀 Features
 
-- Add wallaby icon ([68642e3](https://github.com/azat-io/eyecons/commit/68642e3))
-- Support new prettier config formats ([b90ecbf](https://github.com/azat-io/eyecons/commit/b90ecbf))
+- Add wallaby icon
+  ([68642e3](https://github.com/azat-io/eyecons/commit/68642e3))
+- Support new prettier config formats
+  ([b90ecbf](https://github.com/azat-io/eyecons/commit/b90ecbf))
 
 ### ❤️ Contributors
 
@@ -117,7 +134,8 @@
 
 ### 🐞 Bug Fixes
 
-- Fix cline icon color in nord theme ([c1ec475](https://github.com/azat-io/eyecons/commit/c1ec475))
+- Fix cline icon color in nord theme
+  ([c1ec475](https://github.com/azat-io/eyecons/commit/c1ec475))
 
 ### ❤️ Contributors
 
@@ -129,8 +147,10 @@
 
 ### 🚀 Features
 
-- Support solarized dark theme ([0891ed8](https://github.com/azat-io/eyecons/commit/0891ed8))
-- Support solarized light theme ([bb33dbb](https://github.com/azat-io/eyecons/commit/bb33dbb))
+- Support solarized dark theme
+  ([0891ed8](https://github.com/azat-io/eyecons/commit/0891ed8))
+- Support solarized light theme
+  ([bb33dbb](https://github.com/azat-io/eyecons/commit/bb33dbb))
 
 ### ❤️ Contributors
 
@@ -143,15 +163,20 @@
 ### 🚀 Features
 
 - Add toml icon ([1f72a93](https://github.com/azat-io/eyecons/commit/1f72a93))
-- Support houston theme ([9cc18b6](https://github.com/azat-io/eyecons/commit/9cc18b6))
-- Support 2077 theme ([81bdcbd](https://github.com/azat-io/eyecons/commit/81bdcbd))
+- Support houston theme
+  ([9cc18b6](https://github.com/azat-io/eyecons/commit/9cc18b6))
+- Support 2077 theme
+  ([81bdcbd](https://github.com/azat-io/eyecons/commit/81bdcbd))
 - Add rust icon ([5e35d03](https://github.com/azat-io/eyecons/commit/5e35d03))
-- Add alias for pustota theme ([38b79db](https://github.com/azat-io/eyecons/commit/38b79db))
-- Support matcha theme ([4457dcc](https://github.com/azat-io/eyecons/commit/4457dcc))
+- Add alias for pustota theme
+  ([38b79db](https://github.com/azat-io/eyecons/commit/38b79db))
+- Support matcha theme
+  ([4457dcc](https://github.com/azat-io/eyecons/commit/4457dcc))
 
 ### 🐞 Bug Fixes
 
-- Properly move icons between different filesystems ([7908097](https://github.com/azat-io/eyecons/commit/7908097))
+- Properly move icons between different filesystems
+  ([7908097](https://github.com/azat-io/eyecons/commit/7908097))
 
 ### ❤️ Contributors
 
@@ -163,16 +188,20 @@
 
 ### 🚀 Features
 
-- Rebrand with new logo ([06802f2](https://github.com/azat-io/eyecons/commit/06802f2))
-- Rewrite extension ([f0f1355](https://github.com/azat-io/eyecons/commit/f0f1355))
+- Rebrand with new logo
+  ([06802f2](https://github.com/azat-io/eyecons/commit/06802f2))
+- Rewrite extension
+  ([f0f1355](https://github.com/azat-io/eyecons/commit/f0f1355))
 - Add v icon ([a8a826c](https://github.com/azat-io/eyecons/commit/a8a826c))
 - Add zig icon ([d3071b7](https://github.com/azat-io/eyecons/commit/d3071b7))
 - Add env icon ([30ad82c](https://github.com/azat-io/eyecons/commit/30ad82c))
-- Add console icon ([9f1810c](https://github.com/azat-io/eyecons/commit/9f1810c))
+- Add console icon
+  ([9f1810c](https://github.com/azat-io/eyecons/commit/9f1810c))
 
 ### 🐞 Bug Fixes
 
-- Improve appearance of prettier icon in vitesse light ([a37cb8c](https://github.com/azat-io/eyecons/commit/a37cb8c))
+- Improve appearance of prettier icon in vitesse light
+  ([a37cb8c](https://github.com/azat-io/eyecons/commit/a37cb8c))
 
 ### ❤️ Contributors
 
@@ -185,11 +214,13 @@
 ### 🚀 Features
 
 - Add f# icon ([56e2f6a](https://github.com/azat-io/eyecons/commit/56e2f6a))
-- Downgrade required vscode version ([f049f80](https://github.com/azat-io/eyecons/commit/f049f80))
+- Downgrade required vscode version
+  ([f049f80](https://github.com/azat-io/eyecons/commit/f049f80))
 
 ### 🐞 Bug Fixes
 
-- Fix npmrc file icon ([98df18c](https://github.com/azat-io/eyecons/commit/98df18c))
+- Fix npmrc file icon
+  ([98df18c](https://github.com/azat-io/eyecons/commit/98df18c))
 
 ### ❤️ Contributors
 
@@ -201,14 +232,18 @@
 
 ### 🚀 Features
 
-- Support one monokai theme ([9a3f73e](https://github.com/azat-io/eyecons/commit/9a3f73e))
+- Support one monokai theme
+  ([9a3f73e](https://github.com/azat-io/eyecons/commit/9a3f73e))
 - Add audio icon ([ec5b874](https://github.com/azat-io/eyecons/commit/ec5b874))
-- Add nano staged icon ([2cce274](https://github.com/azat-io/eyecons/commit/2cce274))
+- Add nano staged icon
+  ([2cce274](https://github.com/azat-io/eyecons/commit/2cce274))
 
 ### 🐞 Bug Fixes
 
-- Downgrade ts-retry ([94f4570](https://github.com/azat-io/eyecons/commit/94f4570))
-- Fix hide expolorer arrow validation ([8f744f6](https://github.com/azat-io/eyecons/commit/8f744f6))
+- Downgrade ts-retry
+  ([94f4570](https://github.com/azat-io/eyecons/commit/94f4570))
+- Fix hide expolorer arrow validation
+  ([8f744f6](https://github.com/azat-io/eyecons/commit/8f744f6))
 
 ### ❤️ Contributors
 
@@ -220,7 +255,8 @@
 
 ### 🚀 Features
 
-- Add netlify icon ([c726b05](https://github.com/azat-io/eyecons/commit/c726b05))
+- Add netlify icon
+  ([c726b05](https://github.com/azat-io/eyecons/commit/c726b05))
 - Add vscode icon ([bf6f9b2](https://github.com/azat-io/eyecons/commit/bf6f9b2))
 - Add xml icon ([b8696ef](https://github.com/azat-io/eyecons/commit/b8696ef))
 - Add vercel icon ([a7555fd](https://github.com/azat-io/eyecons/commit/a7555fd))
@@ -238,11 +274,13 @@
 
 - Add go icon ([a3769ad](https://github.com/azat-io/eyecons/commit/a3769ad))
 - Add nginx icon ([d98935a](https://github.com/azat-io/eyecons/commit/d98935a))
-- Add tailwind icon ([176c999](https://github.com/azat-io/eyecons/commit/176c999))
+- Add tailwind icon
+  ([176c999](https://github.com/azat-io/eyecons/commit/176c999))
 
 ### 🐞 Bug Fixes
 
-- Reload icons on hide explorer arrow value change ([8f1fac4](https://github.com/azat-io/eyecons/commit/8f1fac4))
+- Reload icons on hide explorer arrow value change
+  ([8f1fac4](https://github.com/azat-io/eyecons/commit/8f1fac4))
 
 ### ❤️ Contributors
 
@@ -260,16 +298,20 @@
 
 ### 🚀 Features
 
-- Rebuild icons on extension update ([9d60627](https://github.com/azat-io/eyecons/commit/9d60627))
-- Support tokyo night theme ([cac9a1a](https://github.com/azat-io/eyecons/commit/cac9a1a))
+- Rebuild icons on extension update
+  ([9d60627](https://github.com/azat-io/eyecons/commit/9d60627))
+- Support tokyo night theme
+  ([cac9a1a](https://github.com/azat-io/eyecons/commit/cac9a1a))
 - Add vue icon ([efbce13](https://github.com/azat-io/eyecons/commit/efbce13))
-- Add license icon ([bf07ffc](https://github.com/azat-io/eyecons/commit/bf07ffc))
+- Add license icon
+  ([bf07ffc](https://github.com/azat-io/eyecons/commit/bf07ffc))
 - Add readme icon ([1b1e432](https://github.com/azat-io/eyecons/commit/1b1e432))
 - Add yaml icon ([ed37bca](https://github.com/azat-io/eyecons/commit/ed37bca))
 
 ### 🐞 Bug Fixes
 
-- Fix appearance of json icon ([703b5da](https://github.com/azat-io/eyecons/commit/703b5da))
+- Fix appearance of json icon
+  ([703b5da](https://github.com/azat-io/eyecons/commit/703b5da))
 
 ### ❤️ Contributors
 
@@ -281,15 +323,18 @@
 
 ### 🚀 Features
 
-- Validate icons before building ([9492fb4](https://github.com/azat-io/eyecons/commit/9492fb4))
+- Validate icons before building
+  ([9492fb4](https://github.com/azat-io/eyecons/commit/9492fb4))
 - Add eslint icon ([1b67764](https://github.com/azat-io/eyecons/commit/1b67764))
 - Add python icon ([e5c7666](https://github.com/azat-io/eyecons/commit/e5c7666))
 - Add c++ icon ([bfc2bdb](https://github.com/azat-io/eyecons/commit/bfc2bdb))
 - Add c# icon ([d9640d8](https://github.com/azat-io/eyecons/commit/d9640d8))
 - Add c icon ([4e51c77](https://github.com/azat-io/eyecons/commit/4e51c77))
 - Add scala icon ([39ca1c3](https://github.com/azat-io/eyecons/commit/39ca1c3))
-- Add prettier icon ([865f59d](https://github.com/azat-io/eyecons/commit/865f59d))
-- Support catppuccin mocha theme ([0f56ee8](https://github.com/azat-io/eyecons/commit/0f56ee8))
+- Add prettier icon
+  ([865f59d](https://github.com/azat-io/eyecons/commit/865f59d))
+- Support catppuccin mocha theme
+  ([0f56ee8](https://github.com/azat-io/eyecons/commit/0f56ee8))
 
 ### ❤️ Contributors
 

@@ -40,14 +40,16 @@ export let Icon = component$<IconProps>(({ light, id }) => {
     }.svg`
 
     let svgContent = (
-      isDev ? await metaGlobIcons[iconPath]?.() : metaGlobIcons[iconPath]
-    ) as string
+      isDev ?
+        await metaGlobIcons[iconPath]?.()
+      : metaGlobIcons[iconPath]) as string
 
     let dataPath = `../../../themes/${theme.value}.json`
 
     let dataValue = (
-      isDev ? await metaGlobData[dataPath]?.() : metaGlobData[dataPath]
-    ) as ThemeSource
+      isDev ?
+        await metaGlobData[dataPath]?.()
+      : metaGlobData[dataPath]) as ThemeSource
 
     let themeValue = {
       folderColor: 'blue',

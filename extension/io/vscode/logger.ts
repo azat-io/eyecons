@@ -1,6 +1,8 @@
 import * as vscode from 'vscode'
 
-/** Interface for the context-specific logger. */
+/**
+ * Interface for the context-specific logger.
+ */
 interface LoggerWithContext {
   /**
    * Log an error message with context.
@@ -41,7 +43,9 @@ interface LoggerWithContext {
   debug(message: string): void
 }
 
-/** Interface for the main logger. */
+/**
+ * Interface for the main logger.
+ */
 interface Logger extends LoggerWithContext {
   /**
    * Creates a logger with predefined context prefix.
@@ -51,7 +55,9 @@ interface Logger extends LoggerWithContext {
    */
   withContext(context: string): LoggerWithContext
 
-  /** Initialize the logger and create output channel. */
+  /**
+   * Initialize the logger and create output channel.
+   */
   init(): void
 }
 
@@ -115,15 +121,18 @@ function showErrorMessage(message: string): void {
  * Logger for the Eyecons extension.
  *
  * @example
- *   logger.init()
  *
- *   // Log messages
- *   logger.info('Processing started')
- *   logger.error('Failed to load file')
+ * ```ts
+ * logger.init()
  *
- *   // With context
- *   let iconLogger = logger.withContext('IconProcessor')
- *   iconLogger.debug('Processing icon.svg')
+ * // Log messages
+ * logger.info('Processing started')
+ * logger.error('Failed to load file')
+ *
+ * // With context
+ * let iconLogger = logger.withContext('IconProcessor')
+ * iconLogger.debug('Processing icon.svg')
+ * ```
  */
 export let logger: Logger = {
   /**
@@ -246,7 +255,9 @@ export let logger: Logger = {
     channel.appendLine(`${getFormattedDate()}: [DEBUG] ${message}`)
   },
 
-  /** Initialize the logger and create output channel. */
+  /**
+   * Initialize the logger and create output channel.
+   */
   init: (): void => {
     let channel = getOutputChannel()
     channel.appendLine(`${getFormattedDate()}: Eyecons initialized`)

@@ -50,7 +50,9 @@ function getNormalizedHueDiff(hue1: number, hue2: number): number {
   return Math.min(diff, 360 - diff)
 }
 
-/** Collection of color filters with their conditions and filtering logic. */
+/**
+ * Collection of color filters with their conditions and filtering logic.
+ */
 const COLOR_FILTERS: ColorFilter[] = [
   {
     filter: color => {

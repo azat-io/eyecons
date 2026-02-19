@@ -11,28 +11,54 @@ export let Head = component$(() => {
 
       <title>{`${head.title} | Advanced VS Code Icon Theme`}</title>
 
-      <link href={loc.url.href} rel="canonical" />
-      <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-      <link rel="shortcut icon" href="/favicon.ico" sizes="32x32" />
-      <link type="image/svg+xml" href="/favicon.svg" rel="icon" />
-      <link href="/apple-touch-icon.png" rel="apple-touch-icon" />
-      <link href={`${import.meta.env.BASE_URL}manifest.json`} rel="manifest" />
+      <link
+        href={loc.url.href}
+        rel="canonical"
+      />
+      <meta
+        content="width=device-width, initial-scale=1.0"
+        name="viewport"
+      />
+      <link
+        rel="shortcut icon"
+        href="/favicon.ico"
+        sizes="32x32"
+      />
+      <link
+        type="image/svg+xml"
+        href="/favicon.svg"
+        rel="icon"
+      />
+      <link
+        href="/apple-touch-icon.png"
+        rel="apple-touch-icon"
+      />
+      <link
+        href={`${import.meta.env.BASE_URL}manifest.json`}
+        rel="manifest"
+      />
 
       {head.meta.map(meta => (
-        <meta key={meta.key} {...meta} />
+        <meta
+          key={meta.key}
+          {...meta}
+        />
       ))}
 
       {head.links.map(link => (
-        <link key={link.key} {...link} />
+        <link
+          key={link.key}
+          {...link}
+        />
       ))}
 
       {head.styles.map(style => (
         <style
           key={style.key}
           {...style.props}
-          {...(style.props?.dangerouslySetInnerHTML
-            ? {}
-            : { dangerouslySetInnerHTML: style.style })}
+          {...(style.props?.dangerouslySetInnerHTML ?
+            {}
+          : { dangerouslySetInnerHTML: style.style })}
         />
       ))}
 
@@ -40,9 +66,9 @@ export let Head = component$(() => {
         <script
           key={script.key}
           {...script.props}
-          {...(script.props?.dangerouslySetInnerHTML
-            ? {}
-            : { dangerouslySetInnerHTML: script.script })}
+          {...(script.props?.dangerouslySetInnerHTML ?
+            {}
+          : { dangerouslySetInnerHTML: script.script })}
         />
       ))}
     </head>

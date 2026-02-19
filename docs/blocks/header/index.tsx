@@ -10,10 +10,19 @@ export let Header = component$(() => (
   <header class={styles['header']}>
     <Container class={styles['container']}>
       <Logo />
-      <Typography align="center" size="2xl" mbe="xs" tag="h1" bold>
+      <Typography
+        align="center"
+        size="2xl"
+        mbe="xs"
+        tag="h1"
+        bold
+      >
         Eyecons
       </Typography>
-      <Typography align="center" size="l">
+      <Typography
+        align="center"
+        size="l"
+      >
         Advanced VS Code Icon Theme
       </Typography>
       <div class={styles['buttons']}>

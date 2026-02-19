@@ -42,9 +42,9 @@ describe('getUserThemeId', () => {
     vi.mocked(vscode.workspace.getConfiguration).mockImplementation(
       section => ({
         get:
-          section === 'eyecons'
-            ? eyeconsConfigMock.get
-            : workbenchConfigMock.get,
+          section === 'eyecons' ?
+            eyeconsConfigMock.get
+          : workbenchConfigMock.get,
         update: vi.fn().mockResolvedValue(null),
         has: vi.fn(() => true),
         inspect: vi.fn(),

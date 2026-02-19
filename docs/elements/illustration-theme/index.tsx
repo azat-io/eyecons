@@ -9,8 +9,20 @@ export let IllustrationTheme = component$(() => (
     viewBox="0 0 404 248"
     fill="none"
   >
-    <rect fill="var(--color-red)" height="16" width="53" rx="4" y="4" />
-    <rect fill="var(--color-red)" height="16" width="53" y="32" rx="4" />
+    <rect
+      fill="var(--color-red)"
+      height="16"
+      width="53"
+      rx="4"
+      y="4"
+    />
+    <rect
+      fill="var(--color-red)"
+      height="16"
+      width="53"
+      y="32"
+      rx="4"
+    />
     <rect
       fill="var(--color-yellow)"
       width="110"
@@ -35,7 +47,14 @@ export let IllustrationTheme = component$(() => (
       y="32"
       rx="4"
     />
-    <rect fill="var(--color-red)" height="16" width="35" x="219" rx="4" y="4" />
+    <rect
+      fill="var(--color-red)"
+      height="16"
+      width="35"
+      x="219"
+      rx="4"
+      y="4"
+    />
     <rect
       fill="var(--color-green)"
       height="16"
@@ -52,8 +71,21 @@ export let IllustrationTheme = component$(() => (
       rx="4"
       y="4"
     />
-    <rect fill="var(--color-red)" height="16" width="37" y="60" rx="4" />
-    <rect fill="var(--color-red)" height="16" width="37" x="45" y="88" rx="4" />
+    <rect
+      fill="var(--color-red)"
+      height="16"
+      width="37"
+      y="60"
+      rx="4"
+    />
+    <rect
+      fill="var(--color-red)"
+      height="16"
+      width="37"
+      x="45"
+      y="88"
+      rx="4"
+    />
     <rect
       fill="var(--color-blue)"
       width="110"
@@ -102,7 +134,13 @@ export let IllustrationTheme = component$(() => (
       x="91"
       rx="4"
     />
-    <rect fill="var(--color-orange)" height="16" width="29" y="228" rx="4" />
+    <rect
+      fill="var(--color-orange)"
+      height="16"
+      width="29"
+      y="228"
+      rx="4"
+    />
     <rect
       fill="var(--color-yellow)"
       width="116"

@@ -13,7 +13,12 @@ export let Themes = component$(() => (
         <IllustrationTheme />
       </div>
       <div>
-        <Typography size="xl" tag="h2" mbe="xs" bold>
+        <Typography
+          size="xl"
+          tag="h2"
+          mbe="xs"
+          bold
+        >
           Themes
         </Typography>
         <Typography mbe="m">

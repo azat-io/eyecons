@@ -1,12 +1,20 @@
-/** Options for configuring the loader icon. */
+/**
+ * Options for configuring the loader icon.
+ */
 interface LoaderIconOptions {
-  /** Radius of the loader circles. Default: 6. */
+  /**
+   * Radius of the loader circles. Default: 6.
+   */
   circleRadius?: number
 
-  /** Duration of the animation in seconds. Default: 1. */
+  /**
+   * Duration of the animation in seconds. Default: 1.
+   */
   duration?: number
 
-  /** Color of the loader circles. Default: '#636363'. */
+  /**
+   * Color of the loader circles. Default: '#636363'.
+   */
   color?: string
 }
 

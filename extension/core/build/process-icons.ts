@@ -10,15 +10,23 @@ import { baseIcons } from '../../../data/base-icons'
 import { fileIcons } from '../../../data/file-icons'
 import { logger } from '../../io/vscode/logger'
 
-/** Result of processing icons in the temporary directory. */
+/**
+ * Result of processing icons in the temporary directory.
+ */
 interface ProcessIconsResult {
-  /** Icon definitions for the theme schema. */
+  /**
+   * Icon definitions for the theme schema.
+   */
   iconDefinitions: IconDefinitions
 
-  /** Temporary directory path. */
+  /**
+   * Temporary directory path.
+   */
   temporaryDirectory: string
 
-  /** Theme data with file associations for light and dark themes. */
+  /**
+   * Theme data with file associations for light and dark themes.
+   */
   themeData: ThemeData
 }
 

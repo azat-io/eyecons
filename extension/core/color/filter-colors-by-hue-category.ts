@@ -7,7 +7,9 @@ import { categorizeColorByHue } from './categorize-color-by-hue'
 import { ADJACENT_CATEGORIES } from './constants'
 import { logger } from '../../io/vscode/logger'
 
-/** Color threshold constants for different color families. */
+/**
+ * Color threshold constants for different color families.
+ */
 const COLOR_THRESHOLDS = {
   YELLOW_GREEN_TARGET_MAX: 95,
   YELLOW_GREEN_HUE_MAX: 105,
@@ -31,7 +33,9 @@ const COLOR_THRESHOLDS = {
   PINK_HUE_MAX: 30,
 } as const
 
-/** Function type for filtering colors. */
+/**
+ * Function type for filtering colors.
+ */
 type ColorFilter = (color: Vector) => boolean
 
 /**

@@ -7,10 +7,17 @@ import styles from './index.module.css'
 export let Footer = component$(() => (
   <footer class={styles['footer']}>
     <Container class={styles['container']}>
-      <Typography align="center" mbe="2xs" size="s">
+      <Typography
+        align="center"
+        mbe="2xs"
+        size="s"
+      >
         Released under the MIT License
       </Typography>
-      <Typography align="center" size="s">
+      <Typography
+        align="center"
+        size="s"
+      >
         Copyright © 2026 Azat S. & Contributors
       </Typography>
     </Container>

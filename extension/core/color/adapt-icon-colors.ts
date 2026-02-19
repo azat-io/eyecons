@@ -10,12 +10,18 @@ import { getFolderColors } from './get-folder-colors'
 import { logger } from '../../io/vscode/logger'
 import { toOklch } from './to-oklch'
 
-/** Parameters for adapting icon colors. */
+/**
+ * Parameters for adapting icon colors.
+ */
 interface AdaptIconColorsParameters {
-  /** The SVG content of the icon. */
+  /**
+   * The SVG content of the icon.
+   */
   svgContent: string
 
-  /** The identifier of the icon. */
+  /**
+   * The identifier of the icon.
+   */
   id: string
 }
 

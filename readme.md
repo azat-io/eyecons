@@ -12,17 +12,21 @@
 [![Code Coverage](https://img.shields.io/codecov/c/github/azat-io/eyecons.svg?color=07af62&labelColor=151B23)](https://npmjs.com/package/eyecons)
 [![GitHub License](https://img.shields.io/badge/license-MIT-232428.svg?color=07af62&labelColor=151B23)](https://github.com/azat-io/eyecons/blob/main/license.md)
 
-VS Code icon theme with adaptive icon colors that match the editor’s color theme.
+VS Code icon theme with adaptive icon colors that match the editor’s color
+theme.
 
-Eyecons icon theme provides a dynamic and visually appealing experience by adapting icon colours to your editor's theme.
+Eyecons icon theme provides a dynamic and visually appealing experience by
+adapting icon colours to your editor's theme.
 
 This creates a consistent and harmonious look across your dev environment.
 
 ## Why
 
-- **Adaptive Colors:** Icons change colors based on the active VSCode theme, providing a cohesive visual experience.
+- **Adaptive Colors:** Icons change colors based on the active VSCode theme,
+  providing a cohesive visual experience.
 
-- **Wide Icon Coverage:** Supports a comprehensive range of file types and technologies with distinctive icons.
+- **Wide Icon Coverage:** Supports a comprehensive range of file types and
+  technologies with distinctive icons.
 
 - **Regular Updates:** Frequent updates to include new icons and improvements.
 
@@ -46,11 +50,14 @@ See [docs](https://eyecons.dev).
 
 ![Eyecons example for Vitesse Dark theme](https://raw.githubusercontent.com/azat-io/eyecons/main/assets/vitesse-dark.webp)
 
-Look for more examples of icon theme integration with editor color themes on [the extension's website](https://eyecons.dev).
+Look for more examples of icon theme integration with editor color themes on
+[the extension's website](https://eyecons.dev).
 
 ## Installation
 
-Open the extension page on [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=azat-io.eyecons) and click the "Install" button.
+Open the extension page on
+[Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=azat-io.eyecons)
+and click the "Install" button.
 
 Or install the extension using the command line:
 
@@ -64,23 +71,29 @@ You can customize the extension to suit your needs!
 
 ### Theme
 
-You can choose your favorite color theme whose colors will be used to repaint the icons.
+You can choose your favorite color theme whose colors will be used to repaint
+the icons.
 
-Or leave the value "inherit" to determine the color theme of the editor automatically.
+Or leave the value "inherit" to determine the color theme of the editor
+automatically.
 
 ### Folder Color
 
-You can define the colors of the folders. Select one of the six possible options.
+You can define the colors of the folders. Select one of the six possible
+options.
 
 All folders use the colors of your color theme.
 
 ### Hide Explorer Arrows
 
-If the option is enabled, arrows will additionally be displayed in the document tree. This can be useful to visually identify folders more quickly and distinguish them from regular files.
+If the option is enabled, arrows will additionally be displayed in the document
+tree. This can be useful to visually identify folders more quickly and
+distinguish them from regular files.
 
 ### Configuration via settings.json
 
-You can also configure the extension directly in your VS Code `settings.json` file:
+You can also configure the extension directly in your VS Code `settings.json`
+file:
 
 ```json
 {
@@ -92,8 +105,10 @@ You can also configure the extension directly in your VS Code `settings.json` fi
 
 Available settings:
 
-- `eyecons.theme`: Set your preferred theme (e.g., "inherit", "gruvbox-dark", "nord")
-- `eyecons.folderColor`: Choose folder color (available options depend on the theme)
+- `eyecons.theme`: Set your preferred theme (e.g., "inherit", "gruvbox-dark",
+  "nord")
+- `eyecons.folderColor`: Choose folder color (available options depend on the
+  theme)
 - `eyecons.hidesExplorerArrows`: Set to true/false to show/hide explorer arrows
 
 ## Themes
@@ -130,13 +145,17 @@ The extension currently supports the following color themes:
 - [Vitesse Dark](https://github.com/antfu/vscode-theme-vitesse)
 - [Vitesse Light](https://github.com/antfu/vscode-theme-vitesse)
 
-Haven't found your favorite color theme? [Create an issue!](https://github.com/azat-io/eyecons/issues/new?assignees=&labels=feature&projects=&template=theme-request.yml&title=Theme+Request%3A+%28fill+in%29)
+Haven't found your favorite color theme?
+[Create an issue!](https://github.com/azat-io/eyecons/issues/new?assignees=&labels=feature&projects=&template=theme-request.yml&title=Theme+Request%3A+%28fill+in%29)
 
 ## Contributing
 
-See [Contributing Guide](https://github.com/azat-io/eyecons/blob/main/contributing.md).
+See
+[Contributing Guide](https://github.com/azat-io/eyecons/blob/main/contributing.md).
 
-You can also support this project by giving this repository a star on GitHub or rate this extension with five stars on [Marketplace](https://marketplace.visualstudio.com/items?itemName=azat-io.eyecons).
+You can also support this project by giving this repository a star on GitHub or
+rate this extension with five stars on
+[Marketplace](https://marketplace.visualstudio.com/items?itemName=azat-io.eyecons).
 
 ## License
 

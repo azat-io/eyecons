@@ -3,43 +3,69 @@ import type { Vector } from '@texel/color'
 import type { ColorComponents } from '../../types/color'
 import type { Config } from '../../types/config'
 
-/** Minimum chroma value to consider color non-achromatic. */
+/**
+ * Minimum chroma value to consider color non-achromatic.
+ */
 const MIN_CHROMA = 0.01
 
-/** Minimum chroma value for high-saturation color. */
+/**
+ * Minimum chroma value for high-saturation color.
+ */
 const HIGH_CHROMA_THRESHOLD = 0.1
 
-/** Medium chroma threshold for hue penalty. */
+/**
+ * Medium chroma threshold for hue penalty.
+ */
 const MEDIUM_CHROMA_THRESHOLD = 0.05
 
-/** Base chroma penalty multiplier for near-achromatic colors. */
+/**
+ * Base chroma penalty multiplier for near-achromatic colors.
+ */
 const BASE_CHROMA_PENALTY = 3.5
 
-/** Enhanced chroma penalty multiplier for low saturation. */
+/**
+ * Enhanced chroma penalty multiplier for low saturation.
+ */
 const ENHANCED_CHROMA_PENALTY = 5
 
-/** Hue penalty multiplier for saturated colors. */
+/**
+ * Hue penalty multiplier for saturated colors.
+ */
 const HUE_PENALTY_MULTIPLIER = 10
 
-/** Angle to normalize hue differences (half circle). */
+/**
+ * Angle to normalize hue differences (half circle).
+ */
 const HUE_NORMALIZATION_ANGLE = 180
 
-/** Threshold for moderate hue difference. */
+/**
+ * Threshold for moderate hue difference.
+ */
 const MODERATE_HUE_DIFFERENCE = 30
 
-/** Threshold for large hue difference. */
+/**
+ * Threshold for large hue difference.
+ */
 const LARGE_HUE_DIFFERENCE = 45
 
-/** Threshold for very large hue difference. */
+/**
+ * Threshold for very large hue difference.
+ */
 const VERY_LARGE_HUE_DIFFERENCE = 60
 
-/** Multiplier for moderate hue differences. */
+/**
+ * Multiplier for moderate hue differences.
+ */
 const MODERATE_HUE_MULTIPLIER = 1.8
 
-/** Multiplier for large hue differences. */
+/**
+ * Multiplier for large hue differences.
+ */
 const LARGE_HUE_MULTIPLIER = 2.5
 
-/** Hue ranges for special handling. */
+/**
+ * Hue ranges for special handling.
+ */
 const HUE_RANGES = {
   YELLOW_GREEN: { MAX: 110, MIN: 40 },
   RED_PURPLE: { MIN: 270, MAX: 330 },
@@ -50,7 +76,9 @@ const HUE_RANGES = {
   WARM: { MAX: 50, MIN: 0 },
 } as const
 
-/** Hue difference power values. */
+/**
+ * Hue difference power values.
+ */
 const HUE_POWERS = {
   YELLOW_GREEN: 1.6,
   COMPLEMENTARY: 2,
@@ -61,7 +89,9 @@ const HUE_POWERS = {
   LARGE: 1.5,
 } as const
 
-/** Hue multipliers for different ranges. */
+/**
+ * Hue multipliers for different ranges.
+ */
 const HUE_MULTIPLIERS = {
   COMPLEMENTARY: 2.5,
   YELLOW_GREEN: 1.2,
@@ -72,18 +102,28 @@ const HUE_MULTIPLIERS = {
   WARM: 1.2,
 } as const
 
-/** Parameters for calculating weighted distance between colors. */
+/**
+ * Parameters for calculating weighted distance between colors.
+ */
 interface DistanceParameters {
-  /** The weights for each component. */
+  /**
+   * The weights for each component.
+   */
   weights: ColorComponents
 
-  /** First OKLCH color as [L, C, H]. */
+  /**
+   * First OKLCH color as [L, C, H].
+   */
   color1: Vector
 
-  /** Second OKLCH color as [L, C, H]. */
+  /**
+   * Second OKLCH color as [L, C, H].
+   */
   color2: Vector
 
-  /** Configuration with thresholds. */
+  /**
+   * Configuration with thresholds.
+   */
   config: Config
 }
 
@@ -167,8 +207,8 @@ function getHueMultiplier(hue1: number, hue2: number): number {
         hue2 >= HUE_RANGES.RED_PURPLE.MIN &&
         hue2 <= HUE_RANGES.RED_PURPLE.MAX)
 
-    return isComplementary
-      ? HUE_MULTIPLIERS.COMPLEMENTARY
+    return isComplementary ?
+        HUE_MULTIPLIERS.COMPLEMENTARY
       : HUE_MULTIPLIERS.RED_PURPLE
   }
 
@@ -311,7 +351,7 @@ function normalizeHueDifference(hue1: number, hue2: number): number {
  * @returns Power to use in hue difference calculation.
  */
 function getHuePower(normalizedDifference: number): number {
-  return normalizedDifference > LARGE_HUE_DIFFERENCE
-    ? HUE_POWERS.LARGE
+  return normalizedDifference > LARGE_HUE_DIFFERENCE ?
+      HUE_POWERS.LARGE
     : HUE_POWERS.NORMAL
 }

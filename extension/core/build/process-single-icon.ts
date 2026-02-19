@@ -10,21 +10,33 @@ import { getIconSource } from '../../io/file/get-icon-source'
 import { adaptIconColors } from '../color/adapt-icon-colors'
 import { logger } from '../../io/vscode/logger'
 
-/** Icon processing preparation parameters. */
+/**
+ * Icon processing preparation parameters.
+ */
 interface IconProcessingParameters {
-  /** Temporary directory path. */
+  /**
+   * Temporary directory path.
+   */
   temporaryDirectory: string
 
-  /** The icon to prepare for processing. */
+  /**
+   * The icon to prepare for processing.
+   */
   icon: FormattedIconValue
 }
 
-/** Result of processing a single icon. */
+/**
+ * Result of processing a single icon.
+ */
 interface ProcessedIconResult {
-  /** Path to the icon for use in the theme schema. */
+  /**
+   * Path to the icon for use in the theme schema.
+   */
   iconPath: string
 
-  /** Icon identifier. */
+  /**
+   * Icon identifier.
+   */
   id: string
 }
 

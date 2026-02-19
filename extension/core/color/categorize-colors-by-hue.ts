@@ -2,7 +2,9 @@ import type { Vector } from '@texel/color'
 
 import { categorizeColorByHue } from './categorize-color-by-hue'
 
-/** Interface for categorized colors during matching process. */
+/**
+ * Interface for categorized colors during matching process.
+ */
 type CategorizedColors = Record<string, Vector[]>
 
 /**

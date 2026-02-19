@@ -7,7 +7,10 @@ import styles from './index.module.css'
 export let ColorList = component$(() => (
   <div class={styles['list']}>
     {colorNames.map((color: string) => (
-      <ColorItem color={`var(--color-${color})`} key={color} />
+      <ColorItem
+        color={`var(--color-${color})`}
+        key={color}
+      />
     ))}
   </div>
 ))

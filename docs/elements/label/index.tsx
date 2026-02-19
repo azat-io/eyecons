@@ -8,7 +8,13 @@ interface LabelProps {
 }
 
 export let Label = component$<LabelProps>(props => (
-  <Typography class={styles['label']} tag="label" mbe="2xs" size="s" {...props}>
+  <Typography
+    class={styles['label']}
+    tag="label"
+    mbe="2xs"
+    size="s"
+    {...props}
+  >
     <Slot />
   </Typography>
 ))

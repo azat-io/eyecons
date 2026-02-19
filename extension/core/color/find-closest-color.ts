@@ -52,8 +52,9 @@ export function findClosestColor(
     config,
   }
 
-  let filteredPalette = sourceAchromatic
-    ? filterPaletteForAchromatic(context)
+  let filteredPalette =
+    sourceAchromatic ?
+      filterPaletteForAchromatic(context)
     : filterPaletteForChromatic(context)
 
   if (!sourceAchromatic && filteredPalette.length > 1) {
