@@ -11,9 +11,9 @@
 }
 
 html {
+  scroll-behavior: smooth;
   font: var(--font-m);
   font-weight: normal;
-  scroll-behavior: smooth;
 }
 
 body {
