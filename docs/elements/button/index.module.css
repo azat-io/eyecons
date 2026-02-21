@@ -5,7 +5,10 @@
   outline: none;
   border: 0;
   border-radius: var(--border-radius);
-  transition: all 150ms ease;
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition: all 150ms ease;
+  }
 
   &:focus-visible {
     box-shadow: 0 0 0 2px var(--color-background-brand);

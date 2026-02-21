@@ -6,12 +6,13 @@
 
 .illustration {
   display: flex;
+  flex-wrap: nowrap;
   align-items: center;
 }
 
 .container {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: [content] 1fr;
   gap: var(--space-xl);
 
   .illustration {
@@ -20,7 +21,7 @@
   }
 
   @container (inline-size >= 768px) {
-    grid-template-columns: 5fr 7fr;
+    grid-template-columns: [icons] 5fr [illustration] 7fr;
     gap: var(--space-l);
 
     .illustration {

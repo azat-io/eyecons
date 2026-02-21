@@ -5,6 +5,8 @@
   color: var(--color-content-primary);
 
   path {
-    transition: fill 300ms;
+    @media (prefers-reduced-motion: no-preference) {
+      transition: fill 300ms;
+    }
   }
 }

@@ -1,10 +1,12 @@
 .theme-changer {
   display: flex;
+  flex-wrap: nowrap;
   gap: var(--space-xs);
 }
 
 .button {
   display: flex;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: center;
   inline-size: clamp(2.125rem, 1.9375rem + 0.75vi, 2.3125rem);

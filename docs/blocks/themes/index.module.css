@@ -6,7 +6,7 @@
 
 .container {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: [content] 1fr;
   gap: var(--space-xl);
   align-items: center;
 
@@ -16,7 +16,7 @@
   }
 
   @container (inline-size >= 768px) {
-    grid-template-columns: 7fr 5fr;
+    grid-template-columns: [illustration] 7fr [themes] 5fr;
     gap: var(--space-l);
 
     .illustration {

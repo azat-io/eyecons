@@ -18,7 +18,10 @@
   background: var(--color-background-tertiary);
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius);
-  transition: all 150ms;
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition: all 150ms;
+  }
 
   &:active,
   &:focus-visible {

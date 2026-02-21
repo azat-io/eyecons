@@ -1,5 +1,6 @@
 .list {
   display: flex;
+  flex-wrap: nowrap;
   gap: calc(var(--space-xs) / 1.2);
   align-items: center;
 }

@@ -5,9 +5,12 @@
 
 * {
   box-sizing: border-box;
-  transition:
-    color 100ms ease,
-    background 100ms ease;
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition:
+      color 100ms ease,
+      background 100ms ease;
+  }
 }
 
 html {

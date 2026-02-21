@@ -5,12 +5,12 @@
 
 .demo-view {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: [content] 1fr;
   gap: var(--space-xl);
   container-type: inline-size;
 
   @container (inline-size >= 980px) {
-    grid-template-columns: 1fr 460px;
+    grid-template-columns: [content] 1fr [preview] 460px;
   }
 }
 
@@ -27,7 +27,7 @@
 
   @container (inline-size >= 560px) {
     display: grid;
-    grid-template-columns: minmax(auto, 360px) auto 1fr;
+    grid-template-columns: [theme] minmax(auto, 360px) [size] auto [spacer] 1fr;
     gap: var(--space-m);
   }
 }
