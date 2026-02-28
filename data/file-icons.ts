@@ -796,6 +796,20 @@ export let fileIcons: FileIcon[] = [
     id: 'typescript',
   },
   {
+    extensions: [
+      'spec.ts',
+      'spec.cts',
+      'spec.mts',
+      'spec.tsx',
+      'test.ts',
+      'test.cts',
+      'test.mts',
+      'test.tsx',
+    ],
+    name: 'TypeScript Test',
+    id: 'typescript-test',
+  },
+  {
     extensions: ['v', 'vsh'],
     name: 'V',
     id: 'v',
