@@ -130,7 +130,7 @@ async function createScreenshot(theme: string): Promise<void> {
     `
 
     await page.setContent(html, {
-      waitUntil: 'networkidle0',
+      waitUntil: 'domcontentloaded',
     })
 
     let screenshotPath: `${string}.webp` = `${process.cwd()}/assets/${theme}.webp`
