@@ -62,6 +62,9 @@
     "javascript": {
       "#f0db4f": "#e2b340"
     },
+    "javascript-test": {
+      "#f0db4f": "#f9e2af"
+    },
     "jest": {
       "#893f5b": "#ffa657"
     },

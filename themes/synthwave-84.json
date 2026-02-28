@@ -59,6 +59,9 @@
     "javascript": {
       "#f0db4f": "#fede5d"
     },
+    "javascript-test": {
+      "#f0db4f": "#f9e2af"
+    },
     "makefile": {
       "#818181": "#495495"
     },

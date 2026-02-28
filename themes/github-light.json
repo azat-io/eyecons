@@ -50,6 +50,9 @@
     "javascript": {
       "#323330": "#ffffff"
     },
+    "javascript-test": {
+      "#f0db4f": "#f9e2af"
+    },
     "json": {
       "#323330": "#ffffff"
     },

@@ -375,6 +375,22 @@ export let fileIcons: FileIcon[] = [
     id: 'javascript',
   },
   {
+    extensions: [
+      'spec.js',
+      'spec.cjs',
+      'spec.mjs',
+      'spec.es',
+      'spec.jsx',
+      'test.js',
+      'test.cjs',
+      'test.mjs',
+      'test.es',
+      'test.jsx',
+    ],
+    name: 'JavaScript Test',
+    id: 'javascript-test',
+  },
+  {
     files: [
       'jest.config.js',
       'jest.config.cjs',
