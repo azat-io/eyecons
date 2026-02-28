@@ -59,6 +59,9 @@
     },
     "toml": {
       "#9c4121": "#ffb86c"
+    },
+    "tsdown": {
+      "#bababa": "#ffffff"
     }
   }
 }

@@ -73,6 +73,10 @@
     "storybook": {
       "#ff4785": "#c678dd"
     },
+    "tsdown": {
+      "#bababa": "#f8fafd",
+      "#b87e44": "#e5c07b"
+    },
     "toml": {
       "#9c4121": "#d19a66"
     }

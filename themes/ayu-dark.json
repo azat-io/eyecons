@@ -62,6 +62,9 @@
     },
     "storybook": {
       "#ff4785": "#d2a6ff"
+    },
+    "tsdown": {
+      "#bababa": "#f6f7f8"
     }
   }
 }

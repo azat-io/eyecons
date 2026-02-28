@@ -102,6 +102,9 @@
     "storybook": {
       "#ff4785": "#b48ead"
     },
+    "tsdown": {
+      "#bababa": "#eceff4"
+    },
     "xml": {
       "#f57b02": "#d08770"
     },

@@ -70,6 +70,10 @@
     },
     "toml": {
       "#9c4121": "#ff8b39"
+    },
+    "tsdown": {
+      "#bababa": "#ffffff",
+      "#b87e44": "#fede5d"
     }
   }
 }

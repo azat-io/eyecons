@@ -55,6 +55,10 @@
     "scala": {
       "#de3423": "#ff6188"
     },
+    "tsdown": {
+      "#bababa": "#fcfcfa",
+      "#b87e44": "#ffd866"
+    },
     "zig": {
       "#fff": "#19181a"
     }

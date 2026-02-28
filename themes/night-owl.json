@@ -99,6 +99,9 @@
     "svgo": {
       "#3f80c2": "#82aaff"
     },
+    "tsdown": {
+      "#bababa": "#ffffff"
+    },
     "webpack": {
       "#75aecb": "#82aaff",
       "#5599c8": "#82aaff"

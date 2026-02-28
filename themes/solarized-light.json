@@ -62,6 +62,9 @@
     "react": {
       "#0a7ea3": "#268bd2"
     },
+    "tsdown": {
+      "#bababa": "#ffffff"
+    },
     "vue": {
       "#35495e": "#2aa198",
       "#41b883": "#ffffff",

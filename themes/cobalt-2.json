@@ -103,6 +103,9 @@
     "toml": {
       "#9c4121": "#ff9d00"
     },
+    "tsdown": {
+      "#bababa": "#ffffff"
+    },
     "vitest": {
       "#22ff84": "#3ad900"
     },

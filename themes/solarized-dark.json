@@ -71,6 +71,9 @@
     "react": {
       "#0a7ea3": "#268bd2"
     },
+    "tsdown": {
+      "#bababa": "#fdf6e3"
+    },
     "xml": {
       "#f57b02": "#cb4b16"
     }

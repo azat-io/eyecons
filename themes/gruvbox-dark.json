@@ -71,6 +71,9 @@
     "toml": {
       "#9c4121": "#fe8019"
     },
+    "tsdown": {
+      "#bababa": "#ebdbb2"
+    },
     "webpack": {
       "#75aecb": "#83a598"
     },

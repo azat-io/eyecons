@@ -90,6 +90,9 @@
     "svg": {
       "#000": "#ffffff"
     },
+    "tsdown": {
+      "#bababa": "#ffffff"
+    },
     "vue": {
       "#35495e": "#116329",
       "#41b883": "#ffffff",
