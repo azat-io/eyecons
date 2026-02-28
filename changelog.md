@@ -1,5 +1,22 @@
 # Changelog
 
+## v1.15.0
+
+[compare changes](https://github.com/azat-io/eyecons/compare/v1.14.0...v1.15.0)
+
+### 🚀 Features
+
+- Add ocaml icon ([40d015b](https://github.com/azat-io/eyecons/commit/40d015b))
+- Add tsdown icon ([489251e](https://github.com/azat-io/eyecons/commit/489251e))
+- Add javascript test icon
+  ([c2c681e](https://github.com/azat-io/eyecons/commit/c2c681e))
+- Add typescript test icon
+  ([82b58a6](https://github.com/azat-io/eyecons/commit/82b58a6))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](https://github.com/azat-io))
+
 ## v1.14.0
 
 [compare changes](https://github.com/azat-io/eyecons/compare/v1.13.0...v1.14.0)
