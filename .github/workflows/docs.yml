@@ -12,10 +12,11 @@ jobs:
 
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@5ef0c079ce82195b2a36a210272d6b661572d83e # v2.14.2
+        uses: step-security/harden-runner@58077d3c7e43986b6b15fba718e8ea69e387dfcc # v2.15.1
         with:
           egress-policy: block
           allowed-endpoints: >
+            6abe5a43-4668-4f72-b3f7-823e2d8bbbbf.netlify.app:443
             api.github.com:443 api.netlify.com:443 api.netlifysdk.com:443
             dl.deno.land:443 edge.netlify.com:443 github.com:443
             registry.npmjs.org:443 release-assets.githubusercontent.com:443
