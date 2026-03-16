@@ -55,7 +55,8 @@
     "test:js": "eslint .",
     "test:packages": "pnpm dedupe --check",
     "test:types": "tsc --noEmit --pretty",
-    "test:unit": "vitest --run --coverage"
+    "test:unit": "vitest --run --coverage",
+    "test:usage": "knip"
   },
   "contributes": {
     "iconThemes": [
@@ -161,9 +162,6 @@
   "activationEvents": [
     "onStartupFinished"
   ],
-  "dependencies": {
-    "sharp": "^0.34.5"
-  },
   "devDependencies": {
     "@azat-io/eslint-config": "^2.70.0",
     "@azat-io/prettier-config": "^1.1.1",
@@ -188,6 +186,7 @@
     "dedent": "^1.7.1",
     "eslint": "^10.0.2",
     "focus-trap": "^8.0.0",
+    "knip": "^5.87.0",
     "lightningcss": "^1.31.1",
     "netlify-cli": "^24.0.1",
     "ovsx": "^0.10.9",

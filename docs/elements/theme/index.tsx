@@ -21,7 +21,7 @@ export let ThemeTypeContext = createContextId<Signal<string>>(
   'docs.theme-type-context',
 )
 
-export let ThemeSourceContext = createContextId<Signal<ThemeSource | null>>(
+let ThemeSourceContext = createContextId<Signal<ThemeSource | null>>(
   'docs.theme-source-context',
 )
 

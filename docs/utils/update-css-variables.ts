@@ -1,6 +1,6 @@
 import type { ThemeSource } from '../../extension/types/theme'
 
-export interface AdditionalData {
+interface AdditionalData {
   themeType: 'light' | 'dark'
 }
 
