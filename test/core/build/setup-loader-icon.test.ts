@@ -157,9 +157,7 @@ describe('setupLoaderIcon', () => {
     let error = new Error('Test error from saveLoaderIcon')
     vi.mocked(saveLoaderIcon).mockRejectedValueOnce(error)
 
-    await expect(setupLoaderIcon(mockTheme, mockConfig)).rejects.toThrowError(
-      error,
-    )
+    await expect(setupLoaderIcon(mockTheme, mockConfig)).rejects.toThrow(error)
 
     expect(mockLoggerContext.error).toHaveBeenCalledWith(
       'Failed to setup loader icon: Test error from saveLoaderIcon',
@@ -171,9 +169,7 @@ describe('setupLoaderIcon', () => {
     let error = new Error('Test error from saveThemeSchema')
     vi.mocked(saveThemeSchema).mockRejectedValueOnce(error)
 
-    await expect(setupLoaderIcon(mockTheme, mockConfig)).rejects.toThrowError(
-      error,
-    )
+    await expect(setupLoaderIcon(mockTheme, mockConfig)).rejects.toThrow(error)
 
     expect(mockLoggerContext.error).toHaveBeenCalledWith(
       'Failed to setup loader icon: Test error from saveThemeSchema',

@@ -226,7 +226,7 @@ describe('processSingleIcon', () => {
         mockTheme,
         mockConfig,
       ),
-    ).rejects.toThrowError('Color adaptation failed')
+    ).rejects.toThrow('Color adaptation failed')
 
     expect(fs.writeFile).not.toHaveBeenCalled()
     expect(logger.error).toHaveBeenCalledWith(
@@ -247,7 +247,7 @@ describe('processSingleIcon', () => {
         mockTheme,
         mockConfig,
       ),
-    ).rejects.toThrowError(error)
+    ).rejects.toThrow(error)
 
     expect(fs.writeFile).not.toHaveBeenCalled()
     expect(logger.error).toHaveBeenCalledWith(
@@ -268,7 +268,7 @@ describe('processSingleIcon', () => {
         mockTheme,
         mockConfig,
       ),
-    ).rejects.toThrowError(error)
+    ).rejects.toThrow(error)
 
     expect(fs.writeFile).not.toHaveBeenCalled()
     expect(logger.error).toHaveBeenCalledWith(

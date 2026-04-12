@@ -215,9 +215,7 @@ describe('processIcons', () => {
     let error = new Error('Failed to process icon')
     vi.mocked(processSingleIcon).mockRejectedValueOnce(error)
 
-    await expect(processIcons(mockTheme, mockConfig)).rejects.toThrowError(
-      error,
-    )
+    await expect(processIcons(mockTheme, mockConfig)).rejects.toThrow(error)
 
     expect(mockLoggerContext.error).toHaveBeenCalledWith(
       'Failed to process icons: Failed to process icon',
@@ -228,9 +226,7 @@ describe('processIcons', () => {
     let error = new Error('Failed to create temporary directory')
     vi.mocked(createTemporaryDirectory).mockRejectedValueOnce(error)
 
-    await expect(processIcons(mockTheme, mockConfig)).rejects.toThrowError(
-      error,
-    )
+    await expect(processIcons(mockTheme, mockConfig)).rejects.toThrow(error)
 
     expect(mockLoggerContext.error).toHaveBeenCalledWith(
       'Failed to process icons: Failed to create temporary directory',
@@ -241,9 +237,7 @@ describe('processIcons', () => {
     let error = 'String error message'
     vi.mocked(createTemporaryDirectory).mockRejectedValueOnce(error)
 
-    await expect(processIcons(mockTheme, mockConfig)).rejects.toThrowError(
-      error,
-    )
+    await expect(processIcons(mockTheme, mockConfig)).rejects.toThrow(error)
 
     expect(mockLoggerContext.error).toHaveBeenCalledWith(
       'Failed to process icons: String error message',

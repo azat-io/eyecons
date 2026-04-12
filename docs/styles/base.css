@@ -14,9 +14,12 @@
 }
 
 html {
-  scroll-behavior: smooth;
   font: var(--font-m);
   font-weight: normal;
+
+  @media (prefers-reduced-motion: no-preference) {
+    scroll-behavior: smooth;
+  }
 }
 
 body {
