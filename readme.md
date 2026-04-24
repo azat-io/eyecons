@@ -5,7 +5,6 @@
   alt="Eyecons logo"
   align="right"
   height="160"
-  width="160"
 />
 
 [![Version](https://img.shields.io/visual-studio-marketplace/v/azat-io.eyecons?color=07af62&labelColor=151B23)](https://marketplace.visualstudio.com/items?itemName=azat-io.eyecons)
