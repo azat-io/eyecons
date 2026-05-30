@@ -1,5 +1,18 @@
 # Changelog
 
+## v1.16.0
+
+[compare changes](https://github.com/azat-io/eyecons/compare/v1.15.0...v1.16.0)
+
+### 🚀 Features
+
+- Support semantic rainbow theme
+  ([a6967b2](https://github.com/azat-io/eyecons/commit/a6967b2))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](https://github.com/azat-io))
+
 ## v1.15.0
 
 [compare changes](https://github.com/azat-io/eyecons/compare/v1.14.0...v1.15.0)
