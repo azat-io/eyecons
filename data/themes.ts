@@ -94,6 +94,10 @@ export let themes = [
     id: 'panda',
   },
   {
+    name: 'Semantic Rainbow',
+    id: 'semantic-rainbow',
+  },
+  {
     name: 'Solarized Dark',
     id: 'solarized-dark',
   },

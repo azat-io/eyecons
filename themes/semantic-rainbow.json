@@ -1,0 +1,57 @@
+{
+  "backgroundPrimary": "#14151a",
+  "backgroundSecondary": "#191a26",
+  "backgroundTertiary": "#232637",
+  "backgroundBrand": "#c74954",
+  "contentPrimary": "#d5d8da",
+  "contentBrand": "#06060c",
+  "border": "#1a1c23",
+  "main": {
+    "red": "#cc4755",
+    "orange": "#df7850",
+    "yellow": "#db9b25",
+    "green": "#3aad5d",
+    "blue": "#407de6",
+    "purple": "#5457ec"
+  },
+  "colors": [
+    "#14151a",
+    "#191a26",
+    "#232637",
+    "#323952",
+    "#2e303e",
+    "#d5d8da",
+    "#1a1c23",
+    "#c74954",
+    "#cc4755",
+    "#df7850",
+    "#db9b25",
+    "#88ac47",
+    "#3aad5d",
+    "#2b9468",
+    "#20a6be",
+    "#407de6",
+    "#5457ec",
+    "#e95678"
+  ],
+  "overrides": {
+    "cspell": {
+      "#b51a00": "#cc4755"
+    },
+    "env": {
+      "#59727e": "#407de6"
+    },
+    "git": {
+      "#e84d32": "#cc4755"
+    },
+    "jest": {
+      "#893f5b": "#df7850"
+    },
+    "makefile": {
+      "#818181": "#407de6"
+    },
+    "ruby": {
+      "#aa1401": "#cc4755"
+    }
+  }
+}

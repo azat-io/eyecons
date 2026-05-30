@@ -137,6 +137,7 @@ The extension currently supports the following color themes:
 - [Nord](https://github.com/nordtheme/visual-studio-code)
 - [One Monokai](https://github.com/azemoh/vscode-one-monokai)
 - [Panda](https://github.com/tinkertrain/panda-syntax-vscode)
+- [Semantic Rainbow](https://github.com/Thertzlor/semantic-rainbow)
 - [Solarized Dark](https://github.com/ryanolsonx/vscode-solarized-theme)
 - [Solarized Light](https://github.com/ryanolsonx/vscode-solarized-theme)
 - [Synthwave '84](https://github.com/robb0wen/synthwave-vscode)
