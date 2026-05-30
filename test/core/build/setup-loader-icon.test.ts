@@ -105,7 +105,7 @@ describe('setupLoaderIcon', () => {
       themeId: 'dark',
       fileNames: {},
       file: 'file',
-    } as ThemeSchema
+    }
   })
 
   beforeEach(() => {
