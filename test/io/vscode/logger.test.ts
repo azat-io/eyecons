@@ -59,40 +59,35 @@ describe('logger', () => {
 
   it('should log info message', () => {
     logger.info('Test info message')
-    expect(mockAppendLine).toHaveBeenCalledOnce()
-    expect(mockAppendLine).toHaveBeenCalledWith(
+    expect(mockAppendLine).toHaveBeenCalledExactlyOnceWith(
       expect.stringContaining('[INFO] Test info message'),
     )
   })
 
   it('should log warning message', () => {
     logger.warn('Test warning message')
-    expect(mockAppendLine).toHaveBeenCalledOnce()
-    expect(mockAppendLine).toHaveBeenCalledWith(
+    expect(mockAppendLine).toHaveBeenCalledExactlyOnceWith(
       expect.stringContaining('[WARN] Test warning message'),
     )
   })
 
   it('should log error message', () => {
     logger.error('Test error message')
-    expect(mockAppendLine).toHaveBeenCalledOnce()
-    expect(mockAppendLine).toHaveBeenCalledWith(
+    expect(mockAppendLine).toHaveBeenCalledExactlyOnceWith(
       expect.stringContaining('[ERROR] Test error message'),
     )
   })
 
   it('should log debug message', () => {
     logger.debug('Test debug message')
-    expect(mockAppendLine).toHaveBeenCalledOnce()
-    expect(mockAppendLine).toHaveBeenCalledWith(
+    expect(mockAppendLine).toHaveBeenCalledExactlyOnceWith(
       expect.stringContaining('[DEBUG] Test debug message'),
     )
   })
 
   it('should log general message', () => {
     logger.log('Test', 'general', 'message')
-    expect(mockAppendLine).toHaveBeenCalledOnce()
-    expect(mockAppendLine).toHaveBeenCalledWith(
+    expect(mockAppendLine).toHaveBeenCalledExactlyOnceWith(
       expect.stringContaining('Test general message'),
     )
   })

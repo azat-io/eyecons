@@ -117,11 +117,9 @@ export function filterColorsByHueCategory(
 
   let adjacentCategories = ADJACENT_CATEGORIES[sourceCategory] ?? []
   for (let adjacentCategory of adjacentCategories) {
-    if (categorizedColors[adjacentCategory]) {
-      similarHueColors = [
-        ...similarHueColors,
-        ...categorizedColors[adjacentCategory],
-      ]
+    let adjacentColors = categorizedColors[adjacentCategory]
+    if (adjacentColors) {
+      similarHueColors = [...similarHueColors, ...adjacentColors]
     }
   }
 

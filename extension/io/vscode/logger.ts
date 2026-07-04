@@ -69,7 +69,7 @@ let outputChannel: vscode.OutputChannel | undefined
  * @returns Formatted date string.
  */
 function getFormattedDate(): string {
-  return new Intl.DateTimeFormat('en-US', {
+  let dateTimeFormat = new Intl.DateTimeFormat('en-US', {
     minute: 'numeric',
     second: 'numeric',
     month: 'numeric',
@@ -77,7 +77,8 @@ function getFormattedDate(): string {
     hour: 'numeric',
     day: 'numeric',
     hour12: false,
-  }).format(new Date())
+  })
+  return dateTimeFormat.format(new Date())
 }
 
 /**

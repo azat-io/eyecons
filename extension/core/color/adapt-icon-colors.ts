@@ -59,8 +59,9 @@ export function adaptIconColors(
     let colorMapping = new Map<string, string>()
 
     for (let { value } of colorInfos) {
-      if (theme.overrides[id]?.[value]) {
-        colorMapping.set(value, theme.overrides[id][value])
+      let overrideColor = theme.overrides[id]?.[value]
+      if (overrideColor) {
+        colorMapping.set(value, overrideColor)
         continue
       }
       let oklchValue = toOklch(value)

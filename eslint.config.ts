@@ -10,6 +10,12 @@ export default eslintConfig({
         'package-json/scripts-name-casing': 'off',
       },
     },
+    {
+      rules: {
+        'unicorn/filename-case': 'off',
+      },
+      files: ['**/__mocks__/**'],
+    },
   ],
   perfectionist: true,
   typescript: true,

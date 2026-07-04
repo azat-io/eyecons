@@ -11,7 +11,7 @@ describe('getHideExplorerArrowValue', () => {
   let mockInspect = vi.fn()
   let mockUpdate = vi.fn()
 
-  let mockConfiguration = {
+  let mockConfig = {
     inspect: mockInspect,
     update: mockUpdate,
     get: mockGet,
@@ -20,7 +20,7 @@ describe('getHideExplorerArrowValue', () => {
 
   beforeEach(() => {
     vi.clearAllMocks()
-    vi.spyOn(workspace, 'getConfiguration').mockReturnValue(mockConfiguration)
+    vi.spyOn(workspace, 'getConfiguration').mockReturnValue(mockConfig)
   })
 
   it('should return true when hidesExplorerArrows is set to true', () => {

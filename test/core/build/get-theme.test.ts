@@ -108,8 +108,8 @@ describe('getTheme', () => {
       id: 'dark',
     })
 
-    expect(getUserThemeId).toHaveBeenCalledOnce()
-    expect(getFolderColor).toHaveBeenCalledOnce()
+    expect(getUserThemeId).toHaveBeenCalledExactlyOnceWith()
+    expect(getFolderColor).toHaveBeenCalledExactlyOnceWith()
     expect(getThemeSource).toHaveBeenCalledWith('dark')
 
     expect(mockLoggerContext.info).toHaveBeenCalledWith('Using theme: dark')
@@ -130,8 +130,8 @@ describe('getTheme', () => {
 
     await expect(getTheme()).rejects.toThrow('Theme source not found')
 
-    expect(getUserThemeId).toHaveBeenCalledOnce()
-    expect(getFolderColor).toHaveBeenCalledOnce()
+    expect(getUserThemeId).toHaveBeenCalledExactlyOnceWith()
+    expect(getFolderColor).toHaveBeenCalledExactlyOnceWith()
     expect(getThemeSource).toHaveBeenCalledWith('unknown')
 
     expect(mockLoggerContext.info).toHaveBeenCalledWith('Using theme: unknown')

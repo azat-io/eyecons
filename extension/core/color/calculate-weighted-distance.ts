@@ -70,22 +70,17 @@ const HUE_RANGES = {
   YELLOW_GREEN: { MAX: 110, MIN: 40 },
   RED_PURPLE: { MIN: 270, MAX: 330 },
   COMPLEMENTARY: { MAX: 30, MIN: 0 },
-  RED_START: { MAX: 20, MIN: 0 },
   YELLOW: { MAX: 105, MIN: 90 },
-  RED: { MIN: 350, MAX: 360 },
   WARM: { MAX: 50, MIN: 0 },
+  RED_START: { MAX: 20 },
+  RED: { MIN: 350 },
 } as const
 
 /**
  * Hue difference power values.
  */
 const HUE_POWERS = {
-  YELLOW_GREEN: 1.6,
-  COMPLEMENTARY: 2,
-  RED_PURPLE: 1.7,
-  YELLOW_FAR: 1.9,
   NORMAL: 1.2,
-  YELLOW: 1.5,
   LARGE: 1.5,
 } as const
 

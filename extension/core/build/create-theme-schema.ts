@@ -37,7 +37,8 @@ export function createThemeSchema(
   let fileLightId = 'file-light'
   let folderId = 'folder'
   let folderOpenId = 'folder-open'
-  let buildTime = new Date().toISOString()
+  let buildDate = new Date()
+  let buildTime = buildDate.toISOString()
   let hidesExplorerArrows = getHideExplorerArrowValue()
 
   return {

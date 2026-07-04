@@ -73,7 +73,7 @@ export function extractColorsFromSvg(svgContent: string): ColorInfo[] {
   extractColorsFromStyleBlocks(svgContent, colorMap)
   extractInlineColors(svgContent, colorMap)
 
-  return [...colorMap.values()]
+  return colorMap.values().toArray()
 }
 
 /**
