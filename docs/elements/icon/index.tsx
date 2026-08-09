@@ -35,7 +35,7 @@ export let Icon = component$<IconProps>(({ light, id }) => {
     track(() => theme.value)
     track(() => icon.value)
 
-    let iconPath = `../../../icons/files/${
+    let iconPath = `../../../icons/files/${id}${
       light && themeType.value === 'light' ? '-light' : ''
     }.svg`
 
