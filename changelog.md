@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.17.0
+
+[compare changes](https://github.com/azat-io/eyecons/compare/v1.16.0...v1.17.0)
+
+### 🚀 Features
+
+- Add typst icon ([5345d9d](https://github.com/azat-io/eyecons/commit/5345d9d))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](https://github.com/azat-io))
+
 ## v1.16.0
 
 [compare changes](https://github.com/azat-io/eyecons/compare/v1.15.0...v1.16.0)
