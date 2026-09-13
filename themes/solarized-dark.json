@@ -74,6 +74,9 @@
     "tsdown": {
       "#bababa": "#fdf6e3"
     },
+    "typst": {
+      "#239dad": "#268bd2"
+    },
     "xml": {
       "#f57b02": "#cb4b16"
     }

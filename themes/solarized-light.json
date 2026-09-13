@@ -65,6 +65,9 @@
     "tsdown": {
       "#bababa": "#ffffff"
     },
+    "typst": {
+      "#239dad": "#268bd2"
+    },
     "vue": {
       "#35495e": "#2aa198",
       "#41b883": "#ffffff",

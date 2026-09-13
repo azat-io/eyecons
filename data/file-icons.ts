@@ -810,6 +810,12 @@ export let fileIcons: FileIcon[] = [
     id: 'typescript-test',
   },
   {
+    files: ['typst.toml'],
+    extensions: ['typ'],
+    name: 'Typst',
+    id: 'typst',
+  },
+  {
     extensions: ['v', 'vsh'],
     name: 'V',
     id: 'v',
