@@ -1,7 +1,6 @@
 import type { ExtensionContext } from 'vscode'
 
-import { component$, useContext, useSignal, useTask$ } from '@builder.io/qwik'
-import { isDev } from '@builder.io/qwik/build'
+import { component$, useContext } from '@builder.io/qwik'
 
 import type { ThemeSource } from '../../../extension/types/theme'
 
@@ -14,64 +13,61 @@ interface IconProps {
   id: string
 }
 
-let metaGlobIcons = import.meta.glob('../../../icons/files/*', {
-  import: 'default',
-  eager: !isDev,
-  query: '?raw',
-}) as Record<string, () => Promise<string>>
+/**
+ * Icons are built during render instead of being stored in a signal. Signal
+ * values are part of the component state, so Qwik would serialize every
+ * generated SVG into the resumability payload next to the markup it already
+ * emitted.
+ */
+let metaGlobIcons: Record<string, string> = import.meta.glob(
+  '../../../icons/files/*',
+  {
+    import: 'default',
+    query: '?raw',
+    eager: true,
+  },
+)
 
-let metaGlobData = import.meta.glob('../../../themes/*', {
-  import: 'default',
-  eager: !isDev,
-}) as Record<string, () => Promise<ThemeSource>>
+let metaGlobData: Record<string, ThemeSource> = import.meta.glob(
+  '../../../themes/*',
+  {
+    import: 'default',
+    eager: true,
+  },
+)
 
 export let Icon = component$<IconProps>(({ light, id }) => {
-  let icon = useSignal<string | null>(null)
   let theme = useContext(ThemeContext)
   let themeType = useContext(ThemeTypeContext)
 
-  useTask$(async ({ track }) => {
-    track(() => themeType.value)
-    track(() => theme.value)
-    track(() => icon.value)
+  let iconPath = `../../../icons/files/${id}${
+    light && themeType.value === 'light' ? '-light' : ''
+  }.svg`
+  let dataPath = `../../../themes/${theme.value}.json`
 
-    let iconPath = `../../../icons/files/${id}${
-      light && themeType.value === 'light' ? '-light' : ''
-    }.svg`
+  let svgContent = metaGlobIcons[iconPath]
+  let dataValue = metaGlobData[dataPath]
 
-    let svgContent = (
-      isDev ?
-        await metaGlobIcons[iconPath]?.()
-      : metaGlobIcons[iconPath]) as string
-
-    let dataPath = `../../../themes/${theme.value}.json`
-
-    let dataValue = (
-      isDev ?
-        await metaGlobData[dataPath]?.()
-      : metaGlobData[dataPath]) as ThemeSource
-
-    let themeValue = {
-      folderColor: 'blue',
-      id: theme.value,
-      ...dataValue,
-    }
-
-    let extensionContext = {} as ExtensionContext
-
-    icon.value = adaptIconColors(
-      {
-        svgContent,
-        id,
-      },
-      themeValue,
-      getConfig(extensionContext),
-    )
-  })
-
-  if (!icon.value) {
+  if (!svgContent || !dataValue) {
     return null
   }
 
-  return <div dangerouslySetInnerHTML={icon.value} />
+  let themeValue = {
+    folderColor: 'blue',
+    id: theme.value,
+    ...dataValue,
+  }
+
+  let extensionContext = {} as ExtensionContext
+
+  let icon = adaptIconColors(
+    {
+      svgContent,
+      id,
+    },
+    themeValue,
+    getConfig(extensionContext),
+  )
+
+  return <div dangerouslySetInnerHTML={icon} />
 })
