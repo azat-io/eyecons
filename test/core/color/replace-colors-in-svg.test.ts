@@ -149,6 +149,42 @@ describe('replaceColorsInSvg', () => {
     expect(result).toBe(svgContent)
   })
 
+  it('should not rewrite a color it has just written', () => {
+    let svgContent = '<svg><rect fill="#a7b2b5" /><path fill="#fff" /></svg>'
+    let colorInfos: ColorInfo[] = [
+      { source: 'attribute', value: '#a7b2b5', property: 'fill' },
+      { source: 'attribute', property: 'fill', value: '#fff' },
+    ]
+    let colorMapping = new Map([
+      ['#a7b2b5', '#ffffff'],
+      ['#fff', '#ffffff'],
+    ])
+
+    let result = replaceColorsInSvg(svgContent, colorMapping, colorInfos)
+
+    expect(result).toBe(
+      '<svg><rect fill="#ffffff" /><path fill="#ffffff" /></svg>',
+    )
+  })
+
+  it('should prefer the longest matching color value', () => {
+    let svgContent = '<svg><rect fill="#ffffff" /><path fill="#fff" /></svg>'
+    let colorInfos: ColorInfo[] = [
+      { source: 'attribute', value: '#ffffff', property: 'fill' },
+      { source: 'attribute', property: 'fill', value: '#fff' },
+    ]
+    let colorMapping = new Map([
+      ['#ffffff', '#111111'],
+      ['#fff', '#222222'],
+    ])
+
+    let result = replaceColorsInSvg(svgContent, colorMapping, colorInfos)
+
+    expect(result).toBe(
+      '<svg><rect fill="#111111" /><path fill="#222222" /></svg>',
+    )
+  })
+
   it('should properly escape special characters in color values', () => {
     let svgContent = '<svg><rect fill="rgb(255, 0, 0)" /></svg>'
     let colorInfos: ColorInfo[] = [

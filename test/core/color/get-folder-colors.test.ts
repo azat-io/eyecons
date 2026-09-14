@@ -1,18 +1,13 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { serialize, OKLCH } from '@texel/color'
 
 import type { Theme } from '../../../extension/types/theme'
 
 import { getFolderColors } from '../../../extension/core/color/get-folder-colors'
 import * as toOklchModule from '../../../extension/core/color/to-oklch'
+import * as toHexModule from '../../../extension/core/color/to-hex'
 
 const FOLDER_PRIMARY_COLOR = '#ffca28'
 const FOLDER_SECONDARY_COLOR = '#ffa000'
-
-vi.mock('@texel/color', () => ({
-  serialize: vi.fn(),
-  OKLCH: 'OKLCH',
-}))
 
 vi.mock('../../../extension/core/color/to-oklch', () => ({
   toOklch: vi.fn(),
@@ -44,8 +39,8 @@ describe('getFolderColors', () => {
       return colorMap[color] ?? [0, 0, 0]
     })
 
-    vi.mocked(serialize).mockImplementation(
-      (vector, _format) => `oklch(${vector.join(' ')})`,
+    vi.spyOn(toHexModule, 'toHex').mockImplementation(
+      vector => `hex(${vector.join(' ')})`,
     )
   })
 
@@ -70,14 +65,14 @@ describe('getFolderColors', () => {
 
     vi.mocked(toOklchModule.toOklch).mockReturnValue([0.6, 0.2, 240])
 
-    vi.mocked(serialize)
-      .mockReturnValueOnce('oklch(0.5 0.2 240)')
-      .mockReturnValueOnce('oklch(0.6 0.2 240)')
+    vi.spyOn(toHexModule, 'toHex')
+      .mockReturnValueOnce('#3f6fbf')
+      .mockReturnValueOnce('#4f8fdf')
 
     let result = getFolderColors(mockTheme)
 
-    expect(result.get(FOLDER_PRIMARY_COLOR)).toBe('oklch(0.6 0.2 240)')
-    expect(result.get(FOLDER_SECONDARY_COLOR)).toBe('oklch(0.5 0.2 240)')
+    expect(result.get(FOLDER_PRIMARY_COLOR)).toBe('#4f8fdf')
+    expect(result.get(FOLDER_SECONDARY_COLOR)).toBe('#3f6fbf')
     expect(result.size).toBe(2)
   })
 
@@ -88,8 +83,8 @@ describe('getFolderColors', () => {
 
     getFolderColors(mockTheme)
 
-    expect(serialize).toHaveBeenCalledWith([0.6, 0.2, 240], OKLCH)
-    expect(serialize).toHaveBeenCalledWith([0.5, 0.2, 240], OKLCH)
+    expect(toHexModule.toHex).toHaveBeenCalledWith([0.6, 0.2, 240])
+    expect(toHexModule.toHex).toHaveBeenCalledWith([0.5, 0.2, 240])
   })
 
   it('should handle different folder colors correctly', () => {

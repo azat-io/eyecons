@@ -1,5 +1,4 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { serialize } from '@texel/color'
 
 import type { Config } from '../../../extension/types/config'
 import type { Theme } from '../../../extension/types/theme'
@@ -10,12 +9,8 @@ import * as replaceColorsModule from '../../../extension/core/color/replace-colo
 import * as getFolderColorsModule from '../../../extension/core/color/get-folder-colors'
 import { adaptIconColors } from '../../../extension/core/color/adapt-icon-colors'
 import * as toOklchModule from '../../../extension/core/color/to-oklch'
+import * as toHexModule from '../../../extension/core/color/to-hex'
 import { logger } from '../../../extension/io/vscode/logger'
-
-vi.mock('@texel/color', () => ({
-  serialize: vi.fn(),
-  OKLCH: 'OKLCH',
-}))
 
 vi.mock('../../../extension/io/vscode/logger', () => ({
   logger: {
@@ -79,8 +74,8 @@ describe('adaptIconColors', () => {
       color => color,
     )
 
-    vi.mocked(serialize).mockImplementation(
-      (vector, _format) => `oklch(${vector.join(' ')})`,
+    vi.spyOn(toHexModule, 'toHex').mockImplementation(
+      vector => `hex(${vector.join(' ')})`,
     )
 
     vi.spyOn(replaceColorsModule, 'replaceColorsInSvg').mockReturnValue(

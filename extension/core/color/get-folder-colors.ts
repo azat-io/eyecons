@@ -1,10 +1,9 @@
 import type { Vector } from '@texel/color'
 
-import { serialize, OKLCH } from '@texel/color'
-
 import type { Theme } from '../../types/theme'
 
 import { toOklch } from './to-oklch'
+import { toHex } from './to-hex'
 
 type MainColorKey = keyof Theme['main']
 
@@ -23,7 +22,7 @@ export function getFolderColors({
   let secondaryColor: Vector = [lightness! - 0.1, chroma!, hue!]
 
   return new Map<string, string>([
-    [FOLDER_SECONDARY_COLOR, serialize(secondaryColor, OKLCH)],
-    [FOLDER_PRIMARY_COLOR, serialize(primaryColor, OKLCH)],
+    [FOLDER_SECONDARY_COLOR, toHex(secondaryColor)],
+    [FOLDER_PRIMARY_COLOR, toHex(primaryColor)],
   ])
 }

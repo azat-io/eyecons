@@ -1,5 +1,3 @@
-import { serialize, OKLCH } from '@texel/color'
-
 import type { Config } from '../../types/config'
 import type { Theme } from '../../types/theme'
 
@@ -9,6 +7,7 @@ import { findClosestColor } from './find-closest-color'
 import { getFolderColors } from './get-folder-colors'
 import { logger } from '../../io/vscode/logger'
 import { toOklch } from './to-oklch'
+import { toHex } from './to-hex'
 
 /**
  * Parameters for adapting icon colors.
@@ -66,7 +65,7 @@ export function adaptIconColors(
       }
       let oklchValue = toOklch(value)
       let closestColor = findClosestColor(oklchValue, themeColors, config)
-      colorMapping.set(value, serialize(closestColor, OKLCH))
+      colorMapping.set(value, toHex(closestColor))
     }
 
     return replaceColorsInSvg(svgContent, colorMapping, colorInfos)
