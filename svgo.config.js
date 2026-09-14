@@ -9,6 +9,6 @@ module.exports = {
     'reusePaths',
     'sortAttrs',
   ],
+  floatPrecision: 2,
   multipass: true,
-  precision: 2,
 }
