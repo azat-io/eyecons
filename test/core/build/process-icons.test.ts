@@ -8,7 +8,9 @@ import { createThemeAssociations } from '../../../extension/core/build/create-th
 import { createTemporaryDirectory } from '../../../extension/io/file/create-temporary-directory'
 import { processSingleIcon } from '../../../extension/core/build/process-single-icon'
 import { formatIconsValues } from '../../../extension/core/icon/format-icons-values'
+import { createMockLoggerContext } from '../../helpers/create-mock-logger-context'
 import { processIcons } from '../../../extension/core/build/process-icons'
+import { createMockConfig } from '../../helpers/create-mock-config'
 import { logger } from '../../../extension/io/vscode/logger'
 import { baseIcons } from '../../../data/base-icons'
 import { fileIcons } from '../../../data/file-icons'
@@ -49,13 +51,7 @@ vi.mock('../../../extension/io/vscode/logger', () => ({
   },
 }))
 
-let mockLoggerContext = {
-  debug: vi.fn(),
-  error: vi.fn(),
-  info: vi.fn(),
-  warn: vi.fn(),
-  log: vi.fn(),
-}
+let mockLoggerContext = createMockLoggerContext()
 
 describe('processIcons', () => {
   let mockTheme: Theme
@@ -141,20 +137,7 @@ describe('processIcons', () => {
       overrides: {},
     } as Theme
 
-    mockConfig = {
-      processing: {
-        extremeLightnessThresholds: { light: 0.95, dark: 0.05 },
-        lowSaturationThreshold: 0.05,
-        saturationFactor: 1.2,
-        adjustContrast: true,
-      },
-      iconDefinitionsPath: 'icons/definitions.json',
-      outputPath: '/mock/extension/path/output',
-      extensionPath: '/mock/extension/path',
-      sourceIconsPath: 'icons/source',
-      outputIconsPath: 'icons/theme',
-      version: '1.0.0',
-    } as Config
+    mockConfig = createMockConfig()
   })
 
   it('should process icons successfully', async () => {

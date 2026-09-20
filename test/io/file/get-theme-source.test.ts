@@ -2,6 +2,7 @@ import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 
+import { createMockLoggerContext } from '../../helpers/create-mock-logger-context'
 import { getThemeSource } from '../../../extension/io/file/get-theme-source'
 import { logger } from '../../../extension/io/vscode/logger'
 
@@ -17,13 +18,7 @@ vi.mock('node:path', () => ({
   },
 }))
 
-let mockLoggerContext = {
-  debug: vi.fn(),
-  error: vi.fn(),
-  info: vi.fn(),
-  warn: vi.fn(),
-  log: vi.fn(),
-}
+let mockLoggerContext = createMockLoggerContext()
 
 describe('getThemeSource', () => {
   beforeEach(() => {

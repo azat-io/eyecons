@@ -2,6 +2,7 @@ import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
 
 import type { ThemeSource } from '../../../extension/types/theme'
 
+import { createMockLoggerContext } from '../../helpers/create-mock-logger-context'
 import { getUserThemeId } from '../../../extension/io/vscode/get-user-theme-id'
 import { getFolderColor } from '../../../extension/io/vscode/get-folder-color'
 import { getThemeSource } from '../../../extension/io/file/get-theme-source'
@@ -31,13 +32,7 @@ vi.mock('../../../extension/io/vscode/logger', () => ({
   },
 }))
 
-let mockLoggerContext = {
-  debug: vi.fn(),
-  error: vi.fn(),
-  info: vi.fn(),
-  warn: vi.fn(),
-  log: vi.fn(),
-}
+let mockLoggerContext = createMockLoggerContext()
 
 describe('getTheme', () => {
   beforeEach(() => {

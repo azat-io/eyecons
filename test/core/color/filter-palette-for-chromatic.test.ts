@@ -5,16 +5,12 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { ColorMatchContext } from '../../../extension/types/color'
 
 import { filterPaletteForChromatic } from '../../../extension/core/color/filter-palette-for-chromatic'
+import { createMockLoggerContext } from '../../helpers/create-mock-logger-context'
 import * as isAchromaticModule from '../../../extension/core/color/is-achromatic'
+import { createMockConfig } from '../../helpers/create-mock-config'
 import { logger } from '../../../extension/io/vscode/logger'
 
-let mockLoggerContext = {
-  debug: vi.fn(),
-  error: vi.fn(),
-  info: vi.fn(),
-  warn: vi.fn(),
-  log: vi.fn(),
-}
+let mockLoggerContext = createMockLoggerContext()
 
 vi.mock('../../../extension/io/vscode/logger', () => ({
   logger: {
@@ -23,31 +19,7 @@ vi.mock('../../../extension/io/vscode/logger', () => ({
 }))
 
 describe('filterPaletteForChromatic', () => {
-  let mockConfig = {
-    processing: {
-      extremeLightnessThresholds: {
-        light: 0.95,
-        dark: 0.05,
-      },
-      lowSaturationThreshold: 0.05,
-      saturationFactor: 1.2,
-      adjustContrast: true,
-    },
-    errorHandling: {
-      showNotifications: true,
-      continueOnError: true,
-    },
-    logging: {
-      level: 'info' as const,
-      toFile: false,
-    },
-    iconDefinitionsPath: '',
-    sourceIconsPath: '',
-    outputIconsPath: '',
-    extensionPath: '',
-    version: '1.0.0',
-    outputPath: '',
-  }
+  let mockConfig = createMockConfig()
 
   let chromatic: Vector = [0.5, 0.3, 180]
   let achromatic: Vector = [0.5, 0.02, 0]

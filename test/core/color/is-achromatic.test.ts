@@ -3,33 +3,10 @@ import { describe, expect, it } from 'vitest'
 import type { Config } from '../../../extension/types/config'
 
 import { isAchromatic } from '../../../extension/core/color/is-achromatic'
+import { createMockConfig } from '../../helpers/create-mock-config'
 
 describe('isAchromatic', () => {
-  let mockConfig: Config = {
-    processing: {
-      extremeLightnessThresholds: {
-        light: 0.95,
-        dark: 0.05,
-      },
-      lowSaturationThreshold: 0.05,
-      saturationFactor: 1.2,
-      adjustContrast: true,
-    },
-    errorHandling: {
-      showNotifications: true,
-      continueOnError: true,
-    },
-    logging: {
-      level: 'info',
-      toFile: false,
-    },
-    iconDefinitionsPath: '',
-    sourceIconsPath: '',
-    outputIconsPath: '',
-    extensionPath: '',
-    version: '1.0.0',
-    outputPath: '',
-  }
+  let mockConfig = createMockConfig()
 
   it('should identify colors with chroma > 0.1 as chromatic', () => {
     let colorWithHighChroma: [number, number, number] = [0.5, 0.12, 180]

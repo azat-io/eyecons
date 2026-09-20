@@ -5,6 +5,8 @@ import type { ThemeSchema, Theme } from '../../../extension/types/theme'
 import type { Config } from '../../../extension/types/config'
 
 import { getHideExplorerArrowValue } from '../../../extension/io/vscode/get-hide-explorer-arrow-value'
+import { createMockLoggerContext } from '../../helpers/create-mock-logger-context'
+import { createMockThemeSchema } from '../../helpers/create-mock-theme-schema'
 import { generateHash } from '../../../extension/core/hash/generate-hash'
 import { validate } from '../../../extension/core/validate/validate'
 import { logger } from '../../../extension/io/vscode/logger'
@@ -54,13 +56,7 @@ describe('validate', () => {
   let mockTheme: Theme
   let mockConfig: Config
   let mockSchema: ThemeSchema
-  let mockLoggerContext = {
-    debug: vi.fn(),
-    error: vi.fn(),
-    info: vi.fn(),
-    warn: vi.fn(),
-    log: vi.fn(),
-  }
+  let mockLoggerContext = createMockLoggerContext()
 
   beforeEach(() => {
     vi.clearAllMocks()
@@ -83,7 +79,7 @@ describe('validate', () => {
       version: '1.0.0',
     } as Config
 
-    mockSchema = {
+    mockSchema = createMockThemeSchema({
       iconDefinitions: {
         'folder-light': {
           iconPath: './icons/folder-light--hash-for-folder-light.svg',
@@ -97,24 +93,8 @@ describe('validate', () => {
         js: { iconPath: './icons/js--hash-for-js.svg' },
         ts: { iconPath: './icons/ts--hash-for-ts.svg' },
       },
-      light: {
-        file: 'file-light',
-        fileExtensions: {},
-        fileNames: {},
-      },
       buildTime: '2023-01-01T00:00:00.000Z',
-      folderExpanded: 'folder-open',
-      hidesExplorerArrows: true,
-      folderNamesExpanded: {},
-      folderColor: 'blue',
-      fileExtensions: {},
-      folder: 'folder',
-      version: '1.0.0',
-      folderNames: {},
-      themeId: 'dark',
-      fileNames: {},
-      file: 'file',
-    }
+    })
 
     vi.mocked(fs.readFile).mockResolvedValue(JSON.stringify(mockSchema))
   })

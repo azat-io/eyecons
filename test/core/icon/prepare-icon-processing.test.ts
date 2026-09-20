@@ -1,11 +1,11 @@
 import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
 import path from 'node:path'
 
-import type { Config } from '../../../extension/types/config'
 import type { Theme } from '../../../extension/types/theme'
 
 import { prepareIconProcessing } from '../../../extension/core/icon/prepare-icon-processing'
 import { generateHash } from '../../../extension/core/hash/generate-hash'
+import { createMockConfig } from '../../helpers/create-mock-config'
 
 vi.mock('../../../extension/core/hash/generate-hash', () => ({
   generateHash: vi.fn(),
@@ -27,29 +27,23 @@ describe('prepareIconProcessing', () => {
     vi.resetAllMocks()
   })
 
-  function createMockConfig(): Config {
+  /**
+   * Builds the theme fixture handed to `prepareIconProcessing`.
+   *
+   * Only the id and the folder color reach the function under test, the rest of
+   * the theme is filled with empty values.
+   *
+   * @param id - VS Code theme id.
+   * @param folderColor - Selected folder color.
+   * @returns Theme to pass to the function under test.
+   */
+  function createTheme(id: string, folderColor: string): Theme {
     return {
-      processing: {
-        extremeLightnessThresholds: { light: 0.95, dark: 0.05 },
-        lowSaturationThreshold: 0.05,
-        saturationFactor: 1.2,
-        adjustContrast: true,
-      },
-      errorHandling: {
-        showNotifications: true,
-        continueOnError: true,
-      },
-      logging: {
-        level: 'info',
-        toFile: false,
-      },
-      iconDefinitionsPath: 'icons/definitions.json',
-      outputPath: '/mock/extension/path/output',
-      extensionPath: '/mock/extension/path',
-      sourceIconsPath: 'icons/source',
-      outputIconsPath: 'icons/theme',
-      version: '1.0.0',
-    }
+      overrides: {},
+      folderColor,
+      colors: [],
+      id,
+    } as unknown as Theme
   }
 
   it('should correctly prepare processing data for a dark icon', () => {
@@ -60,12 +54,7 @@ describe('prepareIconProcessing', () => {
       id: 'file',
     }
 
-    let theme = {
-      folderColor: 'blue',
-      id: 'dark-theme',
-      overrides: {},
-      colors: [],
-    } as unknown as Theme
+    let theme = createTheme('dark-theme', 'blue')
 
     let config = createMockConfig()
 
@@ -105,12 +94,7 @@ describe('prepareIconProcessing', () => {
       id: 'file-light',
     }
 
-    let theme = {
-      folderColor: 'yellow',
-      id: 'light-theme',
-      overrides: {},
-      colors: [],
-    } as unknown as Theme
+    let theme = createTheme('light-theme', 'yellow')
 
     let config = createMockConfig()
 
@@ -154,12 +138,7 @@ describe('prepareIconProcessing', () => {
       id: 'special-chars',
     }
 
-    let theme = {
-      folderColor: 'blue & white',
-      id: 'theme-&-Special',
-      overrides: {},
-      colors: [],
-    } as unknown as Theme
+    let theme = createTheme('theme-&-Special', 'blue & white')
 
     let config = createMockConfig()
     config.outputIconsPath = 'icons/special theme'
@@ -200,12 +179,7 @@ describe('prepareIconProcessing', () => {
       id: 'file',
     }
 
-    let theme = {
-      folderColor: 'blue',
-      id: 'dark-theme',
-      overrides: {},
-      colors: [],
-    } as unknown as Theme
+    let theme = createTheme('dark-theme', 'blue')
 
     let config = createMockConfig()
     config.outputIconsPath = 'custom/path/icons'

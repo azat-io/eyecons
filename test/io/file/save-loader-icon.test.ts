@@ -2,8 +2,10 @@ import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 
+import { createMockLoggerContext } from '../../helpers/create-mock-logger-context'
 import { toRelativePath } from '../../../extension/core/build/to-relative-path'
 import { saveLoaderIcon } from '../../../extension/io/file/save-loader-icon'
+import { createMockConfig } from '../../helpers/create-mock-config'
 import { logger } from '../../../extension/io/vscode/logger'
 
 vi.mock('../../../extension/core/build/to-relative-path', () => ({
@@ -14,42 +16,14 @@ let mockMkdir = vi.fn().mockResolvedValue(null)
 let mockWriteFile = vi.fn().mockResolvedValue(null)
 let mockJoin = vi.fn((...arguments_) => arguments_.join('/'))
 
-let mockLoggerContext = {
-  debug: vi.fn(),
-  error: vi.fn(),
-  info: vi.fn(),
-  warn: vi.fn(),
-  log: vi.fn(),
-}
+let mockLoggerContext = createMockLoggerContext()
 
 describe('saveLoaderIcon', () => {
   let mockLoaderSvg = '<svg>Test Loader</svg>'
 
-  let mockConfig = {
-    processing: {
-      extremeLightnessThresholds: {
-        light: 0.95,
-        dark: 0.05,
-      },
-      lowSaturationThreshold: 0.05,
-      saturationFactor: 1.2,
-      adjustContrast: true,
-    },
-    errorHandling: {
-      showNotifications: true,
-      continueOnError: true,
-    },
-    logging: {
-      level: 'info' as const,
-      toFile: false,
-    },
-    outputPath: '/mock/extension/path/output',
+  let mockConfig = createMockConfig({
     iconDefinitionsPath: 'theme/index.json',
-    extensionPath: '/mock/extension/path',
-    sourceIconsPath: 'icons/source',
-    outputIconsPath: 'icons/theme',
-    version: '1.0.0',
-  }
+  })
 
   beforeEach(() => {
     vi.clearAllMocks()

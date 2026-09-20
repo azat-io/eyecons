@@ -6,6 +6,7 @@ import {
   RGB_REGEX,
   HSL_REGEX,
 } from '../../../extension/core/color/constants'
+import { createMockLoggerContext } from '../../helpers/create-mock-logger-context'
 import { toOklch } from '../../../extension/core/color/to-oklch'
 import { logger } from '../../../extension/io/vscode/logger'
 
@@ -43,13 +44,7 @@ vi.mock('../../../extension/core/color/constants', () => ({
 }))
 
 describe('toOklch', () => {
-  let mockLoggerContext = {
-    error: vi.fn(),
-    debug: vi.fn(),
-    info: vi.fn(),
-    warn: vi.fn(),
-    log: vi.fn(),
-  }
+  let mockLoggerContext = createMockLoggerContext()
 
   beforeEach(() => {
     vi.clearAllMocks()

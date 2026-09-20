@@ -4,7 +4,9 @@ import path from 'node:path'
 
 import type { Config } from '../../../extension/types/config'
 
+import { createMockLoggerContext } from '../../helpers/create-mock-logger-context'
 import { getIconSource } from '../../../extension/io/file/get-icon-source'
+import { createMockConfig } from '../../helpers/create-mock-config'
 import { logger } from '../../../extension/io/vscode/logger'
 
 vi.mock('node:fs/promises', () => ({
@@ -19,13 +21,7 @@ vi.mock('node:path', () => ({
   },
 }))
 
-let mockLoggerContext = {
-  debug: vi.fn(),
-  error: vi.fn(),
-  info: vi.fn(),
-  warn: vi.fn(),
-  log: vi.fn(),
-}
+let mockLoggerContext = createMockLoggerContext()
 
 describe('getIconSource', () => {
   let mockConfig: Config
@@ -35,28 +31,7 @@ describe('getIconSource', () => {
     vi.spyOn(logger, 'withContext').mockReturnValue(mockLoggerContext)
     vi.mocked(fs.readFile).mockResolvedValue('<svg>Mock SVG content</svg>')
 
-    mockConfig = {
-      processing: {
-        extremeLightnessThresholds: { light: 0.95, dark: 0.05 },
-        lowSaturationThreshold: 0.05,
-        saturationFactor: 1.2,
-        adjustContrast: true,
-      },
-      errorHandling: {
-        showNotifications: true,
-        continueOnError: true,
-      },
-      logging: {
-        level: 'info',
-        toFile: false,
-      },
-      iconDefinitionsPath: 'icons/definitions.json',
-      outputPath: '/mock/extension/path/output',
-      extensionPath: '/mock/extension/path',
-      sourceIconsPath: 'icons/source',
-      outputIconsPath: 'icons/theme',
-      version: '1.0.0',
-    }
+    mockConfig = createMockConfig()
   })
 
   afterEach(() => {

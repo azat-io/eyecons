@@ -3,15 +3,10 @@ import type { Vector } from '@texel/color'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { refineColorsByProperties } from '../../../extension/core/color/refine-colors-by-properties'
+import { createMockLoggerContext } from '../../helpers/create-mock-logger-context'
 import { logger } from '../../../extension/io/vscode/logger'
 
-let mockLoggerContext = {
-  debug: vi.fn(),
-  error: vi.fn(),
-  info: vi.fn(),
-  warn: vi.fn(),
-  log: vi.fn(),
-}
+let mockLoggerContext = createMockLoggerContext()
 
 vi.mock('../../../extension/io/vscode/logger', () => ({
   logger: {

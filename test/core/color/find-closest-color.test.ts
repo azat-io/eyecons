@@ -2,8 +2,6 @@ import type { Vector } from '@texel/color'
 
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import type { Config } from '../../../extension/types/config'
-
 import * as filterPaletteForAchromaticModule from '../../../extension/core/color/filter-palette-for-achromatic'
 import * as filterColorsByHueCategoryModule from '../../../extension/core/color/filter-colors-by-hue-category'
 import * as filterPaletteForChromaticModule from '../../../extension/core/color/filter-palette-for-chromatic'
@@ -12,10 +10,12 @@ import * as refineColorsByPropertiesModule from '../../../extension/core/color/r
 import * as determineColorWeightsModule from '../../../extension/core/color/determine-color-weights'
 import * as adjustSaturationModule from '../../../extension/core/color/adjust-saturation'
 import { findClosestColor } from '../../../extension/core/color/find-closest-color'
+import { createMockLoggerContext } from '../../helpers/create-mock-logger-context'
 import * as isAchromaticModule from '../../../extension/core/color/is-achromatic'
+import { createMockConfig } from '../../helpers/create-mock-config'
 import { logger } from '../../../extension/io/vscode/logger'
 
-let mockConfig: Config = {
+let mockConfig = createMockConfig({
   processing: {
     extremeLightnessThresholds: {
       light: 0.9,
@@ -25,21 +25,47 @@ let mockConfig: Config = {
     saturationFactor: 1.5,
     adjustContrast: true,
   },
-} as Config
+})
 
-let mockLoggerContext = {
-  debug: vi.fn(),
-  error: vi.fn(),
-  info: vi.fn(),
-  warn: vi.fn(),
-  log: vi.fn(),
-}
+let chromaticPalette: Vector[] = [
+  [0.4, 0.2, 90],
+  [0.6, 0.3, 175],
+  [0.7, 0.4, 270],
+]
+
+let mockLoggerContext = createMockLoggerContext()
 
 vi.mock('../../../extension/io/vscode/logger', () => ({
   logger: {
     withContext: vi.fn(),
   },
 }))
+
+/**
+ * Stubs every step of the chromatic branch so that the palette reaching the
+ * distance calculation is known.
+ *
+ * @param themePalette - Palette `filterPaletteForChromatic` returns.
+ * @param refinedPalette - Palette the hue and property refinements return.
+ */
+function mockChromaticPipeline(
+  themePalette: Vector[],
+  refinedPalette: Vector[] = themePalette,
+): void {
+  vi.spyOn(isAchromaticModule, 'isAchromatic').mockReturnValue(false)
+  vi.spyOn(
+    filterPaletteForChromaticModule,
+    'filterPaletteForChromatic',
+  ).mockReturnValue(themePalette)
+  vi.spyOn(
+    filterColorsByHueCategoryModule,
+    'filterColorsByHueCategory',
+  ).mockReturnValue(refinedPalette)
+  vi.spyOn(
+    refineColorsByPropertiesModule,
+    'refineColorsByProperties',
+  ).mockReturnValue(refinedPalette)
+}
 
 describe('findClosestColor', () => {
   beforeEach(() => {
@@ -110,32 +136,15 @@ describe('findClosestColor', () => {
 
   it('should process chromatic colors correctly', () => {
     let sourceColor: Vector = [0.5, 0.3, 180]
-    let palette: Vector[] = [
-      [0.4, 0.2, 90],
-      [0.6, 0.3, 175],
-      [0.7, 0.4, 270],
-    ]
-    let filteredPalette: Vector[] = [palette[1]!]
+    let filteredPalette: Vector[] = [chromaticPalette[1]!]
     let expectedContext = {
+      themePalette: chromaticPalette,
       sourceAchromatic: false,
-      themePalette: palette,
       config: mockConfig,
       sourceColor,
     }
 
-    vi.spyOn(isAchromaticModule, 'isAchromatic').mockReturnValue(false)
-    vi.spyOn(
-      filterPaletteForChromaticModule,
-      'filterPaletteForChromatic',
-    ).mockReturnValue(palette)
-    vi.spyOn(
-      filterColorsByHueCategoryModule,
-      'filterColorsByHueCategory',
-    ).mockReturnValue(filteredPalette)
-    vi.spyOn(
-      refineColorsByPropertiesModule,
-      'refineColorsByProperties',
-    ).mockReturnValue(filteredPalette)
+    mockChromaticPipeline(chromaticPalette, filteredPalette)
     vi.spyOn(
       determineColorWeightsModule,
       'determineColorWeights',
@@ -149,12 +158,12 @@ describe('findClosestColor', () => {
       'calculateWeightedDistance',
     ).mockReturnValue(0.1)
     vi.spyOn(adjustSaturationModule, 'adjustSaturation').mockReturnValue(
-      palette[1]!,
+      chromaticPalette[1]!,
     )
 
-    let result = findClosestColor(sourceColor, palette, mockConfig)
+    let result = findClosestColor(sourceColor, chromaticPalette, mockConfig)
 
-    expect(result).toEqual(palette[1])
+    expect(result).toEqual(chromaticPalette[1])
     expect(isAchromaticModule.isAchromatic).toHaveBeenCalledWith(
       sourceColor,
       mockConfig,
@@ -164,7 +173,7 @@ describe('findClosestColor', () => {
     ).toHaveBeenCalledWith(expectedContext)
     expect(
       filterColorsByHueCategoryModule.filterColorsByHueCategory,
-    ).toHaveBeenCalledWith(sourceColor, palette)
+    ).toHaveBeenCalledWith(sourceColor, chromaticPalette)
     expect(
       refineColorsByPropertiesModule.refineColorsByProperties,
     ).toHaveBeenCalledWith(sourceColor, filteredPalette)
@@ -174,19 +183,7 @@ describe('findClosestColor', () => {
     let sourceColor: Vector = [0.5, 0.3, 180]
     let palette: Vector[] = [[0.6, 0.3, 175]]
 
-    vi.spyOn(isAchromaticModule, 'isAchromatic').mockReturnValue(false)
-    vi.spyOn(
-      filterPaletteForChromaticModule,
-      'filterPaletteForChromatic',
-    ).mockReturnValue(palette)
-    vi.spyOn(
-      filterColorsByHueCategoryModule,
-      'filterColorsByHueCategory',
-    ).mockReturnValue(palette)
-    vi.spyOn(
-      refineColorsByPropertiesModule,
-      'refineColorsByProperties',
-    ).mockReturnValue(palette)
+    mockChromaticPipeline(palette)
     vi.spyOn(
       determineColorWeightsModule,
       'determineColorWeights',
@@ -211,33 +208,18 @@ describe('findClosestColor', () => {
 
   it('should calculate closest color from filtered palette', () => {
     let sourceColor: Vector = [0.5, 0.3, 180]
-    let palette: Vector[] = [
-      [0.4, 0.2, 90],
-      [0.6, 0.3, 175],
-      [0.7, 0.4, 270],
-    ]
 
-    vi.spyOn(isAchromaticModule, 'isAchromatic').mockReturnValue(false)
-    vi.spyOn(
-      filterPaletteForChromaticModule,
-      'filterPaletteForChromatic',
-    ).mockReturnValue(palette)
-    vi.spyOn(
-      filterColorsByHueCategoryModule,
-      'filterColorsByHueCategory',
-    ).mockReturnValue(palette)
-    vi.spyOn(
-      refineColorsByPropertiesModule,
-      'refineColorsByProperties',
-    ).mockReturnValue(palette)
+    mockChromaticPipeline(chromaticPalette)
     vi.spyOn(
       calculateWeightedDistanceModule,
       'calculateWeightedDistance',
-    ).mockImplementation(({ color2 }) => (color2 === palette[1] ? 0.1 : 0.5))
+    ).mockImplementation(({ color2 }) =>
+      color2 === chromaticPalette[1] ? 0.1 : 0.5,
+    )
 
-    let result = findClosestColor(sourceColor, palette, mockConfig)
+    let result = findClosestColor(sourceColor, chromaticPalette, mockConfig)
 
-    expect(result).toEqual(palette[1])
+    expect(result).toEqual(chromaticPalette[1])
     expect(
       calculateWeightedDistanceModule.calculateWeightedDistance,
     ).toHaveBeenCalledTimes(3)

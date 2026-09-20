@@ -1,8 +1,20 @@
 import { describe, expect, it } from 'vitest'
 
 import type { FormattedIconValue } from '../../../extension/types/icon'
+import type { ThemeData } from '../../../extension/types/theme'
 
 import { createThemeAssociations } from '../../../extension/core/build/create-theme-associations'
+
+let emptyAssociations: ThemeData = {
+  light: {
+    fileExtensions: {},
+    fileNames: {},
+  },
+  dark: {
+    fileExtensions: {},
+    fileNames: {},
+  },
+}
 
 describe('buildFileAssociationMap', () => {
   it('should create file associations for different themes', () => {
@@ -67,16 +79,7 @@ describe('buildFileAssociationMap', () => {
   it('should handle empty input array', () => {
     let result = createThemeAssociations([])
 
-    expect(result).toEqual({
-      light: {
-        fileExtensions: {},
-        fileNames: {},
-      },
-      dark: {
-        fileExtensions: {},
-        fileNames: {},
-      },
-    })
+    expect(result).toEqual(emptyAssociations)
   })
 
   it('should only process file icons', () => {
@@ -97,16 +100,7 @@ describe('buildFileAssociationMap', () => {
 
     let result = createThemeAssociations(icons)
 
-    expect(result).toEqual({
-      light: {
-        fileExtensions: {},
-        fileNames: {},
-      },
-      dark: {
-        fileExtensions: {},
-        fileNames: {},
-      },
-    })
+    expect(result).toEqual(emptyAssociations)
   })
 
   it('should handle icons with undefined extensions or files', () => {
@@ -121,15 +115,6 @@ describe('buildFileAssociationMap', () => {
 
     let result = createThemeAssociations(icons)
 
-    expect(result).toEqual({
-      light: {
-        fileExtensions: {},
-        fileNames: {},
-      },
-      dark: {
-        fileExtensions: {},
-        fileNames: {},
-      },
-    })
+    expect(result).toEqual(emptyAssociations)
   })
 })

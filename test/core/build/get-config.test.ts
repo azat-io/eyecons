@@ -3,6 +3,7 @@ import type { ExtensionContext } from 'vscode'
 import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
 import path from 'node:path'
 
+import { createMockLoggerContext } from '../../helpers/create-mock-logger-context'
 import { getConfig } from '../../../extension/core/build/get-config'
 import { logger } from '../../../extension/io/vscode/logger'
 
@@ -22,13 +23,7 @@ vi.mock('node:path', () => ({
   },
 }))
 
-let mockLoggerContext = {
-  debug: vi.fn(),
-  error: vi.fn(),
-  info: vi.fn(),
-  warn: vi.fn(),
-  log: vi.fn(),
-}
+let mockLoggerContext = createMockLoggerContext()
 
 let mockContext = {
   extensionPath: '/mock/extension/path',

@@ -11,10 +11,12 @@ import type { Config } from '../../../extension/types/config'
 
 import { createThemeSchema } from '../../../extension/core/build/create-theme-schema'
 import { moveProcessedIcons } from '../../../extension/io/file/move-processed-icons'
+import { createMockLoggerContext } from '../../helpers/create-mock-logger-context'
 import { setupLoaderIcon } from '../../../extension/core/build/setup-loader-icon'
 import { saveThemeSchema } from '../../../extension/io/file/save-theme-schema'
 import { processIcons } from '../../../extension/core/build/process-icons'
 import { buildIcons } from '../../../extension/core/build/build-icons'
+import { createMockConfig } from '../../helpers/create-mock-config'
 import { logger } from '../../../extension/io/vscode/logger'
 
 vi.mock('node:timers/promises', () => ({
@@ -56,13 +58,7 @@ describe('buildIcons', () => {
     themeData: ThemeData
   }
   let mockThemeSchema: ThemeSchema
-  let mockLoggerContext = {
-    debug: vi.fn(),
-    error: vi.fn(),
-    info: vi.fn(),
-    warn: vi.fn(),
-    log: vi.fn(),
-  }
+  let mockLoggerContext = createMockLoggerContext()
 
   beforeEach(() => {
     vi.clearAllMocks()
@@ -74,28 +70,7 @@ describe('buildIcons', () => {
       id: 'dark',
     } as Theme
 
-    mockConfig = {
-      processing: {
-        extremeLightnessThresholds: { light: 0.95, dark: 0.05 },
-        lowSaturationThreshold: 0.05,
-        saturationFactor: 1.2,
-        adjustContrast: true,
-      },
-      errorHandling: {
-        showNotifications: true,
-        continueOnError: true,
-      },
-      logging: {
-        level: 'info',
-        toFile: false,
-      },
-      iconDefinitionsPath: 'icons/definitions.json',
-      outputPath: '/mock/extension/path/output',
-      extensionPath: '/mock/extension/path',
-      sourceIconsPath: 'icons/source',
-      outputIconsPath: 'icons/theme',
-      version: '1.0.0',
-    }
+    mockConfig = createMockConfig()
 
     mockProcessIconsResult = {
       themeData: {

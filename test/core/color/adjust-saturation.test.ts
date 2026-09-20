@@ -3,38 +3,33 @@ import { describe, expect, it } from 'vitest'
 import type { Config } from '../../../extension/types/config'
 
 import { adjustSaturation } from '../../../extension/core/color/adjust-saturation'
+import { createMockConfig } from '../../helpers/create-mock-config'
 
 describe('adjustSaturation', () => {
+  /**
+   * Builds a config whose saturation-related processing options are set to the
+   * given values, leaving every other field at its shared default.
+   *
+   * @param adjustContrast - Whether saturation adjustment runs at all.
+   * @param lowSaturationThreshold - Chroma below which a color is boosted.
+   * @param saturationFactor - Multiplier applied to a boosted chroma.
+   * @returns Config to hand to `adjustSaturation`.
+   */
   function createConfig(
     adjustContrast = true,
     lowSaturationThreshold = 0.05,
     saturationFactor = 1.2,
   ): Config {
-    return {
+    let { processing } = createMockConfig()
+
+    return createMockConfig({
       processing: {
-        extremeLightnessThresholds: {
-          light: 0.95,
-          dark: 0.05,
-        },
+        ...processing,
         lowSaturationThreshold,
         saturationFactor,
         adjustContrast,
       },
-      errorHandling: {
-        showNotifications: true,
-        continueOnError: true,
-      },
-      logging: {
-        level: 'info',
-        toFile: false,
-      },
-      iconDefinitionsPath: '',
-      sourceIconsPath: '',
-      outputIconsPath: '',
-      extensionPath: '',
-      version: '1.0.0',
-      outputPath: '',
-    }
+    })
   }
 
   it('should return the same color when adjustContrast is false', () => {

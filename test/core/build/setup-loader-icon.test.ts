@@ -9,13 +9,15 @@ import {
 } from 'vitest'
 
 import type { ThemeSchema } from '../../../extension/types/theme'
-import type { Config } from '../../../extension/types/config'
 
 import { createThemeSchema } from '../../../extension/core/build/create-theme-schema'
 import { createLoaderIcon } from '../../../extension/core/build/create-loader-icon'
+import { createMockLoggerContext } from '../../helpers/create-mock-logger-context'
 import { setupLoaderIcon } from '../../../extension/core/build/setup-loader-icon'
+import { createMockThemeSchema } from '../../helpers/create-mock-theme-schema'
 import { saveThemeSchema } from '../../../extension/io/file/save-theme-schema'
 import { saveLoaderIcon } from '../../../extension/io/file/save-loader-icon'
+import { createMockConfig } from '../../helpers/create-mock-config'
 import { logger } from '../../../extension/io/vscode/logger'
 
 vi.mock('../../../extension/core/build/create-loader-icon')
@@ -23,13 +25,7 @@ vi.mock('../../../extension/core/build/create-theme-schema')
 vi.mock('../../../extension/io/file/save-loader-icon')
 vi.mock('../../../extension/io/file/save-theme-schema')
 
-let mockLoggerContext = {
-  debug: vi.fn(),
-  error: vi.fn(),
-  info: vi.fn(),
-  warn: vi.fn(),
-  log: vi.fn(),
-}
+let mockLoggerContext = createMockLoggerContext()
 
 describe('setupLoaderIcon', () => {
   let mockTheme = {
@@ -54,58 +50,21 @@ describe('setupLoaderIcon', () => {
     id: 'dark',
   }
 
-  let mockConfig = {
-    processing: {
-      extremeLightnessThresholds: {
-        light: 0.95,
-        dark: 0.05,
-      },
-      lowSaturationThreshold: 0.05,
-      saturationFactor: 1.2,
-      adjustContrast: true,
-    },
-    errorHandling: {
-      showNotifications: true,
-      continueOnError: true,
-    },
-    logging: {
-      level: 'info' as const,
-      toFile: false,
-    },
+  let mockConfig = createMockConfig({
     iconDefinitionsPath: 'theme/index.json',
-    sourceIconsPath: 'icons/source',
-    outputIconsPath: 'icons/theme',
-    version: '1.0.0',
-  } as Config
+  })
 
   let mockThemeSchema: ThemeSchema
 
   beforeAll(() => {
-    mockThemeSchema = {
+    mockThemeSchema = createMockThemeSchema({
       iconDefinitions: {
         'folder-open': { iconPath: './mock-loader-path.svg' },
         'file-light': { iconPath: './mock-loader-path.svg' },
         folder: { iconPath: './mock-loader-path.svg' },
         file: { iconPath: './mock-loader-path.svg' },
       },
-      light: {
-        file: 'file-light',
-        fileExtensions: {},
-        fileNames: {},
-      },
-      buildTime: '2023-01-01T12:00:00.000Z',
-      folderExpanded: 'folder-open',
-      hidesExplorerArrows: true,
-      folderNamesExpanded: {},
-      folderColor: 'blue',
-      fileExtensions: {},
-      folder: 'folder',
-      version: '1.0.0',
-      folderNames: {},
-      themeId: 'dark',
-      fileNames: {},
-      file: 'file',
-    }
+    })
   })
 
   beforeEach(() => {

@@ -10,6 +10,7 @@ import { prepareIconProcessing } from '../../../extension/core/icon/prepare-icon
 import { processSingleIcon } from '../../../extension/core/build/process-single-icon'
 import { adaptIconColors } from '../../../extension/core/color/adapt-icon-colors'
 import { getIconSource } from '../../../extension/io/file/get-icon-source'
+import { createMockConfig } from '../../helpers/create-mock-config'
 import { logger } from '../../../extension/io/vscode/logger'
 
 vi.mock('node:fs/promises', () => ({
@@ -67,20 +68,7 @@ describe('processSingleIcon', () => {
       overrides: {},
     } as Theme
 
-    mockConfig = {
-      processing: {
-        extremeLightnessThresholds: { light: 0.95, dark: 0.05 },
-        lowSaturationThreshold: 0.05,
-        saturationFactor: 1.2,
-        adjustContrast: true,
-      },
-      iconDefinitionsPath: 'icons/definitions.json',
-      outputPath: '/mock/extension/path/output',
-      extensionPath: '/mock/extension/path',
-      sourceIconsPath: 'icons/source',
-      outputIconsPath: 'icons/theme',
-      version: '1.0.0',
-    } as Config
+    mockConfig = createMockConfig()
 
     mockPreparedIcon = {
       temporaryFilePath: '/tmp/icons/html-abc123.svg',
@@ -100,8 +88,13 @@ describe('processSingleIcon', () => {
     vi.mocked(path.dirname).mockReturnValue('/tmp/icons')
   })
 
-  it('should process a single icon correctly', async () => {
-    let result = await processSingleIcon(
+  /**
+   * Calls the function under test with the fixtures built in `beforeEach`.
+   *
+   * @returns Result of processing `mockIcon` into the temporary directory.
+   */
+  function runProcessSingleIcon(): ReturnType<typeof processSingleIcon> {
+    return processSingleIcon(
       {
         temporaryDirectory: '/tmp/icons',
         icon: mockIcon,
@@ -109,6 +102,10 @@ describe('processSingleIcon', () => {
       mockTheme,
       mockConfig,
     )
+  }
+
+  it('should process a single icon correctly', async () => {
+    let result = await runProcessSingleIcon()
 
     expect(prepareIconProcessing).toHaveBeenCalledWith(
       {
@@ -159,14 +156,7 @@ describe('processSingleIcon', () => {
     }
     vi.mocked(prepareIconProcessing).mockReturnValue(mockPreparedIcon)
 
-    let result = await processSingleIcon(
-      {
-        temporaryDirectory: '/tmp/icons',
-        icon: mockIcon,
-      },
-      mockTheme,
-      mockConfig,
-    )
+    let result = await runProcessSingleIcon()
 
     expect(getIconSource).toHaveBeenCalledWith(
       'html-light',
@@ -192,14 +182,7 @@ describe('processSingleIcon', () => {
   it('should create directory before writing file', async () => {
     vi.mocked(path.dirname).mockReturnValue('/tmp/icons/files')
 
-    await processSingleIcon(
-      {
-        temporaryDirectory: '/tmp/icons',
-        icon: mockIcon,
-      },
-      mockTheme,
-      mockConfig,
-    )
+    await runProcessSingleIcon()
 
     expect(path.dirname).toHaveBeenCalledWith('/tmp/icons/html-abc123.svg')
     expect(fs.mkdir).toHaveBeenCalledWith('/tmp/icons/files', {
@@ -217,16 +200,9 @@ describe('processSingleIcon', () => {
       throw new Error('Color adaptation failed')
     })
 
-    await expect(
-      processSingleIcon(
-        {
-          temporaryDirectory: '/tmp/icons',
-          icon: mockIcon,
-        },
-        mockTheme,
-        mockConfig,
-      ),
-    ).rejects.toThrow('Color adaptation failed')
+    await expect(runProcessSingleIcon()).rejects.toThrow(
+      'Color adaptation failed',
+    )
 
     expect(fs.writeFile).not.toHaveBeenCalled()
     expect(logger.error).toHaveBeenCalledWith(
@@ -238,16 +214,7 @@ describe('processSingleIcon', () => {
     let error = new Error('Failed to get icon source')
     vi.mocked(getIconSource).mockRejectedValue(error)
 
-    await expect(
-      processSingleIcon(
-        {
-          temporaryDirectory: '/tmp/icons',
-          icon: mockIcon,
-        },
-        mockTheme,
-        mockConfig,
-      ),
-    ).rejects.toThrow(error)
+    await expect(runProcessSingleIcon()).rejects.toThrow(error)
 
     expect(fs.writeFile).not.toHaveBeenCalled()
     expect(logger.error).toHaveBeenCalledWith(
@@ -259,16 +226,7 @@ describe('processSingleIcon', () => {
     let error = 'String error message'
     vi.mocked(fs.mkdir).mockRejectedValue(error)
 
-    await expect(
-      processSingleIcon(
-        {
-          temporaryDirectory: '/tmp/icons',
-          icon: mockIcon,
-        },
-        mockTheme,
-        mockConfig,
-      ),
-    ).rejects.toThrow(error)
+    await expect(runProcessSingleIcon()).rejects.toThrow(error)
 
     expect(fs.writeFile).not.toHaveBeenCalled()
     expect(logger.error).toHaveBeenCalledWith(

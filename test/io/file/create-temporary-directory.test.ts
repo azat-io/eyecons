@@ -4,6 +4,7 @@ import path from 'node:path'
 import os from 'node:os'
 
 import { createTemporaryDirectory } from '../../../extension/io/file/create-temporary-directory'
+import { createMockLoggerContext } from '../../helpers/create-mock-logger-context'
 import { logger } from '../../../extension/io/vscode/logger'
 
 vi.mock('node:fs/promises', () => ({
@@ -12,13 +13,7 @@ vi.mock('node:fs/promises', () => ({
   },
 }))
 
-let mockLoggerContext = {
-  debug: vi.fn(),
-  error: vi.fn(),
-  info: vi.fn(),
-  warn: vi.fn(),
-  log: vi.fn(),
-}
+let mockLoggerContext = createMockLoggerContext()
 
 describe('createTemporaryDirectory', () => {
   beforeEach(() => {

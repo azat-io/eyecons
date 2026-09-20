@@ -2,10 +2,10 @@ import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 
-import type { ThemeSchema } from '../../../extension/types/theme'
-import type { Config } from '../../../extension/types/config'
-
+import { createMockLoggerContext } from '../../helpers/create-mock-logger-context'
+import { createMockThemeSchema } from '../../helpers/create-mock-theme-schema'
 import { saveThemeSchema } from '../../../extension/io/file/save-theme-schema'
+import { createMockConfig } from '../../helpers/create-mock-config'
 import { logger } from '../../../extension/io/vscode/logger'
 
 vi.mock('node:fs/promises', () => ({
@@ -23,62 +23,14 @@ vi.mock('path', () => ({
   },
 }))
 
-let mockLoggerContext = {
-  debug: vi.fn(),
-  error: vi.fn(),
-  info: vi.fn(),
-  warn: vi.fn(),
-  log: vi.fn(),
-}
+let mockLoggerContext = createMockLoggerContext()
 
 describe('saveThemeSchema', () => {
-  let mockSchema = {
-    iconDefinitions: {
-      folder: { iconPath: './icons/folder.svg' },
-      file: { iconPath: './icons/file.svg' },
-    },
-    light: {
-      file: 'file-light',
-      fileExtensions: {},
-      fileNames: {},
-    },
-    buildTime: '2023-01-01T12:00:00.000Z',
-    folderExpanded: 'folder-open',
-    hidesExplorerArrows: true,
-    folderNamesExpanded: {},
-    folderColor: 'blue',
-    fileExtensions: {},
-    folder: 'folder',
-    version: '1.0.0',
-    folderNames: {},
-    themeId: 'dark',
-    fileNames: {},
-    file: 'file',
-  } as ThemeSchema
+  let mockSchema = createMockThemeSchema()
 
-  let mockConfig = {
-    processing: {
-      extremeLightnessThresholds: {
-        light: 0.95,
-        dark: 0.05,
-      },
-      lowSaturationThreshold: 0.05,
-      saturationFactor: 1.2,
-      adjustContrast: true,
-    },
-    errorHandling: {
-      showNotifications: true,
-      continueOnError: true,
-    },
-    logging: {
-      level: 'info' as const,
-      toFile: false,
-    },
+  let mockConfig = createMockConfig({
     iconDefinitionsPath: 'theme/index.json',
-    sourceIconsPath: 'icons/source',
-    outputIconsPath: 'icons/theme',
-    version: '1.0.0',
-  } as Config
+  })
 
   beforeEach(() => {
     vi.clearAllMocks()

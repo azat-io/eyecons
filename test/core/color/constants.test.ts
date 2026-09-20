@@ -16,6 +16,47 @@ import {
   HEX_REGEX,
 } from '../../../extension/core/color/constants'
 
+/**
+ * Asserts that the regular expression extracts the expected text for every
+ * listed named capture group.
+ *
+ * @param regex - Regular expression under test.
+ * @param value - Color value that is expected to match.
+ * @param expected - Expected text per capture group name.
+ */
+function expectGroupValues(
+  regex: RegExp,
+  value: string,
+  expected: Record<string, undefined | string>,
+): void {
+  regex.lastIndex = 0
+  let match = regex.exec(value)
+  for (let [groupName, groupValue] of Object.entries(expected)) {
+    expect(match!.groups![groupName]).toBe(groupValue)
+  }
+}
+
+/**
+ * Asserts that the regular expression matches the value and exposes every
+ * listed named capture group.
+ *
+ * @param regex - Regular expression under test.
+ * @param value - Color value that is expected to match.
+ * @param groupNames - Names of the capture groups the match must expose.
+ */
+function expectMatchedGroups(
+  regex: RegExp,
+  value: string,
+  groupNames: string[],
+): void {
+  regex.lastIndex = 0
+  let match = regex.exec(value)
+  expect(match).not.toBeNull()
+  for (let groupName of groupNames) {
+    expect(match!.groups).toHaveProperty(groupName)
+  }
+}
+
 describe('color Regular Expressions', () => {
   it.each([
     'rgb(255, 0, 0)',
@@ -24,12 +65,7 @@ describe('color Regular Expressions', () => {
     'rgb(0, 0, 0)',
     'rgb(255, 255, 255)',
   ])('should match old format RGB value: %s', value => {
-    RGB_REGEX.lastIndex = 0
-    let match = RGB_REGEX.exec(value)
-    expect(match).not.toBeNull()
-    expect(match!.groups).toHaveProperty('r')
-    expect(match!.groups).toHaveProperty('g')
-    expect(match!.groups).toHaveProperty('b')
+    expectMatchedGroups(RGB_REGEX, value, ['r', 'g', 'b'])
   })
 
   it.each([
@@ -39,13 +75,7 @@ describe('color Regular Expressions', () => {
     'rgba(0, 0, 0, 0)',
     'rgba(255, 255, 255, 0.3)',
   ])('should match old format RGBA value: %s', value => {
-    RGB_REGEX.lastIndex = 0
-    let match = RGB_REGEX.exec(value)
-    expect(match).not.toBeNull()
-    expect(match!.groups).toHaveProperty('r')
-    expect(match!.groups).toHaveProperty('g')
-    expect(match!.groups).toHaveProperty('b')
-    expect(match!.groups).toHaveProperty('a')
+    expectMatchedGroups(RGB_REGEX, value, ['r', 'g', 'b', 'a'])
   })
 
   it.each([
@@ -55,12 +85,7 @@ describe('color Regular Expressions', () => {
     'rgb(0 0 0)',
     'rgb(255 255 255)',
   ])('should match new format RGB value with spaces: %s', value => {
-    RGB_REGEX.lastIndex = 0
-    let match = RGB_REGEX.exec(value)
-    expect(match).not.toBeNull()
-    expect(match!.groups).toHaveProperty('r')
-    expect(match!.groups).toHaveProperty('g')
-    expect(match!.groups).toHaveProperty('b')
+    expectMatchedGroups(RGB_REGEX, value, ['r', 'g', 'b'])
   })
 
   it.each([
@@ -70,13 +95,7 @@ describe('color Regular Expressions', () => {
     'rgb(0 0 0 / 0)',
     'rgb(255 255 255 / 0.3)',
   ])('should match new format RGB value with alpha via slash: %s', value => {
-    RGB_REGEX.lastIndex = 0
-    let match = RGB_REGEX.exec(value)
-    expect(match).not.toBeNull()
-    expect(match!.groups).toHaveProperty('r')
-    expect(match!.groups).toHaveProperty('g')
-    expect(match!.groups).toHaveProperty('b')
-    expect(match!.groups).toHaveProperty('a')
+    expectMatchedGroups(RGB_REGEX, value, ['r', 'g', 'b', 'a'])
   })
 
   it.each([
@@ -85,12 +104,7 @@ describe('color Regular Expressions', () => {
     'rgb(0%, 0%, 100%)',
     'rgb(100% 100% 100% / 50%)',
   ])('should match RGB value with percentage values: %s', value => {
-    RGB_REGEX.lastIndex = 0
-    let match = RGB_REGEX.exec(value)
-    expect(match).not.toBeNull()
-    expect(match!.groups).toHaveProperty('r')
-    expect(match!.groups).toHaveProperty('g')
-    expect(match!.groups).toHaveProperty('b')
+    expectMatchedGroups(RGB_REGEX, value, ['r', 'g', 'b'])
   })
 
   it.each([
@@ -99,13 +113,7 @@ describe('color Regular Expressions', () => {
     'rgb(0 0 255 / 80%)',
     'rgba(255, 255, 255, 30%)',
   ])('should match RGB value with percentage alpha: %s', value => {
-    RGB_REGEX.lastIndex = 0
-    let match = RGB_REGEX.exec(value)
-    expect(match).not.toBeNull()
-    expect(match!.groups).toHaveProperty('r')
-    expect(match!.groups).toHaveProperty('g')
-    expect(match!.groups).toHaveProperty('b')
-    expect(match!.groups).toHaveProperty('a')
+    expectMatchedGroups(RGB_REGEX, value, ['r', 'g', 'b', 'a'])
   })
 
   it.each([
@@ -130,12 +138,7 @@ describe('color Regular Expressions', () => {
       g: '0',
     },
   ])('should extract correct groups from %s', ({ value, r, g, b, a }) => {
-    RGB_REGEX.lastIndex = 0
-    let match = RGB_REGEX.exec(value)
-    expect(match!.groups!['r']).toBe(r)
-    expect(match!.groups!['g']).toBe(g)
-    expect(match!.groups!['b']).toBe(b)
-    expect(match!.groups!['a']).toBe(a)
+    expectGroupValues(RGB_REGEX, value, { r, g, b, a })
   })
 
   it.each([
@@ -145,12 +148,7 @@ describe('color Regular Expressions', () => {
     'hsl(0, 0%, 0%)',
     'hsl(0, 0%, 100%)',
   ])('should match old format HSL value: %s', value => {
-    HSL_REGEX.lastIndex = 0
-    let match = HSL_REGEX.exec(value)
-    expect(match).not.toBeNull()
-    expect(match!.groups).toHaveProperty('h')
-    expect(match!.groups).toHaveProperty('s')
-    expect(match!.groups).toHaveProperty('l')
+    expectMatchedGroups(HSL_REGEX, value, ['h', 's', 'l'])
   })
 
   it.each([
@@ -160,13 +158,7 @@ describe('color Regular Expressions', () => {
     'hsla(0, 0%, 0%, 0)',
     'hsla(0, 0%, 100%, 0.3)',
   ])('should match old format HSLA value: %s', value => {
-    HSL_REGEX.lastIndex = 0
-    let match = HSL_REGEX.exec(value)
-    expect(match).not.toBeNull()
-    expect(match!.groups).toHaveProperty('h')
-    expect(match!.groups).toHaveProperty('s')
-    expect(match!.groups).toHaveProperty('l')
-    expect(match!.groups).toHaveProperty('a')
+    expectMatchedGroups(HSL_REGEX, value, ['h', 's', 'l', 'a'])
   })
 
   it.each([
@@ -176,12 +168,7 @@ describe('color Regular Expressions', () => {
     'hsl(0 0% 0%)',
     'hsl(0 0% 100%)',
   ])('should match new format HSL value with spaces: %s', value => {
-    HSL_REGEX.lastIndex = 0
-    let match = HSL_REGEX.exec(value)
-    expect(match).not.toBeNull()
-    expect(match!.groups).toHaveProperty('h')
-    expect(match!.groups).toHaveProperty('s')
-    expect(match!.groups).toHaveProperty('l')
+    expectMatchedGroups(HSL_REGEX, value, ['h', 's', 'l'])
   })
 
   it.each([
@@ -191,13 +178,7 @@ describe('color Regular Expressions', () => {
     'hsl(0 0% 0% / 0)',
     'hsl(0 0% 100% / 0.3)',
   ])('should match new format HSL value with alpha via slash: %s', value => {
-    HSL_REGEX.lastIndex = 0
-    let match = HSL_REGEX.exec(value)
-    expect(match).not.toBeNull()
-    expect(match!.groups).toHaveProperty('h')
-    expect(match!.groups).toHaveProperty('s')
-    expect(match!.groups).toHaveProperty('l')
-    expect(match!.groups).toHaveProperty('a')
+    expectMatchedGroups(HSL_REGEX, value, ['h', 's', 'l', 'a'])
   })
 
   it.each([
@@ -206,13 +187,7 @@ describe('color Regular Expressions', () => {
     'hsl(240 100% 50% / 80%)',
     'hsla(0, 0%, 100%, 30%)',
   ])('should match HSL value with percentage alpha: %s', value => {
-    HSL_REGEX.lastIndex = 0
-    let match = HSL_REGEX.exec(value)
-    expect(match).not.toBeNull()
-    expect(match!.groups).toHaveProperty('h')
-    expect(match!.groups).toHaveProperty('s')
-    expect(match!.groups).toHaveProperty('l')
-    expect(match!.groups).toHaveProperty('a')
+    expectMatchedGroups(HSL_REGEX, value, ['h', 's', 'l', 'a'])
   })
 
   it.each([
@@ -221,12 +196,7 @@ describe('color Regular Expressions', () => {
     'hsl(6.28rad, 100%, 50%)',
     'hsl(400grad 100% 50%)',
   ])('should match HSL value with angle units: %s', value => {
-    HSL_REGEX.lastIndex = 0
-    let match = HSL_REGEX.exec(value)
-    expect(match).not.toBeNull()
-    expect(match!.groups).toHaveProperty('h')
-    expect(match!.groups).toHaveProperty('s')
-    expect(match!.groups).toHaveProperty('l')
+    expectMatchedGroups(HSL_REGEX, value, ['h', 's', 'l'])
   })
 
   it.each([
@@ -251,51 +221,34 @@ describe('color Regular Expressions', () => {
       a: '80%',
     },
   ])('should extract correct groups from %s', ({ value, h, s, l, a }) => {
-    HSL_REGEX.lastIndex = 0
-    let match = HSL_REGEX.exec(value)
-    expect(match!.groups!['h']).toBe(h)
-    expect(match!.groups!['s']).toBe(s)
-    expect(match!.groups!['l']).toBe(l)
-    expect(match!.groups!['a']).toBe(a)
+    expectGroupValues(HSL_REGEX, value, { h, s, l, a })
   })
 
   it.each(['#f00', '#0f0', '#00f', '#fff', '#000'])(
     'should match 3-digit hex color: %s',
     value => {
-      HEX_REGEX.lastIndex = 0
-      let match = HEX_REGEX.exec(value)
-      expect(match).not.toBeNull()
-      expect(match!.groups).toHaveProperty('hex')
+      expectMatchedGroups(HEX_REGEX, value, ['hex'])
     },
   )
 
   it.each(['#ff0000', '#00ff00', '#0000ff', '#ffffff', '#000000'])(
     'should match 6-digit hex color: %s',
     value => {
-      HEX_REGEX.lastIndex = 0
-      let match = HEX_REGEX.exec(value)
-      expect(match).not.toBeNull()
-      expect(match!.groups).toHaveProperty('hex')
+      expectMatchedGroups(HEX_REGEX, value, ['hex'])
     },
   )
 
   it.each(['#f00f', '#0f0f', '#00ff', '#fff8', '#0000'])(
     'should match 4-digit hex color with alpha: %s',
     value => {
-      HEX_REGEX.lastIndex = 0
-      let match = HEX_REGEX.exec(value)
-      expect(match).not.toBeNull()
-      expect(match!.groups).toHaveProperty('hex')
+      expectMatchedGroups(HEX_REGEX, value, ['hex'])
     },
   )
 
   it.each(['#ff0000ff', '#00ff00ff', '#0000ff80', '#ffffff33', '#00000000'])(
     'should match 8-digit hex color with alpha: %s',
     value => {
-      HEX_REGEX.lastIndex = 0
-      let match = HEX_REGEX.exec(value)
-      expect(match).not.toBeNull()
-      expect(match!.groups).toHaveProperty('hex')
+      expectMatchedGroups(HEX_REGEX, value, ['hex'])
     },
   )
 
@@ -304,8 +257,6 @@ describe('color Regular Expressions', () => {
     ['#00ff00', '00ff00'],
     ['#0000ff80', '0000ff80'],
   ])('should extract correct hex value from %s', (value, expected) => {
-    HEX_REGEX.lastIndex = 0
-    let match = HEX_REGEX.exec(value)
-    expect(match!.groups!['hex']).toBe(expected)
+    expectGroupValues(HEX_REGEX, value, { hex: expected })
   })
 })

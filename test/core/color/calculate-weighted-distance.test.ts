@@ -3,19 +3,12 @@ import type { Vector } from '@texel/color'
 import { describe, expect, it } from 'vitest'
 
 import type { ColorComponents } from '../../../extension/types/color'
-import type { Config } from '../../../extension/types/config'
 
 import { calculateWeightedDistance } from '../../../extension/core/color/calculate-weighted-distance'
+import { createMockConfig } from '../../helpers/create-mock-config'
 
 describe('calculateWeightedDistance', () => {
-  let mockConfig: Config = {
-    processing: {
-      extremeLightnessThresholds: { light: 0.95, dark: 0.05 },
-      lowSaturationThreshold: 0.05,
-      saturationFactor: 1.2,
-      adjustContrast: true,
-    },
-  } as Config
+  let mockConfig = createMockConfig()
 
   let weights: ColorComponents = {
     lightness: 1,

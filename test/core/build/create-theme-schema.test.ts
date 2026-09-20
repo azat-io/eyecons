@@ -5,6 +5,7 @@ import { workspace } from 'vscode'
 
 import type {
   IconDefinitions,
+  ThemeSchema,
   ThemeData,
   Theme,
 } from '../../../extension/types/theme'
@@ -78,11 +79,22 @@ describe('createThemeSchema', () => {
     vi.useRealTimers()
   })
 
-  it('should create a correct theme schema with the provided data and default hidesExplorerArrows value', () => {
-    let result = createThemeSchema(mockIconDefinitions, mockThemeData, {
+  /**
+   * Builds a theme schema from the shared mocks, so that every test only spells
+   * out the file associations it is about.
+   *
+   * @param themeData - Light and dark theme specific file associations.
+   * @returns Schema built for the given associations.
+   */
+  function buildSchema(themeData: ThemeData): ThemeSchema {
+    return createThemeSchema(mockIconDefinitions, themeData, {
       config: mockConfig,
       theme: mockTheme,
     })
+  }
+
+  it('should create a correct theme schema with the provided data and default hidesExplorerArrows value', () => {
+    let result = buildSchema(mockThemeData)
 
     expect(result).toEqual({
       light: {
@@ -124,10 +136,7 @@ describe('createThemeSchema', () => {
       dark: {},
     }
 
-    let result = createThemeSchema(mockIconDefinitions, emptyThemeData, {
-      config: mockConfig,
-      theme: mockTheme,
-    })
+    let result = buildSchema(emptyThemeData)
 
     expect(result.fileExtensions).toEqual({})
     expect(result.fileNames).toEqual({})
@@ -141,10 +150,7 @@ describe('createThemeSchema', () => {
       dark: {},
     }
 
-    let result = createThemeSchema(mockIconDefinitions, undefinedThemeData, {
-      config: mockConfig,
-      theme: mockTheme,
-    })
+    let result = buildSchema(undefinedThemeData)
 
     expect(result.fileExtensions).toEqual({})
     expect(result.fileNames).toEqual({})
@@ -155,10 +161,7 @@ describe('createThemeSchema', () => {
   it('should use the value from configuration when hidesExplorerArrows is set to true', () => {
     mockGet.mockReturnValue(true)
 
-    let result = createThemeSchema(mockIconDefinitions, mockThemeData, {
-      config: mockConfig,
-      theme: mockTheme,
-    })
+    let result = buildSchema(mockThemeData)
 
     expect(result.hidesExplorerArrows).toBeTruthy()
     expect(mockGet).toHaveBeenCalledWith('hidesExplorerArrows')
@@ -167,10 +170,7 @@ describe('createThemeSchema', () => {
   it('should use the value from configuration when hidesExplorerArrows is set to false', () => {
     mockGet.mockReturnValue(false)
 
-    let result = createThemeSchema(mockIconDefinitions, mockThemeData, {
-      config: mockConfig,
-      theme: mockTheme,
-    })
+    let result = buildSchema(mockThemeData)
 
     expect(result.hidesExplorerArrows).toBeFalsy()
     expect(mockGet).toHaveBeenCalledWith('hidesExplorerArrows')

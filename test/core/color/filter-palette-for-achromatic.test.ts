@@ -2,11 +2,9 @@ import type { Vector } from '@texel/color'
 
 import { describe, expect, vi, it } from 'vitest'
 
-import type { ColorMatchContext } from '../../../extension/types/color'
-import type { Config } from '../../../extension/types/config'
-
 import { filterPaletteForAchromatic } from '../../../extension/core/color/filter-palette-for-achromatic'
 import * as isAchromaticModule from '../../../extension/core/color/is-achromatic'
+import { createMockConfig } from '../../helpers/create-mock-config'
 
 vi.mock('../../io/vscode/logger', () => ({
   logger: {
@@ -20,30 +18,25 @@ vi.mock('../../io/vscode/logger', () => ({
 }))
 
 describe('filterPaletteForAchromatic', () => {
-  let mockConfig: Config = {
-    processing: {
-      extremeLightnessThresholds: {
-        light: 0.95,
-        dark: 0.05,
-      },
-      lowSaturationThreshold: 0.05,
-      saturationFactor: 1.2,
-      adjustContrast: true,
-    },
-    errorHandling: {
-      showNotifications: true,
-      continueOnError: true,
-    },
-    logging: {
-      level: 'info',
-      toFile: false,
-    },
-    iconDefinitionsPath: '',
-    sourceIconsPath: '',
-    outputIconsPath: '',
-    extensionPath: '',
-    version: '1.0.0',
-    outputPath: '',
+  let mockConfig = createMockConfig()
+
+  /**
+   * Filters a palette for an achromatic source color.
+   *
+   * @param sourceColor - Source color treated as achromatic.
+   * @param themePalette - Palette the filter picks matches from.
+   * @returns The filtered palette, or the palette itself when nothing matches.
+   */
+  function filterPaletteFor(
+    sourceColor: Vector,
+    themePalette: Vector[],
+  ): Vector[] {
+    return filterPaletteForAchromatic({
+      sourceAchromatic: true,
+      config: mockConfig,
+      themePalette,
+      sourceColor,
+    })
   }
 
   it('should filter light colors with low chroma', () => {
@@ -57,14 +50,7 @@ describe('filterPaletteForAchromatic', () => {
       [0.5, 0.15, 120],
     ]
 
-    let context: ColorMatchContext = {
-      sourceAchromatic: true,
-      config: mockConfig,
-      themePalette,
-      sourceColor,
-    }
-
-    let result = filterPaletteForAchromatic(context)
+    let result = filterPaletteFor(sourceColor, themePalette)
 
     expect(result).toHaveLength(2)
     expect(result).toContainEqual([0.95, 0.01, 0])
@@ -88,14 +74,7 @@ describe('filterPaletteForAchromatic', () => {
       [0.5, 0.15, 120],
     ]
 
-    let context: ColorMatchContext = {
-      sourceAchromatic: true,
-      config: mockConfig,
-      themePalette,
-      sourceColor,
-    }
-
-    let result = filterPaletteForAchromatic(context)
+    let result = filterPaletteFor(sourceColor, themePalette)
 
     expect(result).toHaveLength(3)
     expect(result).toContainEqual([0.95, 0.01, 0])
@@ -114,14 +93,7 @@ describe('filterPaletteForAchromatic', () => {
       [0.5, 0.15, 120],
     ]
 
-    let context: ColorMatchContext = {
-      sourceAchromatic: true,
-      config: mockConfig,
-      themePalette,
-      sourceColor,
-    }
-
-    let result = filterPaletteForAchromatic(context)
+    let result = filterPaletteFor(sourceColor, themePalette)
 
     expect(result).toBe(themePalette)
     expect(result).toHaveLength(3)
@@ -143,14 +115,7 @@ describe('filterPaletteForAchromatic', () => {
       [0.5, 0.15, 120],
     ]
 
-    let context: ColorMatchContext = {
-      sourceAchromatic: true,
-      config: mockConfig,
-      themePalette,
-      sourceColor,
-    }
-
-    let result = filterPaletteForAchromatic(context)
+    let result = filterPaletteFor(sourceColor, themePalette)
 
     expect(result).toHaveLength(2)
     expect(result).toContainEqual([0.7, 0.03, 0])
@@ -170,14 +135,7 @@ describe('filterPaletteForAchromatic', () => {
       [0.5, 0.3, 240],
     ]
 
-    let context: ColorMatchContext = {
-      sourceAchromatic: true,
-      config: mockConfig,
-      themePalette,
-      sourceColor,
-    }
-
-    let result = filterPaletteForAchromatic(context)
+    let result = filterPaletteFor(sourceColor, themePalette)
 
     expect(result).toBe(themePalette)
     expect(result).toHaveLength(3)
@@ -189,14 +147,7 @@ describe('filterPaletteForAchromatic', () => {
     let sourceColor: Vector = [0.95, 0.02, 0]
     let themePalette: Vector[] = []
 
-    let context: ColorMatchContext = {
-      sourceAchromatic: true,
-      config: mockConfig,
-      themePalette,
-      sourceColor,
-    }
-
-    let result = filterPaletteForAchromatic(context)
+    let result = filterPaletteFor(sourceColor, themePalette)
 
     expect(result).toHaveLength(0)
   })
@@ -213,26 +164,15 @@ describe('filterPaletteForAchromatic', () => {
     let isAchromaticSpy = vi.spyOn(isAchromaticModule, 'isAchromatic')
     isAchromaticSpy.mockReturnValue(true)
 
-    let contextAtBoundary: ColorMatchContext = {
-      sourceColor: sourceColorAtBoundary,
-      sourceAchromatic: true,
-      config: mockConfig,
-      themePalette,
-    }
-
-    let resultAtBoundary = filterPaletteForAchromatic(contextAtBoundary)
+    let resultAtBoundary = filterPaletteFor(sourceColorAtBoundary, themePalette)
 
     expect(resultAtBoundary).toHaveLength(1)
     expect(resultAtBoundary).toContainEqual([0.95, 0.01, 0])
 
-    let contextBelowBoundary: ColorMatchContext = {
-      sourceColor: sourceColorBelowBoundary,
-      sourceAchromatic: true,
-      config: mockConfig,
+    let resultBelowBoundary = filterPaletteFor(
+      sourceColorBelowBoundary,
       themePalette,
-    }
-
-    let resultBelowBoundary = filterPaletteForAchromatic(contextBelowBoundary)
+    )
 
     expect(resultBelowBoundary).toHaveLength(2)
 

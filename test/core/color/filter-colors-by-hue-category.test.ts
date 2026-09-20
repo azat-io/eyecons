@@ -5,15 +5,10 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { filterColorsByHueCategory } from '../../../extension/core/color/filter-colors-by-hue-category'
 import * as categorizeColorsByHueModule from '../../../extension/core/color/categorize-colors-by-hue'
 import * as categorizeColorByHueModule from '../../../extension/core/color/categorize-color-by-hue'
+import { createMockLoggerContext } from '../../helpers/create-mock-logger-context'
 import { logger } from '../../../extension/io/vscode/logger'
 
-let mockLoggerContext = {
-  debug: vi.fn(),
-  error: vi.fn(),
-  info: vi.fn(),
-  warn: vi.fn(),
-  log: vi.fn(),
-}
+let mockLoggerContext = createMockLoggerContext()
 
 vi.mock('../../../extension/io/vscode/logger', () => ({
   logger: {

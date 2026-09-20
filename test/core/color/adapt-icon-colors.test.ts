@@ -1,14 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import type { Config } from '../../../extension/types/config'
 import type { Theme } from '../../../extension/types/theme'
 
 import * as extractColorsModule from '../../../extension/core/color/extract-colors-from-svg'
 import * as findClosestColorModule from '../../../extension/core/color/find-closest-color'
 import * as replaceColorsModule from '../../../extension/core/color/replace-colors-in-svg'
 import * as getFolderColorsModule from '../../../extension/core/color/get-folder-colors'
+import { createMockLoggerContext } from '../../helpers/create-mock-logger-context'
 import { adaptIconColors } from '../../../extension/core/color/adapt-icon-colors'
 import * as toOklchModule from '../../../extension/core/color/to-oklch'
+import { createMockConfig } from '../../helpers/create-mock-config'
 import * as toHexModule from '../../../extension/core/color/to-hex'
 import { logger } from '../../../extension/io/vscode/logger'
 
@@ -23,7 +24,7 @@ let mockTheme = {
   overrides: {},
 } as Theme
 
-let mockConfig: Config = {
+let mockConfig = createMockConfig({
   processing: {
     extremeLightnessThresholds: {
       light: 0.9,
@@ -33,15 +34,9 @@ let mockConfig: Config = {
     saturationFactor: 1.5,
     adjustContrast: true,
   },
-} as Config
+})
 
-let mockLoggerContext = {
-  debug: vi.fn(),
-  error: vi.fn(),
-  info: vi.fn(),
-  warn: vi.fn(),
-  log: vi.fn(),
-}
+let mockLoggerContext = createMockLoggerContext()
 
 describe('adaptIconColors', () => {
   beforeEach(() => {
@@ -189,41 +184,25 @@ describe('adaptIconColors', () => {
     )
   })
 
-  it('should use getFolderColors for folder icons', () => {
-    let svgContent =
-      '<svg><rect fill="#ffca28" /><path stroke="#ffa000" /></svg>'
+  it.each(['folder', 'folder-open'])(
+    'should use getFolderColors for %s icons',
+    id => {
+      let svgContent =
+        '<svg><rect fill="#ffca28" /><path stroke="#ffa000" /></svg>'
 
-    adaptIconColors({ id: 'folder', svgContent }, mockTheme, mockConfig)
+      adaptIconColors({ svgContent, id }, mockTheme, mockConfig)
 
-    expect(getFolderColorsModule.getFolderColors).toHaveBeenCalledWith(
-      mockTheme,
-    )
+      expect(getFolderColorsModule.getFolderColors).toHaveBeenCalledWith(
+        mockTheme,
+      )
 
-    expect(replaceColorsModule.replaceColorsInSvg).toHaveBeenCalledWith(
-      svgContent,
-      expect.any(Map),
-      expect.any(Array),
-    )
+      expect(replaceColorsModule.replaceColorsInSvg).toHaveBeenCalledWith(
+        svgContent,
+        expect.any(Map),
+        expect.any(Array),
+      )
 
-    expect(findClosestColorModule.findClosestColor).not.toHaveBeenCalled()
-  })
-
-  it('should use getFolderColors for folder-open icons', () => {
-    let svgContent =
-      '<svg><rect fill="#ffca28" /><path stroke="#ffa000" /></svg>'
-
-    adaptIconColors({ id: 'folder-open', svgContent }, mockTheme, mockConfig)
-
-    expect(getFolderColorsModule.getFolderColors).toHaveBeenCalledWith(
-      mockTheme,
-    )
-
-    expect(replaceColorsModule.replaceColorsInSvg).toHaveBeenCalledWith(
-      svgContent,
-      expect.any(Map),
-      expect.any(Array),
-    )
-
-    expect(findClosestColorModule.findClosestColor).not.toHaveBeenCalled()
-  })
+      expect(findClosestColorModule.findClosestColor).not.toHaveBeenCalled()
+    },
+  )
 })
