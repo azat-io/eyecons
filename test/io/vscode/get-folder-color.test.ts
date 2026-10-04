@@ -1,77 +1,35 @@
-import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
-import * as vscode from 'vscode'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { createMockLoggerContext } from '../../helpers/create-mock-logger-context'
 import { getFolderColor } from '../../../extension/io/vscode/get-folder-color'
-import { logger } from '../../../extension/io/vscode/logger'
-
-vi.mock('vscode', () => ({
-  workspace: {
-    getConfiguration: vi.fn(),
-  },
-}))
-
-let eyeconsConfigMock = {
-  update: vi.fn().mockResolvedValue(null),
-  inspect: vi.fn(),
-  has: vi.fn(),
-  get: vi.fn(),
-}
-
-let mockLoggerContext = createMockLoggerContext()
+import { mockSettings } from '../../helpers/mock-settings'
 
 describe('getFolderColor', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
-
-    vi.mocked(vscode.workspace.getConfiguration).mockImplementation(
-      () => eyeconsConfigMock,
-    )
-
-    vi.spyOn(logger, 'withContext').mockReturnValue(mockLoggerContext)
-  })
-
-  afterEach(() => {
     vi.resetAllMocks()
   })
 
-  it('should return the configured folder color when valid', () => {
-    eyeconsConfigMock.get.mockReturnValue('green')
+  it.each(['red', 'orange', 'yellow', 'green', 'blue', 'purple'])(
+    'should use the %s folder color the user selected',
+    folderColor => {
+      mockSettings({ eyecons: { folderColor } })
 
-    let result = getFolderColor()
+      expect(getFolderColor()).toBe(folderColor)
+    },
+  )
 
-    expect(result).toBe('green')
-    expect(eyeconsConfigMock.get).toHaveBeenCalledWith('folderColor')
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith(
-      'Folder color setting: green',
-    )
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith(
-      'Using folder color: green',
-    )
+  it('should use blue when the user selected no folder color', () => {
+    expect(getFolderColor()).toBe('blue')
   })
 
-  it('should return default "blue" when folder color is not set', () => {
-    eyeconsConfigMock.get.mockReturnValue(null)
+  it('should use blue when the selected folder color is unknown', () => {
+    mockSettings({ eyecons: { folderColor: 'pink' } })
 
-    let result = getFolderColor()
-    expect(result).toBe('blue')
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith(
-      'Folder color setting: not set',
-    )
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith(
-      'Using default folder color: blue',
-    )
+    expect(getFolderColor()).toBe('blue')
   })
 
-  it('should return default "blue" when folder color is invalid', () => {
-    eyeconsConfigMock.get.mockReturnValue('pink')
-    let result = getFolderColor()
-    expect(result).toBe('blue')
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith(
-      'Folder color setting: pink',
-    )
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith(
-      'Using default folder color: blue',
-    )
+  it('should ignore a folder color set for another extension', () => {
+    mockSettings({ otherExtension: { folderColor: 'red' } })
+
+    expect(getFolderColor()).toBe('blue')
   })
 })

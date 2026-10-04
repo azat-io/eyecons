@@ -1,173 +1,138 @@
-import type { LogOutputChannel } from 'vscode'
+import type { OutputChannel } from 'vscode'
+import type * as VSCode from 'vscode'
 
-import {
-  beforeEach,
-  afterEach,
-  beforeAll,
-  describe,
-  expect,
-  it,
-  vi,
-} from 'vitest'
-import * as vscode from 'vscode'
+import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
 
-import { logger } from '../../../extension/io/vscode/logger'
-
-let mockAppendLine = vi.fn()
-let mockDispose = vi.fn()
-let mockClear = vi.fn()
-
-let mockOutputChannel = {
-  appendLine: mockAppendLine,
-  dispose: mockDispose,
-  clear: mockClear,
-} as unknown as LogOutputChannel
+import type * as LoggerModule from '../../../extension/io/vscode/logger'
 
 describe('logger', () => {
-  let showInfoSpy: unknown
-  let showWarnSpy: unknown
-  let showErrorSpy: unknown
+  let date = '1/2/2023, 15:04:05'
+  let logger: typeof LoggerModule.logger
+  let vscode: typeof VSCode
 
-  beforeAll(() => {
-    vi.spyOn(vscode.window, 'createOutputChannel').mockReturnValue(
-      mockOutputChannel,
-    )
+  /**
+   * Lines the logger appended to its output channel.
+   *
+   * @returns Lines in the order they were written.
+   */
+  function loggedLines(): string[] {
+    let [result] = vi.mocked(vscode.window.createOutputChannel).mock.results
+    let channel = result!.value as OutputChannel
+    return vi.mocked(channel.appendLine).mock.calls.map(([line]) => line)
+  }
 
-    showInfoSpy = vi
-      .spyOn(vscode.window, 'showInformationMessage')
-      .mockResolvedValue({ title: 'test' })
-    showWarnSpy = vi
-      .spyOn(vscode.window, 'showWarningMessage')
-      .mockResolvedValue({ title: 'test' })
-    showErrorSpy = vi
-      .spyOn(vscode.window, 'showErrorMessage')
-      .mockResolvedValue({ title: 'test' })
-  })
-
-  beforeEach(() => {
-    vi.clearAllMocks()
+  beforeEach(async () => {
+    vi.resetModules()
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date(2023, 0, 2, 15, 4, 5))
+    vscode = await import('vscode')
+    ;({ logger } = await import('../../../extension/io/vscode/logger'))
   })
 
   afterEach(() => {
-    vi.resetAllMocks()
+    vi.useRealTimers()
   })
 
-  it('should create an output channel when initialized', () => {
+  it('should write to a single output channel named Eyecons', () => {
+    logger.info('First message')
+    logger.info('Second message')
+
+    expect(vscode.window.createOutputChannel).toHaveBeenCalledExactlyOnceWith(
+      'Eyecons',
+    )
+  })
+
+  it('should write nothing until the first message', () => {
+    expect(vscode.window.createOutputChannel).not.toHaveBeenCalled()
+  })
+
+  it('should announce its initialization', () => {
     logger.init()
-    expect(vscode.window.createOutputChannel).toHaveBeenCalledWith('Eyecons')
+
+    expect(loggedLines()).toEqual([`${date}: Eyecons initialized`])
   })
 
-  it('should log info message', () => {
-    logger.info('Test info message')
-    expect(mockAppendLine).toHaveBeenCalledExactlyOnceWith(
-      expect.stringContaining('[INFO] Test info message'),
-    )
+  it.each([
+    ['info', 'INFO'],
+    ['warn', 'WARN'],
+    ['error', 'ERROR'],
+    ['debug', 'DEBUG'],
+  ] as const)(
+    'should write a %s message with its level and time',
+    (method, level) => {
+      logger[method]('Icons are ready')
+
+      expect(loggedLines()).toEqual([`${date}: [${level}] Icons are ready`])
+    },
+  )
+
+  it('should write a general message from all its parts', () => {
+    logger.log('Built', 42, 'icons')
+
+    expect(loggedLines()).toEqual([`${date}: Built 42 icons`])
   })
 
-  it('should log warning message', () => {
-    logger.warn('Test warning message')
-    expect(mockAppendLine).toHaveBeenCalledExactlyOnceWith(
-      expect.stringContaining('[WARN] Test warning message'),
-    )
+  it.each([
+    ['info', 'INFO'],
+    ['warn', 'WARN'],
+    ['error', 'ERROR'],
+    ['debug', 'DEBUG'],
+  ] as const)(
+    'should prefix a %s message of a context logger with the context',
+    (method, level) => {
+      logger.withContext('Build')[method]('Icons are ready')
+
+      expect(loggedLines()).toEqual([
+        `${date}: [${level}] [Build] Icons are ready`,
+      ])
+    },
+  )
+
+  it('should prefix a general message of a context logger with the context', () => {
+    logger.withContext('Build').log('Built', 42, 'icons')
+
+    expect(loggedLines()).toEqual([`${date}: [Build] Built 42 icons`])
   })
 
-  it('should log error message', () => {
-    logger.error('Test error message')
-    expect(mockAppendLine).toHaveBeenCalledExactlyOnceWith(
-      expect.stringContaining('[ERROR] Test error message'),
-    )
-  })
+  it.each([
+    ['info', 'showInformationMessage'],
+    ['warn', 'showWarningMessage'],
+    ['error', 'showErrorMessage'],
+  ] as const)(
+    'should show a %s message to the user when asked to',
+    (method, notification) => {
+      logger[method]('Icons are ready', true)
 
-  it('should log debug message', () => {
-    logger.debug('Test debug message')
-    expect(mockAppendLine).toHaveBeenCalledExactlyOnceWith(
-      expect.stringContaining('[DEBUG] Test debug message'),
-    )
-  })
+      expect(vscode.window[notification]).toHaveBeenCalledWith(
+        'Icons are ready',
+      )
+    },
+  )
 
-  it('should log general message', () => {
-    logger.log('Test', 'general', 'message')
-    expect(mockAppendLine).toHaveBeenCalledExactlyOnceWith(
-      expect.stringContaining('Test general message'),
-    )
-  })
+  it.each([
+    ['info', 'showInformationMessage'],
+    ['warn', 'showWarningMessage'],
+    ['error', 'showErrorMessage'],
+  ] as const)(
+    'should show a %s message of a context logger with the context when asked to',
+    (method, notification) => {
+      logger.withContext('Build')[method]('Icons are ready', true)
 
-  it('should show notification when notify flag is true', () => {
-    logger.info('Test notification', true)
-    expect(showInfoSpy).toHaveBeenCalledWith('Test notification')
+      expect(vscode.window[notification]).toHaveBeenCalledWith(
+        '[Build] Icons are ready',
+      )
+    },
+  )
 
-    logger.warn('Test warning notification', true)
-    expect(showWarnSpy).toHaveBeenCalledWith('Test warning notification')
+  it.each(['info', 'warn', 'error'] as const)(
+    'should not show a %s message to the user by default',
+    method => {
+      logger[method]('Icons are ready')
+      logger.withContext('Build')[method]('Icons are ready')
 
-    logger.error('Test error notification', true)
-    expect(showErrorSpy).toHaveBeenCalledWith('Test error notification')
-  })
-
-  it('should not show notification when notify flag is false', () => {
-    logger.info('Test without notification', false)
-    expect(showInfoSpy).not.toHaveBeenCalled()
-
-    logger.warn('Test without warning notification', false)
-    expect(showWarnSpy).not.toHaveBeenCalled()
-
-    logger.error('Test without error notification', false)
-    expect(showErrorSpy).not.toHaveBeenCalled()
-  })
-
-  it('should create a logger with context prefix', () => {
-    let contextLogger = logger.withContext('TestContext')
-
-    contextLogger.info('Context info message')
-    expect(mockAppendLine).toHaveBeenCalledWith(
-      expect.stringContaining('[INFO] [TestContext] Context info message'),
-    )
-
-    contextLogger.warn('Context warning message')
-    expect(mockAppendLine).toHaveBeenCalledWith(
-      expect.stringContaining('[WARN] [TestContext] Context warning message'),
-    )
-
-    contextLogger.error('Context error message')
-    expect(mockAppendLine).toHaveBeenCalledWith(
-      expect.stringContaining('[ERROR] [TestContext] Context error message'),
-    )
-
-    contextLogger.debug('Context debug message')
-    expect(mockAppendLine).toHaveBeenCalledWith(
-      expect.stringContaining('[DEBUG] [TestContext] Context debug message'),
-    )
-
-    contextLogger.log('Context', 'log', 'message')
-    expect(mockAppendLine).toHaveBeenCalledWith(
-      expect.stringContaining('[TestContext] Context log message'),
-    )
-  })
-
-  it('should propagate notification flag in context logger', () => {
-    let contextLogger = logger.withContext('TestContext')
-
-    contextLogger.info('Context info notification', true)
-    expect(showInfoSpy).toHaveBeenCalledWith(
-      '[TestContext] Context info notification',
-    )
-
-    contextLogger.warn('Context warning notification', true)
-    expect(showWarnSpy).toHaveBeenCalledWith(
-      '[TestContext] Context warning notification',
-    )
-
-    contextLogger.error('Context error notification', true)
-    expect(showErrorSpy).toHaveBeenCalledWith(
-      '[TestContext] Context error notification',
-    )
-  })
-
-  it('should include formatted date in log messages', () => {
-    logger.info('Test date format')
-
-    let dateRegex = /(?:\d{1,2}\/){2}\d{4}, \d{1,2}(?::\d{2}){2}/u
-    expect(mockAppendLine).toHaveBeenCalledWith(
-      expect.stringMatching(dateRegex),
-    )
-  })
+      expect(vscode.window.showInformationMessage).not.toHaveBeenCalled()
+      expect(vscode.window.showWarningMessage).not.toHaveBeenCalled()
+      expect(vscode.window.showErrorMessage).not.toHaveBeenCalled()
+    },
+  )
 })

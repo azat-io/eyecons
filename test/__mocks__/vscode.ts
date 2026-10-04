@@ -1,22 +1,18 @@
 import { vi } from 'vitest'
 
-let mockAppendLine = vi.fn()
-let mockDispose = vi.fn()
-let mockClear = vi.fn()
-
-let mockOutputChannel = {
-  appendLine: mockAppendLine,
-  dispose: mockDispose,
-  clear: mockClear,
+let outputChannel = {
+  appendLine: vi.fn(),
+  dispose: vi.fn(),
+  clear: vi.fn(),
 }
 
 export let window = {
-  createOutputChannel: vi.fn().mockReturnValue(mockOutputChannel),
+  createOutputChannel: vi.fn(() => outputChannel),
   showInformationMessage: vi.fn(),
   showWarningMessage: vi.fn(),
   showErrorMessage: vi.fn(),
 }
 
 export let workspace = {
-  getConfiguration: vi.fn(),
+  getConfiguration: vi.fn(() => ({ get: vi.fn() })),
 }

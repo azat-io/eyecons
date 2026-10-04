@@ -1,208 +1,108 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
-import type { Theme } from '../../../extension/types/theme'
-
-import * as extractColorsModule from '../../../extension/core/color/extract-colors-from-svg'
-import * as findClosestColorModule from '../../../extension/core/color/find-closest-color'
-import * as replaceColorsModule from '../../../extension/core/color/replace-colors-in-svg'
-import * as getFolderColorsModule from '../../../extension/core/color/get-folder-colors'
-import { createMockLoggerContext } from '../../helpers/create-mock-logger-context'
 import { adaptIconColors } from '../../../extension/core/color/adapt-icon-colors'
-import * as toOklchModule from '../../../extension/core/color/to-oklch'
+import { NAMED_COLORS } from '../../../extension/core/color/constants'
 import { createMockConfig } from '../../helpers/create-mock-config'
-import * as toHexModule from '../../../extension/core/color/to-hex'
-import { logger } from '../../../extension/io/vscode/logger'
-
-vi.mock('../../../extension/io/vscode/logger', () => ({
-  logger: {
-    withContext: vi.fn(),
-  },
-}))
-
-let mockTheme = {
-  colors: ['#ff0000', '#00ff00'],
-  overrides: {},
-} as Theme
-
-let mockConfig = createMockConfig({
-  processing: {
-    extremeLightnessThresholds: {
-      light: 0.9,
-      dark: 0.1,
-    },
-    lowSaturationThreshold: 0.05,
-    saturationFactor: 1.5,
-    adjustContrast: true,
-  },
-})
-
-let mockLoggerContext = createMockLoggerContext()
+import { createMockTheme } from '../../helpers/create-mock-theme'
 
 describe('adaptIconColors', () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
-    ;(
-      logger.withContext as unknown as ReturnType<typeof vi.fn>
-    ).mockReturnValue(mockLoggerContext)
+  let config = createMockConfig()
+  let theme = createMockTheme()
 
-    vi.spyOn(extractColorsModule, 'extractColorsFromSvg').mockReturnValue([
-      { source: 'attribute', value: '#ff0000', property: 'fill' },
-      { source: 'attribute', property: 'stroke', value: '#00ff00' },
-    ])
-
-    vi.spyOn(getFolderColorsModule, 'getFolderColors').mockReturnValue(
-      new Map([
-        ['#ffca28', 'oklch(0.8 0.2 80)'],
-        ['#ffa000', 'oklch(0.7 0.2 80)'],
-      ]),
-    )
-
-    vi.spyOn(toOklchModule, 'toOklch').mockImplementation(color => {
-      let colorMap = {
-        '#00ff00': [0.8, 0.4, 120],
-        '#ff0000': [0.5, 0.3, 0],
-      }
-      return colorMap[color as keyof typeof colorMap]
-    })
-
-    vi.spyOn(findClosestColorModule, 'findClosestColor').mockImplementation(
-      color => color,
-    )
-
-    vi.spyOn(toHexModule, 'toHex').mockImplementation(
-      vector => `hex(${vector.join(' ')})`,
-    )
-
-    vi.spyOn(replaceColorsModule, 'replaceColorsInSvg').mockReturnValue(
-      '<svg>modified</svg>',
-    )
+  afterEach(() => {
+    vi.restoreAllMocks()
   })
 
-  it('should return original SVG if no colors are found', () => {
-    vi.spyOn(extractColorsModule, 'extractColorsFromSvg').mockReturnValue([])
+  it.each([
+    ['#ff0000', theme.main.red],
+    ['#0000ff', theme.main.blue],
+    ['#000000', '#1e1e1e'],
+    ['#ffffff', '#d4d4d4'],
+  ])('should replace %s with the closest theme color %s', (color, expected) => {
+    let svgContent = `<svg><path fill="${color}" d="M0 0h1"/></svg>`
 
-    let svgContent = '<svg><rect fill="#ff0000" /></svg>'
-    let result = adaptIconColors(
-      { svgContent, id: 'test' },
-      mockTheme,
-      mockConfig,
-    )
+    let result = adaptIconColors({ id: 'html', svgContent }, theme, config)
 
-    expect(result).toBe(svgContent)
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith(
-      'Found 0 colors in icon',
-    )
+    expect(result).toBe(`<svg><path fill="${expected}" d="M0 0h1"/></svg>`)
   })
 
-  it('should apply theme overrides when available', () => {
-    let svgContent = '<svg><rect fill="#ff0000" /></svg>'
-    let themeWithOverrides: Theme = {
-      ...mockTheme,
-      overrides: {
-        test: {
-          '#ff0000': '#override-red',
-        },
-      },
-    }
-
-    adaptIconColors({ svgContent, id: 'test' }, themeWithOverrides, mockConfig)
-
-    expect(replaceColorsModule.replaceColorsInSvg).toHaveBeenCalledWith(
-      svgContent,
-      expect.any(Map),
-      expect.any(Array),
-    )
-
-    let [, callArguments] = vi.mocked(replaceColorsModule.replaceColorsInSvg)
-      .mock.calls[0]!
-    expect(callArguments.get('#ff0000')).toBe('#override-red')
-  })
-
-  it('should convert colors to OKLCH when no override exists', () => {
-    let svgContent = '<svg><rect fill="#ff0000" /></svg>'
-    let result = adaptIconColors(
-      { svgContent, id: 'test' },
-      mockTheme,
-      mockConfig,
-    )
-
-    expect(toOklchModule.toOklch).toHaveBeenCalledWith('#ff0000')
-    expect(findClosestColorModule.findClosestColor).toHaveBeenCalledWith(
-      [0.5, 0.3, 0],
-      expect.any(Array),
-      mockConfig,
-    )
-    expect(result).toBe('<svg>modified</svg>')
-  })
-
-  it('should handle errors in color conversion', () => {
-    let svgContent = '<svg><rect fill="#ff0000" /></svg>'
-    vi.spyOn(toOklchModule, 'toOklch').mockImplementation(() => {
-      throw new Error('Color conversion error')
-    })
-
-    let result = adaptIconColors(
-      { svgContent, id: 'test' },
-      mockTheme,
-      mockConfig,
-    )
-
-    expect(result).toBe(svgContent)
-    expect(mockLoggerContext.error).toHaveBeenCalledWith(
-      'Failed to adapt icon colors: Color conversion error',
-    )
-  })
-
-  it('should handle non-Error exceptions', () => {
-    let svgContent = '<svg><rect fill="#ff0000" /></svg>'
-    let errorMessage = 'Some string error' as unknown as Error
-    vi.spyOn(toOklchModule, 'toOklch').mockImplementation(() => {
-      throw errorMessage
-    })
-
-    let result = adaptIconColors(
-      { svgContent, id: 'test' },
-      mockTheme,
-      mockConfig,
-    )
-
-    expect(result).toBe(svgContent)
-    expect(mockLoggerContext.error).toHaveBeenCalledWith(
-      'Failed to adapt icon colors: Some string error',
-    )
-  })
-
-  it('should process multiple colors correctly', () => {
+  it('should replace every color of an icon at once', () => {
     let svgContent =
-      '<svg><rect fill="#ff0000" /><circle stroke="#00ff00" /></svg>'
+      '<svg><path fill="#ff0000" d="M0 0h1"/><path stroke="#0000ff" d="M1 1h1"/></svg>'
 
-    adaptIconColors({ svgContent, id: 'test' }, mockTheme, mockConfig)
+    let result = adaptIconColors({ id: 'html', svgContent }, theme, config)
 
-    expect(findClosestColorModule.findClosestColor).toHaveBeenCalledTimes(2)
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith(
-      'Found 2 colors in icon',
+    expect(result).toBe(
+      `<svg><path fill="${theme.main.red}" d="M0 0h1"/><path stroke="${theme.main.blue}" d="M1 1h1"/></svg>`,
     )
   })
 
-  it.each(['folder', 'folder-open'])(
-    'should use getFolderColors for %s icons',
-    id => {
-      let svgContent =
-        '<svg><rect fill="#ffca28" /><path stroke="#ffa000" /></svg>'
+  it('should use the theme override for a color of the overridden icon', () => {
+    let themeWithOverride = createMockTheme({
+      overrides: { html: { '#e34f26': '#ce9178' } },
+    })
+    let svgContent = '<svg><path fill="#e34f26" d="M0 0h1"/></svg>'
 
-      adaptIconColors({ svgContent, id }, mockTheme, mockConfig)
+    let result = adaptIconColors(
+      { id: 'html', svgContent },
+      themeWithOverride,
+      config,
+    )
 
-      expect(getFolderColorsModule.getFolderColors).toHaveBeenCalledWith(
-        mockTheme,
-      )
+    expect(result).toBe('<svg><path fill="#ce9178" d="M0 0h1"/></svg>')
+  })
 
-      expect(replaceColorsModule.replaceColorsInSvg).toHaveBeenCalledWith(
-        svgContent,
-        expect.any(Map),
-        expect.any(Array),
-      )
+  it('should paint folder icons with the selected folder color', () => {
+    let svgContent =
+      '<svg><path fill="#ffa000" d="M0 0h1"/><path fill="#ffca28" d="M1 1h1"/></svg>'
 
-      expect(findClosestColorModule.findClosestColor).not.toHaveBeenCalled()
-    },
-  )
+    let result = adaptIconColors({ id: 'folder', svgContent }, theme, config)
+
+    expect(result).toContain(`fill="${theme.main.blue}"`)
+    expect(result).not.toContain('#ffa000')
+    expect(result).not.toContain('#ffca28')
+  })
+
+  it('should paint opened folder icons with the selected folder color', () => {
+    let svgContent = '<svg><path fill="#ffca28" d="M0 0h1"/></svg>'
+
+    let result = adaptIconColors(
+      { id: 'folder-open', svgContent },
+      theme,
+      config,
+    )
+
+    expect(result).toBe(
+      `<svg><path fill="${theme.main.blue}" d="M0 0h1"/></svg>`,
+    )
+  })
+
+  it('should return an icon without colors unchanged', () => {
+    let svgContent = '<svg><path d="M0 0h1"/></svg>'
+
+    let result = adaptIconColors({ id: 'html', svgContent }, theme, config)
+
+    expect(result).toBe(svgContent)
+  })
+
+  it('should leave the whole icon unchanged when one of its colors cannot be converted', () => {
+    let svgContent =
+      '<svg><path fill="#ff0000" d="M0 0h1"/><path fill="url(#gradient)" d="M1 1h1"/></svg>'
+
+    let result = adaptIconColors({ id: 'html', svgContent }, theme, config)
+
+    expect(result).toBe(svgContent)
+  })
+
+  it('should leave the icon unchanged when the conversion fails with a non-Error value', () => {
+    let failure = 'Broken color table' as unknown as Error
+    vi.spyOn(NAMED_COLORS, 'get').mockImplementation(() => {
+      throw failure
+    })
+    let svgContent = '<svg><path fill="red" d="M0 0h1"/></svg>'
+
+    let result = adaptIconColors({ id: 'html', svgContent }, theme, config)
+
+    expect(result).toBe(svgContent)
+  })
 })

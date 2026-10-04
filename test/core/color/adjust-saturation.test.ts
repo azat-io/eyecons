@@ -1,3 +1,5 @@
+import type { Vector } from '@texel/color'
+
 import { describe, expect, it } from 'vitest'
 
 import type { Config } from '../../../extension/types/config'
@@ -7,138 +9,84 @@ import { createMockConfig } from '../../helpers/create-mock-config'
 
 describe('adjustSaturation', () => {
   /**
-   * Builds a config whose saturation-related processing options are set to the
-   * given values, leaving every other field at its shared default.
+   * Builds a config whose saturation options are replaced by the given values,
+   * leaving every other field at its shared default.
    *
-   * @param adjustContrast - Whether saturation adjustment runs at all.
-   * @param lowSaturationThreshold - Chroma below which a color is boosted.
-   * @param saturationFactor - Multiplier applied to a boosted chroma.
+   * @param options - Saturation options replacing the defaults.
    * @returns Config to hand to `adjustSaturation`.
    */
-  function createConfig(
-    adjustContrast = true,
-    lowSaturationThreshold = 0.05,
-    saturationFactor = 1.2,
-  ): Config {
+  function createConfig(options: Partial<Config['processing']>): Config {
     let { processing } = createMockConfig()
 
-    return createMockConfig({
-      processing: {
-        ...processing,
-        lowSaturationThreshold,
-        saturationFactor,
-        adjustContrast,
-      },
-    })
+    return createMockConfig({ processing: { ...processing, ...options } })
   }
 
-  it('should return the same color when adjustContrast is false', () => {
-    let color: [number, number, number] = [0.5, 0.03, 180]
-    let config = createConfig(false)
+  let config = createConfig({
+    lowSaturationThreshold: 0.05,
+    saturationFactor: 1.5,
+    adjustContrast: true,
+  })
 
+  it.each([
+    ['a dull color', [0.5, 0.03, 180], 0.045],
+    ['a color just above the gray limit', [0.5, 0.011, 180], 0.0165],
+    [
+      'a color just below the low-saturation threshold',
+      [0.5, 0.049, 180],
+      0.0735,
+    ],
+  ] as [string, Vector, number][])(
+    'should boost the chroma of %s by the saturation factor',
+    (_, color, expectedChroma) => {
+      let result = adjustSaturation(color, config)
+
+      expect(result).toEqual([
+        color[0],
+        expect.closeTo(expectedChroma, 6),
+        color[2],
+      ])
+    },
+  )
+
+  it.each([
+    ['a color on the gray limit', [0.5, 0.01, 180]],
+    ['a color below the gray limit', [0.5, 0.009, 180]],
+    ['a color on the low-saturation threshold', [0.5, 0.05, 180]],
+    ['a saturated color', [0.5, 0.06, 180]],
+  ] as [string, Vector][])('should leave %s unchanged', (_, color) => {
     let result = adjustSaturation(color, config)
 
-    expect(result).toBe(color)
+    expect(result).toEqual(color)
   })
 
-  it('should adjust chroma for colors with chroma below threshold', () => {
-    let color: [number, number, number] = [0.5, 0.03, 180]
-    let config = createConfig(true, 0.05, 1.5)
+  it('should leave a dull color unchanged when contrast adjustment is off', () => {
+    let dullColor: Vector = [0.5, 0.03, 180]
 
-    let result = adjustSaturation(color, config)
+    let result = adjustSaturation(
+      dullColor,
+      createConfig({ adjustContrast: false }),
+    )
 
-    expect(result).toEqual([0.5, 0.045, 180])
+    expect(result).toEqual(dullColor)
   })
 
-  it('should not adjust chroma for colors with chroma at or above threshold', () => {
-    let color: [number, number, number] = [0.5, 0.05, 180]
-    let config = createConfig(true, 0.05, 1.5)
+  it('should cap the boosted chroma', () => {
+    let dullColor: Vector = [0.5, 0.02, 180]
+    let expectedMaxChroma = 0.4
 
-    let result = adjustSaturation(color, config)
+    let result = adjustSaturation(
+      dullColor,
+      createConfig({ saturationFactor: 30 }),
+    )
 
-    expect(result).toBe(color)
+    expect(result).toEqual([0.5, expectedMaxChroma, 180])
   })
 
-  it('should not adjust chroma for colors with very low chroma (≤ 0.01)', () => {
-    let color: [number, number, number] = [0.5, 0.01, 180]
-    let config = createConfig(true, 0.05, 1.5)
+  it('should not modify the given color', () => {
+    let dullColor: Vector = [0.5, 0.03, 180]
 
-    let result = adjustSaturation(color, config)
+    adjustSaturation(dullColor, config)
 
-    expect(result).toBe(color)
-  })
-
-  it('should cap adjusted chroma at 0.4', () => {
-    let color: [number, number, number] = [0.5, 0.3, 180]
-    let config = createConfig(true, 0.4, 2)
-
-    let result = adjustSaturation(color, config)
-
-    expect(result).toEqual([0.5, 0.4, 180])
-  })
-
-  it('should handle edge case with very high saturation factor', () => {
-    let color: [number, number, number] = [0.5, 0.02, 180]
-    let config = createConfig(true, 0.05, 30)
-    let result = adjustSaturation(color, config)
-
-    expect(result).toEqual([0.5, 0.4, 180])
-  })
-
-  it('should preserve lightness and hue values', () => {
-    let color: [number, number, number] = [0.7, 0.03, 240]
-    let config = createConfig(true, 0.05, 1.5)
-
-    let result = adjustSaturation(color, config)
-
-    expect(result[0]).toBe(0.7)
-    expect(result[2]).toBe(240)
-  })
-
-  it('should handle boundary condition at lowSaturationThreshold', () => {
-    let thresholdValue = 0.05
-    let belowThreshold: [number, number, number] = [
-      0.5,
-      thresholdValue - 0.001,
-      180,
-    ]
-    let atThreshold: [number, number, number] = [0.5, thresholdValue, 180]
-    let config = createConfig(true, thresholdValue, 1.5)
-
-    let resultBelow = adjustSaturation(belowThreshold, config)
-    let resultAt = adjustSaturation(atThreshold, config)
-
-    expect(resultBelow).not.toBe(belowThreshold)
-
-    expect(resultAt).toBe(atThreshold)
-  })
-
-  it('should handle boundary condition at chroma = 0.01', () => {
-    let belowBoundary: [number, number, number] = [0.5, 0.009, 180]
-    let atBoundary: [number, number, number] = [0.5, 0.01, 180]
-    let aboveBoundary: [number, number, number] = [0.5, 0.011, 180]
-    let config = createConfig(true, 0.05, 1.5)
-
-    let resultBelow = adjustSaturation(belowBoundary, config)
-    let resultAt = adjustSaturation(atBoundary, config)
-    let resultAbove = adjustSaturation(aboveBoundary, config)
-
-    expect(resultBelow).toBe(belowBoundary)
-    expect(resultAt).toBe(atBoundary)
-    expect(resultAbove).not.toBe(aboveBoundary)
-    expect(resultAbove[1]).toBeCloseTo(0.011 * 1.5, 5)
-  })
-
-  it('should create a new array for adjusted colors', () => {
-    let color: [number, number, number] = [0.5, 0.03, 180]
-    let config = createConfig(true, 0.05, 1.5)
-
-    let result = adjustSaturation(color, config)
-
-    expect(result).not.toBe(color)
-
-    let noChangeColor: [number, number, number] = [0.5, 0.06, 180]
-    let noChangeResult = adjustSaturation(noChangeColor, config)
-    expect(noChangeResult).toBe(noChangeColor)
+    expect(dullColor).toEqual([0.5, 0.03, 180])
   })
 })

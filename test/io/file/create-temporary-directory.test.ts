@@ -1,11 +1,9 @@
-import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import os from 'node:os'
 
 import { createTemporaryDirectory } from '../../../extension/io/file/create-temporary-directory'
-import { createMockLoggerContext } from '../../helpers/create-mock-logger-context'
-import { logger } from '../../../extension/io/vscode/logger'
 
 vi.mock('node:fs/promises', () => ({
   default: {
@@ -13,53 +11,31 @@ vi.mock('node:fs/promises', () => ({
   },
 }))
 
-let mockLoggerContext = createMockLoggerContext()
-
 describe('createTemporaryDirectory', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
-    vi.spyOn(logger, 'withContext').mockReturnValue(mockLoggerContext)
-
-    vi.mocked(fs.mkdtemp).mockResolvedValue('/tmp/eyecons-abc123')
-  })
-
-  afterEach(() => {
     vi.resetAllMocks()
-  })
-
-  it('should create a temporary directory with the correct prefix', async () => {
-    vi.spyOn(os, 'tmpdir').mockReturnValue('/tmp')
-
-    let result = await createTemporaryDirectory()
-
-    expect(fs.mkdtemp).toHaveBeenCalledWith(path.join('/tmp', 'eyecons-'))
-    expect(result).toBe('/tmp/eyecons-abc123')
-  })
-  it('should log debug message when directory is created', async () => {
-    await createTemporaryDirectory()
-
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith(
-      'Created temporary directory: /tmp/eyecons-abc123',
+    vi.mocked(fs.mkdtemp).mockImplementation(prefix =>
+      Promise.resolve(`${prefix}abc123`),
     )
   })
 
-  it('should log and throw error when directory creation fails', async () => {
-    let mockError = new Error('Permission denied')
-    vi.mocked(fs.mkdtemp).mockRejectedValueOnce(mockError)
-
-    await expect(createTemporaryDirectory()).rejects.toThrow(mockError)
-    expect(mockLoggerContext.error).toHaveBeenCalledWith(
-      'Failed to create temporary directory: Permission denied',
+  it('should create a uniquely named eyecons directory in the system temporary directory', async () => {
+    await expect(createTemporaryDirectory()).resolves.toBe(
+      path.join(os.tmpdir(), 'eyecons-abc123'),
     )
   })
 
-  it('should handle non-Error objects in error handling', async () => {
-    let errorObject = 'String error'
-    vi.mocked(fs.mkdtemp).mockRejectedValueOnce(errorObject)
+  it('should rethrow when the directory cannot be created', async () => {
+    let error = new Error('Permission denied')
+    vi.mocked(fs.mkdtemp).mockRejectedValue(error)
 
-    await expect(createTemporaryDirectory()).rejects.toBe(errorObject)
-    expect(mockLoggerContext.error).toHaveBeenCalledWith(
-      'Failed to create temporary directory: String error',
-    )
+    await expect(createTemporaryDirectory()).rejects.toBe(error)
+  })
+
+  it('should rethrow a non-Error failure unchanged', async () => {
+    let failure = 'Permission denied'
+    vi.mocked(fs.mkdtemp).mockRejectedValue(failure)
+
+    await expect(createTemporaryDirectory()).rejects.toBe(failure)
   })
 })

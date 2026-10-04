@@ -1,178 +1,118 @@
-import type { WorkspaceConfiguration } from 'vscode'
-
 import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
-import { workspace } from 'vscode'
 
-import type {
-  IconDefinitions,
-  ThemeSchema,
-  ThemeData,
-  Theme,
-} from '../../../extension/types/theme'
-import type { Config } from '../../../extension/types/config'
+import type { IconDefinitions, ThemeData } from '../../../extension/types/theme'
 
 import { createThemeSchema } from '../../../extension/core/build/create-theme-schema'
+import { createMockConfig } from '../../helpers/create-mock-config'
+import { createMockTheme } from '../../helpers/create-mock-theme'
+import { mockSettings } from '../../helpers/mock-settings'
 
 describe('createThemeSchema', () => {
-  let mockIconDefinitions: IconDefinitions
-  let mockThemeData: ThemeData
-  let mockTheme: Theme
-  let mockConfig: Config
-  let mockGet = vi.fn()
+  let buildTime = '2023-01-01T12:00:00.000Z'
+  let config = createMockConfig({ version: '2.3.4' })
+  let theme = createMockTheme({ folderColor: 'purple', id: 'nord' })
+
+  let iconDefinitions: IconDefinitions = {
+    'folder-open': { iconPath: './icons/base/folder-open.svg' },
+    'file-light': { iconPath: './icons/base/file-light.svg' },
+    folder: { iconPath: './icons/base/folder.svg' },
+    file: { iconPath: './icons/base/file.svg' },
+    js: { iconPath: './icons/files/js.svg' },
+  }
+
+  let themeData: ThemeData = {
+    light: {
+      fileNames: { 'package.json': 'package-json-light' },
+      fileExtensions: { css: 'css-light' },
+    },
+    dark: {
+      fileNames: { 'package.json': 'package-json' },
+      fileExtensions: { js: 'js' },
+    },
+  }
 
   beforeEach(() => {
     vi.useFakeTimers()
-    vi.setSystemTime(new Date('2023-01-01T12:00:00Z'))
-
-    mockGet.mockReturnValue(true)
-    vi.mocked(workspace.getConfiguration).mockReturnValue({
-      get: mockGet,
-    } as unknown as WorkspaceConfiguration)
-
-    mockTheme = {
-      colors: ['#000000', '#ffffff'],
-      folderColor: 'blue',
-      overrides: {},
-      id: 'dark',
-    } as Theme
-
-    mockConfig = {
-      version: '1.0.0',
-    } as Config
-
-    mockIconDefinitions = {
-      'folder-open': { iconPath: './icons/folder-open.svg' },
-      'file-light': { iconPath: './icons/file-light.svg' },
-      folder: { iconPath: './icons/folder.svg' },
-      file: { iconPath: './icons/file.svg' },
-      html: { iconPath: './icons/html.svg' },
-      css: { iconPath: './icons/css.svg' },
-      js: { iconPath: './icons/js.svg' },
-      ts: { iconPath: './icons/ts.svg' },
-    }
-
-    mockThemeData = {
-      light: {
-        fileNames: {
-          'package.json': 'package-json',
-          'tsconfig.json': 'tsconfig',
-        },
-        fileExtensions: {
-          html: 'html',
-          css: 'css',
-        },
-      },
-      dark: {
-        fileNames: {
-          '.gitignore': 'git-ignore',
-          'README.md': 'readme',
-        },
-        fileExtensions: {
-          js: 'js',
-          ts: 'ts',
-        },
-      },
-    }
+    vi.setSystemTime(new Date(buildTime))
+    mockSettings({})
   })
 
   afterEach(() => {
     vi.useRealTimers()
   })
 
-  /**
-   * Builds a theme schema from the shared mocks, so that every test only spells
-   * out the file associations it is about.
-   *
-   * @param themeData - Light and dark theme specific file associations.
-   * @returns Schema built for the given associations.
-   */
-  function buildSchema(themeData: ThemeData): ThemeSchema {
-    return createThemeSchema(mockIconDefinitions, themeData, {
-      config: mockConfig,
-      theme: mockTheme,
+  it('should build the schema from the icons, associations, theme and config', () => {
+    let result = createThemeSchema(iconDefinitions, themeData, {
+      config,
+      theme,
     })
-  }
-
-  it('should create a correct theme schema with the provided data and default hidesExplorerArrows value', () => {
-    let result = buildSchema(mockThemeData)
 
     expect(result).toEqual({
       light: {
-        fileNames: {
-          'package.json': 'package-json',
-          'tsconfig.json': 'tsconfig',
-        },
-        fileExtensions: {
-          html: 'html',
-          css: 'css',
-        },
+        fileNames: { 'package.json': 'package-json-light' },
+        fileExtensions: { css: 'css-light' },
         file: 'file-light',
       },
-      fileNames: {
-        '.gitignore': 'git-ignore',
-        'README.md': 'readme',
-      },
-      fileExtensions: {
-        js: 'js',
-        ts: 'ts',
-      },
-      buildTime: '2023-01-01T12:00:00.000Z',
-      iconDefinitions: mockIconDefinitions,
+      fileNames: { 'package.json': 'package-json' },
       folderExpanded: 'folder-open',
+      fileExtensions: { js: 'js' },
       hidesExplorerArrows: true,
       folderNamesExpanded: {},
-      folderColor: 'blue',
+      folderColor: 'purple',
+      version: '2.3.4',
       folder: 'folder',
-      version: '1.0.0',
       folderNames: {},
-      themeId: 'dark',
+      themeId: 'nord',
+      iconDefinitions,
       file: 'file',
+      buildTime,
     })
   })
 
-  it('should handle empty file associations', () => {
+  it('should keep empty file associations empty', () => {
     let emptyThemeData: ThemeData = {
-      light: {},
-      dark: {},
+      light: { fileExtensions: {}, fileNames: {} },
+      dark: { fileExtensions: {}, fileNames: {} },
     }
 
-    let result = buildSchema(emptyThemeData)
+    let result = createThemeSchema(iconDefinitions, emptyThemeData, {
+      config,
+      theme,
+    })
 
-    expect(result.fileExtensions).toEqual({})
-    expect(result.fileNames).toEqual({})
-    expect(result.light.fileExtensions).toEqual({})
-    expect(result.light.fileNames).toEqual({})
+    expect(result).toEqual(
+      expect.objectContaining({
+        light: { fileExtensions: {}, file: 'file-light', fileNames: {} },
+        fileExtensions: {},
+        fileNames: {},
+      }),
+    )
   })
 
-  it('should handle undefined file associations', () => {
-    let undefinedThemeData: ThemeData = {
-      light: {},
-      dark: {},
-    }
+  it('should use empty file associations when the theme data has none', () => {
+    let result = createThemeSchema(
+      iconDefinitions,
+      { light: {}, dark: {} },
+      { config, theme },
+    )
 
-    let result = buildSchema(undefinedThemeData)
-
-    expect(result.fileExtensions).toEqual({})
-    expect(result.fileNames).toEqual({})
-    expect(result.light.fileExtensions).toEqual({})
-    expect(result.light.fileNames).toEqual({})
+    expect(result).toEqual(
+      expect.objectContaining({
+        light: { fileExtensions: {}, file: 'file-light', fileNames: {} },
+        fileExtensions: {},
+        fileNames: {},
+      }),
+    )
   })
 
-  it('should use the value from configuration when hidesExplorerArrows is set to true', () => {
-    mockGet.mockReturnValue(true)
+  it('should follow the user setting for hiding explorer arrows', () => {
+    mockSettings({ eyecons: { hidesExplorerArrows: false } })
 
-    let result = buildSchema(mockThemeData)
-
-    expect(result.hidesExplorerArrows).toBeTruthy()
-    expect(mockGet).toHaveBeenCalledWith('hidesExplorerArrows')
-  })
-
-  it('should use the value from configuration when hidesExplorerArrows is set to false', () => {
-    mockGet.mockReturnValue(false)
-
-    let result = buildSchema(mockThemeData)
+    let result = createThemeSchema(iconDefinitions, themeData, {
+      config,
+      theme,
+    })
 
     expect(result.hidesExplorerArrows).toBeFalsy()
-    expect(mockGet).toHaveBeenCalledWith('hidesExplorerArrows')
   })
 })

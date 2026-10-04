@@ -1,321 +1,174 @@
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+
+import type { ColorInfo } from '../../../extension/core/color/extract-colors-from-svg'
 
 import { extractColorsFromSvg } from '../../../extension/core/color/extract-colors-from-svg'
 import { NAMED_COLOR_REGEX } from '../../../extension/core/color/constants'
 
+/**
+ * Asserts that the extracted colors are exactly the expected ones, in any
+ * order.
+ *
+ * @param colorInfos - Colors returned by the function under test.
+ * @param expected - Colors the SVG is expected to contain.
+ */
+function expectColors(colorInfos: ColorInfo[], expected: ColorInfo[]): void {
+  expect(colorInfos).toHaveLength(expected.length)
+  expect(colorInfos).toEqual(expect.arrayContaining(expected))
+}
+
 describe('extractColorsFromSvg', () => {
-  it('should extract hex colors', () => {
-    let svg = '<svg><rect fill="#ff0000" /><circle stroke="#00ff00" /></svg>'
-    let colorInfos = extractColorsFromSvg(svg)
-
-    let values = colorInfos.map(info => info.value)
-    expect(values).toContain('#ff0000')
-    expect(values).toContain('#00ff00')
-
-    let redColor = colorInfos.find(info => info.value === '#ff0000')
-    expect(redColor?.source).toBe('attribute')
-    expect(redColor?.property).toBe('fill')
-
-    let greenColor = colorInfos.find(info => info.value === '#00ff00')
-    expect(greenColor?.source).toBe('attribute')
-    expect(greenColor?.property).toBe('stroke')
+  afterEach(() => {
+    vi.restoreAllMocks()
   })
 
-  it('should extract RGB colors', () => {
-    let svg =
-      '<svg><rect fill="rgb(255, 0, 0)" /><circle stroke="rgb(0, 255, 0)" /></svg>'
-    let colorInfos = extractColorsFromSvg(svg)
-
-    let values = colorInfos.map(info => info.value)
-    expect(values).toContain('rgb(255, 0, 0)')
-    expect(values).toContain('rgb(0, 255, 0)')
-
-    let redColor = colorInfos.find(info => info.value === 'rgb(255, 0, 0)')
-    expect(redColor?.source).toBe('attribute')
-    expect(redColor?.property).toBe('fill')
-  })
-
-  it('should extract RGBA colors', () => {
-    let svg = '<svg><rect fill="rgba(255, 0, 0, 0.5)" /></svg>'
-    let colorInfos = extractColorsFromSvg(svg)
-
-    let values = colorInfos.map(info => info.value)
-    expect(values).toContain('rgba(255, 0, 0, 0.5)')
-
-    let redColor = colorInfos.find(
-      info => info.value === 'rgba(255, 0, 0, 0.5)',
-    )
-    expect(redColor?.source).toBe('attribute')
-    expect(redColor?.property).toBe('fill')
-  })
-
-  it('should extract HSL colors', () => {
-    let svg = '<svg><rect fill="hsl(0, 100%, 50%)" /></svg>'
-    let colorInfos = extractColorsFromSvg(svg)
-
-    expect(colorInfos).toEqual([
-      { value: 'hsl(0, 100%, 50%)', source: 'attribute', property: 'fill' },
-    ])
-  })
-
-  it('should extract an inline HSL color once', () => {
-    let svg = '<svg><text>hsl(120, 100%, 50%)</text></svg>'
-    let colorInfos = extractColorsFromSvg(svg)
-
-    expect(colorInfos).toEqual([
-      { value: 'hsl(120, 100%, 50%)', source: 'inline' },
-    ])
-  })
-
-  it('should extract named colors', () => {
-    let svg = '<svg><rect fill="red" /><circle stroke="blue" /></svg>'
-    let colorInfos = extractColorsFromSvg(svg)
-
-    let values = colorInfos.map(info => info.value)
-    expect(values).toContain('red')
-    expect(values).toContain('blue')
-
-    let redColor = colorInfos.find(info => info.value === 'red')
-    expect(redColor?.source).toBe('attribute')
-    expect(redColor?.property).toBe('fill')
-
-    let blueColor = colorInfos.find(info => info.value === 'blue')
-    expect(blueColor?.source).toBe('attribute')
-    expect(blueColor?.property).toBe('stroke')
-  })
-
-  it('should skip named color matches without captured groups', () => {
-    let svg = '<svg><rect fill="red" /><circle stroke="blue" /></svg>'
-    let originalExec = NAMED_COLOR_REGEX.exec
-    let callCount = 0
-
-    let fakeExec: typeof originalExec = function (this: RegExp, input: string) {
-      callCount += 1
-
-      if (callCount === 1) {
-        this.lastIndex = 0
-        let fakeMatch = ['invalid'] as RegExpExecArray
-        fakeMatch.index = 0
-        fakeMatch.input = input
-        return fakeMatch
-      }
-
-      return originalExec.call(this, input)
-    }
-
-    NAMED_COLOR_REGEX.exec = fakeExec
-
-    try {
-      let colorInfos = extractColorsFromSvg(svg)
-      let values = colorInfos.map(info => info.value)
-
-      expect(values).toContain('red')
-      expect(values).toContain('blue')
-      expect(values).not.toContain('invalid')
-    } finally {
-      NAMED_COLOR_REGEX.exec = originalExec
-      NAMED_COLOR_REGEX.lastIndex = 0
-    }
-  })
-
-  it('should extract colors from style blocks', () => {
-    let svg = `<svg>
-      <style>
-        .red { fill: #ff0000; }
-        .blue { stroke: rgb(0, 0, 255); }
-      </style>
-      <rect class="red" />
-      <circle class="blue" />
-    </svg>`
-    let colorInfos = extractColorsFromSvg(svg)
-
-    let values = colorInfos.map(info => info.value)
-    expect(values).toContain('#ff0000')
-    expect(values).toContain('rgb(0, 0, 255)')
-
-    let redColor = colorInfos.find(info => info.value === '#ff0000')
-    expect(redColor?.source).toBe('css')
-    expect(redColor?.property).toBe('fill')
-
-    let blueColor = colorInfos.find(info => info.value === 'rgb(0, 0, 255)')
-    expect(blueColor?.source).toBe('css')
-    expect(blueColor?.property).toBe('stroke')
-  })
-
-  it('should ignore none and transparent values', () => {
-    let svg = '<svg><rect fill="none" /><circle stroke="transparent" /></svg>'
-    let colorInfos = extractColorsFromSvg(svg)
-
-    let values = colorInfos.map(info => info.value)
-    expect(values).not.toContain('none')
-    expect(values).not.toContain('transparent')
-  })
-
-  it('should handle multiple occurrences of the same color', () => {
-    let svg = '<svg><rect fill="red" /><circle fill="red" /></svg>'
-    let colorInfos = extractColorsFromSvg(svg)
-
-    let values = colorInfos.map(info => info.value)
-    expect(values).toHaveLength(1)
-    expect(values).toContain('red')
-  })
-
-  it('should extract colors from various attributes', () => {
+  it('should report every color attribute with its name', () => {
     let svg = `<svg>
       <rect fill="#ff0000" />
-      <circle stroke="blue" />
-      <linearGradient>
-        <stop stop-color="green" />
-      </linearGradient>
-      <text fill="orange" stroke="black" />
+      <circle stroke="#00ff00" />
+      <text color="#0000ff" />
+      <feFlood flood-color="#ffff00" />
+      <feDiffuseLighting lighting-color="#00ffff" />
+      <stop stop-color="#ff00ff" />
     </svg>`
-    let colorInfos = extractColorsFromSvg(svg)
 
-    let values = colorInfos.map(info => info.value)
-    expect(values).toContain('#ff0000')
-    expect(values).toContain('blue')
-    expect(values).toContain('green')
-    expect(values).toContain('orange')
-    expect(values).toContain('black')
+    let result = extractColorsFromSvg(svg)
 
-    let greenColor = colorInfos.find(info => info.value === 'green')
-    expect(greenColor?.source).toBe('attribute')
-    expect(greenColor?.property).toBe('stop-color')
+    expectColors(result, [
+      { source: 'attribute', property: 'fill', value: '#ff0000' },
+      { source: 'attribute', property: 'stroke', value: '#00ff00' },
+      { source: 'attribute', property: 'color', value: '#0000ff' },
+      { property: 'flood-color', source: 'attribute', value: '#ffff00' },
+      { property: 'lighting-color', source: 'attribute', value: '#00ffff' },
+      { property: 'stop-color', source: 'attribute', value: '#ff00ff' },
+    ])
   })
 
-  it('should handle shorthand hex colors', () => {
-    let svg = '<svg><rect fill="#f00" /><circle stroke="#0f0" /></svg>'
-    let colorInfos = extractColorsFromSvg(svg)
+  it.each(['#f00', '#ff0000', 'rgb(255, 0, 0)', 'rgba(255, 0, 0, 0.5)', 'red'])(
+    'should report the %s attribute color as written',
+    value => {
+      let result = extractColorsFromSvg(`<svg><rect fill="${value}" /></svg>`)
 
-    let values = colorInfos.map(info => info.value)
-    expect(values).toContain('#f00')
-    expect(values).toContain('#0f0')
+      expectColors(result, [{ source: 'attribute', property: 'fill', value }])
+    },
+  )
+
+  it('should report an hsl() attribute color once', () => {
+    let value = 'hsl(0, 100%, 50%)'
+
+    let result = extractColorsFromSvg(`<svg><rect fill="${value}" /></svg>`)
+
+    expectColors(result, [{ source: 'attribute', property: 'fill', value }])
   })
 
-  it('should handle empty SVG', () => {
-    let svg = '<svg></svg>'
-    let colorInfos = extractColorsFromSvg(svg)
-
-    expect(colorInfos).toHaveLength(0)
-  })
-
-  it('should extract colors from style tags with various CSS properties', () => {
+  it('should report colors of style blocks with their CSS property', () => {
     let svg = `<svg>
       <style>
-        .class1 { fill: #ff0000; stroke: blue; }
-        #id1 { color: rgb(0, 255, 0); }
-        path { stop-color: hsl(240, 100%, 50%); }
-        /* Test comments and non-color properties */
-        rect { width: 100px; height: 100px; fill: yellow; }
-        /* Test none and transparent */
-        circle { fill: none; stroke: transparent; }
+        .a { fill: #ff0000; stroke: rgb(0, 0, 255); }
+        .b { color: blue; stop-color: green; }
       </style>
-      <rect class="class1" />
-    </svg>`
-
-    let colorInfos = extractColorsFromSvg(svg)
-
-    let values = colorInfos.map(info => info.value)
-    expect(values).toContain('#ff0000')
-    expect(values).toContain('blue')
-    expect(values).toContain('rgb(0, 255, 0)')
-    expect(values).toContain('hsl(240, 100%, 50%)')
-    expect(values).toContain('yellow')
-    expect(values).not.toContain('none')
-    expect(values).not.toContain('transparent')
-
-    let yellowColor = colorInfos.find(info => info.value === 'yellow')
-    expect(yellowColor?.source).toBe('css')
-    expect(yellowColor?.property).toBe('fill')
-
-    let greenColor = colorInfos.find(info => info.value === 'rgb(0, 255, 0)')
-    expect(greenColor?.source).toBe('css')
-    expect(greenColor?.property).toBe('color')
-  })
-
-  it('should handle multiple style tags and nested style blocks', () => {
-    let svg = `<svg>
-      <style>
-        .outer { fill: red; }
-        @media screen {
-          .media { fill: green; }
-        }
-      </style>
-      <g>
-        <style>
-          .inner { stroke: purple; }
-        </style>
-      </g>
-      <rect class="outer" />
-    </svg>`
-
-    let colorInfos = extractColorsFromSvg(svg)
-
-    let values = colorInfos.map(info => info.value)
-    expect(values).toContain('red')
-    expect(values).toContain('green')
-    expect(values).toContain('purple')
-
-    let purpleColor = colorInfos.find(info => info.value === 'purple')
-    expect(purpleColor?.source).toBe('css')
-    expect(purpleColor?.property).toBe('stroke')
-  })
-
-  it('should handle style tags without content', () => {
-    let svg = `<svg>
       <style></style>
-      <rect fill="red" />
+      <g><style>.c { fill: purple; }</style></g>
     </svg>`
 
-    let colorInfos = extractColorsFromSvg(svg)
+    let result = extractColorsFromSvg(svg)
 
-    let values = colorInfos.map(info => info.value)
-    expect(values).toContain('red')
-    expect(colorInfos).toHaveLength(1)
+    expectColors(result, [
+      { property: 'fill', value: '#ff0000', source: 'css' },
+      { value: 'rgb(0, 0, 255)', property: 'stroke', source: 'css' },
+      { property: 'color', source: 'css', value: 'blue' },
+      { property: 'stop-color', value: 'green', source: 'css' },
+      { property: 'fill', value: 'purple', source: 'css' },
+    ])
   })
 
-  it('should handle CSS properties with invalid format', () => {
+  it('should trim the spaces around a CSS color', () => {
+    let svg = '<svg><style>.a { fill:   #ff0000  ; }</style></svg>'
+
+    let result = extractColorsFromSvg(svg)
+
+    expectColors(result, [
+      { property: 'fill', value: '#ff0000', source: 'css' },
+    ])
+  })
+
+  it('should skip CSS declarations without a color value', () => {
     let svg = `<svg>
       <style>
-        .invalid { color; }
-        .valid { color: blue; }
+        .a { color; width: 100px; }
+        .b { color: blue; }
       </style>
     </svg>`
 
-    let colorInfos = extractColorsFromSvg(svg)
+    let result = extractColorsFromSvg(svg)
 
-    let values = colorInfos.map(info => info.value)
-    expect(values).toContain('blue')
-    expect(colorInfos).toHaveLength(1)
-
-    let blueColor = colorInfos.find(info => info.value === 'blue')
-    expect(blueColor?.source).toBe('css')
-    expect(blueColor?.property).toBe('color')
+    expectColors(result, [{ property: 'color', source: 'css', value: 'blue' }])
   })
 
-  it('should handle colors that appear both in attributes and inline', () => {
+  it('should skip none and transparent values', () => {
     let svg = `<svg>
-      <rect fill="red" />
-      #ff0000
-      rgb(255, 0, 0)
-      red
+      <rect fill="none" stroke="transparent" />
+      <style>.a { fill: none; stroke: transparent; }</style>
     </svg>`
 
-    let colorInfos = extractColorsFromSvg(svg)
+    let result = extractColorsFromSvg(svg)
 
-    let values = colorInfos.map(info => info.value)
-    expect(values).toContain('red')
-    expect(values).toContain('#ff0000')
-    expect(values).toContain('rgb(255, 0, 0)')
+    expect(result).toEqual([])
+  })
 
-    let redColor = colorInfos.find(info => info.value === 'red')
-    expect(redColor?.source).toBe('attribute')
-    expect(redColor?.property).toBe('fill')
+  it('should report a color used several times once', () => {
+    let svg = '<svg><rect fill="red" /><circle fill="red" /></svg>'
 
-    let hexColor = colorInfos.find(info => info.value === '#ff0000')
-    expect(hexColor?.source).toBe('inline')
+    let result = extractColorsFromSvg(svg)
 
-    let rgbColor = colorInfos.find(info => info.value === 'rgb(255, 0, 0)')
-    expect(rgbColor?.source).toBe('inline')
+    expectColors(result, [
+      { source: 'attribute', property: 'fill', value: 'red' },
+    ])
+  })
+
+  it('should report colors written outside attributes and style blocks as inline', () => {
+    let svg = '<svg><text>#ff0000, rgb(0, 0, 255) and green</text></svg>'
+
+    let result = extractColorsFromSvg(svg)
+
+    expectColors(result, [
+      { source: 'inline', value: '#ff0000' },
+      { value: 'rgb(0, 0, 255)', source: 'inline' },
+      { source: 'inline', value: 'green' },
+    ])
+  })
+
+  it('should report a named color written inline in lower case', () => {
+    let svg = '<svg><text>Navy</text></svg>'
+
+    let result = extractColorsFromSvg(svg)
+
+    expectColors(result, [{ source: 'inline', value: 'navy' }])
+  })
+
+  it('should keep the attribute source of a color that also appears inline', () => {
+    let svg = '<svg><rect fill="red" /><text>red</text></svg>'
+
+    let result = extractColorsFromSvg(svg)
+
+    expectColors(result, [
+      { source: 'attribute', property: 'fill', value: 'red' },
+    ])
+  })
+
+  it('should skip an inline named color match that captured no color name', () => {
+    let emptyMatch = Object.assign(['red'], {
+      input: '<svg><text>red</text></svg>',
+      index: 0,
+    }) as RegExpExecArray
+    vi.spyOn(NAMED_COLOR_REGEX, 'exec').mockReturnValueOnce(emptyMatch)
+
+    let result = extractColorsFromSvg('<svg><text>blue</text></svg>')
+
+    expectColors(result, [{ source: 'inline', value: 'blue' }])
+  })
+
+  it('should return no colors for an SVG without colors', () => {
+    expect(extractColorsFromSvg('<svg></svg>')).toEqual([])
   })
 })

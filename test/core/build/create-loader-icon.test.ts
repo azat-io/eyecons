@@ -15,10 +15,12 @@ describe('createLoaderIcon', () => {
     expect(result).toContain('animateTransform')
   })
 
-  it('should use default color when not specified', () => {
+  it('should use the default color, circle radius and duration', () => {
     let result = createLoaderIcon()
 
     expect(result).toContain('fill="#636363"')
+    expect(result).toContain('r="6"')
+    expect(result).toContain('dur="1s"')
   })
 
   it('should use custom color when specified', () => {

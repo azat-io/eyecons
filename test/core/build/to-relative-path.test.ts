@@ -1,73 +1,47 @@
 import { describe, expect, it } from 'vitest'
 
-import type { Config } from '../../../extension/types/config'
-
 import { toRelativePath } from '../../../extension/core/build/to-relative-path'
+import { createMockConfig } from '../../helpers/create-mock-config'
 
 describe('toRelativePath', () => {
-  it('should convert absolute path to relative path', () => {
-    let absolutePath = '/user/extension/dist/output/icons/file.svg'
-    let basePath = '/user/extension/dist'
+  let config = createMockConfig({ outputPath: '/user/extension/dist/output' })
 
-    let result = toRelativePath(absolutePath, {
-      outputPath: basePath,
-    } as Config)
+  it.each([
+    ['/user/extension/dist/output/icons/files/js.svg', './icons/files/js.svg'],
+    ['/user/extension/dist/output/loader.svg', './loader.svg'],
+    [
+      String.raw`/user/extension/dist/output\icons\files\js.svg`,
+      './icons/files/js.svg',
+    ],
+  ])(
+    'should make %s relative to the output directory',
+    (absolutePath, expected) => {
+      expect(toRelativePath(absolutePath, config)).toBe(expected)
+    },
+  )
 
-    expect(result).toBe('./output/icons/file.svg')
+  it('should make a Windows path relative to the output directory', () => {
+    let windowsConfig = createMockConfig({
+      outputPath: String.raw`C:\Users\user\extension\dist\output`,
+    })
+
+    let result = toRelativePath(
+      String.raw`C:\Users\user\extension\dist\output\icons\files\js.svg`,
+      windowsConfig,
+    )
+
+    expect(result).toBe('./icons/files/js.svg')
   })
 
-  it('should handle paths with different separators', () => {
-    let absolutePath = String.raw`/user/extension/dist\output\icons\file.svg`
-    let basePath = '/user/extension/dist'
-
-    let result = toRelativePath(absolutePath, {
-      outputPath: basePath,
-    } as Config)
-
-    expect(result).toBe('./output/icons/file.svg')
+  it('should keep an already relative path', () => {
+    expect(toRelativePath('./icons/files/js.svg', config)).toBe(
+      './icons/files/js.svg',
+    )
   })
 
-  it('should add ./ prefix if not present', () => {
-    let absolutePath = '/user/extension/dist/file.svg'
-    let basePath = '/user/extension/dist'
-
-    let result = toRelativePath(absolutePath, {
-      outputPath: basePath,
-    } as Config)
-
-    expect(result).toBe('./file.svg')
-  })
-
-  it('should handle already relative paths', () => {
-    let relativePath = './output/icons/file.svg'
-    let basePath = '/user/extension/dist'
-
-    let result = toRelativePath(relativePath, {
-      outputPath: basePath,
-    } as Config)
-
-    expect(result).toBe('./output/icons/file.svg')
-  })
-
-  it('should handle paths when basePath is not a prefix of absolutePath', () => {
-    let absolutePath = '/var/different/path/file.svg'
-    let basePath = '/user/extension/dist'
-
-    let result = toRelativePath(absolutePath, {
-      outputPath: basePath,
-    } as Config)
-
-    expect(result).toBe('./var/different/path/file.svg')
-  })
-
-  it('should handle Windows-style paths', () => {
-    let absolutePath = String.raw`C:\Users\user\extension\dist\output\icons\file.svg`
-    let basePath = String.raw`C:\Users\user\extension\dist`
-
-    let result = toRelativePath(absolutePath, {
-      outputPath: basePath,
-    } as Config)
-
-    expect(result).toBe('./output/icons/file.svg')
+  it('should turn a path outside the output directory into a ./ path', () => {
+    expect(toRelativePath('/var/different/path/js.svg', config)).toBe(
+      './var/different/path/js.svg',
+    )
   })
 })

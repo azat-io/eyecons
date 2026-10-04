@@ -1,17 +1,15 @@
+import type { MakeDirectoryOptions } from 'node:fs'
+
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 
 import type { FormattedIconValue } from '../../../extension/types/icon'
-import type { Config } from '../../../extension/types/config'
-import type { Theme } from '../../../extension/types/theme'
 
-import { prepareIconProcessing } from '../../../extension/core/icon/prepare-icon-processing'
 import { processSingleIcon } from '../../../extension/core/build/process-single-icon'
-import { adaptIconColors } from '../../../extension/core/color/adapt-icon-colors'
 import { getIconSource } from '../../../extension/io/file/get-icon-source'
 import { createMockConfig } from '../../helpers/create-mock-config'
-import { logger } from '../../../extension/io/vscode/logger'
+import { createMockTheme } from '../../helpers/create-mock-theme'
 
 vi.mock('node:fs/promises', () => ({
   default: {
@@ -20,217 +18,136 @@ vi.mock('node:fs/promises', () => ({
   },
 }))
 
-vi.mock('node:path', () => ({
-  default: {
-    dirname: vi.fn(),
-    join: vi.fn(),
-  },
-}))
-
-vi.mock('../../../extension/core/icon/prepare-icon-processing', () => ({
-  prepareIconProcessing: vi.fn(),
-}))
-
 vi.mock('../../../extension/io/file/get-icon-source', () => ({
   getIconSource: vi.fn(),
 }))
 
-vi.mock('../../../extension/core/color/adapt-icon-colors', () => ({
-  adaptIconColors: vi.fn(),
-}))
+/**
+ * Directories created in the fake file system.
+ */
+let directories = new Set<string>()
 
-vi.mock('../../../extension/io/vscode/logger', () => ({
-  logger: {
-    withContext: vi.fn(),
-    error: vi.fn(),
-  },
-}))
+/**
+ * Files written to the fake file system, by path.
+ */
+let files = new Map<string, string>()
 
-describe('processSingleIcon', () => {
-  let mockIcon: FormattedIconValue
-  let mockTheme: Theme
-  let mockConfig: Config
-  let mockPreparedIcon: ReturnType<typeof prepareIconProcessing>
+/**
+ * Creates a directory in the fake file system. Like Node.js, it fails without
+ * `recursive` when the directory exists or its parent is missing.
+ *
+ * @param directory - Path of the directory.
+ * @param options - Options of `fs.mkdir`.
+ * @returns Promise that resolves when the directory exists.
+ */
+function makeDirectory(
+  directory: unknown,
+  options?: unknown,
+): Promise<undefined> {
+  let target = String(directory)
+  let { recursive } = (options ?? {}) as MakeDirectoryOptions
+  if (!recursive && directories.has(target)) {
+    return Promise.reject(new Error(`EEXIST: '${target}' already exists`))
+  }
+  if (!recursive && !directories.has(path.dirname(target))) {
+    return Promise.reject(new Error(`ENOENT: no such directory, '${target}'`))
+  }
+  for (
+    let current = target;
+    !directories.has(current);
+    current = path.dirname(current)
+  ) {
+    directories.add(current)
+  }
+  return Promise.resolve(undefined)
+}
 
-  beforeEach(() => {
-    vi.clearAllMocks()
-
-    mockIcon = {
-      extensions: ['html', 'htm'],
-      theme: 'dark',
-      type: 'files',
-      name: 'HTML',
-      id: 'html',
-    }
-
-    mockTheme = {
-      colors: ['#000000', '#ffffff'],
-      overrides: {},
-    } as Theme
-
-    mockConfig = createMockConfig()
-
-    mockPreparedIcon = {
-      temporaryFilePath: '/tmp/icons/html-abc123.svg',
-      iconPath: './icons/html-abc123.svg',
-      fileName: 'html-abc123.svg',
-      isLight: false,
-      baseId: 'html',
-      hash: 'abc123',
-      type: 'files',
-      id: 'html',
-    }
-
-    vi.mocked(prepareIconProcessing).mockReturnValue(mockPreparedIcon)
-    vi.mocked(getIconSource).mockResolvedValue('<svg>Mock Icon</svg>')
-    vi.mocked(adaptIconColors).mockReturnValue('<svg>Adapted Icon</svg>')
-    vi.mocked(fs.writeFile).mockResolvedValue()
-    vi.mocked(path.dirname).mockReturnValue('/tmp/icons')
-  })
-
-  /**
-   * Calls the function under test with the fixtures built in `beforeEach`.
-   *
-   * @returns Result of processing `mockIcon` into the temporary directory.
-   */
-  function runProcessSingleIcon(): ReturnType<typeof processSingleIcon> {
-    return processSingleIcon(
-      {
-        temporaryDirectory: '/tmp/icons',
-        icon: mockIcon,
-      },
-      mockTheme,
-      mockConfig,
+/**
+ * Writes a file to the fake file system. Like Node.js, it fails when the
+ * directory of the file does not exist.
+ *
+ * @param file - Path of the file.
+ * @param content - Text written into the file.
+ * @returns Promise that resolves when the file is written.
+ */
+function writeFile(file: unknown, content: unknown): Promise<void> {
+  let directory = path.dirname(String(file))
+  if (!directories.has(directory)) {
+    return Promise.reject(
+      new Error(`ENOENT: no such directory, '${directory}'`),
     )
   }
+  files.set(String(file), String(content))
+  return Promise.resolve()
+}
 
-  it('should process a single icon correctly', async () => {
-    let result = await runProcessSingleIcon()
+describe('processSingleIcon', () => {
+  let config = createMockConfig()
+  let theme = createMockTheme()
+  let temporaryDirectory = '/tmp/eyecons-abc123'
 
-    expect(prepareIconProcessing).toHaveBeenCalledWith(
-      {
-        temporaryDirectory: '/tmp/icons',
-        icon: mockIcon,
-      },
-      mockTheme,
-      mockConfig,
+  let html: FormattedIconValue = {
+    extensions: ['html', 'htm'],
+    theme: 'dark',
+    type: 'files',
+    name: 'HTML',
+    id: 'html',
+  }
+
+  beforeEach(() => {
+    vi.resetAllMocks()
+    directories = new Set(['/'])
+    files.clear()
+    vi.mocked(fs.mkdir).mockImplementation(makeDirectory)
+    vi.mocked(fs.writeFile).mockImplementation(writeFile)
+    vi.mocked(getIconSource).mockResolvedValue(
+      '<svg><path fill="#ff0000" d="M0 0h1"/></svg>',
+    )
+  })
+
+  it('should write the icon in theme colors to the temporary directory', async () => {
+    await processSingleIcon({ temporaryDirectory, icon: html }, theme, config)
+
+    expect([...files]).toEqual([
+      [
+        expect.stringMatching(
+          /^\/tmp\/eyecons-abc123\/files\/html--[\da-f]{8}\.svg$/u,
+        ),
+        `<svg><path fill="${theme.main.red}" d="M0 0h1"/></svg>`,
+      ],
+    ])
+  })
+
+  it('should point the theme at the written icon', async () => {
+    let result = await processSingleIcon(
+      { temporaryDirectory, icon: html },
+      theme,
+      config,
     )
 
-    expect(getIconSource).toHaveBeenCalledWith('html', 'files', mockConfig)
-
-    expect(adaptIconColors).toHaveBeenCalledWith(
-      {
-        svgContent: '<svg>Mock Icon</svg>',
-        id: 'html',
-      },
-      mockTheme,
-      mockConfig,
-    )
-
-    expect(path.dirname).toHaveBeenCalledWith('/tmp/icons/html-abc123.svg')
-    expect(fs.mkdir).toHaveBeenCalledWith('/tmp/icons', { recursive: true })
-
-    expect(fs.writeFile).toHaveBeenCalledWith(
-      '/tmp/icons/html-abc123.svg',
-      '<svg>Adapted Icon</svg>',
-      'utf8',
-    )
-
+    let [writtenFile] = files.keys()
     expect(result).toEqual({
-      iconPath: './icons/html-abc123.svg',
+      iconPath: `./icons/files/${path.basename(writtenFile!)}`,
       id: 'html',
     })
   })
 
-  it('should process a light theme icon correctly', async () => {
-    mockIcon.theme = 'light'
-    mockIcon.id = 'html-light'
-
-    mockPreparedIcon = {
-      ...mockPreparedIcon,
-      temporaryFilePath: '/tmp/icons/html-light-abc123.svg',
-      iconPath: './icons/html-light-abc123.svg',
-      fileName: 'html-light-abc123.svg',
-      id: 'html-light',
-      isLight: true,
-    }
-    vi.mocked(prepareIconProcessing).mockReturnValue(mockPreparedIcon)
-
-    let result = await runProcessSingleIcon()
-
-    expect(getIconSource).toHaveBeenCalledWith(
-      'html-light',
-      'files',
-      mockConfig,
-    )
-
-    expect(adaptIconColors).toHaveBeenCalledWith(
-      {
-        svgContent: '<svg>Mock Icon</svg>',
-        id: 'html-light',
-      },
-      mockTheme,
-      mockConfig,
-    )
-
-    expect(result).toEqual({
-      iconPath: './icons/html-light-abc123.svg',
-      id: 'html-light',
-    })
-  })
-
-  it('should create directory before writing file', async () => {
-    vi.mocked(path.dirname).mockReturnValue('/tmp/icons/files')
-
-    await runProcessSingleIcon()
-
-    expect(path.dirname).toHaveBeenCalledWith('/tmp/icons/html-abc123.svg')
-    expect(fs.mkdir).toHaveBeenCalledWith('/tmp/icons/files', {
-      recursive: true,
-    })
-    expect(fs.writeFile).toHaveBeenCalledWith(
-      '/tmp/icons/html-abc123.svg',
-      '<svg>Adapted Icon</svg>',
-      'utf8',
-    )
-  })
-
-  it('should handle errors from adaptIconColors correctly', async () => {
-    vi.mocked(adaptIconColors).mockImplementation(() => {
-      throw new Error('Color adaptation failed')
-    })
-
-    await expect(runProcessSingleIcon()).rejects.toThrow(
-      'Color adaptation failed',
-    )
-
-    expect(fs.writeFile).not.toHaveBeenCalled()
-    expect(logger.error).toHaveBeenCalledWith(
-      'Failed to process icon: Color adaptation failed',
-    )
-  })
-
-  it('should throw and propagate errors from dependencies', async () => {
-    let error = new Error('Failed to get icon source')
+  it('should rethrow when the icon source cannot be read and write nothing', async () => {
+    let error = new Error('Failed to read source for icon html')
     vi.mocked(getIconSource).mockRejectedValue(error)
 
-    await expect(runProcessSingleIcon()).rejects.toThrow(error)
-
-    expect(fs.writeFile).not.toHaveBeenCalled()
-    expect(logger.error).toHaveBeenCalledWith(
-      'Failed to process icon: Failed to get icon source',
-    )
+    await expect(
+      processSingleIcon({ temporaryDirectory, icon: html }, theme, config),
+    ).rejects.toBe(error)
+    expect(files.size).toBe(0)
   })
 
-  it('should handle non-Error exceptions', async () => {
-    let error = 'String error message'
-    vi.mocked(fs.mkdir).mockRejectedValue(error)
+  it('should rethrow a non-Error failure unchanged', async () => {
+    let failure = 'Disk is full'
+    vi.mocked(fs.mkdir).mockRejectedValue(failure)
 
-    await expect(runProcessSingleIcon()).rejects.toThrow(error)
-
-    expect(fs.writeFile).not.toHaveBeenCalled()
-    expect(logger.error).toHaveBeenCalledWith(
-      'Failed to process icon: String error message',
-    )
+    await expect(
+      processSingleIcon({ temporaryDirectory, icon: html }, theme, config),
+    ).rejects.toBe(failure)
   })
 })

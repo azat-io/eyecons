@@ -1,227 +1,94 @@
 import type { Vector } from '@texel/color'
 
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
-import * as filterPaletteForAchromaticModule from '../../../extension/core/color/filter-palette-for-achromatic'
-import * as filterColorsByHueCategoryModule from '../../../extension/core/color/filter-colors-by-hue-category'
-import * as filterPaletteForChromaticModule from '../../../extension/core/color/filter-palette-for-chromatic'
-import * as calculateWeightedDistanceModule from '../../../extension/core/color/calculate-weighted-distance'
-import * as refineColorsByPropertiesModule from '../../../extension/core/color/refine-colors-by-properties'
-import * as determineColorWeightsModule from '../../../extension/core/color/determine-color-weights'
-import * as adjustSaturationModule from '../../../extension/core/color/adjust-saturation'
 import { findClosestColor } from '../../../extension/core/color/find-closest-color'
-import { createMockLoggerContext } from '../../helpers/create-mock-logger-context'
-import * as isAchromaticModule from '../../../extension/core/color/is-achromatic'
 import { createMockConfig } from '../../helpers/create-mock-config'
-import { logger } from '../../../extension/io/vscode/logger'
-
-let mockConfig = createMockConfig({
-  processing: {
-    extremeLightnessThresholds: {
-      light: 0.9,
-      dark: 0.1,
-    },
-    lowSaturationThreshold: 0.05,
-    saturationFactor: 1.5,
-    adjustContrast: true,
-  },
-})
-
-let chromaticPalette: Vector[] = [
-  [0.4, 0.2, 90],
-  [0.6, 0.3, 175],
-  [0.7, 0.4, 270],
-]
-
-let mockLoggerContext = createMockLoggerContext()
-
-vi.mock('../../../extension/io/vscode/logger', () => ({
-  logger: {
-    withContext: vi.fn(),
-  },
-}))
-
-/**
- * Stubs every step of the chromatic branch so that the palette reaching the
- * distance calculation is known.
- *
- * @param themePalette - Palette `filterPaletteForChromatic` returns.
- * @param refinedPalette - Palette the hue and property refinements return.
- */
-function mockChromaticPipeline(
-  themePalette: Vector[],
-  refinedPalette: Vector[] = themePalette,
-): void {
-  vi.spyOn(isAchromaticModule, 'isAchromatic').mockReturnValue(false)
-  vi.spyOn(
-    filterPaletteForChromaticModule,
-    'filterPaletteForChromatic',
-  ).mockReturnValue(themePalette)
-  vi.spyOn(
-    filterColorsByHueCategoryModule,
-    'filterColorsByHueCategory',
-  ).mockReturnValue(refinedPalette)
-  vi.spyOn(
-    refineColorsByPropertiesModule,
-    'refineColorsByProperties',
-  ).mockReturnValue(refinedPalette)
-}
 
 describe('findClosestColor', () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
-    vi.mocked(logger.withContext).mockReturnValue(mockLoggerContext)
-  })
+  let config = createMockConfig()
 
-  it('should return source color for empty palette', () => {
+  let red: Vector = [0.62, 0.25, 25]
+  let green: Vector = [0.7, 0.2, 140]
+  let blue: Vector = [0.5, 0.2, 260]
+  let darkGray: Vector = [0.4, 0.005, 0]
+  let lightGray: Vector = [0.8, 0.005, 0]
+
+  it('should return the source color when the palette is empty', () => {
     let sourceColor: Vector = [0.5, 0.2, 180]
 
-    let result = findClosestColor(sourceColor, [], mockConfig)
+    let result = findClosestColor(sourceColor, [], config)
 
     expect(result).toEqual(sourceColor)
-    expect(mockLoggerContext.warn).toHaveBeenCalledWith(
-      'Empty theme palette provided',
-    )
   })
 
-  it('should process achromatic colors correctly', () => {
-    let sourceColor: Vector = [0.8, 0.01, 0]
-    let palette: Vector[] = [
-      [0.3, 0.02, 180],
-      [0.7, 0.01, 0],
-      [0.9, 0.03, 90],
-    ]
-    let expectedContext = {
-      sourceAchromatic: true,
-      themePalette: palette,
-      config: mockConfig,
-      sourceColor,
-    }
+  it('should pick the palette color with the closest hue for a colored source', () => {
+    let orangeRed: Vector = [0.6, 0.2, 30]
 
-    vi.spyOn(isAchromaticModule, 'isAchromatic').mockReturnValue(true)
-    vi.spyOn(
-      filterPaletteForAchromaticModule,
-      'filterPaletteForAchromatic',
-    ).mockReturnValue([palette[1]!])
-    vi.spyOn(
-      filterPaletteForChromaticModule,
-      'filterPaletteForChromatic',
-    ).mockReturnValue([])
-    vi.spyOn(
-      determineColorWeightsModule,
-      'determineColorWeights',
-    ).mockReturnValue({
-      lightness: 1,
-      chroma: 0.1,
-      hue: 0.1,
+    let result = findClosestColor(
+      orangeRed,
+      [green, blue, red, darkGray],
+      config,
+    )
+
+    expect(result).toEqual(red)
+  })
+
+  it('should keep a gray source gray even when a colored palette entry has the same lightness', () => {
+    let gray: Vector = [0.55, 0.01, 0]
+    let tealOfSameLightness: Vector = [0.55, 0.15, 200]
+
+    let result = findClosestColor(
+      gray,
+      [lightGray, tealOfSameLightness, darkGray],
+      config,
+    )
+
+    expect(result).toEqual(darkGray)
+  })
+
+  it('should keep a yellow source among yellows even when an orange is nearer in hue', () => {
+    let yellow: Vector = [0.7, 0.12, 60]
+    let darkOrange: Vector = [0.3, 0.09, 30]
+    let olive: Vector = [0.55, 0.09, 100]
+
+    let result = findClosestColor(yellow, [darkOrange, olive], config)
+
+    expect(result).toEqual(olive)
+  })
+
+  it('should match a gray source by lightness and ignore the tint of gray palette colors', () => {
+    let configWithoutContrast = createMockConfig({
+      processing: { ...config.processing, adjustContrast: false },
     })
-    vi.spyOn(adjustSaturationModule, 'adjustSaturation').mockReturnValue(
-      palette[1]!,
+    let gray: Vector = [0.5, 0.04, 60]
+    let lighterYellowishGray: Vector = [0.7, 0.04, 60]
+    let darkerBluishGray: Vector = [0.45, 0.04, 250]
+
+    let result = findClosestColor(
+      gray,
+      [lighterYellowishGray, darkerBluishGray],
+      configWithoutContrast,
     )
 
-    let result = findClosestColor(sourceColor, palette, mockConfig)
-
-    expect(result).toEqual(palette[1])
-    expect(isAchromaticModule.isAchromatic).toHaveBeenCalledWith(
-      sourceColor,
-      mockConfig,
-    )
-    expect(
-      filterPaletteForAchromaticModule.filterPaletteForAchromatic,
-    ).toHaveBeenCalledWith(expectedContext)
-    expect(
-      filterPaletteForChromaticModule.filterPaletteForChromatic,
-    ).not.toHaveBeenCalled()
+    expect(result).toEqual(darkerBluishGray)
   })
 
-  it('should process chromatic colors correctly', () => {
-    let sourceColor: Vector = [0.5, 0.3, 180]
-    let filteredPalette: Vector[] = [chromaticPalette[1]!]
-    let expectedContext = {
-      themePalette: chromaticPalette,
-      sourceAchromatic: false,
-      config: mockConfig,
-      sourceColor,
-    }
+  it('should fall back to gray palette colors when the palette has no colored entries', () => {
+    let orangeRed: Vector = [0.6, 0.2, 30]
+    let middleGray: Vector = [0.65, 0.005, 0]
 
-    mockChromaticPipeline(chromaticPalette, filteredPalette)
-    vi.spyOn(
-      determineColorWeightsModule,
-      'determineColorWeights',
-    ).mockReturnValue({
-      lightness: 0.7,
-      chroma: 0.3,
-      hue: 2,
-    })
-    vi.spyOn(
-      calculateWeightedDistanceModule,
-      'calculateWeightedDistance',
-    ).mockReturnValue(0.1)
-    vi.spyOn(adjustSaturationModule, 'adjustSaturation').mockReturnValue(
-      chromaticPalette[1]!,
-    )
+    let result = findClosestColor(orangeRed, [darkGray, middleGray], config)
 
-    let result = findClosestColor(sourceColor, chromaticPalette, mockConfig)
-
-    expect(result).toEqual(chromaticPalette[1])
-    expect(isAchromaticModule.isAchromatic).toHaveBeenCalledWith(
-      sourceColor,
-      mockConfig,
-    )
-    expect(
-      filterPaletteForChromaticModule.filterPaletteForChromatic,
-    ).toHaveBeenCalledWith(expectedContext)
-    expect(
-      filterColorsByHueCategoryModule.filterColorsByHueCategory,
-    ).toHaveBeenCalledWith(sourceColor, chromaticPalette)
-    expect(
-      refineColorsByPropertiesModule.refineColorsByProperties,
-    ).toHaveBeenCalledWith(sourceColor, filteredPalette)
+    expect(result).toEqual(middleGray)
   })
 
-  it('should log color and weight information', () => {
-    let sourceColor: Vector = [0.5, 0.3, 180]
-    let palette: Vector[] = [[0.6, 0.3, 175]]
+  it('should boost the chroma of a dull closest color by the saturation factor', () => {
+    let dullBlue: Vector = [0.5, 0.03, 200]
+    let expectedChroma = 0.036
 
-    mockChromaticPipeline(palette)
-    vi.spyOn(
-      determineColorWeightsModule,
-      'determineColorWeights',
-    ).mockReturnValue({
-      lightness: 0.7,
-      chroma: 0.3,
-      hue: 2,
-    })
+    let result = findClosestColor(dullBlue, [dullBlue, lightGray], config)
 
-    findClosestColor(sourceColor, palette, mockConfig)
-
-    expect(mockLoggerContext.info).toHaveBeenCalledWith(
-      'Source color info: Lightness=0.50, Chroma=0.30, Hue=180, Achromatic=false',
-    )
-    expect(mockLoggerContext.info).toHaveBeenCalledWith(
-      'Weight info: Lightness=0.7, Chroma=0.3, Hue=2',
-    )
-    expect(mockLoggerContext.info).toHaveBeenCalledWith(
-      'Using 1 of 1 colors from palette',
-    )
-  })
-
-  it('should calculate closest color from filtered palette', () => {
-    let sourceColor: Vector = [0.5, 0.3, 180]
-
-    mockChromaticPipeline(chromaticPalette)
-    vi.spyOn(
-      calculateWeightedDistanceModule,
-      'calculateWeightedDistance',
-    ).mockImplementation(({ color2 }) =>
-      color2 === chromaticPalette[1] ? 0.1 : 0.5,
-    )
-
-    let result = findClosestColor(sourceColor, chromaticPalette, mockConfig)
-
-    expect(result).toEqual(chromaticPalette[1])
-    expect(
-      calculateWeightedDistanceModule.calculateWeightedDistance,
-    ).toHaveBeenCalledTimes(3)
+    expect(result).toEqual([0.5, expect.closeTo(expectedChroma), 200])
   })
 })

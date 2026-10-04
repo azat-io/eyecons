@@ -1,118 +1,122 @@
-import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
+import type { MakeDirectoryOptions } from 'node:fs'
+
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 
-import { createMockLoggerContext } from '../../helpers/create-mock-logger-context'
-import { toRelativePath } from '../../../extension/core/build/to-relative-path'
 import { saveLoaderIcon } from '../../../extension/io/file/save-loader-icon'
 import { createMockConfig } from '../../helpers/create-mock-config'
-import { logger } from '../../../extension/io/vscode/logger'
 
-vi.mock('../../../extension/core/build/to-relative-path', () => ({
-  toRelativePath: vi.fn(),
+vi.mock('node:fs/promises', () => ({
+  default: {
+    writeFile: vi.fn(),
+    mkdir: vi.fn(),
+  },
 }))
 
-let mockMkdir = vi.fn().mockResolvedValue(null)
-let mockWriteFile = vi.fn().mockResolvedValue(null)
-let mockJoin = vi.fn((...arguments_) => arguments_.join('/'))
+/**
+ * Directories created in the fake file system.
+ */
+let directories = new Set<string>()
 
-let mockLoggerContext = createMockLoggerContext()
+/**
+ * Files written to the fake file system, by path.
+ */
+let files = new Map<string, string>()
+
+/**
+ * Creates a directory in the fake file system. Like Node.js, it fails without
+ * `recursive` when the directory exists or its parent is missing.
+ *
+ * @param directory - Path of the directory.
+ * @param options - Options of `fs.mkdir`.
+ * @returns Promise that resolves when the directory exists.
+ */
+function makeDirectory(
+  directory: unknown,
+  options?: unknown,
+): Promise<undefined> {
+  let target = String(directory)
+  let { recursive } = (options ?? {}) as MakeDirectoryOptions
+  if (!recursive && directories.has(target)) {
+    return Promise.reject(new Error(`EEXIST: '${target}' already exists`))
+  }
+  if (!recursive && !directories.has(path.dirname(target))) {
+    return Promise.reject(new Error(`ENOENT: no such directory, '${target}'`))
+  }
+  for (
+    let current = target;
+    !directories.has(current);
+    current = path.dirname(current)
+  ) {
+    directories.add(current)
+  }
+  return Promise.resolve(undefined)
+}
+
+/**
+ * Writes a file to the fake file system. Like Node.js, it fails when the
+ * directory of the file does not exist.
+ *
+ * @param file - Path of the file.
+ * @param content - Text written into the file.
+ * @returns Promise that resolves when the file is written.
+ */
+function writeFile(file: unknown, content: unknown): Promise<void> {
+  let directory = path.dirname(String(file))
+  if (!directories.has(directory)) {
+    return Promise.reject(
+      new Error(`ENOENT: no such directory, '${directory}'`),
+    )
+  }
+  files.set(String(file), String(content))
+  return Promise.resolve()
+}
 
 describe('saveLoaderIcon', () => {
-  let mockLoaderSvg = '<svg>Test Loader</svg>'
-
-  let mockConfig = createMockConfig({
-    iconDefinitionsPath: 'theme/index.json',
-  })
+  let config = createMockConfig()
+  let loaderIcon = '<svg>Loader</svg>'
 
   beforeEach(() => {
-    vi.clearAllMocks()
-
-    vi.spyOn(fs, 'mkdir').mockImplementation(mockMkdir)
-    vi.spyOn(fs, 'writeFile').mockImplementation(mockWriteFile)
-    vi.spyOn(path, 'join').mockImplementation(mockJoin)
-    vi.mocked(toRelativePath).mockReturnValue('./icons/loader.svg')
-
-    vi.spyOn(logger, 'withContext').mockReturnValue(mockLoggerContext)
-  })
-
-  afterEach(() => {
     vi.resetAllMocks()
+    directories = new Set(['/'])
+    files.clear()
+    vi.mocked(fs.mkdir).mockImplementation(makeDirectory)
+    vi.mocked(fs.writeFile).mockImplementation(writeFile)
   })
 
-  it('should create directory for output icons if it does not exist', async () => {
-    await saveLoaderIcon(mockLoaderSvg, mockConfig)
+  it('should save the loader icon into the output icons directory', async () => {
+    await saveLoaderIcon(loaderIcon, config)
 
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith(
-      'Creating directory for output icons: icons/theme',
-    )
-    expect(fs.mkdir).toHaveBeenCalledWith('icons/theme', {
-      recursive: true,
+    expect(Object.fromEntries(files)).toEqual({
+      '/mock/extension/dist/output/icons/loader.svg': loaderIcon,
     })
   })
 
-  it('should save loader icon to the output directory', async () => {
-    await saveLoaderIcon(mockLoaderSvg, mockConfig)
-
-    expect(path.join).toHaveBeenCalledWith('icons/theme', 'loader.svg')
-    expect(fs.writeFile).toHaveBeenCalledWith(
-      'icons/theme/loader.svg',
-      mockLoaderSvg,
-      'utf8',
-    )
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith(
-      'Loader icon saved to: icons/theme/loader.svg',
+  it('should return the path of the loader icon relative to the output directory', async () => {
+    await expect(saveLoaderIcon(loaderIcon, config)).resolves.toBe(
+      './icons/loader.svg',
     )
   })
 
-  it('should call toRelativePath with correct parameters', async () => {
-    await saveLoaderIcon(mockLoaderSvg, mockConfig)
+  it('should rethrow when the output icons directory cannot be created', async () => {
+    let error = new Error('Permission denied')
+    vi.mocked(fs.mkdir).mockRejectedValue(error)
 
-    expect(toRelativePath).toHaveBeenCalledWith(
-      'icons/theme/loader.svg',
-      mockConfig,
-    )
+    await expect(saveLoaderIcon(loaderIcon, config)).rejects.toBe(error)
   })
 
-  it('should return the path from toRelativePath function', async () => {
-    let result = await saveLoaderIcon(mockLoaderSvg, mockConfig)
+  it('should rethrow when the loader icon cannot be written', async () => {
+    let error = new Error('Disk is full')
+    vi.mocked(fs.writeFile).mockRejectedValue(error)
 
-    expect(result).toBe('./icons/loader.svg')
+    await expect(saveLoaderIcon(loaderIcon, config)).rejects.toBe(error)
   })
 
-  it('should log and rethrow errors from mkdir', async () => {
-    let error = new Error('Test error')
-    mockMkdir.mockRejectedValueOnce(error)
+  it('should rethrow a non-Error failure unchanged', async () => {
+    let failure = 'Disk is full'
+    vi.mocked(fs.mkdir).mockRejectedValue(failure)
 
-    await expect(saveLoaderIcon(mockLoaderSvg, mockConfig)).rejects.toThrow(
-      error,
-    )
-    expect(mockLoggerContext.error).toHaveBeenCalledWith(
-      'Failed to save loader icon: Test error',
-    )
-  })
-
-  it('should log and rethrow errors from writeFile', async () => {
-    let error = new Error('Test error')
-    mockWriteFile.mockRejectedValueOnce(error)
-
-    await expect(saveLoaderIcon(mockLoaderSvg, mockConfig)).rejects.toThrow(
-      error,
-    )
-    expect(mockLoggerContext.error).toHaveBeenCalledWith(
-      'Failed to save loader icon: Test error',
-    )
-  })
-
-  it('should handle non-Error objects in error handling', async () => {
-    let errorObject = 'String error'
-    mockMkdir.mockRejectedValueOnce(errorObject)
-
-    await expect(saveLoaderIcon(mockLoaderSvg, mockConfig)).rejects.toBe(
-      errorObject,
-    )
-    expect(mockLoggerContext.error).toHaveBeenCalledWith(
-      'Failed to save loader icon: String error',
-    )
+    await expect(saveLoaderIcon(loaderIcon, config)).rejects.toBe(failure)
   })
 })

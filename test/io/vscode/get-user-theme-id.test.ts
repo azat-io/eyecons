@@ -1,148 +1,66 @@
-import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
-import * as vscode from 'vscode'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { createMockLoggerContext } from '../../helpers/create-mock-logger-context'
 import { getUserThemeId } from '../../../extension/io/vscode/get-user-theme-id'
-import { logger } from '../../../extension/io/vscode/logger'
-
-vi.mock('vscode', () => ({
-  workspace: {
-    getConfiguration: vi.fn(),
-  },
-}))
+import { mockSettings } from '../../helpers/mock-settings'
 
 vi.mock('../../../data/themes', () => ({
   themes: [
+    { name: 'Solarized Dark', id: 'solarized-dark' },
     { aliases: ['Default Dark', 'Dark+'], name: 'Dark Theme', id: 'dark' },
-    { aliases: ['Default Light', 'Light+'], name: 'Light Theme', id: 'light' },
     { aliases: ['Monokai Pro'], name: 'Monokai', id: 'monokai' },
     { name: 'Nord', aliases: [], id: 'nord' },
   ],
 }))
 
-let eyeconsConfigMock = {
-  get: vi.fn(),
-}
-
-let workbenchConfigMock = {
-  get: vi.fn(),
-}
-
-let mockLoggerContext = createMockLoggerContext()
-
 describe('getUserThemeId', () => {
   beforeEach(() => {
-    vi.clearAllMocks()
-
-    vi.mocked(vscode.workspace.getConfiguration).mockImplementation(
-      section => ({
-        get: (section === 'eyecons' ? eyeconsConfigMock : workbenchConfigMock)
-          .get,
-        update: vi.fn().mockResolvedValue(null),
-        has: vi.fn(() => true),
-        inspect: vi.fn(),
-      }),
-    )
-
-    vi.spyOn(logger, 'withContext').mockReturnValue(mockLoggerContext)
-  })
-
-  afterEach(() => {
     vi.resetAllMocks()
   })
 
-  it('should return explicitly configured theme when set', () => {
-    eyeconsConfigMock.get.mockReturnValue('monokai')
+  it('should use the theme the user selected for the icons over the VS Code theme', () => {
+    mockSettings({
+      workbench: { colorTheme: 'Nord' },
+      eyecons: { theme: 'monokai' },
+    })
 
-    let result = getUserThemeId()
-
-    expect(result).toBe('monokai')
-    expect(eyeconsConfigMock.get).toHaveBeenCalledWith('theme')
-    expect(workbenchConfigMock.get).not.toHaveBeenCalled()
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith(
-      'Theme setting: monokai',
-    )
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith(
-      'Using explicitly configured theme: monokai',
-    )
+    expect(getUserThemeId()).toBe('monokai')
   })
 
-  it('should detect theme from VS Code when set to "inherit"', () => {
-    eyeconsConfigMock.get.mockReturnValue('inherit')
-    workbenchConfigMock.get.mockReturnValue('Monokai Pro')
+  it.each([
+    ['inherits the VS Code theme', { theme: 'inherit' }],
+    ['selected no theme', {}],
+  ])(
+    'should follow the VS Code theme when the user %s',
+    (_, eyeconsSettings) => {
+      mockSettings({
+        workbench: { colorTheme: 'Nord' },
+        eyecons: eyeconsSettings,
+      })
 
-    let result = getUserThemeId()
+      expect(getUserThemeId()).toBe('nord')
+    },
+  )
 
-    expect(result).toBe('monokai')
-    expect(eyeconsConfigMock.get).toHaveBeenCalledWith('theme')
-    expect(workbenchConfigMock.get).toHaveBeenCalledWith('colorTheme')
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith(
-      'Theme setting: inherit',
-    )
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith(
-      'User VS Code theme: Monokai Pro',
-    )
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith(
-      'Matched user theme to: Monokai (monokai)',
-    )
+  it.each([
+    ['its name', 'Solarized Dark', 'solarized-dark'],
+    ['a name it is part of', 'Monokai Pro (Filter Spectrum)', 'monokai'],
+    ['an alias', 'Default Dark Modern', 'dark'],
+  ])(
+    'should recognize a VS Code theme by %s',
+    (_, colorTheme, expectedThemeId) => {
+      mockSettings({ workbench: { colorTheme } })
+
+      expect(getUserThemeId()).toBe(expectedThemeId)
+    },
+  )
+
+  it('should fall back to the dark theme for an unknown VS Code theme', () => {
+    mockSettings({ workbench: { colorTheme: 'Unknown Theme' } })
+
+    expect(getUserThemeId()).toBe('dark')
   })
 
-  it('should detect theme from VS Code when theme setting is not set', () => {
-    eyeconsConfigMock.get.mockReturnValue(null)
-    workbenchConfigMock.get.mockReturnValue('Nord')
-
-    let result = getUserThemeId()
-
-    expect(result).toBe('nord')
-    expect(eyeconsConfigMock.get).toHaveBeenCalledWith('theme')
-    expect(workbenchConfigMock.get).toHaveBeenCalledWith('colorTheme')
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith(
-      'Theme setting: not set',
-    )
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith(
-      'User VS Code theme: Nord',
-    )
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith(
-      'Matched user theme to: Nord (nord)',
-    )
-  })
-
-  it('should match VS Code theme by alias', () => {
-    eyeconsConfigMock.get.mockReturnValue(null)
-    workbenchConfigMock.get.mockReturnValue('Default Dark')
-
-    let result = getUserThemeId()
-
-    expect(result).toBe('dark')
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith(
-      'Matched user theme to: Dark Theme (dark)',
-    )
-  })
-
-  it('should default to "dark" when no matching theme is found', () => {
-    eyeconsConfigMock.get.mockReturnValue(null)
-    workbenchConfigMock.get.mockReturnValue('Unknown Theme')
-
-    let result = getUserThemeId()
-
-    expect(result).toBe('dark')
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith(
-      'No matching theme found, using default "dark"',
-    )
-  })
-
-  it('should default to "dark" when VS Code theme is not available', () => {
-    eyeconsConfigMock.get.mockReturnValue(null)
-    workbenchConfigMock.get.mockReturnValue(null)
-
-    let result = getUserThemeId()
-
-    expect(result).toBe('dark')
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith(
-      'User VS Code theme: unknown',
-    )
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith(
-      'No matching theme found, using default "dark"',
-    )
+  it('should fall back to the dark theme when VS Code reports no theme', () => {
+    expect(getUserThemeId()).toBe('dark')
   })
 })

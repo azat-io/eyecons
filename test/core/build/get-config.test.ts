@@ -1,87 +1,53 @@
 import type { ExtensionContext } from 'vscode'
 
-import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
-import path from 'node:path'
+import { describe, expect, it } from 'vitest'
 
-import { createMockLoggerContext } from '../../helpers/create-mock-logger-context'
 import { getConfig } from '../../../extension/core/build/get-config'
-import { logger } from '../../../extension/io/vscode/logger'
-
-vi.mock('../../../package.json', () => ({
-  version: '1.2.3',
-}))
-
-vi.mock('../../../extension/io/vscode/logger', () => ({
-  logger: {
-    withContext: vi.fn(),
-  },
-}))
-
-vi.mock('node:path', () => ({
-  default: {
-    join: vi.fn((...arguments_) => arguments_.join('/')),
-  },
-}))
-
-let mockLoggerContext = createMockLoggerContext()
-
-let mockContext = {
-  extensionPath: '/mock/extension/path',
-} as ExtensionContext
+import { version } from '../../../package.json'
 
 describe('getConfig', () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
-    vi.mocked(logger.withContext).mockReturnValue(mockLoggerContext)
+  let context = { extensionPath: '/mock/extension' } as ExtensionContext
+
+  it('should place the icons and the theme definition inside the dist directory of the extension', () => {
+    let config = getConfig(context)
+
+    expect(config).toEqual(
+      expect.objectContaining({
+        iconDefinitionsPath: '/mock/extension/dist/output/definitions.json',
+        outputIconsPath: '/mock/extension/dist/output/icons',
+        sourceIconsPath: '/mock/extension/dist/icons',
+        outputPath: '/mock/extension/dist/output',
+        extensionPath: '/mock/extension/dist',
+      }),
+    )
   })
 
-  afterEach(() => {
-    vi.resetAllMocks()
+  it('should stamp the config with the extension version', () => {
+    expect(getConfig(context).version).toBe(version)
   })
 
-  it('should return the correct extension configuration with absolute paths', () => {
-    let config = getConfig(mockContext)
+  it('should use the default error handling and logging settings', () => {
+    let config = getConfig(context)
 
-    let expectedExtensionPath = '/mock/extension/path/dist'
-    let expectedOutputPath = '/mock/extension/path/dist/output'
+    expect(config).toEqual(
+      expect.objectContaining({
+        errorHandling: { showNotifications: true, continueOnError: true },
+        logging: { level: 'info', toFile: false },
+      }),
+    )
+  })
 
-    expect(config).toEqual({
-      processing: {
-        extremeLightnessThresholds: {
-          light: 0.95,
-          dark: 0.05,
-        },
-        lowSaturationThreshold: 0.05,
-        saturationFactor: 1.2,
-        adjustContrast: true,
+  it('should use the default color processing settings', () => {
+    let config = getConfig(context)
+
+    expect(config.processing).toEqual({
+      extremeLightnessThresholds: {
+        light: 0.95,
+        dark: 0.05,
       },
-      errorHandling: {
-        showNotifications: true,
-        continueOnError: true,
-      },
-      logging: {
-        level: 'info',
-        toFile: false,
-      },
-      iconDefinitionsPath: `${expectedOutputPath}/definitions.json`,
-      sourceIconsPath: `${expectedExtensionPath}/icons`,
-      outputIconsPath: `${expectedOutputPath}/icons`,
-      extensionPath: expectedExtensionPath,
-      outputPath: expectedOutputPath,
-      version: '1.2.3',
+      lowSaturationThreshold: 0.05,
+      saturationFactor: 1.2,
+      adjustContrast: true,
     })
-
-    expect(path.join).toHaveBeenCalledWith('/mock/extension/path', 'dist')
-    expect(path.join).toHaveBeenCalledWith(expectedExtensionPath, 'output')
-    expect(path.join).toHaveBeenCalledWith(
-      expectedOutputPath,
-      'definitions.json',
-    )
-    expect(path.join).toHaveBeenCalledWith(expectedExtensionPath, 'icons')
-    expect(path.join).toHaveBeenCalledWith(expectedOutputPath, 'icons')
-
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith(
-      'Extension configuration loaded',
-    )
   })
 })

@@ -1,284 +1,268 @@
-import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import fs from 'node:fs/promises'
+import path from 'node:path'
 
-import type { ThemeSchema, Theme } from '../../../extension/types/theme'
-import type { Config } from '../../../extension/types/config'
+import type {
+  IconDefinitions,
+  ThemeSchema,
+  Theme,
+} from '../../../extension/types/theme'
 
-import { getHideExplorerArrowValue } from '../../../extension/io/vscode/get-hide-explorer-arrow-value'
-import { createMockLoggerContext } from '../../helpers/create-mock-logger-context'
+import { prepareIconProcessing } from '../../../extension/core/icon/prepare-icon-processing'
+import { formatIconsValues } from '../../../extension/core/icon/format-icons-values'
 import { createMockThemeSchema } from '../../helpers/create-mock-theme-schema'
-import { generateHash } from '../../../extension/core/hash/generate-hash'
 import { validate } from '../../../extension/core/validate/validate'
-import { logger } from '../../../extension/io/vscode/logger'
+import { createMockConfig } from '../../helpers/create-mock-config'
+import { createMockTheme } from '../../helpers/create-mock-theme'
+import { mockSettings } from '../../helpers/mock-settings'
+import { baseIcons } from '../../../data/base-icons'
+import { fileIcons } from '../../../data/file-icons'
 
-interface ValidationResult {
-  isValid: boolean
-  reason?: string
-}
-
-vi.mock('node:fs/promises')
-
-vi.mock('node:path', () => ({
+vi.mock('node:fs/promises', () => ({
   default: {
-    join: vi.fn((...arguments_) => arguments_.join('/')),
+    readFile: vi.fn(),
+    access: vi.fn(),
   },
-}))
-
-vi.mock('../../../extension/io/vscode/get-hide-explorer-arrow-value', () => ({
-  getHideExplorerArrowValue: vi.fn(),
-}))
-
-vi.mock('../../../extension/core/hash/generate-hash', () => ({
-  generateHash: vi.fn(),
 }))
 
 vi.mock('../../../data/base-icons', () => ({
   baseIcons: [
-    { light: false, id: 'file' },
-    { id: 'folder', light: true },
+    { name: 'File', light: true, id: 'file' },
+    { name: 'Folder', id: 'folder' },
   ],
 }))
 
 vi.mock('../../../data/file-icons', () => ({
   fileIcons: [
-    { light: false, id: 'js' },
-    { light: true, id: 'ts' },
+    { extensions: ['js'], name: 'JavaScript', light: true, id: 'js' },
+    { extensions: ['html'], name: 'HTML', id: 'html' },
   ],
 }))
 
-vi.mock('../../../extension/io/vscode/logger', () => ({
-  logger: {
-    withContext: vi.fn(),
-  },
-}))
+/**
+ * Files in the fake file system, by path.
+ */
+let files = new Map<string, string>()
+
+/**
+ * Directories in the fake file system.
+ */
+let directories = new Set<string>()
+
+/**
+ * Checks that a file or a directory exists in the fake file system.
+ *
+ * @param target - Path to check.
+ * @returns Promise that is rejected when nothing exists at the path.
+ */
+function access(target: unknown): Promise<void> {
+  let exists = files.has(String(target)) || directories.has(String(target))
+  return exists ?
+      Promise.resolve()
+    : Promise.reject(new Error(`ENOENT: no such file, '${String(target)}'`))
+}
+
+/**
+ * Reads a file from the fake file system.
+ *
+ * @param file - Path of the file.
+ * @returns Promise with the text of the file, rejected when it is missing.
+ */
+function readFile(file: unknown): Promise<string> {
+  let content = files.get(String(file))
+  return content === undefined ?
+      Promise.reject(new Error(`ENOENT: no such file, '${String(file)}'`))
+    : Promise.resolve(content)
+}
 
 describe('validate', () => {
-  let mockTheme: Theme
-  let mockConfig: Config
-  let mockSchema: ThemeSchema
-  let mockLoggerContext = createMockLoggerContext()
+  let config = createMockConfig()
+  let theme = createMockTheme()
+
+  /**
+   * Options for writing a built theme.
+   */
+  interface BuiltThemeOptions {
+    /**
+     * Fields of the theme definition to replace.
+     */
+    schema?: Partial<ThemeSchema>
+
+    /**
+     * Icon the build left out, as if it had failed to process it.
+     */
+    withoutIcon?: string
+  }
+
+  /**
+   * Writes the theme definition and the icon files the way a build for the
+   * given theme leaves them in the output directory.
+   *
+   * @param builtFor - Theme the icons were built for.
+   * @param options - Deviations from a complete build.
+   * @returns Paths of the icon files, by icon id.
+   */
+  function writeBuiltTheme(
+    builtFor: Theme,
+    options: BuiltThemeOptions = {},
+  ): Record<string, string> {
+    let icons = [
+      ...formatIconsValues(baseIcons, 'base'),
+      ...formatIconsValues(fileIcons, 'files'),
+    ].filter(icon => icon.id !== options.withoutIcon)
+    let iconDefinitions: IconDefinitions = {}
+    let iconFiles: Record<string, string> = {}
+    for (let icon of icons) {
+      let { iconPath, fileName, type, id } = prepareIconProcessing(
+        { temporaryDirectory: '/tmp/eyecons-abc123', icon },
+        builtFor,
+        config,
+      )
+      iconDefinitions[id] = { iconPath }
+      iconFiles[id] = path.join(config.outputIconsPath, type, fileName)
+      files.set(iconFiles[id], '<svg></svg>')
+    }
+    directories.add(config.outputIconsPath)
+    let schema = createMockThemeSchema({
+      folderColor: builtFor.folderColor,
+      version: config.version,
+      themeId: builtFor.id,
+      iconDefinitions,
+      ...options.schema,
+    })
+    files.set(config.iconDefinitionsPath, JSON.stringify(schema))
+    return iconFiles
+  }
 
   beforeEach(() => {
-    vi.clearAllMocks()
-
-    vi.mocked(fs.access).mockResolvedValue(undefined)
-    vi.mocked(logger.withContext).mockReturnValue(mockLoggerContext)
-    vi.mocked(getHideExplorerArrowValue).mockReturnValue(true)
-    vi.mocked(generateHash).mockImplementation(id => `hash-for-${id}`)
-
-    mockTheme = {
-      colors: ['#000000', '#ffffff'],
-      folderColor: 'blue',
-      overrides: {},
-      id: 'dark',
-    } as Theme
-
-    mockConfig = {
-      iconDefinitionsPath: '/mock/path/icons/definitions.json',
-      outputIconsPath: '/mock/path/icons/theme',
-      version: '1.0.0',
-    } as Config
-
-    mockSchema = createMockThemeSchema({
-      iconDefinitions: {
-        'folder-light': {
-          iconPath: './icons/folder-light--hash-for-folder-light.svg',
-        },
-        'file-light': {
-          iconPath: './icons/file-light--hash-for-file-light.svg',
-        },
-        'ts-light': { iconPath: './icons/ts-light--hash-for-ts-light.svg' },
-        folder: { iconPath: './icons/folder--hash-for-folder.svg' },
-        file: { iconPath: './icons/file--hash-for-file.svg' },
-        js: { iconPath: './icons/js--hash-for-js.svg' },
-        ts: { iconPath: './icons/ts--hash-for-ts.svg' },
-      },
-      buildTime: '2023-01-01T00:00:00.000Z',
-    })
-
-    vi.mocked(fs.readFile).mockResolvedValue(JSON.stringify(mockSchema))
-  })
-
-  afterEach(() => {
     vi.resetAllMocks()
+    files.clear()
+    directories.clear()
+    vi.mocked(fs.readFile).mockImplementation(readFile)
+    vi.mocked(fs.access).mockImplementation(access)
+    mockSettings({})
   })
 
-  it('should validate successfully when all conditions are met', async () => {
-    let result: ValidationResult = await validate(mockTheme, mockConfig)
+  it('should accept the icons built for the current theme', async () => {
+    writeBuiltTheme(theme)
 
-    expect(result).toEqual({ isValid: true })
-    expect(mockLoggerContext.info).toHaveBeenCalledWith('Validating icon theme')
-    expect(mockLoggerContext.info).toHaveBeenCalledWith(
-      'Icon theme is valid and up-to-date',
-    )
+    await expect(validate(theme, config)).resolves.toEqual({ isValid: true })
   })
 
-  it('should fail validation when icon definitions file does not exist', async () => {
-    vi.mocked(fs.access).mockRejectedValueOnce(new Error('File not found'))
-
-    let result: ValidationResult = await validate(mockTheme, mockConfig)
-
-    expect(result).toEqual({
+  it('should ask for a build when there is no theme definition', async () => {
+    await expect(validate(theme, config)).resolves.toEqual({
       reason: 'Icon definitions file does not exist',
       isValid: false,
     })
   })
 
-  it('should fail validation when build time is not found in schema', async () => {
-    let schemaWithoutBuildTime = { ...mockSchema, buildTime: null }
-    vi.mocked(fs.readFile).mockResolvedValueOnce(
-      JSON.stringify(schemaWithoutBuildTime),
-    )
+  it('should ask for a build when the theme definition has no build time', async () => {
+    writeBuiltTheme(theme, { schema: { buildTime: '' } })
 
-    let result: ValidationResult = await validate(mockTheme, mockConfig)
-
-    expect(result).toEqual({
+    await expect(validate(theme, config)).resolves.toEqual({
       reason: 'Build time not found in schema',
       isValid: false,
     })
   })
 
-  it('should fail validation when versions do not match', async () => {
-    let schemaWithDifferentVersion = { ...mockSchema, version: '2.0.0' }
-    vi.mocked(fs.readFile).mockResolvedValueOnce(
-      JSON.stringify(schemaWithDifferentVersion),
-    )
+  it('should ask for a build when the icons were built by another version', async () => {
+    writeBuiltTheme(theme, { schema: { version: '0.9.0' } })
 
-    let result: ValidationResult = await validate(mockTheme, mockConfig)
-
-    expect(result).toEqual({
-      reason: 'Version mismatch: 2.0.0 vs 1.0.0',
+    await expect(validate(theme, config)).resolves.toEqual({
+      reason: 'Version mismatch: 0.9.0 vs 1.0.0',
       isValid: false,
     })
   })
 
-  it('should fail validation when folder colors do not match', async () => {
-    let schemaWithDifferentFolderColor = { ...mockSchema, folderColor: 'red' }
-    vi.mocked(fs.readFile).mockResolvedValueOnce(
-      JSON.stringify(schemaWithDifferentFolderColor),
+  it('should ask for a build when the folder color changed', async () => {
+    writeBuiltTheme(theme)
+
+    let result = await validate(
+      createMockTheme({ folderColor: 'purple' }),
+      config,
     )
 
-    let result: ValidationResult = await validate(mockTheme, mockConfig)
-
     expect(result).toEqual({
-      reason: 'Folder color mismatch: red vs blue',
+      reason: 'Folder color mismatch: blue vs purple',
       isValid: false,
     })
   })
 
-  it('should fail validation when explorer arrows settings do not match', async () => {
-    let schemaWithDifferentArrowsSetting = {
-      ...mockSchema,
-      hidesExplorerArrows: false,
-    }
-    vi.mocked(fs.readFile).mockResolvedValueOnce(
-      JSON.stringify(schemaWithDifferentArrowsSetting),
-    )
+  it('should ask for a build when the explorer arrows setting changed', async () => {
+    writeBuiltTheme(theme)
+    mockSettings({ eyecons: { hidesExplorerArrows: false } })
 
-    let result: ValidationResult = await validate(mockTheme, mockConfig)
-
-    expect(result).toEqual({
-      reason: 'Explorer arrows setting mismatch: false vs true',
+    await expect(validate(theme, config)).resolves.toEqual({
+      reason: 'Explorer arrows setting mismatch: true vs false',
       isValid: false,
     })
   })
 
-  it('should fail validation when output icons directory does not exist', async () => {
-    vi.mocked(fs.access)
-      .mockResolvedValueOnce()
-      .mockRejectedValueOnce(new Error('Directory not found'))
+  it('should ask for a build when the theme changed', async () => {
+    writeBuiltTheme(theme)
 
-    let result: ValidationResult = await validate(mockTheme, mockConfig)
+    let result = await validate(createMockTheme({ id: 'nord' }), config)
 
     expect(result).toEqual({
+      reason: expect.stringMatching(
+        /^Icon path for file does not match expected filename: file--[\da-f]{8}\.svg$/u,
+      ) as string,
+      isValid: false,
+    })
+  })
+
+  it('should ask for a build when the output icons directory is missing', async () => {
+    writeBuiltTheme(theme)
+    directories.clear()
+
+    await expect(validate(theme, config)).resolves.toEqual({
       reason: 'Output icons directory does not exist',
       isValid: false,
     })
   })
 
-  it('should fail validation when icon definition is not found', async () => {
-    let schemaWithMissingIconDefinition = {
-      ...mockSchema,
-      iconDefinitions: {
-        ...mockSchema.iconDefinitions,
-      },
-    }
-    delete schemaWithMissingIconDefinition.iconDefinitions['file']
+  it.each(['html', 'js-light'])(
+    'should ask for a build when the %s icon is not defined',
+    async iconId => {
+      writeBuiltTheme(theme, { withoutIcon: iconId })
 
-    vi.mocked(fs.readFile).mockResolvedValueOnce(
-      JSON.stringify(schemaWithMissingIconDefinition),
-    )
+      await expect(validate(theme, config)).resolves.toEqual({
+        reason: `Icon definition for ${iconId} not found`,
+        isValid: false,
+      })
+    },
+  )
 
-    let result = await validate(mockTheme, mockConfig)
+  it.each(['file', 'file-light', 'js', 'js-light'])(
+    'should ask for a build when the %s icon file is missing',
+    async iconId => {
+      let iconFiles = writeBuiltTheme(theme)
+      files.delete(iconFiles[iconId]!)
 
-    expect(result).toEqual({
-      reason: 'Icon definition for file not found',
+      await expect(validate(theme, config)).resolves.toEqual({
+        reason: `Icon file not found: ${iconFiles[iconId]}`,
+        isValid: false,
+      })
+    },
+  )
+
+  it('should report a theme definition that cannot be read', async () => {
+    writeBuiltTheme(theme)
+    vi.mocked(fs.readFile).mockRejectedValue(new Error('Permission denied'))
+
+    await expect(validate(theme, config)).resolves.toEqual({
+      reason: 'Validation error: Permission denied',
       isValid: false,
     })
   })
 
-  it('should fail validation when icon path does not match expected filename', async () => {
-    let schemaWithWrongIconPath = {
-      ...mockSchema,
-      iconDefinitions: {
-        ...mockSchema.iconDefinitions,
-        file: { iconPath: './icons/file--wrong-hash.svg' },
-      },
-    }
+  it('should report a non-Error failure', async () => {
+    writeBuiltTheme(theme)
+    vi.mocked(fs.readFile).mockRejectedValue('Permission denied')
 
-    vi.mocked(fs.readFile).mockResolvedValueOnce(
-      JSON.stringify(schemaWithWrongIconPath),
-    )
-
-    let result = await validate(mockTheme, mockConfig)
-
-    expect(result).toEqual({
-      reason:
-        'Icon path for file does not match expected filename: file--hash-for-file.svg',
+    await expect(validate(theme, config)).resolves.toEqual({
+      reason: 'Validation error: Permission denied',
       isValid: false,
     })
-  })
-
-  it('should fail validation when icon file does not exist', async () => {
-    vi.mocked(fs.access)
-      .mockResolvedValueOnce()
-      .mockResolvedValueOnce()
-      .mockResolvedValueOnce()
-      .mockRejectedValueOnce(new Error('File not found'))
-
-    let result = await validate(mockTheme, mockConfig)
-
-    expect(result).toEqual({
-      reason: expect.stringContaining('Icon file not found:') as string,
-      isValid: false,
-    })
-  })
-
-  it('should handle errors during validation', async () => {
-    vi.mocked(fs.readFile).mockRejectedValueOnce(new Error('Read error'))
-
-    let result = await validate(mockTheme, mockConfig)
-
-    expect(result).toEqual({
-      reason: 'Validation error: Read error',
-      isValid: false,
-    })
-    expect(mockLoggerContext.error).toHaveBeenCalledWith(
-      'Validation failed: Read error',
-    )
-  })
-
-  it('should handle non-Error objects during validation', async () => {
-    vi.mocked(fs.readFile).mockRejectedValueOnce('String error')
-
-    let result = await validate(mockTheme, mockConfig)
-
-    expect(result).toEqual({
-      reason: 'Validation error: String error',
-      isValid: false,
-    })
-    expect(mockLoggerContext.error).toHaveBeenCalledWith(
-      'Validation failed: String error',
-    )
   })
 })

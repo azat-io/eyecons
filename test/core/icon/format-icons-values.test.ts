@@ -91,39 +91,36 @@ describe('formatIconsValues', () => {
 
     let result = formatIconsValues(icons, 'files')
 
-    expect(result).toHaveLength(4)
-
-    expect(result[0]).toEqual({
-      extensions: ['js', 'mjs', 'cjs'],
-      name: 'JavaScript',
-      id: 'javascript',
-      theme: 'dark',
-      type: 'files',
-    })
-
-    expect(result[1]).toEqual({
-      extensions: ['ts', 'tsx'],
-      name: 'TypeScript',
-      id: 'typescript',
-      theme: 'dark',
-      type: 'files',
-    })
-
-    expect(result[2]).toEqual({
-      extensions: ['ts', 'tsx'],
-      id: 'typescript-light',
-      name: 'TypeScript',
-      theme: 'light',
-      type: 'files',
-    })
-
-    expect(result[3]).toEqual({
-      files: ['package.json', 'package-lock.json'],
-      name: 'Package JSON',
-      id: 'package-json',
-      theme: 'dark',
-      type: 'files',
-    })
+    expect(result).toEqual([
+      {
+        extensions: ['js', 'mjs', 'cjs'],
+        name: 'JavaScript',
+        id: 'javascript',
+        theme: 'dark',
+        type: 'files',
+      },
+      {
+        extensions: ['ts', 'tsx'],
+        name: 'TypeScript',
+        id: 'typescript',
+        theme: 'dark',
+        type: 'files',
+      },
+      {
+        extensions: ['ts', 'tsx'],
+        id: 'typescript-light',
+        name: 'TypeScript',
+        theme: 'light',
+        type: 'files',
+      },
+      {
+        files: ['package.json', 'package-lock.json'],
+        name: 'Package JSON',
+        id: 'package-json',
+        theme: 'dark',
+        type: 'files',
+      },
+    ])
   })
 
   it('should maintain other properties when formatting', () => {

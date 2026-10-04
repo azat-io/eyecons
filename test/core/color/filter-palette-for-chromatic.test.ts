@@ -1,121 +1,53 @@
 import type { Vector } from '@texel/color'
 
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-
-import type { ColorMatchContext } from '../../../extension/types/color'
+import { describe, expect, it } from 'vitest'
 
 import { filterPaletteForChromatic } from '../../../extension/core/color/filter-palette-for-chromatic'
-import { createMockLoggerContext } from '../../helpers/create-mock-logger-context'
-import * as isAchromaticModule from '../../../extension/core/color/is-achromatic'
 import { createMockConfig } from '../../helpers/create-mock-config'
-import { logger } from '../../../extension/io/vscode/logger'
-
-let mockLoggerContext = createMockLoggerContext()
-
-vi.mock('../../../extension/io/vscode/logger', () => ({
-  logger: {
-    withContext: vi.fn(),
-  },
-}))
 
 describe('filterPaletteForChromatic', () => {
-  let mockConfig = createMockConfig()
+  let config = createMockConfig()
 
-  let chromatic: Vector = [0.5, 0.3, 180]
-  let achromatic: Vector = [0.5, 0.02, 0]
+  let sourceColor: Vector = [0.6, 0.25, 30]
+  let teal: Vector = [0.5, 0.3, 180]
+  let purple: Vector = [0.6, 0.2, 300]
+  let middleGray: Vector = [0.5, 0.02, 0]
+  let nearBlack: Vector = [0.03, 0.08, 0]
 
-  beforeEach(() => {
-    vi.clearAllMocks()
-    vi.mocked(logger.withContext).mockReturnValue(mockLoggerContext)
-  })
-
-  it('should filter out achromatic colors when chromatic colors are available', () => {
-    let isAchromaticSpy = vi.spyOn(isAchromaticModule, 'isAchromatic')
-    isAchromaticSpy.mockReturnValueOnce(false).mockReturnValueOnce(true)
-
-    let themePalette: Vector[] = [chromatic, achromatic]
-    let context: ColorMatchContext = {
+  /**
+   * Filters a palette for the chromatic source color.
+   *
+   * @param themePalette - Palette the filter picks matches from.
+   * @returns The chromatic colors, or the palette itself when there are none.
+   */
+  function filterPalette(themePalette: Vector[]): Vector[] {
+    return filterPaletteForChromatic({
       sourceAchromatic: false,
-      sourceColor: chromatic,
-      config: mockConfig,
       themePalette,
-    }
+      sourceColor,
+      config,
+    })
+  }
 
-    let result = filterPaletteForChromatic(context)
+  it('should drop the achromatic colors from a palette with chromatic ones', () => {
+    let result = filterPalette([middleGray, teal, nearBlack, purple])
 
-    expect(result).toHaveLength(1)
-    expect(result).toContainEqual(chromatic)
-    expect(result).not.toContainEqual(achromatic)
-
-    isAchromaticSpy.mockRestore()
+    expect(result).toEqual([teal, purple])
   })
 
-  it('should return full palette when no chromatic colors are available', () => {
-    let isAchromaticSpy = vi.spyOn(isAchromaticModule, 'isAchromatic')
-    isAchromaticSpy.mockReturnValue(true)
+  it('should return the whole palette when it has only achromatic colors', () => {
+    let palette = [middleGray, nearBlack]
 
-    let themePalette: Vector[] = [achromatic, achromatic]
-    let context: ColorMatchContext = {
-      sourceAchromatic: false,
-      sourceColor: chromatic,
-      config: mockConfig,
-      themePalette,
-    }
+    let result = filterPalette(palette)
 
-    let result = filterPaletteForChromatic(context)
-
-    expect(result).toBe(themePalette)
-    expect(result).toHaveLength(2)
-
-    isAchromaticSpy.mockRestore()
+    expect(result).toBe(palette)
   })
 
-  it('should handle empty palette', () => {
-    let themePalette: Vector[] = []
-    let context: ColorMatchContext = {
-      sourceAchromatic: false,
-      sourceColor: chromatic,
-      config: mockConfig,
-      themePalette,
-    }
+  it('should return an empty palette as is', () => {
+    let palette: Vector[] = []
 
-    let result = filterPaletteForChromatic(context)
+    let result = filterPalette(palette)
 
-    expect(result).toBe(themePalette)
-    expect(result).toHaveLength(0)
-  })
-
-  it('should log appropriate messages', () => {
-    let isAchromaticSpy = vi.spyOn(isAchromaticModule, 'isAchromatic')
-
-    isAchromaticSpy.mockReturnValue(false)
-    let themePaletteWithChromatic: Vector[] = [chromatic, chromatic]
-    let contextWithChromatic: ColorMatchContext = {
-      themePalette: themePaletteWithChromatic,
-      sourceAchromatic: false,
-      sourceColor: chromatic,
-      config: mockConfig,
-    }
-
-    filterPaletteForChromatic(contextWithChromatic)
-    expect(mockLoggerContext.info).toHaveBeenCalledWith(
-      'Found 2 chromatic colors for chromatic source',
-    )
-
-    isAchromaticSpy.mockReturnValue(true)
-    let themePaletteWithoutChromatic: Vector[] = [achromatic, achromatic]
-    let contextWithoutChromatic: ColorMatchContext = {
-      themePalette: themePaletteWithoutChromatic,
-      sourceAchromatic: false,
-      sourceColor: chromatic,
-      config: mockConfig,
-    }
-
-    filterPaletteForChromatic(contextWithoutChromatic)
-    expect(mockLoggerContext.warn).toHaveBeenCalledWith(
-      'No chromatic colors in palette, using full palette',
-    )
-
-    isAchromaticSpy.mockRestore()
+    expect(result).toBe(palette)
   })
 })

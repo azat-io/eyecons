@@ -1,19 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import path from 'node:path'
 
-import type { FormattedIconValue } from '../../../extension/types/icon'
-import type { ThemeData, Theme } from '../../../extension/types/theme'
-import type { Config } from '../../../extension/types/config'
-
-import { createThemeAssociations } from '../../../extension/core/build/create-theme-associations'
 import { createTemporaryDirectory } from '../../../extension/io/file/create-temporary-directory'
 import { processSingleIcon } from '../../../extension/core/build/process-single-icon'
-import { formatIconsValues } from '../../../extension/core/icon/format-icons-values'
-import { createMockLoggerContext } from '../../helpers/create-mock-logger-context'
 import { processIcons } from '../../../extension/core/build/process-icons'
 import { createMockConfig } from '../../helpers/create-mock-config'
-import { logger } from '../../../extension/io/vscode/logger'
-import { baseIcons } from '../../../data/base-icons'
-import { fileIcons } from '../../../data/file-icons'
+import { createMockTheme } from '../../helpers/create-mock-theme'
 
 vi.mock('../../../extension/io/file/create-temporary-directory', () => ({
   createTemporaryDirectory: vi.fn(),
@@ -23,17 +15,9 @@ vi.mock('../../../extension/core/build/process-single-icon', () => ({
   processSingleIcon: vi.fn(),
 }))
 
-vi.mock('../../../extension/core/icon/format-icons-values', () => ({
-  formatIconsValues: vi.fn(),
-}))
-
-vi.mock('../../../extension/core/build/create-theme-associations', () => ({
-  createThemeAssociations: vi.fn(),
-}))
-
 vi.mock('../../../data/base-icons', () => ({
   baseIcons: [
-    { name: 'File', id: 'file' },
+    { name: 'File', light: true, id: 'file' },
     { name: 'Folder', id: 'folder' },
   ],
 }))
@@ -41,189 +25,105 @@ vi.mock('../../../data/base-icons', () => ({
 vi.mock('../../../data/file-icons', () => ({
   fileIcons: [
     { extensions: ['html', 'htm'], name: 'HTML', id: 'html' },
-    { files: ['script.js'], name: 'JavaScript', extensions: ['js'], id: 'js' },
+    {
+      files: ['script.js'],
+      extensions: ['js'],
+      name: 'JavaScript',
+      light: true,
+      id: 'js',
+    },
   ],
 }))
 
-vi.mock('../../../extension/io/vscode/logger', () => ({
-  logger: {
-    withContext: vi.fn(),
-  },
-}))
-
-let mockLoggerContext = createMockLoggerContext()
-
 describe('processIcons', () => {
-  let mockTheme: Theme
-  let mockConfig: Config
-  let mockBaseIconValues: FormattedIconValue[]
-  let mockFileIconValues: FormattedIconValue[]
-  let mockThemeData: ThemeData
+  let config = createMockConfig()
+  let theme = createMockTheme()
+  let temporaryDirectory = '/tmp/eyecons-abc123'
+
+  /**
+   * Icons the faked `processSingleIcon` wrote, as `<directory>/<type>/<id>`.
+   */
+  let writtenIcons: string[] = []
 
   beforeEach(() => {
-    vi.clearAllMocks()
-
-    vi.mocked(logger.withContext).mockReturnValue(mockLoggerContext)
-
-    vi.mocked(createTemporaryDirectory).mockResolvedValue(
-      '/mock/temp/directory',
-    )
-
-    mockBaseIconValues = [
-      {
-        theme: 'dark',
-        name: 'File',
-        type: 'base',
-        id: 'file',
-      },
-      {
-        name: 'Folder',
-        theme: 'dark',
-        id: 'folder',
-        type: 'base',
-      },
-    ]
-
-    mockFileIconValues = [
-      {
-        extensions: ['html', 'htm'],
-        theme: 'dark',
-        type: 'files',
-        name: 'HTML',
-        id: 'html',
-      },
-      {
-        files: ['script.js'],
-        name: 'JavaScript',
-        extensions: ['js'],
-        theme: 'dark',
-        type: 'files',
-        id: 'js',
-      },
-    ]
-
-    vi.mocked(formatIconsValues)
-      .mockReturnValueOnce(mockBaseIconValues)
-      .mockReturnValueOnce(mockFileIconValues)
-
-    vi.mocked(processSingleIcon).mockImplementation(({ icon }) =>
-      Promise.resolve({
-        iconPath: `./icons/${icon.id}.svg`,
+    vi.resetAllMocks()
+    writtenIcons = []
+    vi.mocked(createTemporaryDirectory).mockResolvedValue(temporaryDirectory)
+    vi.mocked(processSingleIcon).mockImplementation(parameters => {
+      let { icon } = parameters
+      writtenIcons.push(
+        path.join(parameters.temporaryDirectory, icon.type, icon.id),
+      )
+      return Promise.resolve({
+        iconPath: `./icons/${icon.type}/${icon.id}--hash.svg`,
         id: icon.id,
-      }),
-    )
+      })
+    })
+  })
 
-    mockThemeData = {
+  it('should process every icon and its light variant into the temporary directory', async () => {
+    let result = await processIcons(theme, config)
+
+    expect(result.temporaryDirectory).toBe(temporaryDirectory)
+    expect(writtenIcons).toHaveLength(6)
+    expect(writtenIcons).toEqual(
+      expect.arrayContaining([
+        '/tmp/eyecons-abc123/base/file',
+        '/tmp/eyecons-abc123/base/file-light',
+        '/tmp/eyecons-abc123/base/folder',
+        '/tmp/eyecons-abc123/files/html',
+        '/tmp/eyecons-abc123/files/js',
+        '/tmp/eyecons-abc123/files/js-light',
+      ]),
+    )
+  })
+
+  it('should define every icon with the path of its processed file', async () => {
+    let { iconDefinitions } = await processIcons(theme, config)
+
+    expect(iconDefinitions).toEqual({
+      'file-light': { iconPath: './icons/base/file-light--hash.svg' },
+      'js-light': { iconPath: './icons/files/js-light--hash.svg' },
+      folder: { iconPath: './icons/base/folder--hash.svg' },
+      html: { iconPath: './icons/files/html--hash.svg' },
+      file: { iconPath: './icons/base/file--hash.svg' },
+      js: { iconPath: './icons/files/js--hash.svg' },
+    })
+  })
+
+  it('should associate file extensions and names with the icons of each theme', async () => {
+    let { themeData } = await processIcons(theme, config)
+
+    expect(themeData).toEqual({
       dark: {
-        fileExtensions: {
-          html: 'html',
-          htm: 'html',
-          js: 'js',
-        },
-        fileNames: {
-          'script.js': 'js',
-        },
+        fileExtensions: { html: 'html', htm: 'html', js: 'js' },
+        fileNames: { 'script.js': 'js' },
       },
       light: {
-        fileExtensions: {},
-        fileNames: {},
+        fileNames: { 'script.js': 'js-light' },
+        fileExtensions: { js: 'js-light' },
       },
-    }
-
-    vi.mocked(createThemeAssociations).mockReturnValue(mockThemeData)
-
-    mockTheme = {
-      colors: ['#000000', '#ffffff'],
-      overrides: {},
-    } as Theme
-
-    mockConfig = createMockConfig()
-  })
-
-  it('should process icons successfully', async () => {
-    let result = await processIcons(mockTheme, mockConfig)
-
-    expect(createTemporaryDirectory).toHaveBeenCalledWith()
-
-    expect(formatIconsValues).toHaveBeenCalledWith(baseIcons, 'base')
-    expect(formatIconsValues).toHaveBeenCalledWith(fileIcons, 'files')
-
-    expect(processSingleIcon).toHaveBeenCalledTimes(
-      mockBaseIconValues.length + mockFileIconValues.length,
-    )
-
-    expect(processSingleIcon).toHaveBeenCalledWith(
-      {
-        temporaryDirectory: '/mock/temp/directory',
-        icon: mockBaseIconValues[0],
-      },
-      mockTheme,
-      mockConfig,
-    )
-
-    expect(createThemeAssociations).toHaveBeenCalledWith([
-      ...mockBaseIconValues,
-      ...mockFileIconValues,
-    ])
-
-    expect(result).toEqual({
-      iconDefinitions: {
-        folder: { iconPath: './icons/folder.svg' },
-        file: { iconPath: './icons/file.svg' },
-        html: { iconPath: './icons/html.svg' },
-        js: { iconPath: './icons/js.svg' },
-      },
-      temporaryDirectory: '/mock/temp/directory',
-      themeData: mockThemeData,
     })
-
-    expect(mockLoggerContext.info).toHaveBeenCalledWith(
-      'Processing icons in temporary directory',
-    )
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith(
-      'Using temporary directory: /mock/temp/directory',
-    )
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith('Found 2 base icons')
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith('Found 2 file icons')
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith(
-      'Total icons to process: 4',
-    )
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith('Processed icon: file')
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith(
-      'Created icon definitions',
-    )
   })
 
-  it('should handle errors during processing', async () => {
+  it('should rethrow when an icon cannot be processed', async () => {
     let error = new Error('Failed to process icon')
-    vi.mocked(processSingleIcon).mockRejectedValueOnce(error)
+    vi.mocked(processSingleIcon).mockRejectedValue(error)
 
-    await expect(processIcons(mockTheme, mockConfig)).rejects.toThrow(error)
-
-    expect(mockLoggerContext.error).toHaveBeenCalledWith(
-      'Failed to process icons: Failed to process icon',
-    )
+    await expect(processIcons(theme, config)).rejects.toBe(error)
   })
 
-  it('should handle errors during temporary directory creation', async () => {
+  it('should rethrow when the temporary directory cannot be created', async () => {
     let error = new Error('Failed to create temporary directory')
-    vi.mocked(createTemporaryDirectory).mockRejectedValueOnce(error)
+    vi.mocked(createTemporaryDirectory).mockRejectedValue(error)
 
-    await expect(processIcons(mockTheme, mockConfig)).rejects.toThrow(error)
-
-    expect(mockLoggerContext.error).toHaveBeenCalledWith(
-      'Failed to process icons: Failed to create temporary directory',
-    )
+    await expect(processIcons(theme, config)).rejects.toBe(error)
   })
 
-  it('should handle non-Error exceptions', async () => {
-    let error = 'String error message'
-    vi.mocked(createTemporaryDirectory).mockRejectedValueOnce(error)
+  it('should rethrow a non-Error failure unchanged', async () => {
+    let failure = 'Disk is full'
+    vi.mocked(createTemporaryDirectory).mockRejectedValue(failure)
 
-    await expect(processIcons(mockTheme, mockConfig)).rejects.toThrow(error)
-
-    expect(mockLoggerContext.error).toHaveBeenCalledWith(
-      'Failed to process icons: String error message',
-    )
+    await expect(processIcons(theme, config)).rejects.toBe(failure)
   })
 })

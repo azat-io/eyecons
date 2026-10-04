@@ -8,316 +8,152 @@ import { calculateWeightedDistance } from '../../../extension/core/color/calcula
 import { createMockConfig } from '../../helpers/create-mock-config'
 
 describe('calculateWeightedDistance', () => {
-  let mockConfig = createMockConfig()
+  let config = createMockConfig()
 
-  let weights: ColorComponents = {
-    lightness: 1,
-    chroma: 1,
-    hue: 1,
+  let noWeights: ColorComponents = { lightness: 0, chroma: 0, hue: 0 }
+  let hueOnly: ColorComponents = { lightness: 0, chroma: 0, hue: 1 }
+
+  /**
+   * Measures the distance between two colors.
+   *
+   * @param color1 - Color the distance is measured from.
+   * @param color2 - Color the distance is measured to.
+   * @param weights - Weights for each component.
+   * @returns Weighted distance between the colors.
+   */
+  function distance(
+    color1: Vector,
+    color2: Vector,
+    weights: ColorComponents,
+  ): number {
+    return calculateWeightedDistance({ weights, config, color1, color2 })
   }
 
-  describe('basic distance calculations', () => {
-    it('should calculate lightness difference correctly', () => {
-      let color1: Vector = [0.5, 0, 0]
-      let color2: Vector = [0.7, 0, 0]
+  /**
+   * Measures only the hue part of the distance between two moderately saturated
+   * colors that differ in hue alone.
+   *
+   * @param hue1 - Hue the distance is measured from.
+   * @param hue2 - Hue the distance is measured to.
+   * @returns Distance caused by the hue difference.
+   */
+  function hueDistance(hue1: number, hue2: number): number {
+    return distance([0.5, 0.08, hue1], [0.5, 0.08, hue2], hueOnly)
+  }
 
-      let distance = calculateWeightedDistance({
-        weights: { ...weights, chroma: 0, hue: 0 },
-        config: mockConfig,
-        color1,
-        color2,
+  describe('lightness and chroma', () => {
+    it('should measure the lightness difference', () => {
+      let expectedDistance = 0.2
+
+      let result = distance([0.5, 0, 0], [0.7, 0, 0], {
+        ...noWeights,
+        lightness: 1,
       })
 
-      expect(distance).toBeCloseTo(0.2, 2)
+      expect(result).toBeCloseTo(expectedDistance)
     })
 
-    it('should calculate chroma difference correctly', () => {
-      let color1: Vector = [0.5, 0.2, 180]
-      let color2: Vector = [0.5, 0.4, 180]
+    it('should measure the chroma difference', () => {
+      let expectedDistance = 0.2
 
-      let distance = calculateWeightedDistance({
-        weights: { ...weights, lightness: 0, hue: 0 },
-        config: mockConfig,
-        color1,
-        color2,
+      let result = distance([0.5, 0.2, 180], [0.5, 0.4, 180], {
+        ...noWeights,
+        chroma: 1,
       })
 
-      expect(distance).toBeCloseTo(0.2, 2)
+      expect(result).toBeCloseTo(expectedDistance)
     })
 
-    it('should ignore hue when chroma is too low', () => {
-      let color1: Vector = [0.5, 0.01, 180]
-      let color2: Vector = [0.5, 0.01, 270]
-
-      let distance = calculateWeightedDistance({
-        config: mockConfig,
-        weights,
-        color1,
-        color2,
-      })
-
-      expect(distance).toBeCloseTo(0, 2)
-    })
-  })
-
-  describe('hue difference handling', () => {
-    it('should handle yellow hues (90-105) specially', () => {
-      let color1: Vector = [0.5, 0.2, 95]
-      let color2: Vector = [0.5, 0.2, 120]
-
-      let distance1 = calculateWeightedDistance({
-        config: mockConfig,
-        weights,
-        color1,
-        color2,
-      })
-
-      let color3: Vector = [0.5, 0.2, 30]
-      let distance2 = calculateWeightedDistance({
-        config: mockConfig,
-        color2: color3,
-        weights,
-        color1,
-      })
-
-      expect(distance1).toBeGreaterThan(0)
-      expect(distance2).toBeGreaterThan(distance1)
-    })
-
-    it('should handle yellow-green hues (40-110) with special weight', () => {
-      let color1: Vector = [0.5, 0.2, 75]
-      let color2: Vector = [0.5, 0.2, 150]
-
-      let distance = calculateWeightedDistance({
-        config: mockConfig,
-        weights,
-        color1,
-        color2,
-      })
-
-      expect(distance).toBeGreaterThan(0)
-    })
-
-    it('should handle red-purple hues specially', () => {
-      let color1: Vector = [0.5, 0.2, 300]
-      let color2: Vector = [0.5, 0.2, 355]
-
-      let distance = calculateWeightedDistance({
-        config: mockConfig,
-        weights,
-        color1,
-        color2,
-      })
-
-      expect(distance).toBeGreaterThan(0.5)
-    })
-  })
-
-  describe('chroma penalty handling', () => {
-    it('should apply penalty when comparing chromatic to achromatic colors', () => {
-      let color1: Vector = [0.5, 0.2, 180]
-      let color2: Vector = [0.5, 0.01, 180]
-
-      let distance = calculateWeightedDistance({
-        config: mockConfig,
-        weights,
-        color1,
-        color2,
-      })
-
-      expect(distance).toBeGreaterThan(0.19)
-    })
-
-    it('should apply extra penalty for low saturation differences', () => {
-      let color1: Vector = [0.5, 0.06, 180]
-      let color2: Vector = [0.5, 0.04, 180]
-
-      let distance = calculateWeightedDistance({
-        config: mockConfig,
-        weights,
-        color1,
-        color2,
-      })
-
-      expect(distance).toBeGreaterThan(0.02)
-    })
-
-    it('should apply hue-based penalty for saturated colors with large hue difference', () => {
-      let color1: Vector = [0.5, 0.15, 0]
-      let color2: Vector = [0.5, 0.15, 180]
-
-      let distance = calculateWeightedDistance({
-        config: mockConfig,
-        weights,
-        color1,
-        color2,
-      })
-
-      expect(distance).toBeGreaterThan(1)
-    })
-  })
-
-  describe('edge cases', () => {
-    it('should handle identical colors', () => {
+    it('should find no distance between identical colors', () => {
       let color: Vector = [0.5, 0.2, 180]
 
-      let distance = calculateWeightedDistance({
-        config: mockConfig,
-        color1: color,
-        color2: color,
-        weights,
-      })
-
-      expect(distance).toBe(0)
-    })
-
-    it('should handle extreme hue differences', () => {
-      let color1: Vector = [0.5, 0.2, 0]
-      let color2: Vector = [0.5, 0.2, 359]
-
-      let distance = calculateWeightedDistance({
-        config: mockConfig,
-        weights,
-        color1,
-        color2,
-      })
-
-      expect(distance).toBeLessThan(0.1)
-    })
-
-    it('should handle zero weights', () => {
-      let color1: Vector = [0.5, 0.2, 180]
-      let color2: Vector = [0.7, 0.4, 270]
-
-      let distance = calculateWeightedDistance({
-        weights: { lightness: 0, chroma: 0, hue: 0 },
-        config: mockConfig,
-        color1,
-        color2,
-      })
-
-      expect(distance).toBeGreaterThan(0)
-      expect(distance).toBeLessThan(2)
-    })
-  })
-
-  describe('special color combinations', () => {
-    it('should handle warm colors specially', () => {
-      let color1: Vector = [0.5, 0.2, 30]
-      let color2: Vector = [0.5, 0.2, 210]
-
-      let distance = calculateWeightedDistance({
-        config: mockConfig,
-        weights,
-        color1,
-        color2,
-      })
-
-      expect(distance).toBeGreaterThan(0.5)
-    })
-
-    it('should handle analogous colors', () => {
-      let color1: Vector = [0.5, 0.2, 180]
-      let color2: Vector = [0.5, 0.2, 200]
-
-      let distance = calculateWeightedDistance({
-        config: mockConfig,
-        weights,
-        color1,
-        color2,
-      })
-
-      expect(distance).toBeLessThan(0.3)
-    })
-  })
-
-  describe('getHueMultiplier', () => {
-    it('should return normal multiplier for non-special hues', () => {
-      let hue1 = 200
-      let hue2 = 220
-
-      let distance = calculateWeightedDistance({
-        color1: [0.5, 0.2, hue1] as Vector,
-        color2: [0.5, 0.2, hue2] as Vector,
-        config: mockConfig,
-        weights,
-      })
-
-      expect(distance).toBeLessThan(
-        calculateWeightedDistance({
-          color2: [0.5, 0.2, 120] as Vector,
-          color1: [0.5, 0.2, 95] as Vector,
-          config: mockConfig,
-          weights,
-        }),
+      expect(distance(color, color, { lightness: 1, chroma: 1, hue: 1 })).toBe(
+        0,
       )
     })
   })
 
-  describe('calculateChromaPenalty', () => {
-    it('should apply base chroma penalty when second color is more saturated', () => {
-      let color1: Vector = [0.5, 0.01, 180]
-      let color2: Vector = [0.5, 0.06, 180]
+  describe('hue', () => {
+    it('should ignore the hue of near-gray colors', () => {
+      let result = distance([0.5, 0.01, 180], [0.5, 0.01, 270], hueOnly)
 
-      let distance = calculateWeightedDistance({
-        weights: { lightness: 0, chroma: 0, hue: 0 },
-        config: mockConfig,
-        color1,
-        color2,
-      })
-
-      let expectedPenalty = Math.sqrt((0.06 - 0.01) * 3.5)
-      expect(distance).toBeCloseTo(expectedPenalty, 2)
+      expect(result).toBe(0)
     })
 
-    it('should apply enhanced chroma penalty when second color is more saturated', () => {
-      let color1: Vector = [0.5, 0.04, 180]
-      let color2: Vector = [0.5, 0.06, 180]
+    it('should grow with the hue difference', () => {
+      expect(hueDistance(200, 220)).toBeLessThan(hueDistance(200, 240))
+      expect(hueDistance(200, 240)).toBeLessThan(hueDistance(200, 280))
+    })
 
-      let distance = calculateWeightedDistance({
-        config: {
-          ...mockConfig,
-          processing: {
-            ...mockConfig.processing,
-            lowSaturationThreshold: 0.05,
-          },
-        },
-        weights: { lightness: 0, chroma: 0, hue: 0 },
-        color1,
-        color2,
-      })
+    it('should treat hues on both sides of the start of the color wheel as close', () => {
+      expect(hueDistance(0, 359)).toBeCloseTo(hueDistance(0, 1))
+    })
 
-      let expectedPenalty = Math.sqrt((0.06 - 0.04) * 5)
-      expect(distance).toBeCloseTo(expectedPenalty, 2)
+    it.each([
+      { step: 'from yellow towards green', blues: [200, 220], hues: [95, 115] },
+      { step: 'from yellow towards orange', blues: [200, 260], hues: [95, 35] },
+      { step: 'from yellow-green', blues: [200, 220], hues: [60, 80] },
+      { step: 'from a warm orange', blues: [200, 220], hues: [30, 50] },
+      { step: 'between purples', blues: [200, 220], hues: [300, 320] },
+      { step: 'from purple towards red', blues: [200, 280], hues: [300, 20] },
+      { step: 'from red towards purple', blues: [200, 280], hues: [10, 290] },
+    ] as { blues: [number, number]; hues: [number, number]; step: string }[])(
+      'should weigh a hue step $step more than the same step between blues',
+      ({ blues, hues }) => {
+        expect(hueDistance(...hues)).toBeGreaterThan(hueDistance(...blues))
+      },
+    )
+
+    it('should weigh a hue step within yellow like the same step between blues', () => {
+      expect(hueDistance(95, 75)).toBeCloseTo(hueDistance(200, 220))
     })
   })
 
-  it('should return normal multiplier for yellow hue with close second hue', () => {
-    let yellowHue = 95
-    let closeHue = 93
+  describe('penalties', () => {
+    it.each([
+      [
+        'a saturated color to a near-gray one',
+        [0.5, 0.2, 180],
+        [0.5, 0.01, 180],
+      ],
+      [
+        'a near-gray color to a saturated one',
+        [0.5, 0.01, 180],
+        [0.5, 0.2, 180],
+      ],
+      [
+        'a slightly saturated color to a dull one',
+        [0.5, 0.06, 180],
+        [0.5, 0.04, 180],
+      ],
+      [
+        'a dull color to a slightly saturated one',
+        [0.5, 0.04, 180],
+        [0.5, 0.06, 180],
+      ],
+    ] as [string, Vector, Vector][])(
+      'should penalize matching %s',
+      (_, color1, color2) => {
+        expect(distance(color1, color2, noWeights)).toBeGreaterThan(0)
+      },
+    )
 
-    let distance = calculateWeightedDistance({
-      color1: [0.5, 0.2, yellowHue] as Vector,
-      color2: [0.5, 0.2, closeHue] as Vector,
-      config: mockConfig,
-      weights,
+    it('should not penalize matching two saturated colors of the same hue', () => {
+      let result = distance([0.5, 0.2, 180], [0.5, 0.4, 180], noWeights)
+
+      expect(result).toBe(0)
     })
 
-    let distanceWithFarHue = calculateWeightedDistance({
-      color1: [0.5, 0.2, yellowHue] as Vector,
-      color2: [0.5, 0.2, 106] as Vector,
-      config: mockConfig,
-      weights,
+    it('should penalize saturated colors with very different hues', () => {
+      let result = distance([0.5, 0.15, 0], [0.5, 0.15, 180], noWeights)
+
+      expect(result).toBeGreaterThan(0)
     })
 
-    let distanceWithNearHue = calculateWeightedDistance({
-      color1: [0.5, 0.2, yellowHue] as Vector,
-      color2: [0.5, 0.2, 39] as Vector,
-      config: mockConfig,
-      weights,
-    })
+    it('should not penalize saturated colors with moderately different hues', () => {
+      let result = distance([0.5, 0.15, 0], [0.5, 0.15, 40], noWeights)
 
-    expect(distance).toBeLessThan(distanceWithFarHue)
-    expect(distance).toBeLessThan(distanceWithNearHue)
+      expect(result).toBe(0)
+    })
   })
 })

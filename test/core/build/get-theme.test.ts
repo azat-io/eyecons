@@ -1,13 +1,11 @@
-import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { ThemeSource } from '../../../extension/types/theme'
 
-import { createMockLoggerContext } from '../../helpers/create-mock-logger-context'
 import { getUserThemeId } from '../../../extension/io/vscode/get-user-theme-id'
 import { getFolderColor } from '../../../extension/io/vscode/get-folder-color'
 import { getThemeSource } from '../../../extension/io/file/get-theme-source'
 import { getTheme } from '../../../extension/core/build/get-theme'
-import { logger } from '../../../extension/io/vscode/logger'
 
 vi.mock('../../../extension/io/vscode/get-user-theme-id', () => ({
   getUserThemeId: vi.fn(),
@@ -21,117 +19,50 @@ vi.mock('../../../extension/io/file/get-theme-source', () => ({
   getThemeSource: vi.fn(),
 }))
 
-vi.mock('../../../extension/io/vscode/logger', () => ({
-  logger: {
-    withContext: vi.fn(),
-    error: vi.fn(),
-    debug: vi.fn(),
-    info: vi.fn(),
-    warn: vi.fn(),
-    log: vi.fn(),
-  },
-}))
-
-let mockLoggerContext = createMockLoggerContext()
-
 describe('getTheme', () => {
+  let nordSource: ThemeSource = {
+    main: {
+      orange: '#d08770',
+      yellow: '#ebcb8b',
+      purple: '#b48ead',
+      green: '#a3be8c',
+      blue: '#81a1c1',
+      red: '#bf616a',
+    },
+    colors: ['#2e3440', '#d8dee9', '#bf616a', '#a3be8c', '#81a1c1'],
+    overrides: { html: { '#e34f26': '#d08770' } },
+    backgroundSecondary: '#3b4252',
+    backgroundTertiary: '#434c5e',
+    backgroundPrimary: '#2e3440',
+    backgroundBrand: '#88c0d0',
+    contentPrimary: '#d8dee9',
+    contentBrand: '#2e3440',
+    border: '#4c566a',
+  }
+
   beforeEach(() => {
-    vi.clearAllMocks()
-
-    vi.mocked(logger.withContext).mockReturnValue(mockLoggerContext)
-  })
-
-  afterEach(() => {
     vi.resetAllMocks()
+    vi.mocked(getUserThemeId).mockReturnValue('nord')
+    vi.mocked(getFolderColor).mockReturnValue('purple')
   })
 
-  it('should build a complete theme configuration successfully', async () => {
-    vi.mocked(getUserThemeId).mockReturnValue('dark')
-    vi.mocked(getFolderColor).mockReturnValue('blue')
-
-    let mockThemeSource: ThemeSource = {
-      main: {
-        orange: '#ffa500',
-        yellow: '#ffff00',
-        purple: '#800080',
-        green: '#00ff00',
-        blue: '#0000ff',
-        red: '#ff0000',
-      },
-      overrides: {
-        html: {
-          '#f06529': '#ce9178',
-        },
-      },
-      colors: ['#ffffff', '#000000', '#569cd6'],
-      backgroundSecondary: '#569cd6',
-      backgroundTertiary: '#000000',
-      backgroundPrimary: '#ffffff',
-      backgroundBrand: '#000000',
-      contentPrimary: '#ffffff',
-      contentBrand: '#000000',
-      border: '#000000',
+  it('should combine the selected theme, its source and the folder color', async () => {
+    let themeSources: Partial<Record<string, ThemeSource>> = {
+      nord: nordSource,
     }
-
-    vi.mocked(getThemeSource).mockResolvedValue(mockThemeSource)
+    vi.mocked(getThemeSource).mockImplementation(themeId =>
+      Promise.resolve(themeSources[themeId]!),
+    )
 
     let result = await getTheme()
 
-    expect(result).toEqual({
-      main: {
-        orange: '#ffa500',
-        yellow: '#ffff00',
-        purple: '#800080',
-        green: '#00ff00',
-        blue: '#0000ff',
-        red: '#ff0000',
-      },
-      overrides: {
-        html: {
-          '#f06529': '#ce9178',
-        },
-      },
-      colors: ['#ffffff', '#000000', '#569cd6'],
-      backgroundSecondary: '#569cd6',
-      backgroundTertiary: '#000000',
-      backgroundPrimary: '#ffffff',
-      backgroundBrand: '#000000',
-      contentPrimary: '#ffffff',
-      contentBrand: '#000000',
-      folderColor: 'blue',
-      border: '#000000',
-      id: 'dark',
-    })
-
-    expect(getUserThemeId).toHaveBeenCalledExactlyOnceWith()
-    expect(getFolderColor).toHaveBeenCalledExactlyOnceWith()
-    expect(getThemeSource).toHaveBeenCalledWith('dark')
-
-    expect(mockLoggerContext.info).toHaveBeenCalledWith('Using theme: dark')
-    expect(mockLoggerContext.info).toHaveBeenCalledWith(
-      'Using folder color: blue',
-    )
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith(
-      'Successfully loaded theme source data',
-    )
+    expect(result).toEqual({ ...nordSource, folderColor: 'purple', id: 'nord' })
   })
 
-  it('should throw an error when theme source loading fails', async () => {
-    vi.mocked(getUserThemeId).mockReturnValue('unknown')
-    vi.mocked(getFolderColor).mockReturnValue('blue')
+  it('should reject when the source of the selected theme cannot be loaded', async () => {
+    let error = new Error('Failed to load theme nord')
+    vi.mocked(getThemeSource).mockRejectedValue(error)
 
-    let mockError = new Error('Theme source not found')
-    vi.mocked(getThemeSource).mockRejectedValue(mockError)
-
-    await expect(getTheme()).rejects.toThrow('Theme source not found')
-
-    expect(getUserThemeId).toHaveBeenCalledExactlyOnceWith()
-    expect(getFolderColor).toHaveBeenCalledExactlyOnceWith()
-    expect(getThemeSource).toHaveBeenCalledWith('unknown')
-
-    expect(mockLoggerContext.info).toHaveBeenCalledWith('Using theme: unknown')
-    expect(mockLoggerContext.info).toHaveBeenCalledWith(
-      'Using folder color: blue',
-    )
+    await expect(getTheme()).rejects.toBe(error)
   })
 })

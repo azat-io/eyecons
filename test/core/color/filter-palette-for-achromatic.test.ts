@@ -1,24 +1,20 @@
 import type { Vector } from '@texel/color'
 
-import { describe, expect, vi, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 import { filterPaletteForAchromatic } from '../../../extension/core/color/filter-palette-for-achromatic'
-import * as isAchromaticModule from '../../../extension/core/color/is-achromatic'
 import { createMockConfig } from '../../helpers/create-mock-config'
 
-vi.mock('../../io/vscode/logger', () => ({
-  logger: {
-    withContext: () => ({
-      error: vi.fn(),
-      debug: vi.fn(),
-      info: vi.fn(),
-      warn: vi.fn(),
-    }),
-  },
-}))
-
 describe('filterPaletteForAchromatic', () => {
-  let mockConfig = createMockConfig()
+  let config = createMockConfig()
+
+  let white: Vector = [0.95, 0.01, 0]
+  let lightGray: Vector = [0.85, 0.05, 180]
+  let lightYellow: Vector = [0.85, 0.15, 90]
+  let middleGray: Vector = [0.5, 0.02, 180]
+  let nearBlack: Vector = [0.03, 0.08, 0]
+  let saturatedBlue: Vector = [0.75, 0.3, 240]
+  let saturatedGreen: Vector = [0.5, 0.15, 120]
 
   /**
    * Filters a palette for an achromatic source color.
@@ -33,149 +29,61 @@ describe('filterPaletteForAchromatic', () => {
   ): Vector[] {
     return filterPaletteForAchromatic({
       sourceAchromatic: true,
-      config: mockConfig,
       themePalette,
       sourceColor,
+      config,
     })
   }
 
-  it('should filter light colors with low chroma', () => {
-    let sourceColor: Vector = [0.95, 0.02, 0]
+  it('should match a near-white source with the light low-chroma palette colors', () => {
+    let nearWhite: Vector = [0.95, 0.02, 0]
+    let palette = [white, lightYellow, middleGray, lightGray, saturatedGreen]
 
-    let themePalette: Vector[] = [
-      [0.95, 0.01, 0],
-      [0.85, 0.05, 180],
-      [0.75, 0.3, 240],
-      [0.2, 0.01, 0],
-      [0.5, 0.15, 120],
-    ]
+    let result = filterPaletteFor(nearWhite, palette)
 
-    let result = filterPaletteFor(sourceColor, themePalette)
-
-    expect(result).toHaveLength(2)
-    expect(result).toContainEqual([0.95, 0.01, 0])
-    expect(result).toContainEqual([0.85, 0.05, 180])
+    expect(result).toEqual([white, lightGray])
   })
 
-  it('should filter achromatic colors for non-light achromatic source', () => {
-    let isAchromaticSpy = vi.spyOn(isAchromaticModule, 'isAchromatic')
-    isAchromaticSpy.mockImplementation(color => {
-      let [lightness, chroma] = color as [number, number, number]
-      return chroma < 0.05 || (lightness < 0.1 && chroma < 0.1)
-    })
+  it('should match a gray source with every achromatic palette color', () => {
+    let darkGray: Vector = [0.3, 0.02, 0]
+    let palette = [white, middleGray, saturatedBlue, nearBlack, saturatedGreen]
 
-    let sourceColor: Vector = [0.3, 0.02, 0]
+    let result = filterPaletteFor(darkGray, palette)
 
-    let themePalette: Vector[] = [
-      [0.95, 0.01, 0],
-      [0.5, 0.02, 180],
-      [0.75, 0.3, 240],
-      [0.05, 0.01, 0],
-      [0.5, 0.15, 120],
-    ]
-
-    let result = filterPaletteFor(sourceColor, themePalette)
-
-    expect(result).toHaveLength(3)
-    expect(result).toContainEqual([0.95, 0.01, 0])
-    expect(result).toContainEqual([0.5, 0.02, 180])
-    expect(result).toContainEqual([0.05, 0.01, 0])
-
-    isAchromaticSpy.mockRestore()
+    expect(result).toEqual([white, middleGray, nearBlack])
   })
 
-  it('should return full palette if no matching colors found', () => {
-    let sourceColor: Vector = [0.95, 0.02, 0]
+  it('should look only among light colors for a source just above the light threshold', () => {
+    let justAboveLightThreshold: Vector = [0.91, 0.02, 0]
 
-    let themePalette: Vector[] = [
-      [0.75, 0.3, 240],
-      [0.2, 0.2, 0],
-      [0.5, 0.15, 120],
-    ]
+    let result = filterPaletteFor(justAboveLightThreshold, [white, middleGray])
 
-    let result = filterPaletteFor(sourceColor, themePalette)
-
-    expect(result).toBe(themePalette)
-    expect(result).toHaveLength(3)
+    expect(result).toEqual([white])
   })
 
-  it('should filter all achromatic colors when no light colors found', () => {
-    let isAchromaticSpy = vi.spyOn(isAchromaticModule, 'isAchromatic')
-    isAchromaticSpy.mockImplementation(color => {
-      let [, chroma] = color as [number, number, number]
-      return chroma < 0.05
-    })
+  it('should look among all achromatic colors for a source exactly on the light threshold', () => {
+    let onLightThreshold: Vector = [0.9, 0.02, 0]
 
-    let sourceColor: Vector = [0.5, 0.02, 0]
+    let result = filterPaletteFor(onLightThreshold, [white, middleGray])
 
-    let themePalette: Vector[] = [
-      [0.7, 0.03, 0],
-      [0.3, 0.04, 180],
-      [0.75, 0.3, 240],
-      [0.5, 0.15, 120],
-    ]
-
-    let result = filterPaletteFor(sourceColor, themePalette)
-
-    expect(result).toHaveLength(2)
-    expect(result).toContainEqual([0.7, 0.03, 0])
-    expect(result).toContainEqual([0.3, 0.04, 180])
-
-    isAchromaticSpy.mockRestore()
+    expect(result).toEqual([white, middleGray])
   })
 
-  it('should return palette when achromatic filtering finds no matches', () => {
-    let isAchromaticSpy = vi.spyOn(isAchromaticModule, 'isAchromatic')
-    isAchromaticSpy.mockReturnValue(false)
+  it('should return the whole palette when it has no achromatic colors', () => {
+    let gray: Vector = [0.4, 0.02, 0]
+    let palette = [saturatedBlue, saturatedGreen]
 
-    let sourceColor: Vector = [0.4, 0.02, 0]
-    let themePalette: Vector[] = [
-      [0.7, 0.2, 0],
-      [0.3, 0.25, 120],
-      [0.5, 0.3, 240],
-    ]
+    let result = filterPaletteFor(gray, palette)
 
-    let result = filterPaletteFor(sourceColor, themePalette)
-
-    expect(result).toBe(themePalette)
-    expect(result).toHaveLength(3)
-
-    isAchromaticSpy.mockRestore()
+    expect(result).toBe(palette)
   })
 
-  it('should handle edge case with empty palette', () => {
-    let sourceColor: Vector = [0.95, 0.02, 0]
-    let themePalette: Vector[] = []
+  it('should return the whole palette when a near-white source finds no light colors', () => {
+    let nearWhite: Vector = [0.95, 0.02, 0]
+    let palette = [saturatedBlue, saturatedGreen]
 
-    let result = filterPaletteFor(sourceColor, themePalette)
+    let result = filterPaletteFor(nearWhite, palette)
 
-    expect(result).toHaveLength(0)
-  })
-
-  it('should handle edge case at the boundary of light colors (lightness=0.9)', () => {
-    let sourceColorAtBoundary: Vector = [0.91, 0.02, 0]
-    let sourceColorBelowBoundary: Vector = [0.9, 0.02, 0]
-
-    let themePalette: Vector[] = [
-      [0.95, 0.01, 0],
-      [0.5, 0.02, 180],
-    ]
-
-    let isAchromaticSpy = vi.spyOn(isAchromaticModule, 'isAchromatic')
-    isAchromaticSpy.mockReturnValue(true)
-
-    let resultAtBoundary = filterPaletteFor(sourceColorAtBoundary, themePalette)
-
-    expect(resultAtBoundary).toHaveLength(1)
-    expect(resultAtBoundary).toContainEqual([0.95, 0.01, 0])
-
-    let resultBelowBoundary = filterPaletteFor(
-      sourceColorBelowBoundary,
-      themePalette,
-    )
-
-    expect(resultBelowBoundary).toHaveLength(2)
-
-    isAchromaticSpy.mockRestore()
+    expect(result).toBe(palette)
   })
 })
