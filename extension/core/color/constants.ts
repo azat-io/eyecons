@@ -7,7 +7,7 @@ export const RGB_REGEX =
   /(?<rgb>rgba?\(\s*(?<r>\d+%?)\s*(?:,\s*|\s)(?<g>\d+%?)\s*(?:,\s*|\s)(?<b>\d+%?)(?:\s*(?:,|\/)\s*(?<a>0?\.\d+|[01]|\d{1,3}%))?\s*\))/gu
 
 export const HSL_REGEX =
-  /hsla?\(\s*(?<h>\d+(?:\.\d+)?(?:deg|grad|rad|turn)?)\s*(?:,\s*|\s)(?<s>\d+%)\s*(?:,\s*|\s)(?<l>\d+%)(?:\s*(?:,|\/)\s*(?<a>0?\.\d+|[01]|\d{1,3}%))?/gu
+  /hsla?\(\s*(?<h>\d+(?:\.\d+)?(?:deg|grad|rad|turn)?)\s*(?:,\s*|\s)(?<s>\d+%)\s*(?:,\s*|\s)(?<l>\d+%)(?:\s*(?:,|\/)\s*(?<a>0?\.\d+|[01]|\d{1,3}%))?\s*\)/gu
 
 export const NAMED_COLORS = new Map<string, Vector>([
   ['lightgoldenrodyellow', [250, 250, 210]],

@@ -53,12 +53,18 @@ describe('extractColorsFromSvg', () => {
     let svg = '<svg><rect fill="hsl(0, 100%, 50%)" /></svg>'
     let colorInfos = extractColorsFromSvg(svg)
 
-    let values = colorInfos.map(info => info.value)
-    expect(values).toContain('hsl(0, 100%, 50%)')
+    expect(colorInfos).toEqual([
+      { value: 'hsl(0, 100%, 50%)', source: 'attribute', property: 'fill' },
+    ])
+  })
 
-    let redColor = colorInfos.find(info => info.value === 'hsl(0, 100%, 50%)')
-    expect(redColor?.source).toBe('attribute')
-    expect(redColor?.property).toBe('fill')
+  it('should extract an inline HSL color once', () => {
+    let svg = '<svg><text>hsl(120, 100%, 50%)</text></svg>'
+    let colorInfos = extractColorsFromSvg(svg)
+
+    expect(colorInfos).toEqual([
+      { value: 'hsl(120, 100%, 50%)', source: 'inline' },
+    ])
   })
 
   it('should extract named colors', () => {

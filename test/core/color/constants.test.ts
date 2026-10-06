@@ -224,6 +224,28 @@ describe('color Regular Expressions', () => {
     expectGroupValues(HSL_REGEX, value, { h, s, l, a })
   })
 
+  it.each([
+    'hsl(0, 100%, 50%)',
+    'hsla(120, 100%, 50%, 0.5)',
+    'hsl(240deg 100% 50% / 80%)',
+    'hsl( 0.5turn 100% 50% )',
+  ])(
+    'should match the whole HSL value %s up to the closing parenthesis',
+    value => {
+      HSL_REGEX.lastIndex = 0
+
+      let match = HSL_REGEX.exec(`fill="${value}"`)
+
+      expect(match?.[0]).toBe(value)
+    },
+  )
+
+  it('should not match an HSL value without the closing parenthesis', () => {
+    HSL_REGEX.lastIndex = 0
+
+    expect(HSL_REGEX.exec('hsl(0, 100%, 50%')).toBeNull()
+  })
+
   it.each(['#f00', '#0f0', '#00f', '#fff', '#000'])(
     'should match 3-digit hex color: %s',
     value => {
