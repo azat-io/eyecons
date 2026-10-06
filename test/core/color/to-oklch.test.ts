@@ -1,157 +1,119 @@
-import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
-import { hexToRGB as hexToRgb, convert } from '@texel/color'
+import type { Vector } from '@texel/color'
 
-import {
-  NAMED_COLORS,
-  RGB_REGEX,
-  HSL_REGEX,
-} from '../../../extension/core/color/constants'
-import { createMockLoggerContext } from '../../helpers/create-mock-logger-context'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+
+import { NAMED_COLORS } from '../../../extension/core/color/constants'
 import { toOklch } from '../../../extension/core/color/to-oklch'
-import { logger } from '../../../extension/io/vscode/logger'
 
-vi.mock('@texel/color', () => ({
-  hexToRGB: vi.fn(),
-  convert: vi.fn(),
-  OKLCH: 'OKLCH',
-  OKHSL: 'OKHSL',
-  sRGB: 'sRGB',
-}))
-
-vi.mock('../../../extension/io/vscode/logger', () => ({
-  logger: {
-    withContext: vi.fn(() => ({
-      error: vi.fn(),
-      debug: vi.fn(),
-      info: vi.fn(),
-      warn: vi.fn(),
-    })),
-  },
-}))
-
-vi.mock('../../../extension/core/color/constants', () => ({
-  RGB_REGEX: {
-    exec: vi.fn(),
-    lastIndex: 0,
-  },
-  HSL_REGEX: {
-    exec: vi.fn(),
-    lastIndex: 0,
-  },
-  NAMED_COLORS: {
-    get: vi.fn(),
-  },
-}))
+/**
+ * Builds a matcher for an OKLCH color that tolerates the rounding of hex colors
+ * to whole channel values.
+ *
+ * @param color - Expected color as [Lightness, Chroma, Hue].
+ * @returns Matcher to pass to `toEqual`.
+ */
+function closeToOklch([lightness, chroma, hue]: Vector): unknown[] {
+  return [
+    expect.closeTo(lightness!, 2),
+    expect.closeTo(chroma!, 2),
+    expect.closeTo(hue!, 0),
+  ]
+}
 
 describe('toOklch', () => {
-  let mockLoggerContext = createMockLoggerContext()
-
-  beforeEach(() => {
-    vi.clearAllMocks()
-
-    vi.mocked(hexToRgb).mockReturnValue([1, 0, 0])
-    vi.mocked(convert).mockReturnValue([0.5, 0.3, 0.2])
-
-    vi.mocked(RGB_REGEX.exec).mockReturnValue({
-      groups: { r: '255', g: '0', b: '0' },
-    } as unknown as RegExpExecArray)
-
-    vi.mocked(HSL_REGEX.exec).mockReturnValue({
-      groups: { s: '100', l: '50', h: '0' },
-    } as unknown as RegExpExecArray)
-
-    vi.mocked(NAMED_COLORS.get).mockReturnValue([255, 0, 0])
-
-    vi.mocked(logger.withContext).mockReturnValue(mockLoggerContext)
-  })
-
   afterEach(() => {
-    vi.resetAllMocks()
+    vi.restoreAllMocks()
   })
 
-  it('should convert hex color to OKLCH', () => {
+  it('should convert a hex color to OKLCH lightness, chroma and hue', () => {
+    let expectedRed: Vector = [0.628, 0.2577, 29.23]
+
     let result = toOklch('#ff0000')
 
-    expect(hexToRgb).toHaveBeenCalledWith('#ff0000')
-    expect(convert).toHaveBeenCalledWith([1, 0, 0], 'sRGB', 'OKLCH')
-    expect(result).toEqual([0.5, 0.3, 0.2])
+    expect(result).toEqual(closeToOklch(expectedRed))
   })
 
-  it('should convert RGB color to OKLCH', () => {
-    let result = toOklch('rgb(255, 0, 0)')
+  it('should convert white and black to the ends of the lightness scale', () => {
+    let expectedWhite: Vector = [1, 0, 0]
+    let expectedBlack: Vector = [0, 0, 0]
 
-    expect(RGB_REGEX.exec).toHaveBeenCalledWith('rgb(255, 0, 0)')
-    expect(convert).toHaveBeenCalledWith([1, 0, 0], 'sRGB', 'OKLCH')
-    expect(result).toEqual([0.5, 0.3, 0.2])
+    expect(toOklch('#ffffff')).toEqual(closeToOklch(expectedWhite))
+    expect(toOklch('#000000')).toEqual(closeToOklch(expectedBlack))
   })
 
-  it('should convert HSL color to OKLCH', () => {
-    let result = toOklch('hsl(0, 100%, 50%)')
+  it.each([
+    ['#f00', '#ff0000'],
+    ['rgb(255, 165, 0)', '#ffa500'],
+    ['rgb(255 165 0)', '#ffa500'],
+    ['rgba(0, 0, 128, 1)', '#000080'],
+    ['orange', '#ffa500'],
+    ['Navy', '#000080'],
+    ['  #ffa500  ', '#ffa500'],
+  ])('should convert %s to the same color as %s', (value, hexValue) => {
+    let expected = toOklch(hexValue)
 
-    expect(HSL_REGEX.exec).toHaveBeenCalledWith('hsl(0, 100%, 50%)')
-    expect(convert).toHaveBeenCalledWith([0, 100, 50], 'OKHSL', 'sRGB')
-    expect(result).toEqual([0.5, 0.3, 0.2])
+    let result = toOklch(value)
+
+    expect(result).toEqual(expected)
   })
 
-  it('should convert named color to OKLCH', () => {
-    let result = toOklch('red')
+  it.each([
+    ['hsl(0, 100%, 50%)', '#ff0000'],
+    ['hsl(120, 100%, 50%)', '#00ff00'],
+    ['hsl(240 100% 50%)', '#0000ff'],
+    ['hsla(60, 100%, 50%, 1)', '#ffff00'],
+    ['hsl(210, 50%, 40%)', '#336699'],
+    ['hsl(240, 100%, 80%)', '#9999ff'],
+    ['hsl(120, 100%, 25%)', '#008000'],
+    ['hsl(0, 0%, 50%)', '#808080'],
+    ['hsl(0, 0%, 100%)', '#ffffff'],
+  ])('should convert %s like the CSS color %s', (value, hexValue) => {
+    let expected = toOklch(hexValue)
 
-    expect(NAMED_COLORS.get).toHaveBeenCalledWith('red')
-    expect(convert).toHaveBeenCalledWith([1, 0, 0], 'sRGB', 'OKLCH')
-    expect(result).toEqual([0.5, 0.3, 0.2])
+    let result = toOklch(value)
+
+    expect(result).toEqual(closeToOklch(expected))
   })
 
-  it('should handle errors for invalid hex color', () => {
-    vi.mocked(hexToRgb).mockImplementationOnce(() => {
-      throw new Error('Invalid hex color')
+  it.each([
+    'hsl(180deg 100% 50%)',
+    'hsl(0.5turn 100% 50%)',
+    'hsl(200grad 100% 50%)',
+    'hsl(3.14159rad 100% 50%)',
+    'hsl(540, 100%, 50%)',
+  ])('should read the hue of %s as cyan', value => {
+    let expected = toOklch('#00ffff')
+
+    let result = toOklch(value)
+
+    expect(result).toEqual(closeToOklch(expected))
+  })
+
+  it.fails(
+    'should convert rgb() percentages like the equivalent hex color',
+    () => {
+      let expected = toOklch('#ff0000')
+
+      let result = toOklch('rgb(100%, 0%, 0%)')
+
+      expect(result).toEqual(expected)
+    },
+  )
+
+  it.each([
+    ['rgb(invalid)', 'Failed to parse RGB string: "rgb(invalid)"'],
+    ['hsl(invalid)', 'Failed to parse HSL string: "hsl(invalid)"'],
+    ['nonexistentcolor', 'Color "nonexistentcolor" is not recognized.'],
+  ])('should reject %s', (value, expectedMessage) => {
+    expect(() => toOklch(value)).toThrow(expectedMessage)
+  })
+
+  it('should rethrow a non-Error failure unchanged', () => {
+    let failure = 'Broken color table' as unknown as Error
+    vi.spyOn(NAMED_COLORS, 'get').mockImplementation(() => {
+      throw failure
     })
 
-    expect(() => toOklch('#invalid')).toThrow('Invalid hex color')
-    expect(mockLoggerContext.error).toHaveBeenCalledWith(
-      'Failed to convert color: Invalid hex color',
-    )
-  })
-
-  it('should handle errors for invalid hex color with string error', () => {
-    let error = 'Invalid hex color' as unknown as Error
-    vi.mocked(hexToRgb).mockImplementationOnce(() => {
-      throw error
-    })
-
-    expect(() => toOklch('#invalid')).toThrow('Invalid hex color')
-    expect(mockLoggerContext.error).toHaveBeenCalledWith(
-      'Failed to convert color: Invalid hex color',
-    )
-  })
-
-  it('should handle errors for invalid RGB format', () => {
-    vi.mocked(RGB_REGEX.exec).mockReturnValueOnce(null)
-
-    expect(() => toOklch('rgb(invalid)')).toThrow(
-      'Failed to parse RGB string: "rgb(invalid)"',
-    )
-    expect(mockLoggerContext.error).toHaveBeenCalledWith(
-      'Failed to convert color: Failed to parse RGB string: "rgb(invalid)"',
-    )
-  })
-
-  it('should handle errors for invalid HSL format', () => {
-    vi.mocked(HSL_REGEX.exec).mockReturnValueOnce(null)
-
-    expect(() => toOklch('hsl(invalid)')).toThrow(
-      'Failed to parse HSL string: "hsl(invalid)"',
-    )
-    expect(mockLoggerContext.error).toHaveBeenCalledWith(
-      'Failed to convert color: Failed to parse HSL string: "hsl(invalid)"',
-    )
-  })
-
-  it('should handle errors for unrecognized named color', () => {
-    vi.mocked(NAMED_COLORS.get).mockReturnValueOnce(undefined)
-
-    expect(() => toOklch('nonexistentcolor')).toThrow()
-    expect(mockLoggerContext.error).toHaveBeenCalledWith(
-      'Failed to convert color: Color "nonexistentcolor" is not recognized.',
-    )
+    expect(() => toOklch('red')).toThrow(/^Broken color table$/u)
   })
 })

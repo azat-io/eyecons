@@ -1,6 +1,6 @@
 import type { Vector } from '@texel/color'
 
-import { hexToRGB as hexToRgb, convert, OKLCH, OKHSL, sRGB } from '@texel/color'
+import { hexToRGB as hexToRgb, convert, OKLCH, sRGB } from '@texel/color'
 
 import { NAMED_COLORS, HSL_REGEX, RGB_REGEX } from './constants'
 import { logger } from '../../io/vscode/logger'
@@ -15,7 +15,7 @@ interface HSLRegexGroups {
   a?: string
 
   /**
-   * Hue value in degrees (0-360).
+   * Hue value with an optional angle unit (deg, grad, rad or turn).
    */
   h: string
 
@@ -75,10 +75,20 @@ interface ColorMatcher {
 type ColorHandler = (value: string) => Vector
 
 /**
+ * Number of degrees in one unit of each CSS angle unit.
+ */
+const DEGREES_PER_ANGLE_UNIT: Record<string, number> = {
+  rad: 180 / Math.PI,
+  grad: 0.9,
+  turn: 360,
+  deg: 1,
+}
+
+/**
  * Parses an HSL or HSLA color string into HSL components.
  *
  * @param hslString - The HSL(A) color string.
- * @returns HSL values.
+ * @returns HSL values as [Hue in degrees, Saturation 0-1, Lightness 0-1].
  * @throws {Error} If parsing fails.
  */
 function parseHsl(hslString: string): Vector {
@@ -96,10 +106,31 @@ function parseHsl(hslString: string): Vector {
   } = match.groups as unknown as HSLRegexGroups
 
   return [
-    Number.parseInt(hue, 10),
-    Number.parseInt(saturation, 10),
-    Number.parseInt(lightness, 10),
+    parseHue(hue),
+    Number.parseFloat(saturation) / 100,
+    Number.parseFloat(lightness) / 100,
   ]
+}
+
+/**
+ * Converts CSS HSL values to RGB with the algorithm of the CSS Color 4
+ * specification.
+ *
+ * @param input - The color as [Hue in degrees, Saturation 0-1, Lightness 0-1].
+ * @returns RGB values in the range 0-1.
+ */
+function hslToRgb([hue, saturation, lightness]: Vector): Vector {
+  let amplitude = saturation! * Math.min(lightness!, 1 - lightness!)
+
+  function toChannel(offset: number): number {
+    let position = (offset + hue! / 30) % 12
+    return (
+      lightness! -
+      amplitude * Math.max(-1, Math.min(position - 3, 9 - position, 1))
+    )
+  }
+
+  return [toChannel(0), toChannel(8), toChannel(4)]
 }
 
 /**
@@ -141,13 +172,15 @@ function namedColorToRgb(colorName: string): Vector {
 }
 
 /**
- * Converts HSL values to RGB.
+ * Parses a CSS hue into degrees.
  *
- * @param input - The color in HSL format as [H, S, L].
- * @returns RGB values in the range 0-1.
+ * @param hue - The hue with an optional angle unit, for example `120`,
+ *   `0.5turn` or `3.14rad`.
+ * @returns The hue in degrees.
  */
-function hslToRgb(input: Vector): Vector {
-  return convert(input, OKHSL, sRGB)
+function parseHue(hue: string): number {
+  let unit = /[a-z]+$/u.exec(hue)?.[0] ?? 'deg'
+  return Number.parseFloat(hue) * DEGREES_PER_ANGLE_UNIT[unit]!
 }
 
 /**
