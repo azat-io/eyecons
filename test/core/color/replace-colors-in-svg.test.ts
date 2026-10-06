@@ -167,7 +167,7 @@ describe('replaceColorsInSvg', () => {
     )
   })
 
-  it('should prefer the longest matching color value', () => {
+  it('should tell a short hex color from a longer one starting with it', () => {
     let svgContent = '<svg><rect fill="#ffffff" /><path fill="#fff" /></svg>'
     let colorInfos: ColorInfo[] = [
       { source: 'attribute', value: '#ffffff', property: 'fill' },
@@ -195,5 +195,49 @@ describe('replaceColorsInSvg', () => {
     let result = replaceColorsInSvg(svgContent, colorMapping, colorInfos)
 
     expect(result).toBe('<svg><rect fill="#0000ff" /></svg>')
+  })
+
+  it('should not replace a named color inside a longer word', () => {
+    let svgContent =
+      '<svg><g id="credits"><path fill="red" /><path fill="darkred" /><path class="red-ish" /></g></svg>'
+    let colorInfos: ColorInfo[] = [
+      { source: 'attribute', property: 'fill', value: 'red' },
+    ]
+    let colorMapping = new Map([['red', '#123456']])
+
+    let result = replaceColorsInSvg(svgContent, colorMapping, colorInfos)
+
+    expect(result).toBe(
+      '<svg><g id="credits"><path fill="#123456" /><path fill="darkred" /><path class="red-ish" /></g></svg>',
+    )
+  })
+
+  it('should not replace a short hex color inside a longer one', () => {
+    let svgContent = '<svg><rect fill="#f00f" /><path fill="#f00" /></svg>'
+    let colorInfos: ColorInfo[] = [
+      { source: 'attribute', property: 'fill', value: '#f00' },
+    ]
+    let colorMapping = new Map([['#f00', '#0000ff']])
+
+    let result = replaceColorsInSvg(svgContent, colorMapping, colorInfos)
+
+    expect(result).toBe(
+      '<svg><rect fill="#f00f" /><path fill="#0000ff" /></svg>',
+    )
+  })
+
+  it('should replace a color next to punctuation', () => {
+    let svgContent =
+      '<svg><style>.a{fill:red;stroke:red}</style><rect fill="red"/></svg>'
+    let colorInfos: ColorInfo[] = [
+      { source: 'attribute', property: 'fill', value: 'red' },
+    ]
+    let colorMapping = new Map([['red', '#123456']])
+
+    let result = replaceColorsInSvg(svgContent, colorMapping, colorInfos)
+
+    expect(result).toBe(
+      '<svg><style>.a{fill:#123456;stroke:#123456}</style><rect fill="#123456"/></svg>',
+    )
   })
 })
