@@ -89,16 +89,19 @@ describe('toOklch', () => {
     expect(result).toEqual(closeToOklch(expected))
   })
 
-  it.fails(
-    'should convert rgb() percentages like the equivalent hex color',
-    () => {
-      let expected = toOklch('#ff0000')
+  it.each([
+    ['rgb(100%, 0%, 0%)', '#ff0000'],
+    ['rgb(0% 100% 0%)', '#00ff00'],
+    ['rgb(100% 100% 100% / 50%)', '#ffffff'],
+    ['rgb(20%, 40%, 60%)', '#336699'],
+    ['rgba(50%, 50%, 50%, 1)', '#808080'],
+  ])('should convert %s like the CSS color %s', (value, hexValue) => {
+    let expected = toOklch(hexValue)
 
-      let result = toOklch('rgb(100%, 0%, 0%)')
+    let result = toOklch(value)
 
-      expect(result).toEqual(expected)
-    },
-  )
+    expect(result).toEqual(closeToOklch(expected))
+  })
 
   it.each([
     ['rgb(invalid)', 'Failed to parse RGB string: "rgb(invalid)"'],

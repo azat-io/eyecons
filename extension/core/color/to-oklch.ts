@@ -40,17 +40,17 @@ interface RGBRegexGroups {
   a?: string
 
   /**
-   * Red color component (0-255).
+   * Red color component (0-255 or a percentage).
    */
   r: string
 
   /**
-   * Green color component (0-255).
+   * Green color component (0-255 or a percentage).
    */
   g: string
 
   /**
-   * Blue color component (0-255).
+   * Blue color component (0-255 or a percentage).
    */
   b: string
 }
@@ -150,7 +150,7 @@ function parseRgb(rgbString: string): Vector {
 
   let { g: green, b: blue, r: red } = match.groups as unknown as RGBRegexGroups
 
-  return [red, green, blue].map(value => Number.parseInt(value, 10) / 255)
+  return [red, green, blue].map(parseRgbChannel)
 }
 
 /**
@@ -181,6 +181,18 @@ function namedColorToRgb(colorName: string): Vector {
 function parseHue(hue: string): number {
   let unit = /[a-z]+$/u.exec(hue)?.[0] ?? 'deg'
   return Number.parseFloat(hue) * DEGREES_PER_ANGLE_UNIT[unit]!
+}
+
+/**
+ * Parses a CSS RGB channel into the range 0-1.
+ *
+ * @param channel - The channel as a number from 0 to 255 or as a percentage,
+ *   for example `255` or `100%`.
+ * @returns The channel value in the range 0-1.
+ */
+function parseRgbChannel(channel: string): number {
+  let scale = channel.endsWith('%') ? 100 : 255
+  return Number.parseFloat(channel) / scale
 }
 
 /**
