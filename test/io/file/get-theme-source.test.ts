@@ -1,105 +1,57 @@
-import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import fs from 'node:fs/promises'
-import path from 'node:path'
 
-import { createMockLoggerContext } from '../../helpers/create-mock-logger-context'
 import { getThemeSource } from '../../../extension/io/file/get-theme-source'
-import { logger } from '../../../extension/io/vscode/logger'
-
-vi.mock('node:fs/promises', () => ({
-  default: {
-    readFile: vi.fn(),
-  },
-}))
-
-vi.mock('node:path', () => ({
-  default: {
-    join: vi.fn(),
-  },
-}))
-
-let mockLoggerContext = createMockLoggerContext()
 
 describe('getThemeSource', () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
-    vi.mocked(path.join).mockReturnValue('/mocked/path/to/themes/dark.json')
-    vi.spyOn(logger, 'withContext').mockReturnValue(mockLoggerContext)
-  })
+  let color = expect.stringMatching(/^#[\da-f]{3,8}$/iu) as string
 
   afterEach(() => {
-    vi.resetAllMocks()
+    vi.restoreAllMocks()
   })
 
-  it('should load and parse theme source correctly', async () => {
-    let mockThemeData = {
-      overrides: {
-        html: {
-          '#f06529': '#ce9178',
-        },
-        less: {
-          '#1d355d': '#569cd6',
-        },
-      },
-      colors: ['#d16969', '#ce9178', '#dcdcaa', '#4ec9b0', '#569cd6'],
-    }
+  it.each(['dark', 'nord'])(
+    'should load the bundled %s theme',
+    async themeId => {
+      await expect(getThemeSource(themeId)).resolves.toEqual(
+        expect.objectContaining({
+          main: {
+            orange: color,
+            yellow: color,
+            purple: color,
+            green: color,
+            blue: color,
+            red: color,
+          },
+          colors: expect.arrayContaining([color]) as string[],
+          overrides: expect.any(Object) as object,
+        }),
+      )
+    },
+  )
 
-    vi.mocked(fs.readFile).mockResolvedValue(
-      Buffer.from(JSON.stringify(mockThemeData)),
-    )
-
-    let result = await getThemeSource('dark')
-
-    expect(result).toEqual(mockThemeData)
-    expect(path.join).toHaveBeenCalledWith(
-      expect.any(String),
-      '../../../themes',
-      'dark.json',
-    )
-    expect(fs.readFile).toHaveBeenCalledWith('/mocked/path/to/themes/dark.json')
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith(
-      'Loading theme from: /mocked/path/to/themes/dark.json',
-    )
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith(
-      'Successfully loaded theme: dark',
-    )
+  it('should reject an unknown theme and keep the reason as the cause', async () => {
+    await expect(getThemeSource('unknown')).rejects.toMatchObject({
+      cause: expect.objectContaining({ code: 'ENOENT' }) as object,
+      message: 'Failed to load theme unknown',
+    })
   })
 
-  it('should throw an error when the file cannot be read', async () => {
-    let mockError = new Error('File not found')
-    vi.mocked(fs.readFile).mockRejectedValue(mockError)
+  it('should reject a theme that is not valid JSON', async () => {
+    vi.spyOn(fs, 'readFile').mockResolvedValue(Buffer.from('not json'))
 
-    await expect(getThemeSource('unknown')).rejects.toThrow(
-      'Failed to load theme unknown',
-    )
-    expect(mockLoggerContext.error).toHaveBeenCalledWith(
-      'Failed to load theme unknown: File not found',
-    )
+    await expect(getThemeSource('dark')).rejects.toMatchObject({
+      cause: expect.any(SyntaxError) as SyntaxError,
+      message: 'Failed to load theme dark',
+    })
   })
 
-  it('should throw an error when the file cannot be read and error is string', async () => {
-    let mockError = 'File not found'
-    vi.mocked(fs.readFile).mockRejectedValue(mockError)
+  it('should keep a non-Error failure as the cause', async () => {
+    vi.spyOn(fs, 'readFile').mockRejectedValue('Permission denied')
 
-    await expect(getThemeSource('unknown')).rejects.toThrow(
-      'Failed to load theme unknown',
-    )
-    expect(mockLoggerContext.error).toHaveBeenCalledWith(
-      'Failed to load theme unknown: File not found',
-    )
-  })
-
-  it('should throw an error when JSON parsing fails', async () => {
-    vi.mocked(fs.readFile).mockResolvedValue(
-      Buffer.from('invalid JSON content'),
-    )
-
-    await expect(getThemeSource('broken')).rejects.toThrow(
-      'Failed to load theme broken',
-    )
-
-    expect(mockLoggerContext.error).toHaveBeenCalledWith(
-      expect.stringContaining('Failed to load theme broken:'),
-    )
+    await expect(getThemeSource('dark')).rejects.toMatchObject({
+      message: 'Failed to load theme dark',
+      cause: 'Permission denied',
+    })
   })
 })

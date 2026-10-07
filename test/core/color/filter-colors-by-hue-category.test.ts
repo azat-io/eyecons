@@ -1,269 +1,179 @@
 import type { Vector } from '@texel/color'
 
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { filterColorsByHueCategory } from '../../../extension/core/color/filter-colors-by-hue-category'
 import * as categorizeColorsByHueModule from '../../../extension/core/color/categorize-colors-by-hue'
 import * as categorizeColorByHueModule from '../../../extension/core/color/categorize-color-by-hue'
-import { createMockLoggerContext } from '../../helpers/create-mock-logger-context'
-import { logger } from '../../../extension/io/vscode/logger'
-
-let mockLoggerContext = createMockLoggerContext()
-
-vi.mock('../../../extension/io/vscode/logger', () => ({
-  logger: {
-    withContext: vi.fn(),
-  },
-}))
 
 describe('filterColorsByHueCategory', () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
-    vi.mocked(logger.withContext).mockReturnValue(mockLoggerContext)
+  afterEach(() => {
+    vi.restoreAllMocks()
   })
 
-  it('should match colors in yellow family', () => {
-    let yellowColor: Vector = [0.7, 0.1, 75]
-    let matchingColors: Vector[] = [
-      [0.6, 0.09, 45],
-      [0.7, 0.15, 95],
-      [0.5, 0.2, 200],
-    ]
+  it('should keep yellow family colors for a yellow source', () => {
+    let yellow: Vector = [0.7, 0.1, 75]
+    let goldenOrange: Vector = [0.6, 0.09, 45]
+    let limeGreen: Vector = [0.7, 0.15, 108]
+    let dullYellow: Vector = [0.6, 0.05, 80]
+    let blue: Vector = [0.5, 0.2, 200]
 
-    let result = filterColorsByHueCategory(yellowColor, matchingColors)
+    let result = filterColorsByHueCategory(yellow, [
+      goldenOrange,
+      dullYellow,
+      blue,
+      limeGreen,
+    ])
 
-    expect(result).toHaveLength(2)
-    expect(result).toContainEqual([0.6, 0.09, 45])
-    expect(result).toContainEqual([0.7, 0.15, 95])
-    expect(mockLoggerContext.info).toHaveBeenCalledWith(
-      'Found 2 colors in yellow family',
-    )
+    expect(result).toEqual([goldenOrange, limeGreen])
   })
 
-  it('should match colors in yellow-green range differently', () => {
-    let yellowGreenColor: Vector = [0.7, 0.1, 95]
-    let matchingColors: Vector[] = [
-      [0.6, 0.09, 45],
-      [0.7, 0.15, 90],
-      [0.5, 0.2, 105],
-    ]
+  it('should narrow the yellow family for a yellow-green source', () => {
+    let yellowGreen: Vector = [0.7, 0.1, 95]
+    let goldenOrange: Vector = [0.6, 0.09, 45]
+    let yellow: Vector = [0.7, 0.15, 90]
+    let greenishYellow: Vector = [0.6, 0.12, 100]
+    let lime: Vector = [0.5, 0.2, 105]
 
-    let result = filterColorsByHueCategory(yellowGreenColor, matchingColors)
+    let result = filterColorsByHueCategory(yellowGreen, [
+      goldenOrange,
+      greenishYellow,
+      yellow,
+      lime,
+    ])
 
-    expect(result).toHaveLength(2)
-    expect(result).toContainEqual([0.6, 0.09, 45])
-    expect(result).toContainEqual([0.7, 0.15, 90])
-    expect(mockLoggerContext.info).toHaveBeenCalledWith(
-      'Found 2 colors in yellow family',
-    )
+    expect(result).toEqual([goldenOrange, yellow])
   })
 
-  it('should match colors in purple-pink family', () => {
-    let purpleColor: Vector = [0.6, 0.1, 290]
-    let matchingColors: Vector[] = [
-      [0.5, 0.08, 280],
-      [0.7, 0.08, 320],
-      [0.6, 0.07, 200],
-    ]
+  it('should keep saturated purple and magenta colors for a purple source', () => {
+    let purple: Vector = [0.6, 0.1, 290]
+    let violet: Vector = [0.5, 0.06, 280]
+    let dullMagenta: Vector = [0.7, 0.04, 320]
+    let magenta: Vector = [0.6, 0.07, 340]
+    let red: Vector = [0.5, 0.08, 350]
+    let blue: Vector = [0.6, 0.07, 200]
 
-    let result = filterColorsByHueCategory(purpleColor, matchingColors)
+    let result = filterColorsByHueCategory(purple, [
+      violet,
+      dullMagenta,
+      magenta,
+      red,
+      blue,
+    ])
 
-    expect(result).toHaveLength(2)
-    expect(result).toContainEqual([0.5, 0.08, 280])
-    expect(result).toContainEqual([0.7, 0.08, 320])
-    expect(mockLoggerContext.info).toHaveBeenCalledWith(
-      'Found 2 colors in purple-pink family',
-    )
+    expect(result).toEqual([violet, magenta])
   })
 
-  it('should match colors in red-orange family', () => {
-    let redColor: Vector = [0.5, 0.1, 10]
-    let matchingColors: Vector[] = [
-      [0.6, 0.15, 45],
-      [0.7, 0.15, 35],
-      [0.5, 0.07, 200],
-    ]
+  it('should keep red and orange colors for an orange source', () => {
+    let orange: Vector = [0.6, 0.1, 35]
+    let amber: Vector = [0.6, 0.15, 45]
+    let red: Vector = [0.7, 0.15, 5]
+    let yellow: Vector = [0.6, 0.15, 60]
+    let blue: Vector = [0.5, 0.07, 200]
 
-    let result = filterColorsByHueCategory(redColor, matchingColors)
+    let result = filterColorsByHueCategory(orange, [amber, yellow, red, blue])
 
-    expect(result).toHaveLength(2)
-    expect(result).toContainEqual([0.6, 0.15, 45])
-    expect(result).toContainEqual([0.7, 0.15, 35])
-    expect(mockLoggerContext.info).toHaveBeenCalledWith(
-      'Found 2 colors in red-orange family',
-    )
+    expect(result).toEqual([amber, red])
   })
 
-  it('should handle bright chromatic colors specially', () => {
-    let brightColor: Vector = [0.85, 0.15, 180]
-    let matchingColors: Vector[] = [
-      [0.85, 0.15, 185],
-      [0.82, 0.15, 165],
-      [0.5, 0.13, 250],
-    ]
+  it('should keep bright colors of a similar hue for a bright source', () => {
+    let brightCyan: Vector = [0.85, 0.15, 180]
+    let brightAqua: Vector = [0.85, 0.15, 185]
+    let brightGreen: Vector = [0.82, 0.15, 165]
+    let darkCyan: Vector = [0.6, 0.15, 175]
+    let brightSky: Vector = [0.9, 0.15, 210]
 
-    let result = filterColorsByHueCategory(brightColor, matchingColors)
+    let result = filterColorsByHueCategory(brightCyan, [
+      brightAqua,
+      darkCyan,
+      brightGreen,
+      brightSky,
+    ])
 
-    expect(result).toHaveLength(2)
-    expect(result).toContainEqual([0.85, 0.15, 185])
-    expect(result).toContainEqual([0.82, 0.15, 165])
-    expect(mockLoggerContext.info).toHaveBeenCalledWith(
-      'Found 2 colors in bright chromatic source',
-    )
+    expect(result).toEqual([brightAqua, brightGreen])
   })
 
-  it('should fallback to category-based matching', () => {
-    let blueColor: Vector = [0.5, 0.1, 230]
-    let matchingColors: Vector[] = [
-      [0.6, 0.15, 220],
-      [0.7, 0.12, 240],
-      [0.5, 0.08, 40],
-    ]
+  it('should keep colors of the same and the adjacent hue categories when no color family applies', () => {
+    let blue: Vector = [0.5, 0.1, 230]
+    let azure: Vector = [0.6, 0.15, 220]
+    let cyan: Vector = [0.7, 0.12, 180]
+    let violet: Vector = [0.7, 0.09, 270]
+    let yellowGreen: Vector = [0.4, 0.06, 100]
+    let orange: Vector = [0.5, 0.2, 30]
 
-    vi.spyOn(
-      categorizeColorByHueModule,
-      'categorizeColorByHue',
-    ).mockReturnValue('blue')
-    vi.spyOn(
-      categorizeColorsByHueModule,
-      'categorizeColorsByHue',
-    ).mockReturnValue({
-      blue: [
-        [0.6, 0.15, 220],
-        [0.7, 0.12, 240],
-      ],
-    })
+    let result = filterColorsByHueCategory(blue, [
+      yellowGreen,
+      violet,
+      orange,
+      cyan,
+      azure,
+    ])
 
-    let result = filterColorsByHueCategory(blueColor, matchingColors)
-
-    expect(result).toHaveLength(2)
-    expect(result).toContainEqual([0.6, 0.15, 220])
-    expect(result).toContainEqual([0.7, 0.12, 240])
-    expect(mockLoggerContext.info).toHaveBeenCalledWith(
-      'Refined to 2 colors with similar hue category',
-    )
+    expect(result).toHaveLength(3)
+    expect(result).toEqual(expect.arrayContaining([azure, cyan, violet]))
   })
 
-  it('should return all chromatic colors when no matches found', () => {
-    let unusualColor: Vector = [0.5, 0.1, 230]
-    let chromaticColors: Vector[] = [
+  it('should fall back to the adjacent hue categories when no color of the source family is available', () => {
+    let yellow: Vector = [0.7, 0.1, 75]
+    let dullOrange: Vector = [0.6, 0.06, 30]
+    let blue: Vector = [0.5, 0.2, 200]
+
+    let result = filterColorsByHueCategory(yellow, [blue, dullOrange])
+
+    expect(result).toEqual([dullOrange])
+  })
+
+  it('should keep every color when none has a similar hue', () => {
+    let blue: Vector = [0.5, 0.1, 230]
+    let palette: Vector[] = [
       [0.6, 0.15, 40],
       [0.7, 0.12, 120],
     ]
 
+    let result = filterColorsByHueCategory(blue, palette)
+
+    expect(result).toBe(palette)
+  })
+
+  it('should return an empty palette as is', () => {
+    let blue: Vector = [0.5, 0.1, 230]
+    let palette: Vector[] = []
+
+    let result = filterColorsByHueCategory(blue, palette)
+
+    expect(result).toBe(palette)
+  })
+
+  /*
+   * The two tests below reach defensive branches that the real hue helpers
+   * never take: they always name one of the nine categories and always return
+   * all nine of them. The helpers are replaced only to keep those branches
+   * covered.
+   */
+
+  it('should keep every color when the hue category of the source is unknown', () => {
+    let blue: Vector = [0.5, 0.1, 230]
+    let palette: Vector[] = [[0.6, 0.15, 220]]
     vi.spyOn(
       categorizeColorByHueModule,
       'categorizeColorByHue',
-    ).mockReturnValue('blue')
+    ).mockReturnValue('unknown')
+
+    let result = filterColorsByHueCategory(blue, palette)
+
+    expect(result).toBe(palette)
+  })
+
+  it('should skip hue categories missing from the categorized colors', () => {
+    let blue: Vector = [0.5, 0.1, 230]
+    let palette: Vector[] = [[0.6, 0.15, 220]]
     vi.spyOn(
       categorizeColorsByHueModule,
       'categorizeColorsByHue',
     ).mockReturnValue({})
 
-    let result = filterColorsByHueCategory(unusualColor, chromaticColors)
+    let result = filterColorsByHueCategory(blue, palette)
 
-    expect(result).toBe(chromaticColors)
-    expect(mockLoggerContext.info).toHaveBeenCalledWith(
-      'No colors in similar hue category, using all chromatic colors',
-    )
-  })
-
-  it('should handle empty input array', () => {
-    let color: Vector = [0.5, 0.1, 230]
-    let result = filterColorsByHueCategory(color, [])
-
-    expect(result).toHaveLength(0)
-    expect(mockLoggerContext.info).toHaveBeenCalledWith(
-      'No colors in similar hue category, using all chromatic colors',
-    )
-  })
-
-  it('should include colors from adjacent categories when main category has no matches', () => {
-    let blueColor: Vector = [0.5, 0.1, 250]
-
-    let chromaticColors: Vector[] = [
-      [0.6, 0.08, 240],
-      [0.5, 0.07, 200],
-      [0.7, 0.09, 280],
-      [0.4, 0.06, 100],
-    ]
-
-    vi.spyOn(
-      categorizeColorByHueModule,
-      'categorizeColorByHue',
-    ).mockReturnValue('blue')
-    vi.spyOn(
-      categorizeColorsByHueModule,
-      'categorizeColorsByHue',
-    ).mockReturnValue({
-      purple: [[0.7, 0.09, 280]],
-      green: [[0.4, 0.06, 100]],
-      blue: [[0.6, 0.08, 240]],
-      cyan: [[0.5, 0.07, 200]],
-    })
-
-    let result = filterColorsByHueCategory(blueColor, chromaticColors)
-
-    expect(result).toHaveLength(3)
-    expect(result).toContainEqual([0.6, 0.08, 240])
-    expect(result).toContainEqual([0.5, 0.07, 200])
-    expect(result).toContainEqual([0.7, 0.09, 280])
-    expect(result).not.toContainEqual([0.4, 0.06, 100])
-
-    expect(mockLoggerContext.info).toHaveBeenCalledWith(
-      'Refined to 3 colors with similar hue category',
-    )
-  })
-
-  it('should handle non-existent source category gracefully', () => {
-    let someColor: Vector = [0.5, 0.1, 250]
-    let chromaticColors: Vector[] = [
-      [0.6, 0.08, 240],
-      [0.5, 0.07, 200],
-    ]
-
-    vi.spyOn(
-      categorizeColorByHueModule,
-      'categorizeColorByHue',
-    ).mockReturnValue('non-existent-category')
-    vi.spyOn(
-      categorizeColorsByHueModule,
-      'categorizeColorsByHue',
-    ).mockReturnValue({
-      blue: [[0.6, 0.08, 240]],
-      cyan: [[0.5, 0.07, 200]],
-    })
-
-    let result = filterColorsByHueCategory(someColor, chromaticColors)
-
-    expect(result).toEqual(chromaticColors)
-    expect(mockLoggerContext.info).toHaveBeenCalledWith(
-      'No colors in similar hue category, using all chromatic colors',
-    )
-  })
-
-  it('should match colors in purple-pink family with target range and chroma threshold', () => {
-    let purpleColor: Vector = [0.6, 0.1, 290]
-
-    let matchingColors: Vector[] = [
-      [0.5, 0.06, 280],
-      [0.7, 0.04, 320],
-      [0.6, 0.07, 340],
-      [0.5, 0.08, 350],
-      [0.6, 0.07, 200],
-    ]
-
-    let result = filterColorsByHueCategory(purpleColor, matchingColors)
-
-    expect(result).toHaveLength(2)
-    expect(result).toContainEqual([0.5, 0.06, 280])
-    expect(result).toContainEqual([0.6, 0.07, 340])
-    expect(result).not.toContainEqual([0.7, 0.04, 320])
-    expect(result).not.toContainEqual([0.5, 0.08, 350])
-    expect(result).not.toContainEqual([0.6, 0.07, 200])
-
-    expect(mockLoggerContext.info).toHaveBeenCalledWith(
-      'Found 2 colors in purple-pink family',
-    )
+    expect(result).toBe(palette)
   })
 })

@@ -41,14 +41,8 @@ describe('replaceColorsInSvg', () => {
   })
 
   it('should replace colors in CSS style blocks', () => {
-    let svgContent = `<svg>
-      <style>
-        .red { fill: #ff0000; }
-        .green { stroke: #00ff00; }
-      </style>
-      <rect class="red" />
-      <circle class="green" />
-    </svg>`
+    let svgContent =
+      '<svg><style>.red { fill: #ff0000; } .green { stroke: #00ff00; }</style></svg>'
     let colorInfos: ColorInfo[] = [
       { value: '#ff0000', property: 'fill', source: 'css' },
       { property: 'stroke', value: '#00ff00', source: 'css' },
@@ -60,8 +54,9 @@ describe('replaceColorsInSvg', () => {
 
     let result = replaceColorsInSvg(svgContent, colorMapping, colorInfos)
 
-    expect(result).toContain('fill: #0000ff;')
-    expect(result).toContain('stroke: #ffff00;')
+    expect(result).toBe(
+      '<svg><style>.red { fill: #0000ff; } .green { stroke: #ffff00; }</style></svg>',
+    )
   })
 
   it('should replace named colors', () => {
@@ -83,10 +78,8 @@ describe('replaceColorsInSvg', () => {
   })
 
   it('should replace RGB and HSL colors', () => {
-    let svgContent = `<svg>
-      <rect fill="rgb(255, 0, 0)" />
-      <circle stroke="hsl(120, 100%, 50%)" />
-    </svg>`
+    let svgContent =
+      '<svg><rect fill="rgb(255, 0, 0)" /><circle stroke="hsl(120, 100%, 50%)" /></svg>'
     let colorInfos: ColorInfo[] = [
       { value: 'rgb(255, 0, 0)', source: 'attribute', property: 'fill' },
       { value: 'hsl(120, 100%, 50%)', source: 'attribute', property: 'stroke' },
@@ -98,8 +91,9 @@ describe('replaceColorsInSvg', () => {
 
     let result = replaceColorsInSvg(svgContent, colorMapping, colorInfos)
 
-    expect(result).toContain('fill="#0000ff"')
-    expect(result).toContain('stroke="#ffff00"')
+    expect(result).toBe(
+      '<svg><rect fill="#0000ff" /><circle stroke="#ffff00" /></svg>',
+    )
   })
 
   it('should handle multiple occurrences of the same color', () => {
@@ -118,11 +112,8 @@ describe('replaceColorsInSvg', () => {
   })
 
   it('should handle colors that appear in different contexts', () => {
-    let svgContent = `<svg>
-      <rect fill="#ff0000" />
-      <style>.red { color: #ff0000; }</style>
-      <text>The color #ff0000 is red</text>
-    </svg>`
+    let svgContent =
+      '<svg><rect fill="#ff0000" /><style>.a { color: #ff0000; }</style><text>#ff0000</text></svg>'
     let colorInfos: ColorInfo[] = [
       { source: 'attribute', value: '#ff0000', property: 'fill' },
       { property: 'color', value: '#ff0000', source: 'css' },
@@ -132,9 +123,9 @@ describe('replaceColorsInSvg', () => {
 
     let result = replaceColorsInSvg(svgContent, colorMapping, colorInfos)
 
-    expect(result).toContain('fill="#0000ff"')
-    expect(result).toContain('color: #0000ff;')
-    expect(result).toContain('The color #0000ff is red')
+    expect(result).toBe(
+      '<svg><rect fill="#0000ff" /><style>.a { color: #0000ff; }</style><text>#0000ff</text></svg>',
+    )
   })
 
   it('should return the original SVG if no colors match the mapping', () => {
@@ -170,8 +161,8 @@ describe('replaceColorsInSvg', () => {
   it('should tell a short hex color from a longer one starting with it', () => {
     let svgContent = '<svg><rect fill="#ffffff" /><path fill="#fff" /></svg>'
     let colorInfos: ColorInfo[] = [
-      { source: 'attribute', value: '#ffffff', property: 'fill' },
       { source: 'attribute', property: 'fill', value: '#fff' },
+      { source: 'attribute', value: '#ffffff', property: 'fill' },
     ]
     let colorMapping = new Map([
       ['#ffffff', '#111111'],

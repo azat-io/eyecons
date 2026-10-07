@@ -1,13 +1,8 @@
-import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import fs from 'node:fs/promises'
-import path from 'node:path'
 
-import type { Config } from '../../../extension/types/config'
-
-import { createMockLoggerContext } from '../../helpers/create-mock-logger-context'
 import { getIconSource } from '../../../extension/io/file/get-icon-source'
 import { createMockConfig } from '../../helpers/create-mock-config'
-import { logger } from '../../../extension/io/vscode/logger'
 
 vi.mock('node:fs/promises', () => ({
   default: {
@@ -15,120 +10,73 @@ vi.mock('node:fs/promises', () => ({
   },
 }))
 
-vi.mock('node:path', () => ({
-  default: {
-    join: vi.fn((...arguments_) => arguments_.join('/')),
-  },
-}))
+/**
+ * Files in the fake file system, by path.
+ */
+let files = new Map<string, string>()
 
-let mockLoggerContext = createMockLoggerContext()
+/**
+ * Reads a file from the fake file system. Like Node.js, it returns text only
+ * when an encoding is given and a buffer otherwise.
+ *
+ * @param file - Path of the file.
+ * @param encoding - Encoding of the text to return.
+ * @returns Promise with the content, rejected when the file is missing.
+ */
+function readFile(
+  file: unknown,
+  encoding?: unknown,
+): Promise<Buffer<ArrayBuffer> | string> {
+  let content = files.get(String(file))
+  if (content === undefined) {
+    return Promise.reject(new Error(`ENOENT: no such file, '${String(file)}'`))
+  }
+  return Promise.resolve(encoding ? content : Buffer.from(content))
+}
 
 describe('getIconSource', () => {
-  let mockConfig: Config
+  let config = createMockConfig()
 
   beforeEach(() => {
-    vi.clearAllMocks()
-    vi.spyOn(logger, 'withContext').mockReturnValue(mockLoggerContext)
-    vi.mocked(fs.readFile).mockResolvedValue('<svg>Mock SVG content</svg>')
-
-    mockConfig = createMockConfig()
-  })
-
-  afterEach(() => {
     vi.resetAllMocks()
-  })
-
-  it('should read the correct file for icons', async () => {
-    let iconId = 'file'
-    let iconType = 'files'
-
-    let result = await getIconSource(iconId, iconType, mockConfig)
-
-    expect(path.join).toHaveBeenCalledWith('icons/source', 'files', 'file.svg')
-    expect(fs.readFile).toHaveBeenCalledWith(
-      'icons/source/files/file.svg',
-      'utf8',
-    )
-    expect(result).toBe('<svg>Mock SVG content</svg>')
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith(
-      'Read source for icon: file.svg',
-    )
-  })
-
-  it('should log and throw error when file reading fails', async () => {
-    let iconId = 'nonexistent'
-    let iconType = 'files'
-    let mockError = new Error('File not found')
-    vi.mocked(fs.readFile).mockRejectedValueOnce(mockError)
-
-    await expect(getIconSource(iconId, iconType, mockConfig)).rejects.toThrow(
-      mockError,
-    )
-    expect(mockLoggerContext.error).toHaveBeenCalledWith(
-      'Failed to read source for icon nonexistent: File not found',
-    )
+    files = new Map([
+      ['/mock/extension/dist/icons/base/folder.svg', '<svg>folder</svg>'],
+      ['/mock/extension/dist/icons/files/js.svg', '<svg>js</svg>'],
+      ['/custom/icons/files/js.svg', '<svg>custom js</svg>'],
+    ])
+    vi.mocked(fs.readFile).mockImplementation(readFile)
   })
 
   it.each([
-    {
-      expectedPath: 'icons/source/base/folder.svg',
-      iconType: 'base',
-      iconId: 'folder',
-    },
-    {
-      expectedPath: 'icons/source/files/javascript.svg',
-      iconId: 'javascript',
-      iconType: 'files',
-    },
-    {
-      expectedPath: 'icons/source/files/typescript.svg',
-      iconId: 'typescript',
-      iconType: 'files',
-    },
-    {
-      expectedPath: 'icons/source/base/folder-open.svg',
-      iconId: 'folder-open',
-      iconType: 'base',
-    },
+    ['folder', 'base', '<svg>folder</svg>'],
+    ['js', 'files', '<svg>js</svg>'],
   ])(
-    'should handle icon $iconId correctly',
-    async ({ expectedPath, iconType, iconId }) => {
-      await getIconSource(iconId, iconType, mockConfig)
-
-      expect(path.join).toHaveBeenCalledWith(
-        'icons/source',
-        iconType,
-        `${iconId}.svg`,
+    'should read the %s icon from the %s source directory as text',
+    async (iconId, iconType, expected) => {
+      await expect(getIconSource(iconId, iconType, config)).resolves.toBe(
+        expected,
       )
-      expect(fs.readFile).toHaveBeenCalledWith(expectedPath, 'utf8')
     },
   )
 
-  it('should handle non-Error objects in error handling', async () => {
-    let iconId = 'problematic'
-    let iconType = 'base'
-    let errorObject = 'String error'
-    vi.mocked(fs.readFile).mockRejectedValueOnce(errorObject)
+  it('should read icons from the configured source directory', async () => {
+    let customConfig = createMockConfig({ sourceIconsPath: '/custom/icons' })
 
-    await expect(getIconSource(iconId, iconType, mockConfig)).rejects.toBe(
-      errorObject,
-    )
-    expect(mockLoggerContext.error).toHaveBeenCalledWith(
-      'Failed to read source for icon problematic: String error',
+    await expect(getIconSource('js', 'files', customConfig)).resolves.toBe(
+      '<svg>custom js</svg>',
     )
   })
 
-  it('should use sourceIconsPath from config', async () => {
-    let iconId = 'file'
-    let iconType = 'files'
-    mockConfig.sourceIconsPath = 'custom/source/path'
-
-    await getIconSource(iconId, iconType, mockConfig)
-
-    expect(path.join).toHaveBeenCalledWith(
-      'custom/source/path',
-      'files',
-      'file.svg',
+  it('should reject when the icon has no source file', async () => {
+    await expect(getIconSource('unknown', 'files', config)).rejects.toThrow(
+      "ENOENT: no such file, '/mock/extension/dist/icons/files/unknown.svg'",
     )
+  })
+
+  it('should rethrow a non-Error failure unchanged', async () => {
+    let failure = 'Permission denied'
+    vi.mocked(fs.readFile).mockRejectedValue(failure)
+
+    await expect(getIconSource('js', 'files', config)).rejects.toBe(failure)
   })
 })

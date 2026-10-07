@@ -16,8 +16,8 @@ let emptyAssociations: ThemeData = {
   },
 }
 
-describe('buildFileAssociationMap', () => {
-  it('should create file associations for different themes', () => {
+describe('createThemeAssociations', () => {
+  it('should associate extensions and file names with icons per theme', () => {
     let icons: FormattedIconValue[] = [
       {
         theme: 'dark',
@@ -76,24 +76,27 @@ describe('buildFileAssociationMap', () => {
     })
   })
 
-  it('should handle empty input array', () => {
+  it('should return empty associations for no icons', () => {
     let result = createThemeAssociations([])
 
     expect(result).toEqual(emptyAssociations)
   })
 
-  it('should only process file icons', () => {
+  it('should ignore extensions and file names of base icons', () => {
     let icons: FormattedIconValue[] = [
       {
+        extensions: ['svg'],
+        files: ['README'],
         theme: 'dark',
         name: 'File',
         type: 'base',
         id: 'file',
       },
       {
-        name: 'Folder',
-        theme: 'dark',
-        id: 'folder',
+        extensions: ['svg'],
+        name: 'File Light',
+        id: 'file-light',
+        theme: 'light',
         type: 'base',
       },
     ]
@@ -103,7 +106,7 @@ describe('buildFileAssociationMap', () => {
     expect(result).toEqual(emptyAssociations)
   })
 
-  it('should handle icons with undefined extensions or files', () => {
+  it('should skip file icons without extensions or file names', () => {
     let icons: FormattedIconValue[] = [
       {
         name: 'JavaScript',

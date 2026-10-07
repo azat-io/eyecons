@@ -1,107 +1,56 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-
-import type { Theme } from '../../../extension/types/theme'
+import { describe, expect, it } from 'vitest'
 
 import { getFolderColors } from '../../../extension/core/color/get-folder-colors'
-import * as toOklchModule from '../../../extension/core/color/to-oklch'
-import * as toHexModule from '../../../extension/core/color/to-hex'
+import { createMockTheme } from '../../helpers/create-mock-theme'
+import { toOklch } from '../../../extension/core/color/to-oklch'
 
-const FOLDER_PRIMARY_COLOR = '#ffca28'
-const FOLDER_SECONDARY_COLOR = '#ffa000'
+/**
+ * Front of the folder in the source icon, painted with the folder color.
+ */
+const FOLDER_FRONT_COLOR = '#ffca28'
 
-vi.mock('../../../extension/core/color/to-oklch', () => ({
-  toOklch: vi.fn(),
-}))
+/**
+ * Back of the folder in the source icon, painted with a darker shade.
+ */
+const FOLDER_BACK_COLOR = '#ffa000'
 
 describe('getFolderColors', () => {
-  let mockTheme: Theme
+  let theme = createMockTheme()
 
-  beforeEach(() => {
-    vi.clearAllMocks()
+  it.each(['orange', 'yellow', 'purple', 'green', 'blue', 'red'] as const)(
+    'should paint the folder front with the theme %s color',
+    folderColor => {
+      let result = getFolderColors(createMockTheme({ folderColor }))
 
-    mockTheme = {
-      main: {
-        orange: '#ff9800',
-        yellow: '#ffeb3b',
-        purple: '#9c27b0',
-        green: '#4caf50',
-        blue: '#2196f3',
-        red: '#f44336',
-      },
-      folderColor: 'blue',
-    } as Theme
+      expect(result.get(FOLDER_FRONT_COLOR)).toBe(theme.main[folderColor])
+    },
+  )
 
-    vi.mocked(toOklchModule.toOklch).mockImplementation((color: string) => {
-      let colorMap: Record<string, [number, number, number]> = {
-        '#2196f3': [0.6, 0.2, 240],
-        '#ff9800': [0.7, 0.3, 30],
-      }
-      return colorMap[color] ?? [0, 0, 0]
-    })
+  it('should paint the folder front blue when the folder color is unknown', () => {
+    let result = getFolderColors(createMockTheme({ folderColor: 'pink' }))
 
-    vi.spyOn(toHexModule, 'toHex').mockImplementation(
-      vector => `hex(${vector.join(' ')})`,
+    expect(result.get(FOLDER_FRONT_COLOR)).toBe(theme.main.blue)
+  })
+
+  it('should paint the folder back with a darker shade of the same hue', () => {
+    let expectedLightnessDrop = 0.1
+
+    let result = getFolderColors(theme)
+
+    let [frontLightness, , frontHue] = toOklch(result.get(FOLDER_FRONT_COLOR)!)
+    let [backLightness, , backHue] = toOklch(result.get(FOLDER_BACK_COLOR)!)
+    expect(backLightness).toBeCloseTo(
+      frontLightness! - expectedLightnessDrop,
+      2,
     )
+    expect(backHue).toBeCloseTo(frontHue!, 0)
   })
 
-  it('should use the specified folder color when it is a valid key', () => {
-    mockTheme.folderColor = 'orange'
+  it('should replace only the two folder colors', () => {
+    let result = getFolderColors(theme)
 
-    getFolderColors(mockTheme)
-
-    expect(toOklchModule.toOklch).toHaveBeenCalledWith('#ff9800')
-  })
-
-  it('should use blue as default when folderColor is not a valid key', () => {
-    mockTheme.folderColor = 'invalid-color'
-
-    getFolderColors(mockTheme)
-
-    expect(toOklchModule.toOklch).toHaveBeenCalledWith('#2196f3')
-  })
-
-  it('should create a Map with primary and secondary folder colors', () => {
-    mockTheme.folderColor = 'blue'
-
-    vi.mocked(toOklchModule.toOklch).mockReturnValue([0.6, 0.2, 240])
-
-    vi.spyOn(toHexModule, 'toHex')
-      .mockReturnValueOnce('#3f6fbf')
-      .mockReturnValueOnce('#4f8fdf')
-
-    let result = getFolderColors(mockTheme)
-
-    expect(result.get(FOLDER_PRIMARY_COLOR)).toBe('#4f8fdf')
-    expect(result.get(FOLDER_SECONDARY_COLOR)).toBe('#3f6fbf')
-    expect(result.size).toBe(2)
-  })
-
-  it('should calculate secondary color by reducing lightness by 0.1', () => {
-    mockTheme.folderColor = 'blue'
-
-    vi.mocked(toOklchModule.toOklch).mockReturnValue([0.6, 0.2, 240])
-
-    getFolderColors(mockTheme)
-
-    expect(toHexModule.toHex).toHaveBeenCalledWith([0.6, 0.2, 240])
-    expect(toHexModule.toHex).toHaveBeenCalledWith([0.5, 0.2, 240])
-  })
-
-  it('should handle different folder colors correctly', () => {
-    let testCases = [
-      { expectedColor: '#f44336', folderColor: 'red' },
-      { expectedColor: '#4caf50', folderColor: 'green' },
-      { expectedColor: '#9c27b0', folderColor: 'purple' },
-      { expectedColor: '#ffeb3b', folderColor: 'yellow' },
-    ]
-
-    for (let { expectedColor, folderColor } of testCases) {
-      vi.clearAllMocks()
-      mockTheme.folderColor = folderColor
-
-      getFolderColors(mockTheme)
-
-      expect(toOklchModule.toOklch).toHaveBeenCalledWith(expectedColor)
-    }
+    expect(new Set(result.keys())).toEqual(
+      new Set([FOLDER_FRONT_COLOR, FOLDER_BACK_COLOR]),
+    )
   })
 })

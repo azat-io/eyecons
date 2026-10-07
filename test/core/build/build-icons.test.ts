@@ -1,26 +1,19 @@
-import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
+import type { Mock } from 'vitest'
+
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { setTimeout } from 'node:timers/promises'
+import { window } from 'vscode'
 
-import type {
-  IconDefinitions,
-  ThemeSchema,
-  ThemeData,
-  Theme,
-} from '../../../extension/types/theme'
-import type { Config } from '../../../extension/types/config'
-
-import { createThemeSchema } from '../../../extension/core/build/create-theme-schema'
 import { moveProcessedIcons } from '../../../extension/io/file/move-processed-icons'
-import { createMockLoggerContext } from '../../helpers/create-mock-logger-context'
 import { setupLoaderIcon } from '../../../extension/core/build/setup-loader-icon'
 import { saveThemeSchema } from '../../../extension/io/file/save-theme-schema'
 import { processIcons } from '../../../extension/core/build/process-icons'
 import { buildIcons } from '../../../extension/core/build/build-icons'
 import { createMockConfig } from '../../helpers/create-mock-config'
-import { logger } from '../../../extension/io/vscode/logger'
+import { createMockTheme } from '../../helpers/create-mock-theme'
 
 vi.mock('node:timers/promises', () => ({
-  setTimeout: vi.fn().mockResolvedValue(null),
+  setTimeout: vi.fn(),
 }))
 
 vi.mock('../../../extension/core/build/setup-loader-icon', () => ({
@@ -31,10 +24,6 @@ vi.mock('../../../extension/core/build/process-icons', () => ({
   processIcons: vi.fn(),
 }))
 
-vi.mock('../../../extension/core/build/create-theme-schema', () => ({
-  createThemeSchema: vi.fn(),
-}))
-
 vi.mock('../../../extension/io/file/move-processed-icons', () => ({
   moveProcessedIcons: vi.fn(),
 }))
@@ -43,187 +32,134 @@ vi.mock('../../../extension/io/file/save-theme-schema', () => ({
   saveThemeSchema: vi.fn(),
 }))
 
-vi.mock('../../../extension/io/vscode/logger', () => ({
-  logger: {
-    withContext: vi.fn(),
-  },
-}))
-
 describe('buildIcons', () => {
-  let mockTheme: Theme
-  let mockConfig: Config
-  let mockProcessIconsResult: {
-    iconDefinitions: IconDefinitions
-    temporaryDirectory: string
-    themeData: ThemeData
+  let config = createMockConfig({ version: '2.3.4' })
+  let theme = createMockTheme({ folderColor: 'purple', id: 'nord' })
+
+  let processedIcons: Awaited<ReturnType<typeof processIcons>> = {
+    themeData: {
+      dark: {
+        fileNames: { 'package.json': 'npm' },
+        fileExtensions: { js: 'js' },
+      },
+      light: { fileNames: { 'package.json': 'npm-light' }, fileExtensions: {} },
+    },
+    iconDefinitions: {
+      'npm-light': { iconPath: './icons/files/npm-light--hash.svg' },
+      npm: { iconPath: './icons/files/npm--hash.svg' },
+      js: { iconPath: './icons/files/js--hash.svg' },
+    },
+    temporaryDirectory: '/tmp/eyecons-abc123',
   }
-  let mockThemeSchema: ThemeSchema
-  let mockLoggerContext = createMockLoggerContext()
+
+  /**
+   * Visible steps of the build in the order they happened.
+   */
+  let steps: string[] = []
 
   beforeEach(() => {
-    vi.clearAllMocks()
-
-    mockTheme = {
-      colors: ['#000000', '#ffffff'],
-      folderColor: 'blue',
-      overrides: {},
-      id: 'dark',
-    } as Theme
-
-    mockConfig = createMockConfig()
-
-    mockProcessIconsResult = {
-      themeData: {
-        dark: {
-          fileNames: { 'package.json': 'json' },
-          fileExtensions: { js: 'js' },
-        },
-        light: {
-          fileExtensions: {},
-          fileNames: {},
-        },
-      },
-      iconDefinitions: {
-        folder: { iconPath: './icons/folder.svg' },
-        file: { iconPath: './icons/file.svg' },
-      },
-      temporaryDirectory: '/mock/temp/directory',
-    }
-
-    mockThemeSchema = {
-      light: {
-        file: 'file-light',
-        fileExtensions: {},
-        fileNames: {},
-      },
-      iconDefinitions: mockProcessIconsResult.iconDefinitions,
-      fileNames: { 'package.json': 'json' },
-      buildTime: '2023-01-01T00:00:00.000Z',
-      folderExpanded: 'folder-open',
-      fileExtensions: { js: 'js' },
-      hidesExplorerArrows: true,
-      folderNamesExpanded: {},
-      folderColor: 'blue',
-      folder: 'folder',
-      version: '1.0.0',
-      folderNames: {},
-      themeId: 'dark',
-      file: 'file',
-    }
-
-    vi.mocked(logger.withContext).mockReturnValue(mockLoggerContext)
-    vi.mocked(setupLoaderIcon).mockResolvedValue()
-    vi.mocked(processIcons).mockResolvedValue(mockProcessIconsResult)
-    vi.mocked(moveProcessedIcons).mockResolvedValue()
-    vi.mocked(createThemeSchema).mockReturnValue(mockThemeSchema)
-    vi.mocked(saveThemeSchema).mockResolvedValue()
-  })
-
-  afterEach(() => {
     vi.resetAllMocks()
+    steps = []
+    vi.mocked(setupLoaderIcon).mockImplementation(() => {
+      steps.push('show the loader')
+      return Promise.resolve()
+    })
+    vi.mocked(processIcons).mockImplementation(() => {
+      steps.push('process the icons')
+      return Promise.resolve(processedIcons)
+    })
+    vi.mocked(moveProcessedIcons).mockImplementation(temporaryDirectory => {
+      steps.push(`move the icons from ${temporaryDirectory}`)
+      return Promise.resolve()
+    })
+    vi.mocked(setTimeout).mockImplementation(delay => {
+      steps.push(`wait ${String(delay)} ms`)
+      return Promise.resolve()
+    })
+    vi.mocked(saveThemeSchema).mockImplementation(() => {
+      steps.push('save the theme')
+      return Promise.resolve()
+    })
   })
 
-  it('should build icons successfully', async () => {
-    await buildIcons(mockTheme, mockConfig)
+  it('should show the loader, then switch to the theme once the processed icons are in place', async () => {
+    await buildIcons(theme, config)
 
-    expect(setupLoaderIcon).toHaveBeenCalledWith(mockTheme, mockConfig)
-    expect(processIcons).toHaveBeenCalledWith(mockTheme, mockConfig)
-    expect(moveProcessedIcons).toHaveBeenCalledWith(
-      mockProcessIconsResult.temporaryDirectory,
-      mockConfig,
-    )
-    expect(createThemeSchema).toHaveBeenCalledWith(
-      mockProcessIconsResult.iconDefinitions,
-      mockProcessIconsResult.themeData,
-      { config: mockConfig, theme: mockTheme },
-    )
-
-    expect(setTimeout).toHaveBeenCalledWith(1000)
-
-    expect(saveThemeSchema).toHaveBeenCalledWith(mockThemeSchema, mockConfig)
-
-    expect(mockLoggerContext.info).toHaveBeenCalledWith(
-      'Starting icon theme build process',
-    )
-    expect(mockLoggerContext.debug).toHaveBeenCalledWith(
-      'Setting up loader icon',
-    )
-    expect(mockLoggerContext.info).toHaveBeenCalledWith(
-      'Processing icons in temporary directory',
-    )
-    expect(mockLoggerContext.info).toHaveBeenCalledWith(
-      'Moving processed icons to output directory',
-    )
-    expect(mockLoggerContext.info).toHaveBeenCalledWith(
-      'Creating and saving theme schema',
-    )
-    expect(mockLoggerContext.info).toHaveBeenCalledWith(
-      'Icon theme build process completed',
-    )
+    expect(steps).toEqual([
+      'show the loader',
+      'process the icons',
+      'move the icons from /tmp/eyecons-abc123',
+      'wait 1000 ms',
+      'save the theme',
+    ])
   })
 
-  it('should handle errors from setupLoaderIcon', async () => {
-    let error = new Error('Setup loader error')
-    vi.mocked(setupLoaderIcon).mockRejectedValueOnce(error)
+  it('should save a theme built from the processed icons', async () => {
+    await buildIcons(theme, config)
 
-    await expect(buildIcons(mockTheme, mockConfig)).rejects.toThrow(error)
-
-    expect(processIcons).not.toHaveBeenCalled()
-    expect(mockLoggerContext.error).toHaveBeenCalledWith(
-      'Build process failed: Setup loader error',
-      true,
-    )
-  })
-
-  it('should handle errors from processIcons', async () => {
-    let error = new Error('Process icons error')
-    vi.mocked(processIcons).mockRejectedValueOnce(error)
-
-    await expect(buildIcons(mockTheme, mockConfig)).rejects.toThrow(error)
-
-    expect(moveProcessedIcons).not.toHaveBeenCalled()
-    expect(mockLoggerContext.error).toHaveBeenCalledWith(
-      'Build process failed: Process icons error',
-      true,
+    expect(saveThemeSchema).toHaveBeenCalledWith(
+      expect.objectContaining({
+        light: {
+          fileNames: { 'package.json': 'npm-light' },
+          fileExtensions: {},
+          file: 'file-light',
+        },
+        iconDefinitions: processedIcons.iconDefinitions,
+        fileNames: { 'package.json': 'npm' },
+        fileExtensions: { js: 'js' },
+        folderColor: 'purple',
+        version: '2.3.4',
+        themeId: 'nord',
+      }),
+      config,
     )
   })
 
-  it('should handle errors from moveProcessedIcons', async () => {
-    let error = new Error('Move icons error')
-    vi.mocked(moveProcessedIcons).mockRejectedValueOnce(error)
+  it.each([
+    ['showing the loader', setupLoaderIcon, []],
+    ['processing the icons', processIcons, ['show the loader']],
+    [
+      'moving the icons',
+      moveProcessedIcons,
+      ['show the loader', 'process the icons'],
+    ],
+    [
+      'saving the theme',
+      saveThemeSchema,
+      [
+        'show the loader',
+        'process the icons',
+        'move the icons from /tmp/eyecons-abc123',
+        'wait 1000 ms',
+      ],
+    ],
+  ] as [string, Mock, string[]][])(
+    'should stop, notify the user and rethrow when %s fails',
+    async (_, failingStep, completedSteps) => {
+      let error = new Error('Disk is full')
+      failingStep.mockRejectedValue(error)
 
-    await expect(buildIcons(mockTheme, mockConfig)).rejects.toThrow(error)
+      await expect(buildIcons(theme, config)).rejects.toBe(error)
+      expect(steps).toEqual(completedSteps)
+      expect(window.showErrorMessage).toHaveBeenCalledWith(
+        '[Build] Build process failed: Disk is full',
+      )
+    },
+  )
 
-    expect(setTimeout).not.toHaveBeenCalled()
-    expect(saveThemeSchema).not.toHaveBeenCalled()
-    expect(mockLoggerContext.error).toHaveBeenCalledWith(
-      'Build process failed: Move icons error',
-      true,
+  it('should notify the user about a non-Error failure and rethrow it', async () => {
+    let failure = 'Disk is full'
+    vi.mocked(saveThemeSchema).mockRejectedValue(failure)
+
+    await expect(buildIcons(theme, config)).rejects.toBe(failure)
+    expect(window.showErrorMessage).toHaveBeenCalledWith(
+      '[Build] Build process failed: Disk is full',
     )
   })
 
-  it('should handle errors from saveThemeSchema', async () => {
-    let error = new Error('Save schema error')
-    vi.mocked(saveThemeSchema).mockRejectedValueOnce(error)
+  it('should not notify the user when the build succeeds', async () => {
+    await buildIcons(theme, config)
 
-    await expect(buildIcons(mockTheme, mockConfig)).rejects.toThrow(error)
-
-    expect(setTimeout).toHaveBeenCalledWith(1000)
-    expect(mockLoggerContext.error).toHaveBeenCalledWith(
-      'Build process failed: Save schema error',
-      true,
-    )
-  })
-
-  it('should handle errors from saveThemeSchema with string error', async () => {
-    let error = 'Save schema error'
-    vi.mocked(saveThemeSchema).mockRejectedValueOnce(error)
-
-    await expect(buildIcons(mockTheme, mockConfig)).rejects.toThrow(error)
-
-    expect(mockLoggerContext.error).toHaveBeenCalledWith(
-      'Build process failed: Save schema error',
-      true,
-    )
+    expect(window.showErrorMessage).not.toHaveBeenCalled()
   })
 })

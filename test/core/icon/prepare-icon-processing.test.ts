@@ -1,198 +1,105 @@
-import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
-import path from 'node:path'
+import { describe, expect, it } from 'vitest'
 
+import type { FormattedIconValue } from '../../../extension/types/icon'
 import type { Theme } from '../../../extension/types/theme'
 
 import { prepareIconProcessing } from '../../../extension/core/icon/prepare-icon-processing'
-import { generateHash } from '../../../extension/core/hash/generate-hash'
 import { createMockConfig } from '../../helpers/create-mock-config'
-
-vi.mock('../../../extension/core/hash/generate-hash', () => ({
-  generateHash: vi.fn(),
-}))
-
-vi.mock('node:path', () => ({
-  default: {
-    join: vi.fn((...arguments_) => arguments_.join('/')),
-  },
-}))
+import { createMockTheme } from '../../helpers/create-mock-theme'
 
 describe('prepareIconProcessing', () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
-    vi.mocked(generateHash).mockReturnValue('abc123')
-  })
+  let config = createMockConfig()
+  let theme = createMockTheme()
+  let temporaryDirectory = '/tmp/eyecons-abc123'
 
-  afterEach(() => {
-    vi.resetAllMocks()
-  })
-
-  /**
-   * Builds the theme fixture handed to `prepareIconProcessing`.
-   *
-   * Only the id and the folder color reach the function under test, the rest of
-   * the theme is filled with empty values.
-   *
-   * @param id - VS Code theme id.
-   * @param folderColor - Selected folder color.
-   * @returns Theme to pass to the function under test.
-   */
-  function createTheme(id: string, folderColor: string): Theme {
-    return {
-      overrides: {},
-      folderColor,
-      colors: [],
-      id,
-    } as unknown as Theme
+  let file: FormattedIconValue = {
+    theme: 'dark',
+    type: 'base',
+    name: 'File',
+    id: 'file',
   }
 
-  it('should correctly prepare processing data for a dark icon', () => {
-    let icon = {
-      theme: 'dark' as const,
-      type: 'base' as const,
-      name: 'File',
-      id: 'file',
-    }
+  let fileLight: FormattedIconValue = {
+    id: 'file-light',
+    theme: 'light',
+    name: 'File',
+    type: 'base',
+  }
 
-    let theme = createTheme('dark-theme', 'blue')
+  let javascript: FormattedIconValue = {
+    extensions: ['js'],
+    name: 'JavaScript',
+    theme: 'dark',
+    type: 'files',
+    id: 'js',
+  }
 
-    let config = createMockConfig()
+  /**
+   * Prepares an icon for processing into the temporary directory.
+   *
+   * @param icon - Icon to prepare.
+   * @param forTheme - Theme the icon is built for.
+   * @returns Paths and names for the processed icon.
+   */
+  function prepare(
+    icon: FormattedIconValue,
+    forTheme: Theme = theme,
+  ): ReturnType<typeof prepareIconProcessing> {
+    return prepareIconProcessing({ temporaryDirectory, icon }, forTheme, config)
+  }
 
-    let result = prepareIconProcessing(
-      {
-        temporaryDirectory: '/tmp/eyecons',
-        icon,
-      },
-      theme,
-      config,
-    )
+  it('should name the icon file after the icon and a short hash', () => {
+    let result = prepare(file)
 
-    expect(generateHash).toHaveBeenCalledWith('file', 'dark-theme', 'blue')
-    expect(path.join).toHaveBeenCalledWith(
-      '/tmp/eyecons',
-      'base',
-      'file--abc123.svg',
-    )
-
-    expect(result).toEqual({
-      temporaryFilePath: '/tmp/eyecons/base/file--abc123.svg',
-      iconPath: './icons/theme/base/file--abc123.svg',
-      fileName: 'file--abc123.svg',
-      baseId: 'file',
-      isLight: false,
-      hash: 'abc123',
-      type: 'base',
-      id: 'file',
-    })
+    expect(result.hash).toMatch(/^[\da-f]{8}$/u)
+    expect(result.fileName).toBe(`file--${result.hash}.svg`)
   })
 
-  it('should correctly prepare processing data for a light icon', () => {
-    let icon = {
-      theme: 'light' as const,
-      type: 'base' as const,
-      name: 'File Light',
-      id: 'file-light',
-    }
+  it('should put the icon file into the directory of its type', () => {
+    let result = prepare(javascript)
 
-    let theme = createTheme('light-theme', 'yellow')
-
-    let config = createMockConfig()
-
-    let result = prepareIconProcessing(
-      {
-        temporaryDirectory: '/tmp/eyecons',
-        icon,
-      },
-      theme,
-      config,
-    )
-
-    expect(generateHash).toHaveBeenCalledWith(
-      'file-light',
-      'light-theme',
-      'yellow',
-    )
-    expect(path.join).toHaveBeenCalledWith(
-      '/tmp/eyecons',
-      'base',
-      'file-light--abc123.svg',
-    )
-
-    expect(result).toEqual({
-      temporaryFilePath: '/tmp/eyecons/base/file-light--abc123.svg',
-      iconPath: './icons/theme/base/file-light--abc123.svg',
-      fileName: 'file-light--abc123.svg',
-      id: 'file-light',
-      baseId: 'file',
-      hash: 'abc123',
-      isLight: true,
-      type: 'base',
-    })
-  })
-
-  it('should handle special characters in paths and filenames', () => {
-    let icon = {
-      theme: 'dark' as const,
-      type: 'files' as const,
-      name: 'Special Chars',
-      id: 'special-chars',
-    }
-
-    let theme = createTheme('theme-&-Special', 'blue & white')
-
-    let config = createMockConfig()
-    config.outputIconsPath = 'icons/special theme'
-
-    let result = prepareIconProcessing(
-      {
-        temporaryDirectory: '/tmp/eyecons with spaces',
-        icon,
-      },
-      theme,
-      config,
-    )
-
-    expect(generateHash).toHaveBeenCalledWith(
-      'special-chars',
-      'theme-&-Special',
-      'blue & white',
-    )
-    expect(path.join).toHaveBeenCalledWith(
-      '/tmp/eyecons with spaces',
-      'files',
-      'special-chars--abc123.svg',
-    )
-
-    expect(result.temporaryFilePath).toBe(
-      '/tmp/eyecons with spaces/files/special-chars--abc123.svg',
-    )
-    expect(result.iconPath).toBe(
-      './icons/special theme/files/special-chars--abc123.svg',
+    expect(result).toEqual(
+      expect.objectContaining({
+        temporaryFilePath: `/tmp/eyecons-abc123/files/${result.fileName}`,
+        iconPath: `./icons/files/${result.fileName}`,
+        isLight: false,
+        type: 'files',
+        baseId: 'js',
+        id: 'js',
+      }),
     )
   })
 
-  it('should use config outputIconsPath to build iconPath', () => {
-    let icon = {
-      theme: 'dark' as const,
-      type: 'base' as const,
-      name: 'File',
-      id: 'file',
-    }
+  it('should give a light variant its own file and the id of its dark icon', () => {
+    let result = prepare(fileLight)
 
-    let theme = createTheme('dark-theme', 'blue')
-
-    let config = createMockConfig()
-    config.outputIconsPath = 'custom/path/icons'
-
-    let result = prepareIconProcessing(
-      {
-        temporaryDirectory: '/tmp/eyecons',
-        icon,
-      },
-      theme,
-      config,
+    expect(result).toEqual(
+      expect.objectContaining({
+        fileName: expect.stringMatching(
+          /^file-light--[\da-f]{8}\.svg$/u,
+        ) as string,
+        temporaryFilePath: `/tmp/eyecons-abc123/base/${result.fileName}`,
+        iconPath: `./icons/base/${result.fileName}`,
+        id: 'file-light',
+        baseId: 'file',
+        isLight: true,
+      }),
     )
+  })
 
-    expect(result.iconPath).toBe('./custom/path/icons/base/file--abc123.svg')
+  it('should keep the file name while the icon, theme and folder color stay the same', () => {
+    expect(prepare(file).fileName).toBe(prepare(file).fileName)
+  })
+
+  it('should rename the icon file when the theme changes', () => {
+    let nordTheme = createMockTheme({ id: 'nord' })
+
+    expect(prepare(file, nordTheme).fileName).not.toBe(prepare(file).fileName)
+  })
+
+  it('should rename the icon file when the folder color changes', () => {
+    let purpleTheme = createMockTheme({ folderColor: 'purple' })
+
+    expect(prepare(file, purpleTheme).fileName).not.toBe(prepare(file).fileName)
   })
 })
