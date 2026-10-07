@@ -774,6 +774,17 @@ export let fileIcons: FileIcon[] = [
   },
   {
     files: [
+      '.trivyignore',
+      '.trivyignore.yaml',
+      '.trivyignore.yml',
+      'trivy.yaml',
+      'trivy-secret.yaml',
+    ],
+    name: 'Trivy',
+    id: 'trivy',
+  },
+  {
+    files: [
       'tsdown.config.ts',
       'tsdown.config.mts',
       'tsdown.config.cts',
