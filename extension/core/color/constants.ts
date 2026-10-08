@@ -192,7 +192,7 @@ export const ATTRIBUTES_PATTERNS = COLOR_ATTRIBUTES.map(
  * for a specific type of color:
  *
  * - HIGH_SATURATION: For vivid colors where maintaining the correct hue is
- *   crucial
+ *   important
  * - CHROMATIC: For medium-saturation colors that balance hue and lightness
  * - LOW_SATURATION: For colors with some but minimal saturation
  * - ACHROMATIC: For grayscale colors where only lightness matters.

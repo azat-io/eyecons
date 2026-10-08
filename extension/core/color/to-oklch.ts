@@ -6,56 +6,6 @@ import { NAMED_COLORS, HSL_REGEX, RGB_REGEX } from './constants'
 import { logger } from '../../io/vscode/logger'
 
 /**
- * Interface for named groups in HSL regular expression.
- */
-interface HSLRegexGroups {
-  /**
-   * Optional alpha transparency value (0-1).
-   */
-  a?: string
-
-  /**
-   * Hue value with an optional angle unit (deg, grad, rad or turn).
-   */
-  h: string
-
-  /**
-   * Saturation value in percentage (0-100%).
-   */
-  s: string
-
-  /**
-   * Lightness value in percentage (0-100%).
-   */
-  l: string
-}
-
-/**
- * Interface for named groups in RGB regular expression.
- */
-interface RGBRegexGroups {
-  /**
-   * Optional alpha transparency value (0-1).
-   */
-  a?: string
-
-  /**
-   * Red color component (0-255 or a percentage).
-   */
-  r: string
-
-  /**
-   * Green color component (0-255 or a percentage).
-   */
-  g: string
-
-  /**
-   * Blue color component (0-255 or a percentage).
-   */
-  b: string
-}
-
-/**
  * A matcher that checks if a color value matches a specific format.
  */
 interface ColorMatcher {
@@ -85,34 +35,6 @@ const DEGREES_PER_ANGLE_UNIT: Record<string, number> = {
 }
 
 /**
- * Parses an HSL or HSLA color string into HSL components.
- *
- * @param hslString - The HSL(A) color string.
- * @returns HSL values as [Hue in degrees, Saturation 0-1, Lightness 0-1].
- * @throws {Error} If parsing fails.
- */
-function parseHsl(hslString: string): Vector {
-  HSL_REGEX.lastIndex = 0
-
-  let match = HSL_REGEX.exec(hslString)
-  if (!match?.groups) {
-    throw new Error(`Failed to parse HSL string: "${hslString}"`)
-  }
-
-  let {
-    s: saturation,
-    l: lightness,
-    h: hue,
-  } = match.groups as unknown as HSLRegexGroups
-
-  return [
-    parseHue(hue),
-    Number.parseFloat(saturation) / 100,
-    Number.parseFloat(lightness) / 100,
-  ]
-}
-
-/**
  * Converts CSS HSL values to RGB with the algorithm of the CSS Color 4
  * specification.
  *
@@ -134,6 +56,30 @@ function hslToRgb([hue, saturation, lightness]: Vector): Vector {
 }
 
 /**
+ * Parses an HSL or HSLA color string into HSL components.
+ *
+ * @param hslString - The HSL(A) color string.
+ * @returns HSL values as [Hue in degrees, Saturation 0-1, Lightness 0-1].
+ * @throws {Error} If parsing fails.
+ */
+function parseHsl(hslString: string): Vector {
+  HSL_REGEX.lastIndex = 0
+
+  let match = HSL_REGEX.exec(hslString)
+  if (!match?.groups) {
+    throw new Error(`Failed to parse HSL string: "${hslString}"`)
+  }
+
+  let { s: saturation, l: lightness, h: hue } = match.groups
+
+  return [
+    parseHue(hue!),
+    Number.parseFloat(saturation!) / 100,
+    Number.parseFloat(lightness!) / 100,
+  ]
+}
+
+/**
  * Parses an RGB or RGBA color string into RGB components.
  *
  * @param rgbString - The RGB(A) color string.
@@ -148,9 +94,9 @@ function parseRgb(rgbString: string): Vector {
     throw new Error(`Failed to parse RGB string: "${rgbString}"`)
   }
 
-  let { g: green, b: blue, r: red } = match.groups as unknown as RGBRegexGroups
+  let { g: green, b: blue, r: red } = match.groups
 
-  return [red, green, blue].map(parseRgbChannel)
+  return [red!, green!, blue!].map(parseRgbChannel)
 }
 
 /**
@@ -196,63 +142,23 @@ function parseRgbChannel(channel: string): number {
 }
 
 /**
- * Handles hex colors.
- *
- * @param colorValue - The hex color value to convert.
- * @returns RGB values.
- * @throws {Error} If parsing fails.
- */
-let handleHex: ColorHandler = (colorValue: string): Vector =>
-  hexToRgb(colorValue)
-
-/**
- * Handles RGB colors.
- *
- * @param colorValue - The RGB color value to convert.
- * @returns RGB values.
- * @throws {Error} If parsing fails.
- */
-let handleRgb: ColorHandler = (colorValue: string): Vector =>
-  parseRgb(colorValue)
-
-/**
- * Handles HSL colors.
- *
- * @param colorValue - The HSL color value to convert.
- * @returns RGB values.
- * @throws {Error} If parsing fails.
- */
-let handleHsl: ColorHandler = (colorValue: string): Vector =>
-  hslToRgb(parseHsl(colorValue))
-
-/**
- * Handles named colors.
- *
- * @param colorValue - The named color to convert.
- * @returns RGB values.
- * @throws {Error} If the color is not recognized.
- */
-let handleNamedColor: ColorHandler = (colorValue: string): Vector =>
-  namedColorToRgb(colorValue)
-
-/**
  * List of matchers for different color formats, in order of priority.
  */
 let colorMatchers: ColorMatcher[] = [
   {
     predicate: (value: string) => value.startsWith('#'),
-    handler: handleHex,
+    handler: hexToRgb,
   },
   {
     predicate: (value: string) => value.startsWith('rgb'),
-    handler: handleRgb,
+    handler: parseRgb,
   },
   {
     predicate: (value: string) => value.startsWith('hsl'),
-    handler: handleHsl,
+    handler: (value: string) => hslToRgb(parseHsl(value)),
   },
   {
-    handler: handleNamedColor,
+    handler: namedColorToRgb,
     predicate: () => true,
   },
 ]

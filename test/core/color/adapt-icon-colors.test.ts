@@ -95,7 +95,7 @@ describe('adaptIconColors', () => {
   })
 
   it('should leave the icon unchanged when the conversion fails with a non-Error value', () => {
-    let failure = 'Broken color table' as unknown as Error
+    let failure: unknown = 'Broken color table'
     vi.spyOn(NAMED_COLORS, 'get').mockImplementation(() => {
       throw failure
     })

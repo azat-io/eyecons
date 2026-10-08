@@ -1,5 +1,4 @@
 import type { Signal } from '@builder.io/qwik'
-import type { ThemeInput } from 'shiki'
 
 import {
   useVisibleTask$,
@@ -94,7 +93,7 @@ export let Code = component$(() => {
       }
 
       let highlighter = await createHighlighter()
-      await highlighter.loadTheme(themeValue as unknown as ThemeInput)
+      await highlighter.loadTheme(themeValue)
 
       let htmlValue = highlighter.codeToHtml(code, {
         theme: getThemeNameById(currentTheme),

@@ -112,7 +112,7 @@ describe('toOklch', () => {
   })
 
   it('should rethrow a non-Error failure unchanged', () => {
-    let failure = 'Broken color table' as unknown as Error
+    let failure: unknown = 'Broken color table'
     vi.spyOn(NAMED_COLORS, 'get').mockImplementation(() => {
       throw failure
     })

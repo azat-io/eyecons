@@ -1,5 +1,3 @@
-import type { NoSerialize } from '@builder.io/qwik'
-
 import { component$, useContext, useSignal, $ } from '@builder.io/qwik'
 
 import { useClickOutside } from '../../hooks/use-click-outside'
@@ -47,11 +45,7 @@ export let ThemeSelect = component$(() => {
           />
         </svg>
       </div>
-      {dropdownVisible.value && (
-        <ThemeDropdown
-          close={closeDropdown as unknown as NoSerialize<() => void>}
-        />
-      )}
+      {dropdownVisible.value && <ThemeDropdown close={closeDropdown} />}
     </div>
   )
 })

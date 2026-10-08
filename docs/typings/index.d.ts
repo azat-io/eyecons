@@ -1,4 +1,4 @@
-export interface Colors {
+export interface Colors extends Record<string, string> {
   'gitDecoration.conflictingResourceForeground': string
   'gitDecoration.untrackedResourceForeground': string
   'gitDecoration.modifiedResourceForeground': string
@@ -168,10 +168,10 @@ export interface Colors {
 export interface Theme {
   semanticHighlighting: boolean
   tokenColors: TokenColor[]
+  type: 'light' | 'dark'
   $schema: string
   colors: Colors
   name: string
-  type: string
 }
 
 export interface ThemeData {

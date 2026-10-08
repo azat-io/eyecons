@@ -22,6 +22,6 @@ export function mockSettings(settings: Settings): void {
     section =>
       ({
         get: (key: string) => settings[section!]?.[key],
-      }) as unknown as WorkspaceConfiguration,
+      }) as WorkspaceConfiguration,
   )
 }

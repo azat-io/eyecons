@@ -1,4 +1,4 @@
-import type { NoSerialize } from '@builder.io/qwik'
+import type { QRL } from '@builder.io/qwik'
 import type { FocusTrap } from 'focus-trap'
 
 import {
@@ -15,7 +15,7 @@ import { ThemeContext } from '../theme'
 import styles from './index.module.css'
 
 interface ThemeDropdownProps {
-  close: NoSerialize<() => void>
+  close: QRL<() => void>
 }
 
 export let ThemeDropdown = component$<ThemeDropdownProps>(({ close }) => {
@@ -27,7 +27,7 @@ export let ThemeDropdown = component$<ThemeDropdownProps>(({ close }) => {
     if (globalThis.fathom) {
       globalThis.fathom.trackEvent(`settings: theme ${themeName.toLowerCase()}`)
     }
-    close?.()
+    void close()
   })
 
   useTask$(({ track }) => {
@@ -43,7 +43,7 @@ export let ThemeDropdown = component$<ThemeDropdownProps>(({ close }) => {
 
     function handleEscape(event: KeyboardEvent): void {
       if (event.key === 'Escape') {
-        close?.()
+        void close()
       }
     }
 
