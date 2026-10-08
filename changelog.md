@@ -1,5 +1,36 @@
 # Changelog
 
+## v1.18.0
+
+[compare changes](https://github.com/azat-io/eyecons/compare/v1.17.0...v1.18.0)
+
+### 🚀 Features
+
+- Add trivy icon ([841219c](https://github.com/azat-io/eyecons/commit/841219c))
+- Add cargo icon ([7a51e32](https://github.com/azat-io/eyecons/commit/7a51e32))
+
+### 🏎 Performance Improvements
+
+- Reduce icon file size
+  ([d4c6a4f](https://github.com/azat-io/eyecons/commit/d4c6a4f))
+- Write icon colors as hex
+  ([9064cc9](https://github.com/azat-io/eyecons/commit/9064cc9))
+
+### 🐞 Bug Fixes
+
+- Convert hsl colors as css hsl
+  ([d5f48c9](https://github.com/azat-io/eyecons/commit/d5f48c9))
+- Scale percentage rgb channels from 100
+  ([bc2e29e](https://github.com/azat-io/eyecons/commit/bc2e29e))
+- Match hsl colors up to the closing parenthesis
+  ([dbae188](https://github.com/azat-io/eyecons/commit/dbae188))
+- Replace colors only as whole words
+  ([e5ade6d](https://github.com/azat-io/eyecons/commit/e5ade6d))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](https://github.com/azat-io))
+
 ## v1.17.0
 
 [compare changes](https://github.com/azat-io/eyecons/compare/v1.16.0...v1.17.0)
