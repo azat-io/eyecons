@@ -61,6 +61,11 @@ export let fileIcons: FileIcon[] = [
     id: 'cs',
   },
   {
+    files: ['cargo.toml', 'cargo.lock'],
+    name: 'Cargo',
+    id: 'cargo',
+  },
+  {
     files: ['claude.md'],
     name: 'Claude',
     id: 'claude',
