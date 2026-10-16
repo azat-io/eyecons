@@ -113,6 +113,6 @@ describe('createThemeSchema', () => {
       theme,
     })
 
-    expect(result.hidesExplorerArrows).toBeFalsy()
+    expect(result.hidesExplorerArrows).toBe(false)
   })
 })

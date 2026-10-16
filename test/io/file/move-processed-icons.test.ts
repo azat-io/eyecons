@@ -207,7 +207,7 @@ describe('moveProcessedIcons', () => {
     await moveProcessedIcons(temporaryDirectory, config)
 
     expect(listFiles(temporaryDirectory)).toEqual([])
-    expect(directories.has(temporaryDirectory)).toBeFalsy()
+    expect(directories.has(temporaryDirectory)).toBe(false)
   })
 
   it('should still move the processed icons when the previous ones cannot be removed', async () => {

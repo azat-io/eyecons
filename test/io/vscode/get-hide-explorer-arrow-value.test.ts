@@ -11,22 +11,22 @@ describe('getHideExplorerArrowValue', () => {
   it('should hide the explorer arrows when the user enabled it', () => {
     mockSettings({ eyecons: { hidesExplorerArrows: true } })
 
-    expect(getHideExplorerArrowValue()).toBeTruthy()
+    expect(getHideExplorerArrowValue()).toBe(true)
   })
 
   it('should show the explorer arrows when the user disabled hiding them', () => {
     mockSettings({ eyecons: { hidesExplorerArrows: false } })
 
-    expect(getHideExplorerArrowValue()).toBeFalsy()
+    expect(getHideExplorerArrowValue()).toBe(false)
   })
 
   it('should hide the explorer arrows when the user has not configured it', () => {
-    expect(getHideExplorerArrowValue()).toBeTruthy()
+    expect(getHideExplorerArrowValue()).toBe(true)
   })
 
   it('should ignore the setting of another extension', () => {
     mockSettings({ otherExtension: { hidesExplorerArrows: false } })
 
-    expect(getHideExplorerArrowValue()).toBeTruthy()
+    expect(getHideExplorerArrowValue()).toBe(true)
   })
 })

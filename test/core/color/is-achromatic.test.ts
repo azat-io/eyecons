@@ -61,8 +61,8 @@ describe('isAchromatic', () => {
       extremeLightnessThresholds: { light: 0.9, dark: 0.05 },
     })
 
-    expect(isAchromatic(tintedNearWhite, config)).toBeFalsy()
-    expect(isAchromatic(tintedNearWhite, looseLightConfig)).toBeTruthy()
+    expect(isAchromatic(tintedNearWhite, config)).toBe(false)
+    expect(isAchromatic(tintedNearWhite, looseLightConfig)).toBe(true)
   })
 
   it('should take the dark threshold from the config', () => {
@@ -71,7 +71,7 @@ describe('isAchromatic', () => {
       extremeLightnessThresholds: { light: 0.95, dark: 0.1 },
     })
 
-    expect(isAchromatic(tintedNearBlack, config)).toBeFalsy()
-    expect(isAchromatic(tintedNearBlack, looseDarkConfig)).toBeTruthy()
+    expect(isAchromatic(tintedNearBlack, config)).toBe(false)
+    expect(isAchromatic(tintedNearBlack, looseDarkConfig)).toBe(true)
   })
 })

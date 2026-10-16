@@ -5,7 +5,6 @@ import path from 'node:path'
 import type {
   IconDefinitions,
   ThemeSchema,
-  Theme,
 } from '../../../extension/types/theme'
 
 import { prepareIconProcessing } from '../../../extension/core/icon/prepare-icon-processing'
@@ -96,14 +95,12 @@ describe('validate', () => {
 
   /**
    * Writes the theme definition and the icon files the way a build for the
-   * given theme leaves them in the output directory.
+   * current theme leaves them in the output directory.
    *
-   * @param builtFor - Theme the icons were built for.
    * @param options - Deviations from a complete build.
    * @returns Paths of the icon files, by icon id.
    */
   function writeBuiltTheme(
-    builtFor: Theme,
     options: BuiltThemeOptions = {},
   ): Record<string, string> {
     let icons = [
@@ -115,7 +112,7 @@ describe('validate', () => {
     for (let icon of icons) {
       let { iconPath, fileName, type, id } = prepareIconProcessing(
         { temporaryDirectory: '/tmp/eyecons-abc123', icon },
-        builtFor,
+        theme,
         config,
       )
       iconDefinitions[id] = { iconPath }
@@ -124,9 +121,9 @@ describe('validate', () => {
     }
     directories.add(config.outputIconsPath)
     let schema = createMockThemeSchema({
-      folderColor: builtFor.folderColor,
+      folderColor: theme.folderColor,
       version: config.version,
-      themeId: builtFor.id,
+      themeId: theme.id,
       iconDefinitions,
       ...options.schema,
     })
@@ -144,7 +141,7 @@ describe('validate', () => {
   })
 
   it('should accept the icons built for the current theme', async () => {
-    writeBuiltTheme(theme)
+    writeBuiltTheme()
 
     await expect(validate(theme, config)).resolves.toEqual({ isValid: true })
   })
@@ -157,7 +154,7 @@ describe('validate', () => {
   })
 
   it('should ask for a build when the theme definition has no build time', async () => {
-    writeBuiltTheme(theme, { schema: { buildTime: '' } })
+    writeBuiltTheme({ schema: { buildTime: '' } })
 
     await expect(validate(theme, config)).resolves.toEqual({
       reason: 'Build time not found in schema',
@@ -166,7 +163,7 @@ describe('validate', () => {
   })
 
   it('should ask for a build when the icons were built by another version', async () => {
-    writeBuiltTheme(theme, { schema: { version: '0.9.0' } })
+    writeBuiltTheme({ schema: { version: '0.9.0' } })
 
     await expect(validate(theme, config)).resolves.toEqual({
       reason: 'Version mismatch: 0.9.0 vs 1.0.0',
@@ -175,7 +172,7 @@ describe('validate', () => {
   })
 
   it('should ask for a build when the folder color changed', async () => {
-    writeBuiltTheme(theme)
+    writeBuiltTheme()
 
     let result = await validate(
       createMockTheme({ folderColor: 'purple' }),
@@ -189,7 +186,7 @@ describe('validate', () => {
   })
 
   it('should ask for a build when the explorer arrows setting changed', async () => {
-    writeBuiltTheme(theme)
+    writeBuiltTheme()
     mockSettings({ eyecons: { hidesExplorerArrows: false } })
 
     await expect(validate(theme, config)).resolves.toEqual({
@@ -199,7 +196,7 @@ describe('validate', () => {
   })
 
   it('should ask for a build when the theme changed', async () => {
-    writeBuiltTheme(theme)
+    writeBuiltTheme()
 
     let result = await validate(createMockTheme({ id: 'nord' }), config)
 
@@ -212,7 +209,7 @@ describe('validate', () => {
   })
 
   it('should ask for a build when the output icons directory is missing', async () => {
-    writeBuiltTheme(theme)
+    writeBuiltTheme()
     directories.clear()
 
     await expect(validate(theme, config)).resolves.toEqual({
@@ -224,7 +221,7 @@ describe('validate', () => {
   it.each(['html', 'js-light'])(
     'should ask for a build when the %s icon is not defined',
     async iconId => {
-      writeBuiltTheme(theme, { withoutIcon: iconId })
+      writeBuiltTheme({ withoutIcon: iconId })
 
       await expect(validate(theme, config)).resolves.toEqual({
         reason: `Icon definition for ${iconId} not found`,
@@ -236,7 +233,7 @@ describe('validate', () => {
   it.each(['file', 'file-light', 'js', 'js-light'])(
     'should ask for a build when the %s icon file is missing',
     async iconId => {
-      let iconFiles = writeBuiltTheme(theme)
+      let iconFiles = writeBuiltTheme()
       files.delete(iconFiles[iconId]!)
 
       await expect(validate(theme, config)).resolves.toEqual({
@@ -247,7 +244,7 @@ describe('validate', () => {
   )
 
   it('should report a theme definition that cannot be read', async () => {
-    writeBuiltTheme(theme)
+    writeBuiltTheme()
     vi.mocked(fs.readFile).mockRejectedValue(new Error('Permission denied'))
 
     await expect(validate(theme, config)).resolves.toEqual({
@@ -257,7 +254,7 @@ describe('validate', () => {
   })
 
   it('should report a non-Error failure', async () => {
-    writeBuiltTheme(theme)
+    writeBuiltTheme()
     vi.mocked(fs.readFile).mockRejectedValue('Permission denied')
 
     await expect(validate(theme, config)).resolves.toEqual({
