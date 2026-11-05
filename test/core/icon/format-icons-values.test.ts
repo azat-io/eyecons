@@ -69,15 +69,17 @@ describe('formatIconsValues', () => {
     })
   })
 
-  it('should format file icons with extensions and files properties', () => {
+  it('preserves file and language associations in dark and light variants', () => {
     let icons = [
       {
         extensions: ['js', 'mjs', 'cjs'],
+        language: ['javascript'],
         name: 'JavaScript',
         id: 'javascript',
       },
       {
         extensions: ['ts', 'tsx'],
+        language: ['typescript'],
         name: 'TypeScript',
         id: 'typescript',
         light: true,
@@ -94,6 +96,7 @@ describe('formatIconsValues', () => {
     expect(result).toEqual([
       {
         extensions: ['js', 'mjs', 'cjs'],
+        language: ['javascript'],
         name: 'JavaScript',
         id: 'javascript',
         theme: 'dark',
@@ -101,6 +104,7 @@ describe('formatIconsValues', () => {
       },
       {
         extensions: ['ts', 'tsx'],
+        language: ['typescript'],
         name: 'TypeScript',
         id: 'typescript',
         theme: 'dark',
@@ -108,6 +112,7 @@ describe('formatIconsValues', () => {
       },
       {
         extensions: ['ts', 'tsx'],
+        language: ['typescript'],
         id: 'typescript-light',
         name: 'TypeScript',
         theme: 'light',

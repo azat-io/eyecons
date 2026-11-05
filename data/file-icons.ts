@@ -3,12 +3,14 @@ import type { FileIcon } from '../extension/types/icon'
 export let fileIcons: FileIcon[] = [
   {
     extensions: ['applescript', 'ipa'],
+    language: ['applescript'],
     name: 'AppleScript',
     id: 'applescript',
     light: true,
   },
   {
     extensions: ['astro'],
+    language: ['astro'],
     name: 'Astro',
     id: 'astro',
     light: true,
@@ -47,16 +49,19 @@ export let fileIcons: FileIcon[] = [
   },
   {
     extensions: ['c'],
+    language: ['c'],
     name: 'C',
     id: 'c',
   },
   {
     extensions: ['cc', 'cpp', 'cxx', 'c++', 'cp', 'mm', 'mii', 'ii'],
+    language: ['cpp'],
     name: 'C++',
     id: 'cpp',
   },
   {
     extensions: ['cs', 'csx'],
+    language: ['csharp'],
     name: 'C#',
     id: 'cs',
   },
@@ -86,6 +91,7 @@ export let fileIcons: FileIcon[] = [
     id: 'coderabbit',
   },
   {
+    language: ['coffeescript'],
     extensions: ['coffee'],
     name: 'CoffeeScript',
     id: 'coffeescript',
@@ -127,6 +133,7 @@ export let fileIcons: FileIcon[] = [
       'nu',
     ],
     files: ['commit-msg', 'pre-commit', 'pre-push', 'post-merge'],
+    language: ['shellscript', 'bat', 'awk'],
     name: 'Console',
     id: 'console',
   },
@@ -151,6 +158,7 @@ export let fileIcons: FileIcon[] = [
   },
   {
     extensions: ['css'],
+    language: ['css'],
     name: 'CSS',
     id: 'css',
   },
@@ -161,22 +169,26 @@ export let fileIcons: FileIcon[] = [
       'docker-compose.yml',
       'docker-compose.yaml',
     ],
+    language: ['dockerfile', 'dockercompose'],
     extensions: ['dockerfile'],
     name: 'Docker',
     id: 'docker',
   },
   {
     files: ['.editorconfig', 'editorconfig'],
+    language: ['editorconfig'],
     name: 'EditorConfig',
     id: 'editorconfig',
   },
   {
     extensions: ['ex', 'exs', 'eex', 'leex', 'heex'],
+    language: ['elixir'],
     name: 'Elixir',
     id: 'elixir',
   },
   {
     extensions: ['elm'],
+    language: ['elm'],
     name: 'Elm',
     id: 'elm',
   },
@@ -214,6 +226,7 @@ export let fileIcons: FileIcon[] = [
       '.vars',
       '.dev.vars',
     ],
+    language: ['dotenv'],
     name: 'Environment',
     extensions: ['env'],
     id: 'env',
@@ -241,6 +254,7 @@ export let fileIcons: FileIcon[] = [
   },
   {
     extensions: ['fs', 'fsx', 'fsi', 'fsproj'],
+    language: ['fsharp'],
     name: 'F#',
     id: 'fs',
   },
@@ -270,17 +284,20 @@ export let fileIcons: FileIcon[] = [
       '.git-for-windows-updater',
       'git-history',
     ],
+    language: ['git', 'git-commit', 'git-rebase', 'ignore', 'diff'],
     extensions: ['patch'],
     name: 'Git',
     id: 'git',
   },
   {
     extensions: ['go'],
+    language: ['go'],
     name: 'Go',
     id: 'go',
   },
   {
     extensions: ['graphql', 'gql'],
+    language: ['graphql'],
     name: 'GraphQL',
     id: 'graphql',
   },
@@ -298,11 +315,13 @@ export let fileIcons: FileIcon[] = [
   },
   {
     extensions: ['hs', 'lhs'],
+    language: ['haskell'],
     name: 'Haskell',
     id: 'haskell',
   },
   {
     extensions: ['htm', 'html'],
+    language: ['html'],
     name: 'HTML',
     id: 'html',
   },
@@ -371,11 +390,13 @@ export let fileIcons: FileIcon[] = [
   },
   {
     extensions: ['java', 'jsp'],
+    language: ['java'],
     name: 'Java',
     id: 'java',
   },
   {
     extensions: ['js', 'cjs', 'mjs', 'es'],
+    language: ['javascript'],
     name: 'JavaScript',
     id: 'javascript',
   },
@@ -434,12 +455,14 @@ export let fileIcons: FileIcon[] = [
     id: 'jest',
   },
   {
+    language: ['julia'],
     extensions: ['jl'],
     name: 'Julia',
     id: 'julia',
     light: true,
   },
   {
+    language: ['json', 'jsonc', 'json5', 'jsonl'],
     extensions: ['json', 'jsonc', 'json5'],
     name: 'JSON',
     id: 'json',
@@ -494,27 +517,32 @@ export let fileIcons: FileIcon[] = [
   },
   {
     extensions: ['less'],
+    language: ['less'],
     name: 'Less',
     id: 'less',
   },
   {
     extensions: ['lua'],
+    language: ['lua'],
     name: 'Lua',
     id: 'lua',
   },
   {
     files: ['makefile', 'gnumakefile', 'kbuild'],
+    language: ['makefile'],
     extensions: ['mk'],
     name: 'Makefile',
     id: 'makefile',
   },
   {
+    language: ['markdown', 'restructuredtext'],
     extensions: ['md', 'markdown', 'rst'],
     name: 'Markdown',
     id: 'markdown',
   },
   {
     extensions: ['mdx'],
+    language: ['mdx'],
     name: 'MDX',
     id: 'mdx',
   },
@@ -542,6 +570,7 @@ export let fileIcons: FileIcon[] = [
   {
     extensions: ['nginx', 'nginxconfig'],
     files: ['nginx.conf'],
+    language: ['nginx'],
     name: 'Nginx',
     id: 'nginx',
   },
@@ -563,6 +592,7 @@ export let fileIcons: FileIcon[] = [
     id: 'npm',
   },
   {
+    language: ['ocaml', 'ocaml.interface'],
     extensions: ['ml', 'mli', 'cmx'],
     name: 'OCaml',
     id: 'ocaml',
@@ -578,12 +608,14 @@ export let fileIcons: FileIcon[] = [
     id: 'oxc',
   },
   {
+    language: ['perl', 'perl6', 'raku'],
     extensions: ['pl', 'pm', 'raku'],
     name: 'Perl',
     id: 'perl',
   },
   {
     extensions: ['php'],
+    language: ['php'],
     name: 'PHP',
     id: 'php',
   },
@@ -595,6 +627,7 @@ export let fileIcons: FileIcon[] = [
   },
   {
     extensions: ['pcss', 'postcss'],
+    language: ['postcss'],
     name: 'PostCSS',
     id: 'postcss',
     light: true,
@@ -627,17 +660,20 @@ export let fileIcons: FileIcon[] = [
   },
   {
     extensions: ['pure', 'purs'],
+    language: ['purescript'],
     name: 'PureScript',
     id: 'purescript',
     light: true,
   },
   {
     extensions: ['py', 'pyc', 'pyd', 'pyo', 'pyw', 'pyz', 'pyi'],
+    language: ['python'],
     name: 'Python',
     id: 'python',
     light: true,
   },
   {
+    language: ['javascriptreact', 'typescriptreact'],
     extensions: ['jsx', 'tsx'],
     name: 'React',
     id: 'react',
@@ -661,21 +697,25 @@ export let fileIcons: FileIcon[] = [
   },
   {
     extensions: ['rb', 'erb', 'rbw'],
+    language: ['ruby'],
     name: 'Ruby',
     id: 'ruby',
   },
   {
     extensions: ['rs', 'ron'],
+    language: ['rust'],
     name: 'Rust',
     id: 'rust',
   },
   {
     extensions: ['sass', 'scss'],
+    language: ['sass', 'scss'],
     name: 'Sass',
     id: 'sass',
   },
   {
     extensions: ['scala', 'sc'],
+    language: ['scala'],
     name: 'Scala',
     id: 'scala',
   },
@@ -716,17 +756,20 @@ export let fileIcons: FileIcon[] = [
     light: true,
   },
   {
+    language: ['stylus'],
     extensions: ['styl'],
     name: 'Stylus',
     id: 'stylus',
   },
   {
     extensions: ['svelte'],
+    language: ['svelte'],
     name: 'Svelte',
     id: 'svelte',
   },
   {
     extensions: ['svg'],
+    language: ['svg'],
     name: 'SVG',
     id: 'svg',
   },
@@ -737,6 +780,7 @@ export let fileIcons: FileIcon[] = [
   },
   {
     extensions: ['swift'],
+    language: ['swift'],
     name: 'Swift',
     id: 'swift',
   },
@@ -774,6 +818,7 @@ export let fileIcons: FileIcon[] = [
   },
   {
     extensions: ['toml'],
+    language: ['toml'],
     name: 'TOML',
     id: 'toml',
   },
@@ -803,11 +848,13 @@ export let fileIcons: FileIcon[] = [
   },
   {
     extensions: ['twig'],
+    language: ['twig'],
     name: 'Twig',
     id: 'twig',
   },
   {
     extensions: ['ts', 'cts', 'mts'],
+    language: ['typescript'],
     name: 'TypeScript',
     id: 'typescript',
   },
@@ -826,6 +873,7 @@ export let fileIcons: FileIcon[] = [
     id: 'typescript-test',
   },
   {
+    language: ['typst', 'typst-code'],
     files: ['typst.toml'],
     extensions: ['typ'],
     name: 'Typst',
@@ -833,6 +881,7 @@ export let fileIcons: FileIcon[] = [
   },
   {
     extensions: ['v', 'vsh'],
+    language: ['v'],
     name: 'V',
     id: 'v',
   },
@@ -884,6 +933,7 @@ export let fileIcons: FileIcon[] = [
   },
   {
     extensions: ['vue'],
+    language: ['vue'],
     name: 'Vue',
     light: true,
     id: 'vue',
@@ -1095,12 +1145,14 @@ export let fileIcons: FileIcon[] = [
       'dmn',
       'jrxml',
     ],
+    language: ['xml', 'xquery', 'xsl'],
     files: ['.htaccess'],
     name: 'XML',
     id: 'xml',
   },
   {
     extensions: ['yaml', 'yml'],
+    language: ['yaml'],
     name: 'Yaml',
     id: 'yaml',
   },
@@ -1119,6 +1171,7 @@ export let fileIcons: FileIcon[] = [
   },
   {
     extensions: ['zig', 'zir', 'zigr', 'zon'],
+    language: ['zig'],
     name: 'Zig',
     id: 'zig',
   },

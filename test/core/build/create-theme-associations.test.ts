@@ -8,16 +8,18 @@ import { createThemeAssociations } from '../../../extension/core/build/create-th
 let emptyAssociations: ThemeData = {
   light: {
     fileExtensions: {},
+    languageIds: {},
     fileNames: {},
   },
   dark: {
     fileExtensions: {},
+    languageIds: {},
     fileNames: {},
   },
 }
 
 describe('createThemeAssociations', () => {
-  it('should associate extensions and file names with icons per theme', () => {
+  it('associates extensions, file names and language IDs per theme', () => {
     let icons: FormattedIconValue[] = [
       {
         theme: 'dark',
@@ -27,6 +29,7 @@ describe('createThemeAssociations', () => {
       },
       {
         extensions: ['html', 'htm'],
+        language: ['html'],
         theme: 'dark',
         type: 'files',
         name: 'HTML',
@@ -41,6 +44,7 @@ describe('createThemeAssociations', () => {
       },
       {
         extensions: ['css'],
+        language: ['css'],
         name: 'CSS Light',
         id: 'css-light',
         theme: 'light',
@@ -66,11 +70,13 @@ describe('createThemeAssociations', () => {
           html: 'html',
           htm: 'html',
         },
+        languageIds: { html: 'html' },
       },
       light: {
         fileExtensions: {
           css: 'css-light',
         },
+        languageIds: { css: 'css-light' },
         fileNames: {},
       },
     })
@@ -82,10 +88,11 @@ describe('createThemeAssociations', () => {
     expect(result).toEqual(emptyAssociations)
   })
 
-  it('should ignore extensions and file names of base icons', () => {
+  it('ignores extensions, file names and language IDs of base icons', () => {
     let icons: FormattedIconValue[] = [
       {
         extensions: ['svg'],
+        language: ['svg'],
         files: ['README'],
         theme: 'dark',
         name: 'File',
@@ -95,6 +102,7 @@ describe('createThemeAssociations', () => {
       {
         extensions: ['svg'],
         name: 'File Light',
+        language: ['svg'],
         id: 'file-light',
         theme: 'light',
         type: 'base',
@@ -106,18 +114,52 @@ describe('createThemeAssociations', () => {
     expect(result).toEqual(emptyAssociations)
   })
 
-  it('should skip file icons without extensions or file names', () => {
+  it('associates every language ID of a file icon without names or extensions', () => {
     let icons: FormattedIconValue[] = [
       {
-        name: 'JavaScript',
+        language: ['json', 'jsonc', 'json5'],
         theme: 'dark',
         type: 'files',
-        id: 'js',
+        name: 'JSON',
+        id: 'json',
       },
     ]
 
     let result = createThemeAssociations(icons)
 
-    expect(result).toEqual(emptyAssociations)
+    expect(result).toEqual({
+      dark: {
+        languageIds: { jsonc: 'json', json5: 'json', json: 'json' },
+        fileExtensions: {},
+        fileNames: {},
+      },
+      light: {
+        fileExtensions: {},
+        languageIds: {},
+        fileNames: {},
+      },
+    })
   })
+
+  it.each([
+    { description: 'missing', language: undefined },
+    { description: 'empty', language: [] },
+  ])(
+    'skips file icons with no names or extensions and $description language IDs',
+    ({ language }) => {
+      let icons: FormattedIconValue[] = [
+        {
+          name: 'JavaScript',
+          theme: 'dark',
+          type: 'files',
+          language,
+          id: 'js',
+        },
+      ]
+
+      let result = createThemeAssociations(icons)
+
+      expect(result).toEqual(emptyAssociations)
+    },
+  )
 })

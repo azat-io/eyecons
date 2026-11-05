@@ -2,10 +2,13 @@ import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
 
 import type { IconDefinitions, ThemeData } from '../../../extension/types/theme'
 
+import { createThemeAssociations } from '../../../extension/core/build/create-theme-associations'
 import { createThemeSchema } from '../../../extension/core/build/create-theme-schema'
+import { formatIconsValues } from '../../../extension/core/icon/format-icons-values'
 import { createMockConfig } from '../../helpers/create-mock-config'
 import { createMockTheme } from '../../helpers/create-mock-theme'
 import { mockSettings } from '../../helpers/mock-settings'
+import { fileIcons } from '../../../data/file-icons'
 
 describe('createThemeSchema', () => {
   let buildTime = '2023-01-01T12:00:00.000Z'
@@ -24,9 +27,11 @@ describe('createThemeSchema', () => {
     light: {
       fileNames: { 'package.json': 'package-json-light' },
       fileExtensions: { css: 'css-light' },
+      languageIds: { css: 'css-light' },
     },
     dark: {
       fileNames: { 'package.json': 'package-json' },
+      languageIds: { javascript: 'js' },
       fileExtensions: { js: 'js' },
     },
   }
@@ -51,9 +56,11 @@ describe('createThemeSchema', () => {
       light: {
         fileNames: { 'package.json': 'package-json-light' },
         fileExtensions: { css: 'css-light' },
+        languageIds: { css: 'css-light' },
         file: 'file-light',
       },
       fileNames: { 'package.json': 'package-json' },
+      languageIds: { javascript: 'js' },
       folderExpanded: 'folder-open',
       fileExtensions: { js: 'js' },
       hidesExplorerArrows: true,
@@ -71,8 +78,8 @@ describe('createThemeSchema', () => {
 
   it('should keep empty file associations empty', () => {
     let emptyThemeData: ThemeData = {
-      light: { fileExtensions: {}, fileNames: {} },
-      dark: { fileExtensions: {}, fileNames: {} },
+      light: { fileExtensions: {}, languageIds: {}, fileNames: {} },
+      dark: { fileExtensions: {}, languageIds: {}, fileNames: {} },
     }
 
     let result = createThemeSchema(iconDefinitions, emptyThemeData, {
@@ -82,8 +89,14 @@ describe('createThemeSchema', () => {
 
     expect(result).toEqual(
       expect.objectContaining({
-        light: { fileExtensions: {}, file: 'file-light', fileNames: {} },
+        light: {
+          fileExtensions: {},
+          file: 'file-light',
+          languageIds: {},
+          fileNames: {},
+        },
         fileExtensions: {},
+        languageIds: {},
         fileNames: {},
       }),
     )
@@ -98,11 +111,47 @@ describe('createThemeSchema', () => {
 
     expect(result).toEqual(
       expect.objectContaining({
-        light: { fileExtensions: {}, file: 'file-light', fileNames: {} },
+        light: {
+          fileExtensions: {},
+          file: 'file-light',
+          languageIds: {},
+          fileNames: {},
+        },
         fileExtensions: {},
+        languageIds: {},
         fileNames: {},
       }),
     )
+  })
+
+  it('includes catalog language fallbacks alongside specific file associations', () => {
+    let icons = formatIconsValues(fileIcons, 'files')
+    let associations = createThemeAssociations(icons)
+
+    let result = createThemeSchema(iconDefinitions, associations, {
+      config,
+      theme,
+    })
+
+    expect(result.languageIds).toMatchObject({
+      javascriptreact: 'react',
+      typescriptreact: 'react',
+      typescript: 'typescript',
+      shellscript: 'console',
+      python: 'python',
+      dotenv: 'env',
+      jsonc: 'json',
+      csharp: 'cs',
+      fsharp: 'fs',
+      json: 'json',
+    })
+    expect(result.light.languageIds).toMatchObject({ python: 'python-light' })
+    expect(result.light.languageIds).not.toHaveProperty('typescript')
+    expect(result.fileNames).toHaveProperty(['package.json'], 'nodejs')
+    expect(result.fileExtensions).toMatchObject({
+      'test.ts': 'typescript-test',
+      tsx: 'react',
+    })
   })
 
   it('should follow the user setting for hiding explorer arrows', () => {

@@ -2,13 +2,13 @@ import type { ThemeData, ThemeType } from '../../types/theme'
 import type { FormattedIconValue } from '../../types/icon'
 
 /**
- * Builds a map of file extensions and file names to icon IDs for both light and
- * dark themes. Processes an array of formatted icon values and extracts file
+ * Builds maps of file extensions, file names and language IDs to icon IDs for
+ * both light and dark themes. Processes formatted icon values and extracts
  * associations for each theme type.
  *
  * @param icons - Formatted icon values to extract associations from.
- * @returns Map of file extensions and file names to icon IDs for light and dark
- *   themes.
+ * @returns Maps of file extensions, file names and language IDs to icon IDs for
+ *   light and dark themes.
  */
 export function createThemeAssociations(
   icons: FormattedIconValue[],
@@ -16,10 +16,12 @@ export function createThemeAssociations(
   let themeData: ThemeData = {
     light: {
       fileExtensions: {},
+      languageIds: {},
       fileNames: {},
     },
     dark: {
       fileExtensions: {},
+      languageIds: {},
       fileNames: {},
     },
   }
@@ -38,6 +40,12 @@ export function createThemeAssociations(
     if (icon.files) {
       for (let file of icon.files) {
         themeData[themeType].fileNames![file] = icon.id
+      }
+    }
+
+    if (icon.language) {
+      for (let languageId of icon.language) {
+        themeData[themeType].languageIds![languageId] = icon.id
       }
     }
   }

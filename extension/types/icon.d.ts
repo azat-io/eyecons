@@ -18,29 +18,14 @@ export interface FormattedIconValue {
   extensions?: string[]
 
   /**
+   * Language IDs associated with this icon.
+   */
+  language?: string[]
+
+  /**
    * Specific file names associated with this icon.
    */
   files?: string[]
-
-  /**
-   * Display name of the icon.
-   */
-  name: string
-
-  /**
-   * Icon identifier and file name (without extension).
-   */
-  id: string
-}
-
-/**
- * Base icon type with common properties.
- */
-export interface BaseIcon {
-  /**
-   * Whether icon has a light theme variant.
-   */
-  light?: boolean
 
   /**
    * Display name of the icon.
@@ -63,7 +48,32 @@ export interface FileIcon extends BaseIcon {
   extensions?: string[]
 
   /**
+   * Language IDs associated with this icon.
+   */
+  language?: string[]
+
+  /**
    * Specific file names associated with this icon.
    */
   files?: string[]
+}
+
+/**
+ * Base icon type with common properties.
+ */
+export interface BaseIcon {
+  /**
+   * Whether icon has a light theme variant.
+   */
+  light?: boolean
+
+  /**
+   * Display name of the icon.
+   */
+  name: string
+
+  /**
+   * Icon identifier and file name (without extension).
+   */
+  id: string
 }

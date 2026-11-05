@@ -24,8 +24,14 @@ vi.mock('../../../data/base-icons', () => ({
 
 vi.mock('../../../data/file-icons', () => ({
   fileIcons: [
-    { extensions: ['html', 'htm'], name: 'HTML', id: 'html' },
     {
+      extensions: ['html', 'htm'],
+      language: ['html'],
+      name: 'HTML',
+      id: 'html',
+    },
+    {
+      language: ['javascript'],
       files: ['script.js'],
       extensions: ['js'],
       name: 'JavaScript',
@@ -91,15 +97,17 @@ describe('processIcons', () => {
     })
   })
 
-  it('should associate file extensions and names with the icons of each theme', async () => {
+  it('associates extensions, names and languages with the icons of each theme', async () => {
     let { themeData } = await processIcons(theme, config)
 
     expect(themeData).toEqual({
       dark: {
         fileExtensions: { html: 'html', htm: 'html', js: 'js' },
+        languageIds: { javascript: 'js', html: 'html' },
         fileNames: { 'script.js': 'js' },
       },
       light: {
+        languageIds: { javascript: 'js-light' },
         fileNames: { 'script.js': 'js-light' },
         fileExtensions: { js: 'js-light' },
       },

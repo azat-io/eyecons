@@ -44,10 +44,12 @@ export function createThemeSchema(
   return {
     light: {
       fileExtensions: themeData.light.fileExtensions ?? {},
+      languageIds: themeData.light.languageIds ?? {},
       fileNames: themeData.light.fileNames ?? {},
       file: fileLightId,
     },
     fileExtensions: themeData.dark.fileExtensions ?? {},
+    languageIds: themeData.dark.languageIds ?? {},
     fileNames: themeData.dark.fileNames ?? {},
     folderColor: theme.folderColor,
     folderExpanded: folderOpenId,

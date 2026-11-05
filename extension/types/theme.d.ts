@@ -101,6 +101,11 @@ export interface ThemeSchema {
   fileExtensions?: FileExtensionAssociations
 
   /**
+   * Language ID to icon mapping.
+   */
+  languageIds?: LanguageIdAssociations
+
+  /**
    * Folder name to icon mapping.
    */
   folderNames: FolderNameAssociations
@@ -171,6 +176,11 @@ export interface LightThemeSection {
   fileExtensions?: FileExtensionAssociations
 
   /**
+   * Language ID associations specific to light theme.
+   */
+  languageIds?: LanguageIdAssociations
+
+  /**
    * File name associations specific to light theme.
    */
   fileNames?: FileNameAssociations
@@ -203,6 +213,7 @@ export type ThemeData = Record<
   ThemeType,
   {
     fileExtensions?: FileExtensionAssociations
+    languageIds?: LanguageIdAssociations
     fileNames?: FileNameAssociations
   }
 >
@@ -226,6 +237,11 @@ export type IconDefinitions = Record<string, IconPathDefinition>
  * Interface representing file extension associations.
  */
 export type FileExtensionAssociations = Record<string, string>
+
+/**
+ * Interface representing language ID associations.
+ */
+export type LanguageIdAssociations = Record<string, string>
 
 /**
  * Interface representing folder name associations.
