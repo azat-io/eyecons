@@ -222,6 +222,7 @@ export let fileIcons: FileIcon[] = [
       '.env.stg.local',
       '.env.staging.local',
       '.env.test.local',
+      '.env.local.example',
       '.env.uat',
       '.vars',
       '.dev.vars',
