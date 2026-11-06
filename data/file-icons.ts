@@ -164,6 +164,7 @@ export let fileIcons: FileIcon[] = [
   },
   {
     files: [
+      '.dockerignore',
       'dockerignore',
       'dockerfile',
       'docker-compose.yml',
