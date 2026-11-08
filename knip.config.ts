@@ -4,7 +4,7 @@ export default {
   qwik: {
     config: ['vite.config.documentation.ts'],
   },
-  entry: ['extension/index.ts', 'vite.config.preview.ts'],
   ignoreDependencies: ['@types/vscode'],
+  entry: ['vite.config.preview.ts'],
   ignore: ['docs/mocks/**'],
 } satisfies KnipConfig

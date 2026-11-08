@@ -5,8 +5,6 @@ import type { Theme } from '../../types/theme'
 import { toOklch } from './to-oklch'
 import { toHex } from './to-hex'
 
-type MainColorKey = keyof Theme['main']
-
 const FOLDER_PRIMARY_COLOR = '#ffca28'
 const FOLDER_SECONDARY_COLOR = '#ffa000'
 
@@ -14,6 +12,7 @@ export function getFolderColors({
   folderColor,
   main,
 }: Theme): Map<string, string> {
+  type MainColorKey = keyof Theme['main']
   let isValidKey = Object.keys(main).includes(folderColor)
   let baseColor = isValidKey ? main[folderColor as MainColorKey] : main.blue
 
