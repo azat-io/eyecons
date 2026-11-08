@@ -40,6 +40,9 @@
     "browserslist": {
       "#ffd539": "#e2b340"
     },
+    "bun": {
+      "#f472b6": "#bc8cff"
+    },
     "claude": {
       "#d97757": "#ffa657"
     },

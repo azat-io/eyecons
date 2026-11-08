@@ -48,6 +48,11 @@ export let fileIcons: FileIcon[] = [
     id: 'browserslist',
   },
   {
+    files: ['bun.lockb', 'bunfig.toml', '.bun-version', 'bun.lock'],
+    name: 'Bun',
+    id: 'bun',
+  },
+  {
     extensions: ['c'],
     language: ['c'],
     name: 'C',

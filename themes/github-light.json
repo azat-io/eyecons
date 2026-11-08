@@ -35,6 +35,9 @@
     "#ddf4ff"
   ],
   "overrides": {
+    "bun": {
+      "#f472b6": "#8250df"
+    },
     "babel": {
       "#1b1b1d": "#ffffff"
     },
