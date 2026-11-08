@@ -1,5 +1,26 @@
 # Changelog
 
+## v1.19.0
+
+[compare changes](https://github.com/azat-io/eyecons/compare/v1.18.0...v1.19.0)
+
+### 🚀 Features
+
+- Add language id icon associations
+  ([6c4931c](https://github.com/azat-io/eyecons/commit/6c4931c))
+- Import env icons support
+  ([b8b1440](https://github.com/azat-io/eyecons/commit/b8b1440))
+- Add bun icon ([a25097a](https://github.com/azat-io/eyecons/commit/a25097a))
+
+### 🐞 Bug Fixes
+
+- Support dockerignore icons
+  ([1be57c5](https://github.com/azat-io/eyecons/commit/1be57c5))
+
+### ❤️ Contributors
+
+- Azat S. ([@azat-io](https://github.com/azat-io))
+
 ## v1.18.0
 
 [compare changes](https://github.com/azat-io/eyecons/compare/v1.17.0...v1.18.0)
